@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-const Canvas = () => import('@/components/Canvas')
-const Remote = () => import('@/components/Remote')
+const Desktop = () => import('@/components/Desktop')
+const Mobile = () => import('@/components/Mobile')
 
 Vue.use(Router)
 
@@ -11,13 +11,13 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Canvas',
-      component: Canvas
+      name: 'Desktop',
+      component: Desktop
     },
     {
       path: '/Remote',
-      name: 'Remote',
-      component: Remote
+      name: 'Mobile',
+      component: Mobile
     }
   ]
 })

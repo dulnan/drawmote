@@ -1,3 +1,3 @@
-export const cartProducts = state => {
-  return 'geil'
+export const isConnected = state => {
+  return true
 }

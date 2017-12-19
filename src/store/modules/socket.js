@@ -1,5 +1,7 @@
 import * as types from '../mutation-types'
 
+const namespaced = true
+
 // initial state
 // shape: [{ id, quantity }]
 const state = {
@@ -14,8 +16,8 @@ const getters = {
 
 // actions
 const actions = {
-  getPairingToken ({ commit, state }) {
-    this.$socket.emit('getPairingToken')
+  createSession ({ commit, state }) {
+    this.$socket.emit('createSession')
   }
 }
 
@@ -29,6 +31,7 @@ const mutations = {
 }
 
 export default {
+  namespaced,
   state,
   getters,
   actions,

@@ -1,5 +1,7 @@
 import * as types from '../mutation-types'
 
+const namespaced = true
+
 // initial state
 // shape: [{ id, quantity }]
 const state = {
@@ -25,6 +27,7 @@ const mutations = {
 }
 
 export default {
+  namespaced,
   state,
   getters,
   actions,

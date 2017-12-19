@@ -1,30 +1,19 @@
 <template>
-  <div id="app">
+  <div id="app" class="relative overlay">
     <router-view></router-view>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'app',
-  sockets: {
-    connect: function () {
-      console.log('socket connected')
-    },
-    customEmit: function (val) {
-      console.log('this method was fired by the socket server. eg: io.emit("customEmit", data)')
-    }
-  }
+  name: 'app'
 }
 </script>
 
-<style>
+<style lang="scss">
+@import 'assets/scss/main.scss';
+
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+
 }
 </style>
