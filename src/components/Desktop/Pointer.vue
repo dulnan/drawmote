@@ -33,11 +33,15 @@ export default {
   width: 1px;
   height: 1px;
   z-index: $index-cursor;
+  user-select: none;
+  pointer-events: none;
   &:before, &:after {
     content: "";
     display: block;
     background: black;
     position: absolute;
+    user-select: none;
+    pointer-events: none;
   }
   &:before {
     width: 1px;

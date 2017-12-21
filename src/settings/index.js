@@ -26,4 +26,6 @@ export const COLORS = [
 ]
 
 export const DEFAULT_COLOR = COLORS[3]
-export const DEFAULT_RADIUS = 15
+export const RADIUS_DEFAULT = 10
+export const RADIUS_MIN = 5
+export const RADIUS_MAX = 70

@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { DEFAULT_COLOR, DEFAULT_RADIUS } from '@/settings'
+import { DEFAULT_COLOR, RADIUS_DEFAULT } from '@/settings'
 
 import { gyro } from '@/libs/gyro.js'
 import { getViewportSize } from '@/tools/helpers.js'
@@ -41,7 +41,7 @@ export default {
       },
       brush: {
         color: DEFAULT_COLOR,
-        radius: DEFAULT_RADIUS
+        radius: RADIUS_DEFAULT
       }
     }
   },
@@ -64,9 +64,11 @@ export default {
           alpha = (180 - data.alpha) - 180
         }
         let beta = data.beta
+        let gamma = data.gamma
         this.$socket.emit('sendOrientation', {
           alpha: alpha,
           beta: beta,
+          gamma: gamma,
           isPressing: this.isPressing
         })
       })

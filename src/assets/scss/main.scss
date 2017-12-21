@@ -57,4 +57,7 @@ body {
   cursor: pointer;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
+  &:focus {
+    outline: none;
+  }
 }

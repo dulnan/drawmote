@@ -6,29 +6,24 @@
 </template>
 
 <script>
-import { DEFAULT_COLOR, DEFAULT_RADIUS } from '@/settings'
+import { EventBus } from '@/events'
+
+import { DEFAULT_COLOR, RADIUS_DEFAULT } from '@/settings'
+import { getViewportSize } from '@/tools/helpers.js'
+
+let points = []
 
 export default {
   name: 'DrawingCanvas',
 
   props: {
-    viewport: {
-      type: Object,
-      default: () => {
-        return {
-          width: 0,
-          height: 0,
-          ratio: 1
-        }
-      }
-    },
     color: {
       type: String,
       default: DEFAULT_COLOR.hex
     },
     radius: {
       type: Number,
-      default: DEFAULT_RADIUS
+      default: RADIUS_DEFAULT
     },
     coordinates: {
       type: Object,
@@ -47,8 +42,11 @@ export default {
 
   data () {
     return {
-      contextMain: {},
-      contextTemp: {}
+      viewport: {
+        width: 0,
+        height: 0,
+        ratio: 1
+      }
     }
   },
 
@@ -61,19 +59,12 @@ export default {
     }
   },
 
-  /**
-   * Add non-reactive data objects.
-   */
-  created () {
-    this.points = []
-  },
-
   watch: {
     radius: function (radius) {
-      this.setCanvasLineWidth(this.contextTemp, radius)
+      this.setCanvasLineWidth(radius)
     },
     color: function (color) {
-      this.setCanvasColor(this.contextTemp, color)
+      this.setCanvasColor(color)
     },
     isPressing: function (isPressing) {
       if (isPressing) {
@@ -83,29 +74,40 @@ export default {
   },
 
   methods: {
+    getContext (name) {
+      return this.$refs['canvas_' + name].getContext('2d')
+    },
+
     setupCanvases () {
-      const ratio = this.viewport.ratio
+      let canvases = [
+        this.$refs.canvas_temp,
+        this.$refs.canvas_main
+      ]
 
-      this.$refs.canvas_temp.width = this.contextSize.width
-      this.$refs.canvas_temp.height = this.contextSize.height
+      canvases.forEach(canvas => {
+        let context = canvas.getContext('2d')
 
-      this.$refs.canvas_main.width = this.contextSize.width
-      this.$refs.canvas_main.height = this.contextSize.height
+        canvas.width = this.contextSize.width
+        canvas.height = this.contextSize.height
 
-      this.contextTemp.lineJoin = 'round'
-      this.contextTemp.lineCap = 'round'
+        context.lineJoin = 'round'
+        context.lineCap = 'round'
+        context.scale(this.viewport.ratio, this.viewport.ratio)
+      })
 
-      this.contextTemp.scale(ratio, ratio)
-      this.contextMain.scale(ratio, ratio)
+      this.setCanvasLineWidth(this.radius)
+      this.setCanvasColor(this.color)
     },
 
-    setCanvasLineWidth (context, radius) {
-      context.lineWidth = radius * 2
+    setCanvasLineWidth (radius) {
+      let contextTemp = this.getContext('temp')
+      contextTemp.lineWidth = radius * 2
     },
 
-    setCanvasColor (context, color) {
-      context.strokeStyle = color
-      context.fillStyle = color
+    setCanvasColor (color) {
+      let contextTemp = this.getContext('temp')
+      contextTemp.strokeStyle = color
+      contextTemp.fillStyle = color
     },
 
     clearCanvas (context) {
@@ -113,63 +115,70 @@ export default {
     },
 
     draw () {
-      this.points.push({
+      points.push({
         x: this.coordinates.x,
         y: this.coordinates.y
       })
 
       if (this.isPressing) {
         window.requestAnimationFrame(this.draw)
+        let contextTemp = this.getContext('temp')
 
-        if (this.points.length < 3) {
-          var b = this.points[0]
-          this.contextTemp.beginPath()
-          this.contextTemp.arc(b.x, b.y, this.contextTemp.lineWidth / 2, 0, Math.PI * 2, !0)
-          this.contextTemp.fill()
-          this.contextTemp.closePath()
+        if (points.length < 6) {
+          const b = points[0]
+          contextTemp.beginPath()
+          contextTemp.arc(b.x, b.y, contextTemp.lineWidth / 2, 0, Math.PI * 2, !0)
+          contextTemp.fill()
+          contextTemp.closePath()
 
           return
         }
 
-        this.clearCanvas(this.contextTemp)
+        this.clearCanvas(contextTemp)
 
-        this.contextTemp.beginPath()
-        this.contextTemp.moveTo(this.points[0].x, this.points[0].y)
+        contextTemp.beginPath()
+        contextTemp.moveTo(points[0].x, points[0].y)
 
-        for (var i = 1; i < this.points.length - 2; i++) {
-          var c = (this.points[i].x + this.points[i + 1].x) / 2
-          var d = (this.points[i].y + this.points[i + 1].y) / 2
-          this.contextTemp.quadraticCurveTo(this.points[i].x, this.points[i].y, c, d)
+        for (var i = 1; i < points.length - 2; i++) {
+          var c = (points[i].x + points[i + 1].x) / 2
+          var d = (points[i].y + points[i + 1].y) / 2
+          contextTemp.quadraticCurveTo(points[i].x, points[i].y, c, d)
         }
 
         // For the last 2 points
-        this.contextTemp.quadraticCurveTo(
-          this.points[i].x,
-          this.points[i].y,
-          this.points[i + 1].x,
-          this.points[i + 1].y
+        contextTemp.quadraticCurveTo(
+          points[i].x,
+          points[i].y,
+          points[i + 1].x,
+          points[i + 1].y
         )
 
-        this.contextTemp.stroke()
+        contextTemp.stroke()
       } else {
         this.copyToMainCanvas()
       }
     },
 
     copyToMainCanvas () {
-      this.contextMain.drawImage(this.$refs.canvas_temp, 0, 0, this.viewport.width, this.viewport.height)
-      this.clearCanvas(this.contextTemp)
-      this.points = []
+      let contextMain = this.getContext('main')
+      let contextTemp = this.getContext('temp')
+
+      contextMain.drawImage(this.$refs.canvas_temp, 0, 0, this.viewport.width, this.viewport.height)
+      this.clearCanvas(contextTemp)
+      points = []
     }
   },
 
   mounted () {
-    this.contextTemp = this.$refs.canvas_temp.getContext('2d')
-    this.contextMain = this.$refs.canvas_main.getContext('2d')
+    // Add event listeners
+    EventBus.$on('clearCanvas', () => {
+      const context = this.getContext('main')
+      this.clearCanvas(context)
+    })
+
+    this.viewport = getViewportSize()
 
     this.setupCanvases()
-    this.setCanvasLineWidth(this.contextTemp, this.radius)
-    this.setCanvasColor(this.contextTemp, this.color)
   }
 }
 </script>

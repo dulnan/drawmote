@@ -1,11 +1,12 @@
 <template>
   <div class="absolute anchor" v-bind:style="anchorStyle">
     <div class="absolute brush" v-bind:style="brushStyle"></div>
+    <div class="absolute lazy-area" v-bind:style="lazyStyle"></div>
   </div>
 </template>
 
 <script>
-import { DEFAULT_COLOR, DEFAULT_RADIUS } from '@/settings'
+import { DEFAULT_COLOR, RADIUS_DEFAULT } from '@/settings'
 
 export default {
   name: 'Brush',
@@ -15,10 +16,14 @@ export default {
       type: Object,
       default: () => {
         return {
-          radius: DEFAULT_RADIUS,
+          radius: RADIUS_DEFAULT,
           color: DEFAULT_COLOR
         }
       }
+    },
+    lazyRadius: {
+      type: Number,
+      default: RADIUS_DEFAULT
     },
     coordinates: {
       type: Object,
@@ -43,6 +48,12 @@ export default {
         width: `${this.brush.radius * 2}px`,
         height: `${this.brush.radius * 2}px`
       }
+    },
+    lazyStyle: function () {
+      return {
+        width: `${this.lazyRadius * 2}px`,
+        height: `${this.lazyRadius * 2}px`
+      }
     }
   }
 }
@@ -53,11 +64,18 @@ export default {
   width: 1px;
   height: 1px;
   z-index: $index-brush;
+  user-select: none;
+  pointer-events: none;
 }
 
-.brush {
+.brush, .lazy-area {
   border-radius: 100%;
   transform: translate(-50%, -50%);
   user-select: none;
+  pointer-events: none;
+}
+
+.lazy-area {
+  border: 1px solid rgba(black, 0.1);
 }
 </style>

@@ -10,11 +10,27 @@
           @click.prevent="changeColor(color)"
         ></button>
       </li>
+      <li>
+        <button
+          type="button"
+          class="button toolbar__button"
+          @click.prevent="clearCanvas"
+        ></button>
+      </li>
+      <li>
+        <button
+          type="button"
+          class="button toolbar__button"
+          @click.prevent="showColorPick"
+        ></button>
+      </li>
     </ul>
   </div>
 </template>
 
 <script>
+import { EventBus } from '@/events'
+
 import { COLORS } from '@/settings'
 
 export default {
@@ -37,7 +53,15 @@ export default {
 
   methods: {
     changeColor (newColor) {
-      this.$emit('setBrushColor', newColor)
+      EventBus.$emit('setBrushColor', newColor)
+    },
+
+    clearCanvas () {
+      EventBus.$emit('clearCanvas')
+    },
+
+    showColorPick () {
+      EventBus.$emit('showColorPick')
     }
   }
 }
@@ -52,8 +76,13 @@ export default {
 }
 
 .toolbar__button {
+  background: white;
   border-radius: 100%;
   width: 5rem;
   height: 5rem;
+  border: 4px solid white;
+  &.selected {
+
+  }
 }
 </style>
