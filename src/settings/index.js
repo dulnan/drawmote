@@ -27,5 +27,11 @@ export const COLORS = [
 
 export const DEFAULT_COLOR = COLORS[3]
 export const RADIUS_DEFAULT = 10
-export const RADIUS_MIN = 5
+export const RADIUS_MIN = 1
 export const RADIUS_MAX = 70
+
+export const HARDNESS_DEFAULT = 10
+export const HARDNESS_MIN = 0
+export const HARDNESS_MAX = 100
+
+export const SMOOTHING_INIT = 0.85

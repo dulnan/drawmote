@@ -8,10 +8,8 @@
 <script>
 import { EventBus } from '@/events'
 
-import { DEFAULT_COLOR, RADIUS_DEFAULT } from '@/settings'
-import { getViewportSize } from '@/tools/helpers.js'
-
-let points = []
+import { DEFAULT_COLOR, RADIUS_DEFAULT, HARDNESS_DEFAULT, SMOOTHING_INIT } from '@/settings'
+import { getViewportSize, lineDistance } from '@/tools/helpers.js'
 
 export default {
   name: 'DrawingCanvas',
@@ -24,6 +22,10 @@ export default {
     radius: {
       type: Number,
       default: RADIUS_DEFAULT
+    },
+    hardness: {
+      type: Number,
+      default: HARDNESS_DEFAULT
     },
     coordinates: {
       type: Object,
@@ -46,7 +48,10 @@ export default {
         width: 0,
         height: 0,
         ratio: 1
-      }
+      },
+      smoothing: SMOOTHING_INIT,
+      isDrawing: false,
+      pointCount: 0
     }
   },
 
@@ -66,9 +71,25 @@ export default {
     color: function (color) {
       this.setCanvasColor(color)
     },
+    coordinates: {
+      handler (newCoordinates, prevCoordinates) {
+        if (this.isDrawing && (newCoordinates.x !== prevCoordinates.x && newCoordinates.y !== prevCoordinates.y)) {
+          this.draw(prevCoordinates, newCoordinates)
+        }
+      },
+      deep: true
+    },
     isPressing: function (isPressing) {
+      let contextTemp = this.getContext('temp')
+
       if (isPressing) {
-        this.draw()
+        contextTemp.beginPath()
+        this.draw(this.coordinates, this.coordinates)
+        this.isDrawing = true
+      } else {
+        contextTemp.closePath()
+        this.copyToMainCanvas()
+        this.isDrawing = false
       }
     }
   },
@@ -97,6 +118,7 @@ export default {
 
       this.setCanvasLineWidth(this.radius)
       this.setCanvasColor(this.color)
+      this.setCanvasShadow(this.hardness, this.color)
     },
 
     setCanvasLineWidth (radius) {
@@ -110,53 +132,14 @@ export default {
       contextTemp.fillStyle = color
     },
 
-    clearCanvas (context) {
-      context.clearRect(0, 0, this.contextSize.width, this.contextSize.height)
+    setCanvasShadow (hardness, color) {
+      // let contextTemp = this.getContext('temp')
+      // contextTemp.shadowBlur = this.radius
+      // contextTemp.shadowColor = color
     },
 
-    draw () {
-      points.push({
-        x: this.coordinates.x,
-        y: this.coordinates.y
-      })
-
-      if (this.isPressing) {
-        window.requestAnimationFrame(this.draw)
-        let contextTemp = this.getContext('temp')
-
-        if (points.length < 6) {
-          const b = points[0]
-          contextTemp.beginPath()
-          contextTemp.arc(b.x, b.y, contextTemp.lineWidth / 2, 0, Math.PI * 2, !0)
-          contextTemp.fill()
-          contextTemp.closePath()
-
-          return
-        }
-
-        this.clearCanvas(contextTemp)
-
-        contextTemp.beginPath()
-        contextTemp.moveTo(points[0].x, points[0].y)
-
-        for (var i = 1; i < points.length - 2; i++) {
-          var c = (points[i].x + points[i + 1].x) / 2
-          var d = (points[i].y + points[i + 1].y) / 2
-          contextTemp.quadraticCurveTo(points[i].x, points[i].y, c, d)
-        }
-
-        // For the last 2 points
-        contextTemp.quadraticCurveTo(
-          points[i].x,
-          points[i].y,
-          points[i + 1].x,
-          points[i + 1].y
-        )
-
-        contextTemp.stroke()
-      } else {
-        this.copyToMainCanvas()
-      }
+    clearCanvas (context) {
+      context.clearRect(0, 0, this.contextSize.width, this.contextSize.height)
     },
 
     copyToMainCanvas () {
@@ -165,7 +148,51 @@ export default {
 
       contextMain.drawImage(this.$refs.canvas_temp, 0, 0, this.viewport.width, this.viewport.height)
       this.clearCanvas(contextTemp)
-      points = []
+    },
+
+    beginPath () {
+      let contextTemp = this.getContext('temp')
+      contextTemp.beginPath()
+    },
+
+    closePath () {
+      let contextTemp = this.getContext('temp')
+      contextTemp.closePath()
+    },
+
+    draw (prevCoordinates, coordinates) {
+      let context = this.getContext('temp')
+
+      // calculate distance from previous point
+      const distance = lineDistance(prevCoordinates.x, prevCoordinates.y, coordinates.x, coordinates.y)
+
+      // now, here we scale the initial smoothing factor by the raw distance
+      // this means that when the mouse moves fast, there is more smoothing
+      // and when we're drawing small detailed stuff, we have more control
+      // also we hard clip at 1
+      const smoothingFactor = Math.min(0.87, this.smoothing + (distance - 60) / 3000)
+
+      // calculate smoothed coordinates
+      const smoothedCoordinates = {
+        x: prevCoordinates.x - (prevCoordinates.x - coordinates.x) * smoothingFactor,
+        y: prevCoordinates.y - (prevCoordinates.y - coordinates.y) * smoothingFactor
+      }
+
+      // recalculate distance from previous point, this time relative to the smoothed coords
+      // const smoothedDistance = lineDistance(smoothedCoordinates.x, smoothedCoordinates.y, this.coordinates.x, this.coordinates.y)
+
+      // draw using quad interpolation
+      context.quadraticCurveTo(prevCoordinates.x, prevCoordinates.y, smoothedCoordinates.x, smoothedCoordinates.y)
+      context.stroke()
+
+      this.pointCount++
+
+      if (this.pointCount > 6) {
+        this.closePath()
+        this.copyToMainCanvas()
+        this.pointCount = 0
+        this.beginPath()
+      }
     }
   },
 

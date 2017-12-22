@@ -67,13 +67,20 @@ export default {
         color: DEFAULT_COLOR,
         radius: RADIUS_DEFAULT
       },
-      isPressing: false
+      isPressing: false,
+      useLazyBrush: true
     }
   },
 
   computed: {
     lazyRadius: function () {
-      return Math.max(Math.min(this.brush.radius * 1.7, RADIUS_MAX + 20), 20)
+      return Math.max(Math.min(this.brush.radius * 1.7 + 5, RADIUS_MAX + 20), 15)
+    },
+    canvasCoordinates: function () {
+      return {
+        x: Math.round(this.brushCoordinates.x),
+        y: Math.round(this.brushCoordinates.y)
+      }
     }
   },
 
@@ -89,24 +96,28 @@ export default {
 
   methods: {
     loop () {
-      // Find the difference of the pointer coordinates to the brush
-      const diff = {
-        x: this.inputCoordinates.x - this.brushCoordinates.x,
-        y: this.inputCoordinates.y - this.brushCoordinates.y
-      }
+      if (this.useLazyBrush) {
+        // Find the difference of the pointer coordinates to the brush
+        const diff = {
+          x: this.inputCoordinates.x - this.brushCoordinates.x,
+          y: this.inputCoordinates.y - this.brushCoordinates.y
+        }
 
-      // The distance between the position of the brush and the pointer,
-      // minus the lazyRadius
-      const distance = Math.sqrt(diff.x * diff.x + diff.y * diff.y) - this.lazyRadius
+        // The distance between the position of the brush and the pointer,
+        // minus the lazyRadius
+        const distance = Math.sqrt(diff.x * diff.x + diff.y * diff.y) - this.lazyRadius
 
-      // If the pointer is outside the lazy area, update the position of the brush
-      if (pointOutsideCircle(this.inputCoordinates, this.brushCoordinates, this.lazyRadius)) {
-        // Use the difference of the pointer to the brush to get the angle in radians
-        const angle = Math.atan2(diff.y, diff.x)
+        // If the pointer is outside the lazy area, update the position of the brush
+        if (pointOutsideCircle(this.inputCoordinates, this.brushCoordinates, this.lazyRadius)) {
+          // Use the difference of the pointer to the brush to get the angle in radians
+          const angle = Math.atan2(diff.y, diff.x)
 
-        // Update the brush coordinates by moving it by the calculated distance to the pointer
-        // and at the right angle.
-        this.brushCoordinates = movePointAtAngle(this.brushCoordinates, angle, distance)
+          // Update the brush coordinates by moving it by the calculated distance to the pointer
+          // and at the right angle.
+          this.brushCoordinates = movePointAtAngle(this.brushCoordinates, angle, distance)
+        }
+      } else {
+        this.brushCoordinates = this.inputCoordinates
       }
 
       this.pointerCoordinates = this.inputCoordinates
