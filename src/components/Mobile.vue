@@ -55,7 +55,7 @@ export default {
     },
 
     initDataLoop () {
-      gyro.frequency = 40
+      gyro.frequency = 10
       gyro.startTracking((data) => {
         let alpha = data.alpha
         if (data.alpha > 180) {

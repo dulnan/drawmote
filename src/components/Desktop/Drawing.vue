@@ -4,14 +4,14 @@
     <!-- <color-picker></color-picker> -->
     <brush :brush="brush" :lazy-radius="lazyRadius" :coordinates="brushCoordinates"></brush>
     <pointer :coordinates="pointerCoordinates"></pointer>
-    <drawing-canvas :viewport="viewport" :color="brush.color.hex" :radius="brush.radius" :coordinates="brushCoordinates" :is-pressing="isPressing"></drawing-canvas>
+    <drawing-canvas :brush="brush" :viewport="viewport" :coordinates="brushCoordinates" :is-pressing="isPressing"></drawing-canvas>
   </div>
 </template>
 
 <script>
 import { EventBus } from '@/events'
 
-import { DEFAULT_COLOR, RADIUS_DEFAULT, RADIUS_MIN, RADIUS_MAX } from '@/settings'
+import { RADIUS_MIN, RADIUS_MAX, BRUSH_DEFAULT, HARDNESS_MIN, HARDNESS_MAX } from '@/settings'
 
 import { getPointOnScreen } from '@/tools/GyroTransform.js'
 import { getViewportSize, pointOutsideCircle, movePointAtAngle } from '@/tools/helpers.js'
@@ -63,10 +63,7 @@ export default {
         x: 0,
         y: 0
       },
-      brush: {
-        color: DEFAULT_COLOR,
-        radius: RADIUS_DEFAULT
-      },
+      brush: BRUSH_DEFAULT,
       isPressing: false,
       useLazyBrush: true
     }
@@ -74,7 +71,7 @@ export default {
 
   computed: {
     lazyRadius: function () {
-      return Math.max(Math.min(this.brush.radius * 1.7 + 5, RADIUS_MAX + 20), 15)
+      return Math.max(Math.min(this.brush.radius * 2 + 5, RADIUS_MAX + 20), 15)
     },
     canvasCoordinates: function () {
       return {
@@ -132,6 +129,16 @@ export default {
     updateBrushRadius (newRadius) {
       this.brush.radius = Math.min(Math.max(newRadius, RADIUS_MIN), RADIUS_MAX)
       this.$socket.emit('sendBrush', this.brush)
+    },
+
+    updateBrushHardness (newHardness) {
+      this.brush.hardness = Math.min(Math.max(newHardness, HARDNESS_MIN), HARDNESS_MAX)
+      this.$socket.emit('sendBrush', this.brush)
+    },
+
+    updateBrushOpacity (newOpacity) {
+      this.brush.opacity = Math.min(Math.max(newOpacity, 0), 1)
+      this.$socket.emit('sendBrush', this.brush)
     }
   },
 
@@ -145,10 +152,24 @@ export default {
     // Allow usage with mouse and arrow keys for debugging
     if (DEBUG) {
       document.addEventListener('wheel', (event) => {
+        event.preventDefault()
+
         if (event.deltaY > 0) {
-          this.updateBrushRadius(this.brush.radius - 2)
+          if (event.ctrlKey) {
+            this.updateBrushHardness(this.brush.hardness - 0.05)
+          } else if (event.altKey) {
+            this.updateBrushOpacity(this.brush.opacity - 0.05)
+          } else {
+            this.updateBrushRadius(this.brush.radius - 2)
+          }
         } else {
-          this.updateBrushRadius(this.brush.radius + 2)
+          if (event.ctrlKey) {
+            this.updateBrushHardness(this.brush.hardness + 0.05)
+          } else if (event.altKey) {
+            this.updateBrushOpacity(this.brush.opacity + 0.05)
+          } else {
+            this.updateBrushRadius(this.brush.radius + 2)
+          }
         }
       })
 

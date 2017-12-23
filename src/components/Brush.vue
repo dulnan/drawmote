@@ -6,7 +6,8 @@
 </template>
 
 <script>
-import { DEFAULT_COLOR, RADIUS_DEFAULT } from '@/settings'
+import { RADIUS_DEFAULT, BRUSH_DEFAULT } from '@/settings'
+import { getRgbaString } from '@/tools/helpers.js'
 
 export default {
   name: 'Brush',
@@ -14,16 +15,13 @@ export default {
   props: {
     brush: {
       type: Object,
-      default: () => {
-        return {
-          radius: RADIUS_DEFAULT,
-          color: DEFAULT_COLOR
-        }
-      }
+      default: BRUSH_DEFAULT
     },
     lazyRadius: {
       type: Number,
-      default: RADIUS_DEFAULT
+      default: () => {
+        return RADIUS_DEFAULT
+      }
     },
     coordinates: {
       type: Object,
@@ -43,10 +41,12 @@ export default {
       }
     },
     brushStyle: function () {
+      const diameter = (this.brush.hardness + 1) * this.brush.radius
       return {
-        background: this.brush.color.hex,
-        width: `${this.brush.radius * 2}px`,
-        height: `${this.brush.radius * 2}px`
+        background: getRgbaString(this.brush.color.rgb, this.brush.opacity),
+        filter: `blur(${((1 - this.brush.hardness) * this.brush.radius)}px)`,
+        width: `${diameter}px`,
+        height: `${diameter}px`
       }
     },
     lazyStyle: function () {

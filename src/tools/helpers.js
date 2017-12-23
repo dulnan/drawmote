@@ -30,4 +30,15 @@ function scaleBetween (number, numberRange, outputRange) {
   return Math.min(Math.max(scaled, outputRange[0]), outputRange[1])
 }
 
-export { getViewportSize, pointOutsideCircle, movePointAtAngle, scaleBetween, lineDistance }
+function midPointBetween (p1, p2) {
+  return {
+    x: p1.x + (p2.x - p1.x) / 2,
+    y: p1.y + (p2.y - p1.y) / 2
+  }
+}
+
+function getRgbaString (rgb, alpha) {
+  return `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${alpha})`
+}
+
+export { getViewportSize, pointOutsideCircle, movePointAtAngle, scaleBetween, lineDistance, getRgbaString, midPointBetween }

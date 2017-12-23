@@ -1,27 +1,27 @@
 export const COLORS = [
   {
     name: 'greyLight',
-    hex: '#edeeec'
+    rgb: [237, 238, 236]
   },
   {
     name: 'blue',
-    hex: '#c4e8f7'
+    rgb: [196, 232, 247]
   },
   {
     name: 'green',
-    hex: '#b8ddbe'
+    rgb: [184, 221, 190]
   },
   {
     name: 'yellow',
-    hex: '#fdbc4b'
+    rgb: [253, 188, 75]
   },
   {
     name: 'red',
-    hex: '#fd794b'
+    rgb: [253, 121, 75]
   },
   {
     name: 'black',
-    hex: '#383c47'
+    rgb: [56, 60, 71]
   }
 ]
 
@@ -30,8 +30,17 @@ export const RADIUS_DEFAULT = 10
 export const RADIUS_MIN = 1
 export const RADIUS_MAX = 70
 
-export const HARDNESS_DEFAULT = 10
+export const HARDNESS_DEFAULT = 1
 export const HARDNESS_MIN = 0
-export const HARDNESS_MAX = 100
+export const HARDNESS_MAX = 1
+
+export const OPACITY_DEFAULT = 1
 
 export const SMOOTHING_INIT = 0.85
+
+export const BRUSH_DEFAULT = {
+  color: DEFAULT_COLOR,
+  radius: RADIUS_DEFAULT,
+  hardness: HARDNESS_DEFAULT,
+  opacity: OPACITY_DEFAULT
+}

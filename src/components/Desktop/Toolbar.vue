@@ -5,8 +5,8 @@
         <button
           type="button"
           class="button toolbar__button"
-          v-bind:style="{ background: color.hex }"
-          v-bind:class="{ 'selected' : color.hex === selectedColor.hex }"
+          v-bind:style="getStyleObject(color.rgb)"
+          v-bind:class="{ 'selected' : color.name === selectedColor.name }"
           @click.prevent="changeColor(color)"
         ></button>
       </li>
@@ -32,6 +32,7 @@
 import { EventBus } from '@/events'
 
 import { COLORS } from '@/settings'
+import { getRgbaString } from '@/tools/helpers.js'
 
 export default {
   name: 'Toolbar',
@@ -52,6 +53,12 @@ export default {
   },
 
   methods: {
+    getStyleObject (rgb) {
+      return {
+        background: getRgbaString(rgb, 1)
+      }
+    },
+
     changeColor (newColor) {
       EventBus.$emit('setBrushColor', newColor)
     },
