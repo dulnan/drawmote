@@ -1,6 +1,6 @@
 <template>
   <div class="relative overlay" ref="drawingApp">
-    <toolbar></toolbar>
+    <toolbar :visible="toolbarVisible" :selected-color="brush.color"></toolbar>
     <!-- <color-picker></color-picker> -->
     <brush :brush="brush" :lazy-radius="lazyRadius" :coordinates="brushCoordinates"></brush>
     <pointer :coordinates="pointerCoordinates"></pointer>
@@ -39,7 +39,19 @@ export default {
   sockets: {
     receiveOrientation: function (data) {
       this.inputCoordinates = getPointOnScreen(data.alpha, data.beta, this.viewport.width, this.viewport.height)
-      this.isPressing = data.isPressing
+      if (this.isPressing !== data.isPressing) {
+        this.isPressing = data.isPressing
+      }
+    },
+    receiveSwipe: function (direction) {
+      switch (direction) {
+        case 'up':
+          this.toolbarVisible = true
+          break
+        case 'down':
+          this.toolbarVisible = false
+          break
+      }
     }
   },
 
@@ -65,13 +77,14 @@ export default {
       },
       brush: BRUSH_DEFAULT,
       isPressing: false,
-      useLazyBrush: true
+      useLazyBrush: true,
+      toolbarVisible: true
     }
   },
 
   computed: {
     lazyRadius: function () {
-      return Math.max(Math.min(this.brush.radius * 2 + 5, RADIUS_MAX + 20), 15)
+      return Math.max(Math.min(this.brush.radius * 2.5, RADIUS_MAX + 20), 15)
     },
     canvasCoordinates: function () {
       return {
@@ -191,13 +204,32 @@ export default {
       window.addEventListener('keydown', (e) => {
         let position = Object.assign({}, this.inputCoordinates)
         if (e.keyCode === 38) {
-          position.y = position.y - 1
+          if (e.shiftKey) {
+            this.toolbarVisible = true
+          } else {
+            position.y = position.y - 1
+          }
         } else if (e.keyCode === 40) {
-          position.y = position.y + 1
+          if (e.shiftKey) {
+            this.toolbarVisible = false
+          } else {
+            position.y = position.y + 1
+          }
         } else if (e.keyCode === 37) {
-          position.x = position.x - 1
+          if (e.shiftKey) {
+            EventBus.$emit('swipeLeft')
+          } else {
+            position.x = position.x - 1
+          }
         } else if (e.keyCode === 39) {
-          position.x = position.x + 1
+          if (e.shiftKey) {
+            EventBus.$emit('swipeRight')
+          } else {
+            position.x = position.x + 1
+          }
+        // D
+        } else if (e.keyCode === 67) {
+          EventBus.$emit('clearCanvas')
         }
         this.inputCoordinates = position
       })

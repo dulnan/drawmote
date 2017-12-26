@@ -31,6 +31,9 @@ export default {
     }
   },
   mounted () {
+    if (this.$socket.connected) {
+      this.$socket.emit('createSession')
+    }
   }
 }
 </script>

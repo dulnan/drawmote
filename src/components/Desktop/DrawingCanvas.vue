@@ -90,6 +90,7 @@ export default {
       deep: true
     },
     isPressing: function (isPressing) {
+      console.log(isPressing)
       if (isPressing) {
         this.currentPath.push(this.coordinates)
         this.isDrawing = true
@@ -132,7 +133,7 @@ export default {
 
     setCanvasLineWidth (radius, hardness) {
       let contextTemp = this.getContext('temp')
-      const blur = ((1 - hardness) * radius)
+      const blur = ((1 - hardness) * radius) * this.viewport.ratio
 
       contextTemp.lineWidth = (hardness + 1) * radius
       contextTemp.filter = `blur(${blur}px)`

@@ -1,28 +1,30 @@
 <template>
-  <div class="mobile" @touchstart="isPressing = true" @touchend="isPressing = false">
+  <div class="mobile">
     <form v-on:submit.prevent="onSubmit">
       <input type="text" ref="pairing_id"></input>
     </form>
     <brush :coordinates="brushCoordinates" :brush="brush"></brush>
+    <touch-handler v-if="isConnected"></touch-handler>
   </div>
 </template>
 
 <script>
 import { DEFAULT_COLOR, RADIUS_DEFAULT } from '@/settings'
 
-import { gyro } from '@/libs/gyro.js'
 import { getViewportSize } from '@/tools/helpers.js'
 
 import Brush from '@/components/Brush.vue'
+import TouchHandler from '@/components/Mobile/TouchHandler.vue'
 
 export default {
   name: 'Mobile',
   components: {
-    Brush
+    Brush,
+    TouchHandler
   },
   sockets: {
     connectionEstablished: function () {
-      this.initDataLoop()
+      this.isConnected = true
     },
     connectionFailed: function () {
       console.log('connection FAILED')
@@ -34,7 +36,7 @@ export default {
 
   data () {
     return {
-      isPressing: false,
+      isConnected: false,
       brushCoordinates: {
         x: 0,
         y: 0
@@ -52,30 +54,6 @@ export default {
       this.$socket.emit('sessionConnect', {
         session: pairingId
       })
-    },
-
-    initDataLoop () {
-      gyro.frequency = 10
-      gyro.startTracking((data) => {
-        let alpha = data.alpha
-        if (data.alpha > 180) {
-          alpha = Math.abs((data.alpha - 180) - 180)
-        } else {
-          alpha = (180 - data.alpha) - 180
-        }
-        let beta = data.beta
-        let gamma = data.gamma
-        this.$socket.emit('sendOrientation', {
-          alpha: alpha,
-          beta: beta,
-          gamma: gamma,
-          isPressing: this.isPressing
-        })
-      })
-    },
-
-    dataLoop () {
-      window.requestAnimationFrame(this.dataLoop)
     }
   },
 
