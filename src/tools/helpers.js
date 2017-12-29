@@ -41,4 +41,10 @@ function getRgbaString (rgb, alpha) {
   return `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${alpha})`
 }
 
-export { getViewportSize, pointOutsideCircle, movePointAtAngle, scaleBetween, lineDistance, getRgbaString, midPointBetween }
+const doFor = (count, cb) => {
+  var i = 0; while (i < count && cb(i++) !== true);
+}
+
+const randomInt = (min, max = min + (min = 0)) => (Math.random() * (max - min) + min) | 0
+
+export { getViewportSize, pointOutsideCircle, movePointAtAngle, scaleBetween, lineDistance, getRgbaString, midPointBetween, doFor, randomInt }

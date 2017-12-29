@@ -78,7 +78,7 @@ export default {
       brush: BRUSH_DEFAULT,
       isPressing: false,
       useLazyBrush: true,
-      toolbarVisible: true
+      toolbarVisible: false
     }
   },
 

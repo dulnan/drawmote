@@ -84,13 +84,17 @@ export default {
             y: prevCoordinates.y - (prevCoordinates.y - newCoordinates.y) * smoothingFactor
           }
           this.currentPath.push(smoothedCoordinates)
-          this.draw()
+
+          if (this.brush.style === 'stroke') {
+            this.drawStroke()
+          } else {
+            this.drawSmudge()
+          }
         }
       },
       deep: true
     },
     isPressing: function (isPressing) {
-      console.log(isPressing)
       if (isPressing) {
         this.currentPath.push(this.coordinates)
         this.isDrawing = true
@@ -132,19 +136,16 @@ export default {
     },
 
     setCanvasLineWidth (radius, hardness) {
-      let contextTemp = this.getContext('temp')
       const blur = ((1 - hardness) * radius) * this.viewport.ratio
 
-      contextTemp.lineWidth = (hardness + 1) * radius
-      contextTemp.filter = `blur(${blur}px)`
+      this.contextTemp.lineWidth = (hardness + 1) * radius
+      this.contextTemp.filter = `blur(${blur}px)`
     },
 
     setCanvasColor (color) {
-      let contextTemp = this.getContext('temp')
-
-      contextTemp.globalAlpha = this.brush.opacity
-      contextTemp.strokeStyle = color
-      contextTemp.fillStyle = color
+      this.contextTemp.globalAlpha = this.brush.opacity
+      this.contextTemp.strokeStyle = color
+      this.contextTemp.fillStyle = color
     },
 
     clearCanvas (context) {
@@ -152,41 +153,47 @@ export default {
     },
 
     copyToMainCanvas () {
-      let contextMain = this.getContext('main')
-      let contextTemp = this.getContext('temp')
-
-      contextMain.drawImage(this.$refs.canvas_temp, 0, 0, this.viewport.width, this.viewport.height)
-      this.clearCanvas(contextTemp)
+      this.contextMain.drawImage(this.$refs.canvas_temp, 0, 0, this.viewport.width, this.viewport.height)
+      this.clearCanvas(this.contextTemp)
     },
 
-    draw () {
-      let context = this.getContext('temp')
+    drawStroke () {
       let midPoint = {}
       let prevCoord = this.currentPath[0]
       let currentCoord = this.currentPath[1]
 
-      this.clearCanvas(context)
-      context.beginPath()
+      this.clearCanvas(this.contextTemp)
+      this.contextTemp.beginPath()
 
-      context.moveTo(prevCoord.x, prevCoord.y)
+      this.contextTemp.moveTo(prevCoord.x, prevCoord.y)
 
       for (var i = 1; i < this.currentPath.length; i++) {
         midPoint = midPointBetween(prevCoord, currentCoord)
-        context.quadraticCurveTo(prevCoord.x, prevCoord.y, midPoint.x, midPoint.y)
+        this.contextTemp.quadraticCurveTo(prevCoord.x, prevCoord.y, midPoint.x, midPoint.y)
         prevCoord = this.currentPath[i]
         currentCoord = this.currentPath[i + 1]
       }
 
-      context.lineTo(prevCoord.x, prevCoord.y)
-      context.stroke()
+      this.contextTemp.lineTo(prevCoord.x, prevCoord.y)
+      this.contextTemp.stroke()
+    },
+
+    drawSmudge () {
     }
   },
 
+  created () {
+    this.contextTemp = {}
+    this.contextMain = {}
+  },
+
   mounted () {
+    this.contextTemp = this.getContext('temp')
+    this.contextMain = this.getContext('main')
+
     // Add event listeners
     EventBus.$on('clearCanvas', () => {
-      const context = this.getContext('main')
-      this.clearCanvas(context)
+      this.clearCanvas(this.contextMain)
     })
 
     this.viewport = getViewportSize()

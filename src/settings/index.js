@@ -42,5 +42,6 @@ export const BRUSH_DEFAULT = {
   color: DEFAULT_COLOR,
   radius: RADIUS_DEFAULT,
   hardness: HARDNESS_DEFAULT,
-  opacity: OPACITY_DEFAULT
+  opacity: OPACITY_DEFAULT,
+  style: 'stroke'
 }
