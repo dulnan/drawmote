@@ -1,6 +1,6 @@
 <template>
   <div class="relative overlay" ref="drawingApp">
-    <toolbar :visible="toolbarVisible" :selected-color="brush.color"></toolbar>
+    <toolbar :visible="toolbarVisible" :selected-color="brush.color" :coords-x="pointerCoordinates.x" :width="viewport.width"></toolbar>
     <!-- <color-picker></color-picker> -->
     <brush :brush="brush" :lazy-radius="lazyRadius" :coordinates="brushCoordinates"></brush>
     <pointer :coordinates="pointerCoordinates"></pointer>
@@ -152,6 +152,10 @@ export default {
     updateBrushOpacity (newOpacity) {
       this.brush.opacity = Math.min(Math.max(newOpacity, 0), 1)
       this.$socket.emit('sendBrush', this.brush)
+    },
+
+    updateBrushStyle (newStyle) {
+      this.brush.style = newStyle
     }
   },
 
@@ -159,8 +163,14 @@ export default {
     this.viewport = getViewportSize()
 
     // Add event listeners
-    EventBus.$on('setBrushColor', this.updateBrushColor)
-    EventBus.$on('setBrushColor', this.updateBrushColor)
+    EventBus.$on('setBrushColor', (newColor) => {
+      this.updateBrushColor(newColor)
+      this.toolbarVisible = false
+    })
+    EventBus.$on('toggleBrushStyle', () => {
+      const newStyle = this.brush.style === 'stroke' ? 'smudge' : 'stroke'
+      this.updateBrushStyle(newStyle)
+    })
 
     // Allow usage with mouse and arrow keys for debugging
     if (DEBUG) {
@@ -202,6 +212,7 @@ export default {
       })
 
       window.addEventListener('keydown', (e) => {
+        console.log(e.keyCode)
         let position = Object.assign({}, this.inputCoordinates)
         if (e.keyCode === 38) {
           if (e.shiftKey) {
@@ -230,6 +241,8 @@ export default {
         // D
         } else if (e.keyCode === 67) {
           EventBus.$emit('clearCanvas')
+        } else if (e.keyCode === 83) {
+          EventBus.$emit('toggleBrushStyle')
         }
         this.inputCoordinates = position
       })

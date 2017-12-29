@@ -1,13 +1,12 @@
 <template>
-  <div class="absolute overlay toolbar flex" v-bind:class="{ 'visible': this.visible }">
+  <div class="absolute overlay toolbar flex" v-bind:class="{ 'visible': this.visible }" @click.prevent="changeColor()">
     <ul class="toolbar-list list flex" v-bind:style="listStyle">
       <li v-for="(color, index) in colors" class="toolbar__item pdg-">
         <button
           type="button"
           class="button toolbar__button"
           v-bind:style="getStyleObject(color.rgb, index)"
-          v-bind:class="{ 'selected' : color.name === selectedColor.name }"
-          @click.prevent="changeColor(color)"
+          v-bind:class="{ 'selected' : index === selectedIndex }"
         ></button>
       </li>
     </ul>
@@ -18,7 +17,7 @@
 import { EventBus } from '@/events'
 
 import { COLORS } from '@/settings'
-import { getRgbaString } from '@/tools/helpers.js'
+import { getRgbaString, scaleBetween } from '@/tools/helpers.js'
 
 export default {
   name: 'Toolbar',
@@ -26,7 +25,8 @@ export default {
   data () {
     return {
       colors: COLORS,
-      selectedIndex: 3
+      selectedIndex: 3,
+      movingIndex: 3
     }
   },
 
@@ -40,10 +40,23 @@ export default {
     visible: {
       type: Boolean,
       default: true
+    },
+    coordsX: {
+      type: Number,
+      default: 0
+    },
+    width: {
+      type: Number,
+      default: 0
     }
   },
 
   watch: {
+    coordsX: function (newCoordsX) {
+      const index = scaleBetween(newCoordsX, [0, this.width], [0, this.colors.length - 1])
+      this.movingIndex = index
+      this.selectedIndex = Math.round(index)
+    },
     selectedColor: {
       handler (newColor) {
         this.colors.forEach((color, index) => {
@@ -59,23 +72,24 @@ export default {
   computed: {
     listStyle: function () {
       return {
-        transform: `translateX(-${this.selectedIndex * 100}%)`
+        transform: `translateX(-${this.movingIndex * 100}%)`
       }
     }
   },
 
   methods: {
     getStyleObject (rgb, index) {
-      const offset = Math.min(Math.abs(index - this.selectedIndex), 1)
+      const offset = Math.min(Math.abs(index - this.movingIndex), 1)
       const scaling = (2 - offset) / 1.25
-      const translate = Math.max(Math.min((index - this.selectedIndex), 1), -1) * 50
+      const translate = Math.max(Math.min((index - this.movingIndex), 1), -1) * 50
       return {
         background: getRgbaString(rgb, 1),
         transform: `scale(${scaling}) translateX(${translate}%)`
       }
     },
 
-    changeColor (newColor) {
+    changeColor () {
+      const newColor = this.colors[this.selectedIndex]
       EventBus.$emit('setBrushColor', newColor)
     },
 
@@ -102,16 +116,20 @@ export default {
   opacity: 0;
   align-items: center;
   justify-content: center;
+  pointer-events: none;
+  transform: scale(1.2);
+  transition: 0.3s ease-in-out;
 
   &.visible {
     opacity: 1;
+    pointer-events: all;
+    transform: none;
   }
 }
 
 .toolbar-list {
   width: 6rem;
   height: 6rem;
-  transition: 0.4s;
 }
 
 .toolbar__button {
@@ -119,7 +137,9 @@ export default {
   border-radius: 100%;
   width: 5rem;
   height: 5rem;
-  border: 4px solid white;
-  transition: 0.4s;
+  border: 4px solid rgba(white, 0.2);
+  &.selected {
+    border: 4px solid white;
+  }
 }
 </style>

@@ -38,10 +38,12 @@ export const OPACITY_DEFAULT = 1
 
 export const SMOOTHING_INIT = 0.85
 
+export const SMUDGE_AMOUNT = 0.25
+
 export const BRUSH_DEFAULT = {
   color: DEFAULT_COLOR,
   radius: RADIUS_DEFAULT,
   hardness: HARDNESS_DEFAULT,
   opacity: OPACITY_DEFAULT,
-  style: 'stroke'
+  style: 'smudge'
 }

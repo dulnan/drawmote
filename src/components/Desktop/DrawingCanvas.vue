@@ -85,11 +85,7 @@ export default {
           }
           this.currentPath.push(smoothedCoordinates)
 
-          if (this.brush.style === 'stroke') {
-            this.drawStroke()
-          } else {
-            this.drawSmudge()
-          }
+          this.drawStroke()
         }
       },
       deep: true
@@ -176,15 +172,14 @@ export default {
 
       this.contextTemp.lineTo(prevCoord.x, prevCoord.y)
       this.contextTemp.stroke()
-    },
-
-    drawSmudge () {
     }
   },
 
   created () {
     this.contextTemp = {}
     this.contextMain = {}
+    this.contextBrush = {}
+    this.brushGradient = {}
   },
 
   mounted () {
