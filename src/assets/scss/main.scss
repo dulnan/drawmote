@@ -1,5 +1,5 @@
 body {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'Signika', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -7,6 +7,17 @@ body {
   height: 100vh;
   margin: 0;
   overflow: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid;
+}
+
+* {
+  margin: 0;
+  box-sizing: border-box;
 }
 
 .relative {
@@ -69,3 +80,6 @@ body {
     outline: none;
   }
 }
+
+
+

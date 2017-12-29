@@ -1,8 +1,17 @@
-$color-red: #FF0000;
+$color-red:                   #FF0000;
 
-$index-canvas-main:     100;
-$index-canvas-temp:     110;
-$index-toolbar:         200;
-$index-brush:           300;
-$index-cursor:          350;
-$index-color-picker:    400;
+$color-greylight:             rgb(237, 238, 236);
+$color-red:                   rgb(253, 121, 75);
+$color-yellow:                rgb(253, 188, 75);
+$color-blue:                  rgb(196, 232, 247);
+$color-black:                 rgb(56, 60, 71);
+
+$index-canvas-main:           100;
+$index-canvas-temp:           110;
+$index-toolbar:               200;
+$index-brush:                 300;
+$index-cursor:                350;
+$index-color-picker:          400;
+
+$index-background-animation:  800;
+$index-pairing:               900;

@@ -1,7 +1,11 @@
 <template>
   <div class="app-desktop relative overlay">
-    <pairing :code="pairingCode"></pairing>
-    <drawing></drawing>
+    <transition name="appear">
+      <pairing v-if="!isPaired" :code="pairingCode"></pairing>
+    </transition>
+    <transition name="appear">
+      <drawing v-if="isPaired"></drawing>
+    </transition>
   </div>
 </template>
 
@@ -27,13 +31,20 @@ export default {
   },
   data () {
     return {
-      pairingCode: ''
+      pairingCode: '',
+      isPaired: false
     }
   },
   mounted () {
     if (this.$socket.connected) {
       this.$socket.emit('createSession')
     }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.keyCode === 80) {
+        this.isPaired = !this.isPaired
+      }
+    })
   }
 }
 </script>

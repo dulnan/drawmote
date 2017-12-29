@@ -33,6 +33,10 @@ export default {
     isPressing: {
       type: Boolean,
       default: false
+    },
+    useLazyBrush: {
+      type: Boolean,
+      default: true
     }
   },
 
@@ -69,21 +73,26 @@ export default {
     },
     coordinates: {
       handler (newCoordinates, prevCoordinates) {
-        if (this.isDrawing && (newCoordinates.x !== prevCoordinates.x && newCoordinates.y !== prevCoordinates.y)) {
-          const distance = lineDistance(prevCoordinates.x, prevCoordinates.y, newCoordinates.x, newCoordinates.y)
+        if (this.isDrawing && (newCoordinates.x !== prevCoordinates.x || newCoordinates.y !== prevCoordinates.y)) {
+          let coordinates = newCoordinates
 
-          // now, here we scale the initial smoothing factor by the raw distance
-          // this means that when the mouse moves fast, there is more smoothing
-          // and when we're drawing small detailed stuff, we have more control
-          // also we hard clip at 1
-          const smoothingFactor = Math.min(0.87, this.smoothing + (distance - 60) / 3000)
+          if (this.useLazyBrush) {
+            const distance = lineDistance(prevCoordinates.x, prevCoordinates.y, newCoordinates.x, newCoordinates.y)
 
-          // calculate smoothed coordinates
-          const smoothedCoordinates = {
-            x: prevCoordinates.x - (prevCoordinates.x - newCoordinates.x) * smoothingFactor,
-            y: prevCoordinates.y - (prevCoordinates.y - newCoordinates.y) * smoothingFactor
+            // now, here we scale the initial smoothing factor by the raw distance
+            // this means that when the mouse moves fast, there is more smoothing
+            // and when we're drawing small detailed stuff, we have more control
+            // also we hard clip at 1
+            const smoothingFactor = Math.min(0.87, this.smoothing + (distance - 60) / 3000)
+
+            // calculate smoothed coordinates
+            coordinates = {
+              x: prevCoordinates.x - (prevCoordinates.x - newCoordinates.x) * smoothingFactor,
+              y: prevCoordinates.y - (prevCoordinates.y - newCoordinates.y) * smoothingFactor
+            }
           }
-          this.currentPath.push(smoothedCoordinates)
+
+          this.currentPath.push(coordinates)
 
           this.drawStroke()
         }
@@ -178,8 +187,6 @@ export default {
   created () {
     this.contextTemp = {}
     this.contextMain = {}
-    this.contextBrush = {}
-    this.brushGradient = {}
   },
 
   mounted () {

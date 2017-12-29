@@ -1,10 +1,10 @@
 <template>
-  <div class="relative overlay" ref="drawingApp">
+  <div class="relative overlay drawing" ref="drawingApp">
     <toolbar :visible="toolbarVisible" :selected-color="brush.color" :coords-x="pointerCoordinates.x" :width="viewport.width"></toolbar>
     <!-- <color-picker></color-picker> -->
-    <brush :brush="brush" :lazy-radius="lazyRadius" :coordinates="brushCoordinates"></brush>
-    <pointer :coordinates="pointerCoordinates"></pointer>
-    <drawing-canvas :brush="brush" :viewport="viewport" :coordinates="brushCoordinates" :is-pressing="isPressing"></drawing-canvas>
+    <brush :brush="brush" :use-lazy-brush="useLazyBrush" :lazy-radius="lazyRadius" :coordinates="brushCoordinates"></brush>
+    <pointer v-if="useLazyBrush" :coordinates="pointerCoordinates"></pointer>
+    <drawing-canvas :brush="brush" :viewport="viewport" :coordinates="brushCoordinates" :is-pressing="isPressing" :use-lazy-brush="useLazyBrush"></drawing-canvas>
   </div>
 </template>
 
@@ -179,19 +179,19 @@ export default {
 
         if (event.deltaY > 0) {
           if (event.ctrlKey) {
-            this.updateBrushHardness(this.brush.hardness - 0.05)
+            this.updateBrushHardness(this.brush.hardness - 0.03)
           } else if (event.altKey) {
-            this.updateBrushOpacity(this.brush.opacity - 0.05)
+            this.updateBrushOpacity(this.brush.opacity - 0.03)
           } else {
-            this.updateBrushRadius(this.brush.radius - 2)
+            this.updateBrushRadius(this.brush.radius - 0.6)
           }
         } else {
           if (event.ctrlKey) {
-            this.updateBrushHardness(this.brush.hardness + 0.05)
+            this.updateBrushHardness(this.brush.hardness + 0.03)
           } else if (event.altKey) {
-            this.updateBrushOpacity(this.brush.opacity + 0.05)
+            this.updateBrushOpacity(this.brush.opacity + 0.03)
           } else {
-            this.updateBrushRadius(this.brush.radius + 2)
+            this.updateBrushRadius(this.brush.radius + 0.6)
           }
         }
       })
@@ -241,6 +241,8 @@ export default {
         // D
         } else if (e.keyCode === 67) {
           EventBus.$emit('clearCanvas')
+        } else if (e.keyCode === 76) {
+          this.useLazyBrush = !this.useLazyBrush
         } else if (e.keyCode === 83) {
           EventBus.$emit('toggleBrushStyle')
         }
@@ -255,4 +257,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.drawing {
+  &.appear-enter-active, &.appear-leave-active {
+    transition: .5s;
+  }
+  &.appear-enter, &.appear-leave-to {
+    transform: scale(1.05);
+    opacity: 0;
+  }
+}
 </style>

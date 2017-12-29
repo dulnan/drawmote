@@ -1,7 +1,7 @@
 <template>
   <div class="absolute anchor" v-bind:style="anchorStyle">
     <div class="absolute brush" v-bind:style="brushStyle"></div>
-    <div class="absolute lazy-area" v-bind:style="lazyStyle"></div>
+    <div v-if="useLazyBrush" class="absolute lazy-area" v-bind:style="lazyStyle"></div>
   </div>
 </template>
 
@@ -16,6 +16,10 @@ export default {
     brush: {
       type: Object,
       default: BRUSH_DEFAULT
+    },
+    useLazyBrush: {
+      type: Boolean,
+      default: true
     },
     lazyRadius: {
       type: Number,
