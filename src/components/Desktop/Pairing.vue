@@ -10,11 +10,9 @@
           </div>
         </transition>
       </h2>
+      <button type="button" class="button skip-button">Skip this step</button>
     </div>
     <background-animation></background-animation>
-    <div class="absolute footer">
-      Made by <a href="http://www.janhug.info">Jan Hug</a>, with help from Pascal Thormeier and others.
-    </div>
   </div>
 </template>
 
@@ -47,17 +45,18 @@ export default {
   align-items: center;
   justify-content: center;
   padding: 4rem;
+  transform-style: preserve-3d;
+  perspective: 700px;
   &.appear-enter-active, &.appear-leave-active {
     transition: .5s;
-    .title {
+    .pairing__content {
       transition: .5s;
     }
   }
   &.appear-enter, &.appear-leave-to {
-    transform: scale(1.05);
     opacity: 0;
-    .title {
-      transform: translateY(50%);
+    .pairing__content {
+      transform: translateZ(5rem);
     }
   }
 }
@@ -75,12 +74,12 @@ export default {
   font-size: 1.75rem;
   font-weight: 100;
   max-width: 660px;
-  margin: 0.5rem 0 2.5rem;
+  margin: 0.5rem 0 2rem;
 }
 
 .code {
   font-size: 1.75rem;
-  font-weight: 400;
+  font-weight: 900;
   min-height: 3rem;
   span {
     width: 3rem;
@@ -109,14 +108,13 @@ export default {
   }
 }
 
-.footer {
-  z-index: $index-pairing;
-  top: auto;
-  text-align: center;
-  right: 0;
-  bottom: 0;
-  padding: 1rem;
-  opacity: 0.5;
-  font-size: 0.9rem;
+.skip-button {
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  font-weight: 100;
+  margin-top: 2rem;
+  border: 1px solid;
+  padding: 0.2em 0.5em;
+  border-radius: 10rem;
 }
 </style>

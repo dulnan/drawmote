@@ -3,28 +3,28 @@
     <svg viewBox="0 0 906 477" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <g class="strokes strokes--dot">
         <g class="stroke stroke--1">
-          <path d="M-97,414 C-18,267 100,103 284,78 C468,53 514,541 697,541 C880,541 978,298 978,256"></path>
+            <path d="M-31,137 C1.66666667,123.666667 46,100.666667 102,68 C186,19 334,-66 394,-113 C454,-160 588.964655,-111.627975 542,44 C491,213 248,97 109,208 C-30,319 74,543 217,579 C360,615 530,540 647,414 C725,330 762.666667,176 760,-48 L940,-14 C938,233.333333 901,402.666667 829,494 C757,585.333333 647.666667,657.333333 501,710"></path>
         </g>
 
         <g class="stroke stroke--2">
-          <path d="M-135,131 C-69,284 -52.2698758,547.926607 142,579 C336.269876,610.073393 658,114 841,114 C1024,114 1129,287 1236,362"></path>
+            <path d="M-49,410 C-10.3333333,234 56,133.333333 150,108 C291,70 194.941072,495 426,454 C657.058928,413 1009,342 1026,472 C978,748 782,369 629,121 C476,-127 117,-207 274,121 C431,449 -14,461 -49,472 C-72.3333333,479.333333 -72.3333333,458.666667 -49,410 Z"></path>
         </g>
 
         <g class="stroke stroke--3">
-          <path d="M-91,71 C6,64 76,-19 255,71 C434,161 -115,453 235,544 C585,635 761,-276.660096 1038,-3.19744231e-13" id="Path-Copy"></path>
+            <path d="M-33,545 C-34.3333333,505 36.3333333,495 179,515 C393,545 783,816 673,711 C599.666667,641 697.333333,404 966,-7.10542736e-15 C861.333333,-72.6666667 789.666667,-80 751,-22 C677,236 473,-51 286,44 C99,139 269,274 110,344 C4,390.666667 -51.6666667,389 -57,339 L-33,545 Z"></path>
         </g>
       </g>
       <g class="strokes strokes--trail">
         <g class="stroke stroke--1">
-          <path d="M-97,414 C-18,267 100,103 284,78 C468,53 514,541 697,541 C880,541 978,298 978,256"></path>
+            <path d="M-31,137 C1.66666667,123.666667 46,100.666667 102,68 C186,19 334,-66 394,-113 C454,-160 588.964655,-111.627975 542,44 C491,213 248,97 109,208 C-30,319 74,543 217,579 C360,615 530,540 647,414 C725,330 762.666667,176 760,-48 L940,-14 C938,233.333333 901,402.666667 829,494 C757,585.333333 647.666667,657.333333 501,710"></path>
         </g>
 
         <g class="stroke stroke--2">
-          <path d="M-135,131 C-69,284 -52.2698758,547.926607 142,579 C336.269876,610.073393 658,114 841,114 C1024,114 1129,287 1236,362"></path>
+            <path d="M-49,410 C-10.3333333,234 56,133.333333 150,108 C291,70 194.941072,495 426,454 C657.058928,413 1009,342 1026,472 C978,748 782,369 629,121 C476,-127 117,-207 274,121 C431,449 -14,461 -49,472 C-72.3333333,479.333333 -72.3333333,458.666667 -49,410 Z"></path>
         </g>
 
         <g class="stroke stroke--3">
-          <path d="M-91,71 C6,64 76,-19 255,71 C434,161 -115,453 235,544 C585,635 761,-276.660096 1038,-3.19744231e-13" id="Path-Copy"></path>
+            <path d="M-33,545 C-34.3333333,505 36.3333333,495 179,515 C393,545 783,816 673,711 C599.666667,641 697.333333,404 966,-7.10542736e-15 C861.333333,-72.6666667 789.666667,-80 751,-22 C677,236 473,-51 286,44 C99,139 269,274 110,344 C4,390.666667 -51.6666667,389 -57,339 L-33,545 Z"></path>
         </g>
       </g>
     </svg>
@@ -40,6 +40,7 @@ export default {
 <style lang="scss">
 .background-animation {
   z-index: $index-background-animation;
+  overflow: hidden;
   svg {
     height: 100%;
   }
@@ -51,6 +52,8 @@ export default {
   stroke-linejoin: round;
   fill: none;
   fill-rule: evenodd;
+  .strokes--trail & {
+  }
 }
 
 @keyframes stroke_1 {
@@ -64,12 +67,12 @@ export default {
 
 .stroke--1 {
   stroke: $color-red;
-  stroke-width: 20;
-  animation: 8s stroke_1 linear infinite;
+  stroke-width: 30;
+  animation: 3s stroke_1 linear infinite;
   stroke-dasharray: 0,500;
   .strokes--trail & {
-    opacity: 0.5;
-    stroke-dasharray: 250,250;
+    stroke: rgba($color-red, 0.1);
+    stroke-dasharray: 0,0;
   }
 }
 
@@ -78,18 +81,18 @@ export default {
     stroke-dashoffset: 0;
   }
   100% {
-    stroke-dashoffset: 1000;
+    stroke-dashoffset: 1200;
   }
 }
 
 .stroke--2 {
   stroke: $color-yellow;
-  stroke-width: 20;
-  animation: 5s stroke_2 linear infinite;
-  stroke-dasharray: 0,1000;
+  stroke-width: 30;
+  animation: 8s stroke_2 linear infinite;
+  stroke-dasharray: 0,600;
   .strokes--trail & {
-    opacity: 0.5;
-    stroke-dasharray: 500,500;
+    stroke: rgba($color-yellow, 0.2);
+    stroke-dasharray: 0,0;
   }
 }
 
@@ -98,18 +101,18 @@ export default {
     stroke-dashoffset: 0;
   }
   100% {
-    stroke-dashoffset: 800;
+    stroke-dashoffset: 1000;
   }
 }
 
 .stroke--3 {
   stroke: $color-blue;
-  stroke-width: 20;
-  animation: 5s stroke_3 linear infinite;
-  stroke-dasharray: 0,800;
+  stroke-width: 30;
+  animation: 8s stroke_3 linear infinite;
+  stroke-dasharray: 0,1000;
   .strokes--trail & {
-    opacity: 0.5;
-    stroke-dasharray: 400,400;
+    stroke: rgba($color-blue, 0.2);
+    stroke-dasharray: 0,0;
   }
 }
 </style>

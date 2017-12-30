@@ -83,7 +83,7 @@ export default {
             // this means that when the mouse moves fast, there is more smoothing
             // and when we're drawing small detailed stuff, we have more control
             // also we hard clip at 1
-            const smoothingFactor = Math.min(0.87, this.smoothing + (distance - 60) / 3000)
+            const smoothingFactor = Math.min(1, this.smoothing + (distance - 10) / 7000)
 
             // calculate smoothed coordinates
             coordinates = {

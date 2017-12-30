@@ -1,5 +1,8 @@
 <template>
   <div class="relative overlay drawing" ref="drawingApp">
+    <div class="absolute header">
+      <h1>drawmote</h1>
+    </div>
     <toolbar :visible="toolbarVisible" :selected-color="brush.color" :coords-x="pointerCoordinates.x" :width="viewport.width"></toolbar>
     <!-- <color-picker></color-picker> -->
     <brush :brush="brush" :use-lazy-brush="useLazyBrush" :lazy-radius="lazyRadius" :coordinates="brushCoordinates"></brush>
@@ -84,7 +87,7 @@ export default {
 
   computed: {
     lazyRadius: function () {
-      return Math.max(Math.min(this.brush.radius * 2.5, RADIUS_MAX + 20), 15)
+      return Math.max(Math.min(this.brush.radius * 2.25, RADIUS_MAX + 20), 15)
     },
     canvasCoordinates: function () {
       return {
@@ -264,6 +267,18 @@ export default {
   &.appear-enter, &.appear-leave-to {
     transform: scale(1.05);
     opacity: 0;
+  }
+}
+
+.header {
+  text-align: left;
+  right: 0;
+  padding: 0.75rem;
+  background: rgba(white, 0.8);
+  box-shadow: 0 1px 0 0 rgba($color-black, 0.1);
+  z-index: $index-header;
+  h1 {
+    font-size: 1.25rem;
   }
 }
 </style>

@@ -36,7 +36,8 @@ export const HARDNESS_MAX = 1
 
 export const OPACITY_DEFAULT = 1
 
-export const SMOOTHING_INIT = 0.85
+// export const SMOOTHING_INIT = 0.85
+export const SMOOTHING_INIT = 1.3
 
 export const SMUDGE_AMOUNT = 0.25
 

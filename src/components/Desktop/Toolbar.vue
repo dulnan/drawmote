@@ -111,7 +111,7 @@ export default {
 
 <style lang="scss" scoped>
 .toolbar {
-  background: rgba(black, 0.1);
+  background: rgba(white, 0.8);
   z-index: $index-toolbar;
   opacity: 0;
   align-items: center;
@@ -137,9 +137,10 @@ export default {
   border-radius: 100%;
   width: 5rem;
   height: 5rem;
-  border: 4px solid rgba(white, 0.2);
+  opacity: 0.5;
   &.selected {
-    border: 4px solid white;
+    border: 4px solid rgba(black, 0.05);
+    opacity: 1;
   }
 }
 </style>
