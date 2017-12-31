@@ -7,9 +7,14 @@
         <div class="code__circles flex">
           <div v-for="char in inputChars" v-bind:class="{ 'contains': char !== ' ' }">{{ char }}</div>
         </div>
+
         <form class="code__form absolute overlay" v-on:submit.prevent="onSubmit">
           <input maxlength="5" v-model="inputValue" class="code__input absolute overlay" type="text" ref="pairing_id"></input>
         </form>
+
+        <transition name="appear">
+          <div v-if="codeInvalid" class="code__error absolute">The entered code is not valid :(</div>
+        </transition>
       </div>
     </div>
     <background-animation></background-animation>
@@ -25,10 +30,23 @@ export default {
     BackgroundAnimation
   },
 
+  sockets: {
+    connectionFailed: function () {
+      this.codeInvalid = true
+    }
+  },
+
   data () {
     return {
       isConnected: false,
-      inputValue: ''
+      inputValue: '',
+      codeInvalid: false
+    }
+  },
+
+  watch: {
+    inputValue: function () {
+      this.codeInvalid = false
     }
   },
 
@@ -52,12 +70,14 @@ export default {
 <style lang="scss" scoped>
 .mobile-pairing {
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   padding: 2rem;
+  color: $color-black;
 }
 
 .mobile-pairing__content {
   z-index: $index-pairing;
+  margin-top: 3rem;
 }
 
 h1 {
@@ -70,7 +90,7 @@ h1 {
 }
 
 .code {
-  margin-top: 2rem;
+  margin-top: 1.5rem;
 }
 
 .code__circles {
@@ -100,5 +120,29 @@ h1 {
 .code__input {
   background: none;
   opacity: 0;
+}
+
+
+.code__error {
+  top: 100%;
+  text-align: center;
+  right: 0;
+  background: $color-red;
+  border-radius: 10rem;
+  width: 17rem;
+  margin: 1.5rem auto 0;
+  text-transform: uppercase;
+  font-weight: 900;
+  color: white;
+  font-size: 0.875rem;
+  letter-spacing: 0.5px;
+  padding: 0.25rem 0;
+  &.appear-enter-active, &.appear-leave-active {
+    transition: .5s;
+  }
+  &.appear-enter, &.appear-leave-to {
+    opacity: 0;
+    transform: translateY(50%);
+  }
 }
 </style>

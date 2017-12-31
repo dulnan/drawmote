@@ -38,11 +38,32 @@ export default {
 </script>
 
 <style lang="scss">
+@keyframes svg {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 .background-animation {
   z-index: $index-background-animation;
   overflow: hidden;
   svg {
     height: 100%;
+    width: 100%;
+  }
+  @media (max-width: 768px) {
+    .stroke {
+      stroke-width: 20;
+    }
+    svg {
+      width: 100vh;
+      width: auto;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
   }
 }
 
@@ -67,12 +88,11 @@ export default {
 
 .stroke--1 {
   stroke: $color-red;
-  stroke-width: 30;
-  animation: 3s stroke_1 linear infinite;
+  animation: 12s stroke_1 linear infinite;
   stroke-dasharray: 0,500;
   .strokes--trail & {
-    stroke: rgba($color-red, 0.1);
-    stroke-dasharray: 0,0;
+    stroke: rgba($color-red, 0.3);
+    stroke-dasharray: 400,100;
   }
 }
 
@@ -87,12 +107,12 @@ export default {
 
 .stroke--2 {
   stroke: $color-yellow;
-  stroke-width: 30;
-  animation: 8s stroke_2 linear infinite;
+  animation: 24s stroke_2 linear infinite;
+  animation-delay: -3.5s;
   stroke-dasharray: 0,600;
   .strokes--trail & {
-    stroke: rgba($color-yellow, 0.2);
-    stroke-dasharray: 0,0;
+    stroke: rgba($color-yellow, 0.3);
+    stroke-dasharray: 500,100;
   }
 }
 
@@ -107,12 +127,11 @@ export default {
 
 .stroke--3 {
   stroke: $color-blue;
-  stroke-width: 30;
-  animation: 8s stroke_3 linear infinite;
+  animation: 32s stroke_3 linear infinite;
   stroke-dasharray: 0,1000;
   .strokes--trail & {
-    stroke: rgba($color-blue, 0.2);
-    stroke-dasharray: 0,0;
+    stroke: rgba($color-blue, 0.3);
+    stroke-dasharray: 900,100;
   }
 }
 </style>

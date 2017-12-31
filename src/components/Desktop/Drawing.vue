@@ -1,13 +1,18 @@
 <template>
   <div class="relative overlay drawing" ref="drawingApp">
-    <div class="absolute header">
+    <div class="absolute header flex">
       <h1>drawmote</h1>
     </div>
+    <overlay :visible="toolbarVisible"></overlay>
+
+    <transition name="appear">
+      <brush-toolbar v-if="brushToolbarVisible" :visible="brushToolbarVisible" :lazy-radius="lazyRadius" :brush="brush" :coordinates="brushCoordinates" :viewport="viewport"></brush-toolbar>
+    </transition>
+
     <toolbar :visible="toolbarVisible" :selected-color="brush.color" :coords-x="pointerCoordinates.x" :width="viewport.width"></toolbar>
-    <!-- <color-picker></color-picker> -->
     <brush :brush="brush" :use-lazy-brush="useLazyBrush" :lazy-radius="lazyRadius" :coordinates="brushCoordinates"></brush>
     <pointer v-if="useLazyBrush" :coordinates="pointerCoordinates"></pointer>
-    <drawing-canvas :brush="brush" :viewport="viewport" :coordinates="brushCoordinates" :is-pressing="isPressing" :use-lazy-brush="useLazyBrush"></drawing-canvas>
+    <drawing-canvas :brush="brush" :coordinates="brushCoordinates" :is-pressing="isPressing" :use-lazy-brush="useLazyBrush"></drawing-canvas>
   </div>
 </template>
 
@@ -20,8 +25,10 @@ import { getPointOnScreen } from '@/tools/GyroTransform.js'
 import { getViewportSize, pointOutsideCircle, movePointAtAngle } from '@/tools/helpers.js'
 
 import Brush from '@/components/Brush.vue'
+import Overlay from '@/components/Overlay.vue'
 import Pointer from '@/components/Desktop/Pointer.vue'
 import Toolbar from '@/components/Desktop/Toolbar.vue'
+import BrushToolbar from '@/components/Desktop/BrushToolbar.vue'
 import ColorPicker from '@/components/Desktop/ColorPicker.vue'
 import DrawingCanvas from '@/components/Desktop/DrawingCanvas.vue'
 
@@ -35,6 +42,8 @@ export default {
     Brush,
     Pointer,
     Toolbar,
+    BrushToolbar,
+    Overlay,
     ColorPicker,
     DrawingCanvas
   },
@@ -81,7 +90,8 @@ export default {
       brush: BRUSH_DEFAULT,
       isPressing: false,
       useLazyBrush: true,
-      toolbarVisible: false
+      toolbarVisible: false,
+      brushToolbarVisible: true
     }
   },
 
@@ -159,6 +169,10 @@ export default {
 
     updateBrushStyle (newStyle) {
       this.brush.style = newStyle
+    },
+
+    updateBrush (newBrush) {
+      this.brush = newBrush
     }
   },
 
@@ -174,6 +188,9 @@ export default {
       const newStyle = this.brush.style === 'stroke' ? 'smudge' : 'stroke'
       this.updateBrushStyle(newStyle)
     })
+    EventBus.$on('updateBrush', (newBrush) => {
+      this.updateBrush(newBrush)
+    })
 
     // Allow usage with mouse and arrow keys for debugging
     if (DEBUG) {
@@ -181,21 +198,9 @@ export default {
         event.preventDefault()
 
         if (event.deltaY > 0) {
-          if (event.ctrlKey) {
-            this.updateBrushHardness(this.brush.hardness - 0.03)
-          } else if (event.altKey) {
-            this.updateBrushOpacity(this.brush.opacity - 0.03)
-          } else {
-            this.updateBrushRadius(this.brush.radius - 0.6)
-          }
+          EventBus.$emit('touchUp')
         } else {
-          if (event.ctrlKey) {
-            this.updateBrushHardness(this.brush.hardness + 0.03)
-          } else if (event.altKey) {
-            this.updateBrushOpacity(this.brush.opacity + 0.03)
-          } else {
-            this.updateBrushRadius(this.brush.radius + 0.6)
-          }
+          EventBus.$emit('touchDown')
         }
       })
 
@@ -215,7 +220,6 @@ export default {
       })
 
       window.addEventListener('keydown', (e) => {
-        console.log(e.keyCode)
         let position = Object.assign({}, this.inputCoordinates)
         if (e.keyCode === 38) {
           if (e.shiftKey) {
@@ -248,6 +252,9 @@ export default {
           this.useLazyBrush = !this.useLazyBrush
         } else if (e.keyCode === 83) {
           EventBus.$emit('toggleBrushStyle')
+        } else if (e.keyCode === 66) {
+          // B
+          this.brushToolbarVisible = !this.brushToolbarVisible
         }
         this.inputCoordinates = position
       })
@@ -274,7 +281,8 @@ export default {
   text-align: left;
   right: 0;
   padding: 0.75rem;
-  background: rgba(white, 0.8);
+  height: 3rem;
+  background: white;
   box-shadow: 0 1px 0 0 rgba($color-black, 0.1);
   z-index: $index-header;
   h1 {

@@ -6,21 +6,18 @@
     <transition name="appear">
       <drawing v-if="isPaired"></drawing>
     </transition>
-    <footer></footer>
   </div>
 </template>
 
 <script>
 import Pairing from '@/components/Desktop/Pairing.vue'
 import Drawing from '@/components/Desktop/Drawing.vue'
-import Footer from '@/components/Footer.vue'
 
 export default {
   name: 'Desktop',
   components: {
     Pairing,
-    Drawing,
-    Footer
+    Drawing
   },
   sockets: {
     connect: function () {
