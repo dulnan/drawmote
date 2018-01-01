@@ -18,8 +18,10 @@ export default {
 
   data () {
     return {
-      tools: ['size', 'opacity', 'hardness'],
-      selectedTool: 1
+      tools: ['opacity', 'size', 'hardness'],
+      selectedTool: -1,
+      initialSliding: {},
+      initialToolValue: 0
     }
   },
 
@@ -55,12 +57,44 @@ export default {
           y: 0
         }
       }
+    },
+    sliding: {
+      type: Object,
+      default: () => {
+        return {
+          x: 0,
+          y: 0
+        }
+      }
     }
   },
 
   watch: {
-    coordinates: {
-      handler (newCoords) {
+    sliding: {
+      handler (sliding) {
+        if (!this.initialSliding.x) {
+          this.initialSliding = sliding
+        }
+
+        const index = Math.round(Math.max(Math.min(sliding.x + 50, 100), 0) / 50)
+        if (this.selectedTool !== index) {
+          this.selectedTool = index
+          this.initialSliding = sliding
+          switch (this.tools[this.selectedTool]) {
+            case 'size':
+              this.initialToolValue = this.brush.radius
+              break
+            case 'opacity':
+              this.initialToolValue = this.brush.opacity
+              break
+            case 'hardness':
+              this.initialToolValue = this.brush.hardness
+              break
+          }
+        }
+
+        const diff = sliding.y - this.initialSliding.y
+        this.updateValue(diff)
       },
       deep: true
     }
@@ -87,18 +121,18 @@ export default {
   },
 
   methods: {
-    updateValue (decrement) {
-      const delta = decrement ? -1 : 1
-
+    updateValue (offset) {
+      console.log(this.initialToolValue)
+      console.log(offset)
       switch (this.tools[this.selectedTool]) {
         case 'size':
-          this.brush.radius = Math.min(Math.max(this.brush.radius + delta, RADIUS_MIN), RADIUS_MAX)
+          this.brush.radius = Math.min(Math.max(this.initialToolValue + (offset / 5), RADIUS_MIN), RADIUS_MAX)
           break
         case 'opacity':
-          this.brush.opacity = Math.min(Math.max(this.brush.opacity + delta / 40, 0), 1)
+          this.brush.opacity = Math.min(Math.max(this.initialToolValue + offset / 100, 0), 1)
           break
         case 'hardness':
-          this.brush.hardness = Math.min(Math.max(this.brush.hardness + delta / 70, 0), 1)
+          this.brush.hardness = Math.min(Math.max(this.initialToolValue + offset / 100, 0), 1)
           break
       }
     },
@@ -121,8 +155,8 @@ export default {
   },
 
   beforeDestroy () {
-    EventBus.$off('swipeLeft', this.prevTool)
-    EventBus.$off('swipeRight', this.nextTool)
+    EventBus.$off('swipeLeft', this.nextTool)
+    EventBus.$off('swipeRight', this.prevTool)
     EventBus.$off('touchUp', this.incrementValue)
     EventBus.$off('touchDown', this.decrementValue)
   },

@@ -27,7 +27,7 @@ export default {
 
 <style lang="scss" scoped>
 .page-overlay {
-  z-index: $index-toolbar;
+  z-index: $index-overlay;
   background: rgba(white, 0.8);
 
   &.appear-enter-active, &.appear-leave-active {

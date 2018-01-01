@@ -1,18 +1,49 @@
 <template>
   <div class="relative overlay drawing" ref="drawingApp">
+
     <div class="absolute header flex">
       <h1>drawmote</h1>
     </div>
+
+    <toolbar
+      :visible="toolbarVisible"
+      :selected-color="brush.color"
+      :coords-x="pointerCoordinates.x"
+      :width="viewport.width"
+    ></toolbar>
+
     <overlay :visible="toolbarVisible"></overlay>
 
     <transition name="appear">
-      <brush-toolbar v-if="brushToolbarVisible" :visible="brushToolbarVisible" :lazy-radius="lazyRadius" :brush="brush" :coordinates="brushCoordinates" :viewport="viewport"></brush-toolbar>
+      <brush-toolbar
+        v-if="brushToolbarVisible"
+        :visible="brushToolbarVisible"
+        :lazy-radius="lazyRadius"
+        :brush="brush"
+        :coordinates="brushCoordinates"
+        :sliding="touchSliding"
+        :viewport="viewport"
+      ></brush-toolbar>
     </transition>
 
-    <toolbar :visible="toolbarVisible" :selected-color="brush.color" :coords-x="pointerCoordinates.x" :width="viewport.width"></toolbar>
-    <brush :brush="brush" :use-lazy-brush="useLazyBrush" :lazy-radius="lazyRadius" :coordinates="brushCoordinates"></brush>
-    <pointer v-if="useLazyBrush" :coordinates="pointerCoordinates"></pointer>
-    <drawing-canvas :brush="brush" :coordinates="brushCoordinates" :is-pressing="isPressing" :use-lazy-brush="useLazyBrush"></drawing-canvas>
+    <brush
+      :brush="brush"
+      :use-lazy-brush="useLazyBrush"
+      :lazy-radius="lazyRadius"
+      :coordinates="brushCoordinates"
+    ></brush>
+
+    <pointer
+      v-if="useLazyBrush"
+      :coordinates="pointerCoordinates"
+    ></pointer>
+
+    <drawing-canvas
+      :brush="brush"
+      :coordinates="brushCoordinates"
+      :is-pressing="isPressing"
+      :use-lazy-brush="useLazyBrush"
+    ></drawing-canvas>
   </div>
 </template>
 
@@ -55,7 +86,13 @@ export default {
         this.isPressing = data.isPressing
       }
     },
-    receiveSwipe: function (direction) {
+    receiveSlideData: function (slideData) {
+      this.touchSliding = slideData
+    },
+    receiveSlideState: function (slideState) {
+      this.isTouchSliding = slideState.sliding
+    },
+    receiveSwipeData: function (direction) {
       switch (direction) {
         case 'up':
           this.toolbarVisible = true
@@ -87,11 +124,16 @@ export default {
         x: 0,
         y: 0
       },
+      touchSliding: {
+        x: 0,
+        y: 0
+      },
       brush: BRUSH_DEFAULT,
       isPressing: false,
+      isTouchSliding: false,
       useLazyBrush: true,
       toolbarVisible: false,
-      brushToolbarVisible: true
+      brushToolbarVisible: false
     }
   },
 
@@ -103,6 +145,16 @@ export default {
       return {
         x: Math.round(this.brushCoordinates.x),
         y: Math.round(this.brushCoordinates.y)
+      }
+    }
+  },
+
+  watch: {
+    isTouchSliding: function (isSliding) {
+      if (isSliding) {
+        this.brushToolbarVisible = true
+      } else {
+        this.brushToolbarVisible = false
       }
     }
   },

@@ -1,7 +1,7 @@
 <template>
   <div class="controlling">
     <brush :coordinates="brushCoordinates" :brush="brush"></brush>
-    <touch-handler v-if="isConnected"></touch-handler>
+    <touch-handler></touch-handler>
   </div>
 </template>
 
