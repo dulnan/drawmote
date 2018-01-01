@@ -120,6 +120,10 @@ h1 {
 .code__input {
   background: none;
   opacity: 0;
+  font-size: 1.75rem;
+  font-family: monospace;
+  letter-spacing: 2.65rem;
+  padding-left: 2.6rem;
 }
 
 

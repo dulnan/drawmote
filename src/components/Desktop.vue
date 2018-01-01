@@ -21,12 +21,13 @@ export default {
   },
   sockets: {
     connect: function () {
-      console.log('create Session')
       this.$socket.emit('createSession')
     },
     initialState: function (socketState) {
-      console.log(socketState)
       this.pairingCode = socketState.session
+    },
+    connectionEstablished: function () {
+      this.isPaired = true
     }
   },
   data () {
@@ -40,6 +41,7 @@ export default {
       this.$socket.emit('createSession')
     }
 
+    // Pressing P will skip pairing
     window.addEventListener('keydown', (e) => {
       if (e.keyCode === 80) {
         this.isPaired = !this.isPaired

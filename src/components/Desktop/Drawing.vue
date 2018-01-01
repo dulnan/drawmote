@@ -52,7 +52,7 @@ import { EventBus } from '@/events'
 
 import { RADIUS_MIN, RADIUS_MAX, BRUSH_DEFAULT, HARDNESS_MIN, HARDNESS_MAX } from '@/settings'
 
-import { getPointOnScreen } from '@/tools/GyroTransform.js'
+import { GyroTransform } from '@/tools/GyroTransform.js'
 import { getViewportSize, pointOutsideCircle, movePointAtAngle } from '@/tools/helpers.js'
 
 import Brush from '@/components/Brush.vue'
@@ -65,6 +65,8 @@ import DrawingCanvas from '@/components/Desktop/DrawingCanvas.vue'
 
 // Setting this to true allows movement with mouse and arrow keys
 const DEBUG = true
+
+var gyro = {}
 
 export default {
   name: 'Drawing',
@@ -81,7 +83,7 @@ export default {
 
   sockets: {
     receiveOrientation: function (data) {
-      this.inputCoordinates = getPointOnScreen(data.alpha, data.beta, this.viewport.width, this.viewport.height)
+      this.inputCoordinates = gyro.getPointOnScreen(data.alpha, data.beta)
       if (this.isPressing !== data.isPressing) {
         this.isPressing = data.isPressing
       }
@@ -93,6 +95,7 @@ export default {
       this.isTouchSliding = slideState.sliding
     },
     receiveSwipeData: function (direction) {
+      console.log(direction)
       switch (direction) {
         case 'up':
           this.toolbarVisible = true
@@ -110,11 +113,6 @@ export default {
         width: 0,
         height: 0,
         ratio: 1
-      },
-      mobileOrientation: {
-        alpha: 0,
-        beta: 0,
-        gamma: 0
       },
       pointerCoordinates: {
         x: 0,
@@ -230,6 +228,8 @@ export default {
 
   mounted () {
     this.viewport = getViewportSize()
+
+    gyro = new GyroTransform(2000, this.viewport.width, this.viewport.height)
 
     // Add event listeners
     EventBus.$on('setBrushColor', (newColor) => {
