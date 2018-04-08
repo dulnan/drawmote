@@ -38,8 +38,8 @@ export class GyroTransform {
     const interSectionVector = this.screenPlane.getIntersectionWith(phoneLinePrime)
 
     return {
-      x: interSectionVector.x / 2,
-      y: interSectionVector.y / 2
+      x: interSectionVector.x,
+      y: interSectionVector.y
     }
   }
 }

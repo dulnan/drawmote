@@ -11,6 +11,7 @@
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
+    "@hughsk/fulltilt": "^0.7.1",
     "gyronorm": "^2.0.6",
     "socket.io-client": "^2.0.3",
     "socket.io-p2p": "^2.2.0",
