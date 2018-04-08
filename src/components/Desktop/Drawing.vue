@@ -272,40 +272,47 @@ export default {
       })
 
       window.addEventListener('keydown', (e) => {
+        console.log(e)
         let position = Object.assign({}, this.inputCoordinates)
+        // Arrow Up
         if (e.keyCode === 38) {
           if (e.shiftKey) {
             this.toolbarVisible = true
           } else {
             position.y = position.y - 1
           }
+        // Arrown Down
         } else if (e.keyCode === 40) {
           if (e.shiftKey) {
             this.toolbarVisible = false
           } else {
             position.y = position.y + 1
           }
+        // Arrow Left
         } else if (e.keyCode === 37) {
           if (e.shiftKey) {
             EventBus.$emit('swipeLeft')
           } else {
             position.x = position.x - 1
           }
+        // Arrow Right
         } else if (e.keyCode === 39) {
           if (e.shiftKey) {
             EventBus.$emit('swipeRight')
           } else {
             position.x = position.x + 1
           }
-        // D
+        // C
         } else if (e.keyCode === 67) {
           EventBus.$emit('clearCanvas')
+        // L
         } else if (e.keyCode === 76) {
           this.useLazyBrush = !this.useLazyBrush
+        // S
         } else if (e.keyCode === 83) {
           EventBus.$emit('toggleBrushStyle')
+        // B
         } else if (e.keyCode === 66) {
-          // B
           this.brushToolbarVisible = !this.brushToolbarVisible
         }
         this.inputCoordinates = position
