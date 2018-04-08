@@ -1,6 +1,4 @@
-import Line from '@/tools/Vector/Line'
-import Plane from '@/tools/Vector/Plane'
-import Vector from '@/tools/Vector/Vector'
+import { Vector, Line, Plane } from 'vanilla-vectors-3d'
 
 export class GyroTransform {
   constructor (distance, width, height) {

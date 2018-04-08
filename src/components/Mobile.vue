@@ -15,10 +15,12 @@ import Controlling from '@/components/Mobile/Controlling.vue'
 
 export default {
   name: 'Mobile',
+
   components: {
     Pairing,
     Controlling
   },
+
   sockets: {
     connectionEstablished: function () {
       this.isConnected = true
@@ -32,12 +34,6 @@ export default {
     return {
       isConnected: false
     }
-  },
-
-  methods: {
-  },
-
-  mounted () {
   }
 }
 </script>

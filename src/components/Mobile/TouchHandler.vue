@@ -115,15 +115,18 @@ export default {
 
     initDataLoop () {
       gyro.frequency = 10
-      gyro.startTracking((data) => {
+      gyro.startTracking(data => {
         let alpha = data.alpha
+
         if (data.alpha > 180) {
           alpha = Math.abs((data.alpha - 180) - 180)
         } else {
           alpha = (180 - data.alpha) - 180
         }
+
         let beta = data.beta
         let gamma = data.gamma
+
         this.$socket.emit('sendOrientation', {
           alpha: alpha,
           beta: beta,
@@ -131,10 +134,6 @@ export default {
           isPressing: this.isPressing
         })
       })
-    },
-
-    dataLoop () {
-      window.requestAnimationFrame(this.dataLoop)
     }
   },
 

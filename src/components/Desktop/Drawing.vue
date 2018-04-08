@@ -83,7 +83,20 @@ export default {
 
   sockets: {
     receiveOrientation: function (data) {
-      this.inputCoordinates = gyro.getPointOnScreen(data.alpha, data.beta)
+      if (this.initialAngles.alpha === null && this.initialAngles.beta === null) {
+        this.initialAngles.alpha = data.alpha
+        this.initialAngles.beta = data.beta
+      }
+
+      const calibratedAlpha = data.alpha - (this.initialAngles.alpha)
+      const calibratedBeta = data.beta - (this.initialAngles.beta)
+
+      this.inputCoordinates = gyro.getPointOnScreen(calibratedAlpha, calibratedBeta)
+
+      console.log(this.initialAngles.alpha, calibratedAlpha, this.inputCoordinates.x)
+
+      // this.inputCoordinates = { x: 0, y: 0 }
+
       if (this.isPressing !== data.isPressing) {
         this.isPressing = data.isPressing
       }
@@ -125,6 +138,10 @@ export default {
       touchSliding: {
         x: 0,
         y: 0
+      },
+      initialAngles: {
+        alpha: null,
+        beta: null
       },
       brush: BRUSH_DEFAULT,
       isPressing: false,
@@ -229,7 +246,7 @@ export default {
   mounted () {
     this.viewport = getViewportSize()
 
-    gyro = new GyroTransform(2000, this.viewport.width, this.viewport.height)
+    gyro = new GyroTransform(this.viewport.width * 2, this.viewport.width, this.viewport.height)
 
     // Add event listeners
     EventBus.$on('setBrushColor', (newColor) => {
