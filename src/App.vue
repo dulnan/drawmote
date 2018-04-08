@@ -4,19 +4,26 @@
     <div class="absolute footer">
       Created by <a href="http://www.janhug.info">Jan Hug</a>, with help from Pascal Thormeier and others.
     </div>
+    <!--<modal></modal>-->
   </div>
 </template>
 
 <script>
+import Modal from '@/components/Modal'
+
 export default {
-  name: 'app'
+  name: 'app',
+
+  components: {
+    Modal
+  }
 }
 </script>
 
 <style lang="scss">
 @import 'assets/scss/main.scss';
 .footer {
-  z-index: $index-pairing;
+  z-index: $index-footer;
   top: auto;
   text-align: center;
   right: 0;

@@ -10,7 +10,7 @@
           </div>
         </transition>
       </h2>
-      <button type="button" class="button skip-button">Skip this step</button>
+      <button @click.prevent="skipPairing" type="button" class="button skip-button">Skip this step</button>
     </div>
     <background-animation></background-animation>
   </div>
@@ -24,10 +24,23 @@ export default {
   components: {
     BackgroundAnimation
   },
+
+  data () {
+    return {
+      showModal: false
+    }
+  },
+
   props: {
     code: {
       type: String,
       default: ''
+    }
+  },
+
+  methods: {
+    skipPairing () {
+
     }
   },
 

@@ -1,6 +1,7 @@
 $color-red:                   #FF0000;
 
 $color-greylight:             rgb(237, 238, 236);
+$color-greydark:              rgb(113, 116, 122);
 $color-red:                   rgb(253, 121, 75);
 $color-yellow:                rgb(253, 188, 75);
 $color-blue:                  rgb(196, 232, 247);
@@ -14,7 +15,12 @@ $index-header:                460;
 $index-overlay:               470;
 $index-toolbar:               500;
 $index-brush-toolbar:         500;
-$index-cursor:                600;
+
+$index-footer:                500;
+$index-modal:                 600;
+
+$index-cursor:                700;
 
 $index-background-animation:  800;
 $index-pairing:               900;
+

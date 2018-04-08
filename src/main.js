@@ -6,8 +6,7 @@ import socketio from 'socket.io-client'
 import VueSocketio from 'vue-socket.io'
 
 Vue.config.productionTip = false
-
-Vue.use(VueSocketio, socketio('http://192.168.1.5:8000'), store)
+Vue.use(VueSocketio, socketio('http://192.168.80.43:8000'), store)
 
 /* eslint-disable no-new */
 new Vue({

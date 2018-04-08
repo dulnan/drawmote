@@ -1,5 +1,40 @@
+@font-face {
+    font-family: 'Colfax';
+    src: url('/static/fonts/ColfaxWebLight.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Colfax';
+    src: url('/static/fonts/ColfaxWebRegular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Colfax';
+    src: url('/static/fonts/ColfaxWebMedium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Colfax';
+    src: url('/static/fonts/ColfaxWebBold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Colfax';
+    src: url('/static/fonts/ColfaxWebBlack.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+}
+
 body {
-  font-family: 'Signika', Helvetica, Arial, sans-serif;
+  font-family: 'Colfax', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -7,6 +42,7 @@ body {
   height: 100vh;
   margin: 0;
   overflow: hidden;
+  color: $color-black;
 }
 
 a {
@@ -20,8 +56,23 @@ a {
   box-sizing: border-box;
 }
 
+h2 {
+  font-size: 3.5rem;
+}
+
+.lead {
+  font-size: 2.5rem;
+  line-height: 3rem;
+  font-weight: 100;
+  color: $color-greydark;
+}
+
 .relative {
   position: relative;
+}
+
+.fixed {
+  position: fixed;
 }
 
 .absolute {
@@ -43,6 +94,11 @@ a {
 
 .flex {
   display: flex;
+}
+
+.flex--center {
+  align-items: center;
+  justify-content: center;
 }
 
 .mrgr {
