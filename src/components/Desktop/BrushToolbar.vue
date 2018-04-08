@@ -72,6 +72,7 @@ export default {
   watch: {
     sliding: {
       handler (sliding) {
+        console.log(sliding)
         if (!this.initialSliding.x) {
           this.initialSliding = sliding
         }
@@ -122,8 +123,6 @@ export default {
 
   methods: {
     updateValue (offset) {
-      console.log(this.initialToolValue)
-      console.log(offset)
       switch (this.tools[this.selectedTool]) {
         case 'size':
           this.brush.radius = Math.min(Math.max(this.initialToolValue + (offset / 5), RADIUS_MIN), RADIUS_MAX)

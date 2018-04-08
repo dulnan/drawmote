@@ -1,16 +1,26 @@
 <template>
-  <div class="mobile-touch-handler absolute overlay" @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd">
+  <div>
+    <div class="mobile-touch-handler absolute overlay" @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd">
+    </div>
+
+    <div style="position: absolute; top: 400px; z-index: 9999; pointer-events: none">
+      <div><span style="width: 200px; display: inline-block;">Alpha</span>{{ Math.round(alpha) }}</div>
+      <div><span style="width: 200px; display: inline-block;">Beta</span>{{ Math.round(beta) }}</div>
+      <div><span style="width: 200px; display: inline-block;">Gamma</span>{{ Math.round(gamma) }}</div>
+    </div>
   </div>
 </template>
 
 <script>
-import { gyro } from '@/libs/gyro.js'
+require('@/libs/gyro.js')
 
 const SWIPE_THRESHOLD = 30
 const SWIPE_RESTRAINT = 100
 const SLIDE_AREA = 140
 
 let touchTimeout = {}
+
+var deviceOrientation
 
 export default {
   name: 'TouchHandler',
@@ -27,7 +37,10 @@ export default {
         x: 0,
         y: 0,
         time: {}
-      }
+      },
+      alpha: 0,
+      beta: 0,
+      gamma: 0
     }
   },
 
@@ -114,26 +127,34 @@ export default {
     },
 
     initDataLoop () {
-      gyro.frequency = 10
-      gyro.startTracking((data) => {
-        let alpha = data.alpha
-        if (data.alpha > 180) {
-          alpha = Math.abs((data.alpha - 180) - 180)
-        } else {
-          alpha = (180 - data.alpha) - 180
-        }
-        let beta = data.beta
-        let gamma = data.gamma
-        this.$socket.emit('sendOrientation', {
-          alpha: alpha,
-          beta: beta,
-          gamma: gamma,
-          isPressing: this.isPressing
+      /* eslint-disable */
+      var promise = new FULLTILT.getDeviceOrientation({ 'type': 'world' })
+      /* eslint-enable */
+
+      promise
+        .then((controller) => {
+          deviceOrientation = controller
+          this.dataLoop()
         })
-      })
+        .catch(function (message) {
+          console.error(message)
+        })
     },
 
     dataLoop () {
+      var euler = deviceOrientation.getScreenAdjustedEuler()
+
+      this.alpha = euler.alpha
+      this.beta = euler.beta
+      this.gamma = euler.gamma
+
+      this.$socket.emit('sendOrientation', {
+        alpha: euler.alpha,
+        beta: euler.beta,
+        gamma: euler.gamma,
+        isPressing: this.isPressing
+      })
+
       window.requestAnimationFrame(this.dataLoop)
     }
   },
