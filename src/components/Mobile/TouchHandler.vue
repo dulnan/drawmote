@@ -137,7 +137,7 @@ export default {
           this.dataLoop()
         })
         .catch(function (message) {
-          console.error(message)
+          alert(message)
         })
     },
 

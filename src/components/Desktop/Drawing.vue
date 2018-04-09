@@ -83,9 +83,11 @@ export default {
 
   sockets: {
     receiveOrientation: function (data) {
-      if (this.initialAngles.alpha === null && this.initialAngles.beta === null) {
+      if (this.initialAngles.alpha === null && this.initialAngles.beta === null && data.alpha !== 0 && data.beta !== 0) {
         this.initialAngles.alpha = data.alpha
         this.initialAngles.beta = data.beta
+
+        console.log(this.initialAngles)
       }
 
       const calibratedAlpha = 0 - data.alpha + this.initialAngles.alpha
