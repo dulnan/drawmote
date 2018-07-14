@@ -50,7 +50,8 @@ export default {
         alpha: 0,
         beta: 0,
         gamma: 0
-      }
+      },
+      lastOrientationString: ''
     }
   },
 
@@ -144,7 +145,7 @@ export default {
       deviceOrientation = new GyroNorm()
 
       const options = {
-        frequency: 30,
+        frequency: 15,
         decimalCount: 3
       }
 
@@ -175,7 +176,11 @@ export default {
     },
 
     dataLoop () {
-      this.$socket.emit('sendOrientation', buildDataString(this.orientation, this.isPressing))
+      const newData = buildDataString(this.orientation, this.isPressing)
+      if (newData !== this.lastOrientationString) {
+        this.$socket.emit('sendOrientation', newData)
+        this.lastOrientationString = newData
+      }
       window.requestAnimationFrame(this.dataLoop)
     }
   },
