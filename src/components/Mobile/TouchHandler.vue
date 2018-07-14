@@ -4,15 +4,21 @@
     </div>
 
     <div style="position: absolute; top: 400px; z-index: 9999; pointer-events: none">
-      <div><span style="width: 200px; display: inline-block;">Alpha</span>{{ Math.round(alpha) }}</div>
-      <div><span style="width: 200px; display: inline-block;">Beta</span>{{ Math.round(beta) }}</div>
-      <div><span style="width: 200px; display: inline-block;">Gamma</span>{{ Math.round(gamma) }}</div>
+      <div><span style="width: 200px; display: inline-block;">Alpha</span>{{ Math.round(orientation.alpha) }}</div>
+      <div><span style="width: 200px; display: inline-block;">Beta</span>{{ Math.round(orientation.beta) }}</div>
+      <div><span style="width: 200px; display: inline-block;">Gamma</span>{{ Math.round(orientation.gamma) }}</div>
+      <div><span style="width: 200px; display: inline-block;">isPressing</span>{{ isPressing }}</div>
+    </div>
+
+    <div class="calibration">
+      <button class="button" @click="handleCalibrateClick">Calibrate</button>
     </div>
   </div>
 </template>
 
 <script>
-require('@/libs/gyro.js')
+require('@hughsk/fulltilt/dist/fulltilt.min.js')
+var GyroNorm = require('gyronorm')
 
 const SWIPE_THRESHOLD = 30
 const SWIPE_RESTRAINT = 100
@@ -38,9 +44,11 @@ export default {
         y: 0,
         time: {}
       },
-      alpha: 0,
-      beta: 0,
-      gamma: 0
+      orientation: {
+        alpha: 0,
+        beta: 0,
+        gamma: 0
+      }
     }
   },
 
@@ -126,32 +134,49 @@ export default {
       window.clearTimeout(touchTimeout)
     },
 
-    initDataLoop () {
-      /* eslint-disable */
-      var promise = new FULLTILT.getDeviceOrientation({ 'type': 'world' })
-      /* eslint-enable */
+    handleCalibrateClick () {
+      this.updateOrientationOffset(this.orientation)
+    },
 
-      promise
-        .then((controller) => {
-          deviceOrientation = controller
-          this.dataLoop()
+    initDataLoop () {
+      deviceOrientation = new GyroNorm()
+
+      const options = {
+        frequency: 30,
+        decimalCount: 3
+      }
+
+      deviceOrientation.init(options).then(() => {
+        deviceOrientation.start((data) => {
+          this.updateOrientation(data.do)
         })
-        .catch(function (message) {
-          alert(message)
-        })
+
+        this.dataLoop()
+      }).catch((e) => {
+        alert(e)
+      })
+    },
+
+    updateOrientation (newOrientation) {
+      this.orientation = {
+        alpha: newOrientation.alpha,
+        beta: newOrientation.beta,
+        gamma: newOrientation.gamma
+      }
+    },
+
+    updateOrientationOffset (newOrientationOffset) {
+      this.$socket.emit('sendOrientationOffset', {
+        alpha: newOrientationOffset.alpha,
+        beta: newOrientationOffset.beta
+      })
     },
 
     dataLoop () {
-      var euler = deviceOrientation.getScreenAdjustedEuler()
-
-      this.alpha = euler.alpha
-      this.beta = euler.beta
-      this.gamma = euler.gamma
-
       this.$socket.emit('sendOrientation', {
-        alpha: euler.alpha,
-        beta: euler.beta,
-        gamma: euler.gamma,
+        alpha: this.orientation.alpha,
+        beta: this.orientation.beta,
+        gamma: this.orientation.gamma,
         isPressing: this.isPressing
       })
 
@@ -164,3 +189,23 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.mobile-touch-handler {
+  z-index: 10000;
+}
+.calibration {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2rem;
+  z-index: 1000000;
+  background: white;
+  .button {
+    width: 100%;
+    background: $color-yellow;
+    padding: 1rem;
+  }
+}
+</style>

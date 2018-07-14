@@ -82,14 +82,12 @@ export default {
   },
 
   sockets: {
+    receiveOrientationOffset: function (data) {
+      this.initialAngles.alpha = data.alpha
+      this.initialAngles.beta = data.beta
+    },
+
     receiveOrientation: function (data) {
-      if (this.initialAngles.alpha === null && this.initialAngles.beta === null && data.alpha !== 0 && data.beta !== 0) {
-        this.initialAngles.alpha = data.alpha
-        this.initialAngles.beta = data.beta
-
-        console.log(this.initialAngles)
-      }
-
       const calibratedAlpha = 0 - data.alpha + this.initialAngles.alpha
       const calibratedBeta = data.beta - this.initialAngles.beta
 
@@ -244,7 +242,7 @@ export default {
   mounted () {
     this.viewport = getViewportSize()
 
-    gyro = new GyroTransform(this.viewport.width * 2, this.viewport.width, this.viewport.height)
+    gyro = new GyroTransform(this.viewport.width * 1, this.viewport.width, this.viewport.height)
 
     // Add event listeners
     EventBus.$on('setBrushColor', (newColor) => {
