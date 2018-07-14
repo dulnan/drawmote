@@ -20,6 +20,8 @@
 require('@hughsk/fulltilt/dist/fulltilt.min.js')
 var GyroNorm = require('gyronorm')
 
+import { buildDataString } from '@/tools/helpers.js'
+
 const SWIPE_THRESHOLD = 30
 const SWIPE_RESTRAINT = 100
 const SLIDE_AREA = 140
@@ -173,13 +175,7 @@ export default {
     },
 
     dataLoop () {
-      this.$socket.emit('sendOrientation', {
-        alpha: this.orientation.alpha,
-        beta: this.orientation.beta,
-        gamma: this.orientation.gamma,
-        isPressing: this.isPressing
-      })
-
+      this.$socket.emit('sendOrientation', buildDataString(this.orientation, this.isPressing))
       window.requestAnimationFrame(this.dataLoop)
     }
   },

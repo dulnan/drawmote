@@ -53,7 +53,7 @@ import { EventBus } from '@/events'
 import { RADIUS_MIN, RADIUS_MAX, BRUSH_DEFAULT, HARDNESS_MIN, HARDNESS_MAX } from '@/settings'
 
 import { GyroTransform } from '@/tools/GyroTransform.js'
-import { getViewportSize, pointOutsideCircle, movePointAtAngle } from '@/tools/helpers.js'
+import { getViewportSize, pointOutsideCircle, movePointAtAngle, parseDataString } from '@/tools/helpers.js'
 
 import Brush from '@/components/Brush.vue'
 import Overlay from '@/components/Overlay.vue'
@@ -88,13 +88,14 @@ export default {
     },
 
     receiveOrientation: function (data) {
-      const calibratedAlpha = 0 - data.alpha + this.initialAngles.alpha
-      const calibratedBeta = data.beta - this.initialAngles.beta
+      const dataObj = parseDataString(data)
+      const calibratedAlpha = 0 - dataObj.alpha + this.initialAngles.alpha
+      const calibratedBeta = dataObj.beta - this.initialAngles.beta
 
       this.inputCoordinates = gyro.getPointOnScreen(calibratedAlpha, calibratedBeta)
 
-      if (this.isPressing !== data.isPressing) {
-        this.isPressing = data.isPressing
+      if (this.isPressing !== dataObj.isPressing) {
+        this.isPressing = dataObj.isPressing
       }
     },
     receiveSlideData: function (slideData) {

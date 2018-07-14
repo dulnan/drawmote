@@ -48,4 +48,17 @@ const doFor = (count, cb) => {
 
 const randomInt = (min, max = min + (min = 0)) => (Math.random() * (max - min) + min) | 0
 
-export { getViewportSize, pointOutsideCircle, movePointAtAngle, scaleBetween, lineDistance, getRgbaString, midPointBetween, doFor, randomInt }
+function buildDataString (orientation, isPressing) {
+  return `${orientation.alpha};${orientation.beta};${isPressing ? '1' : '0'}`
+}
+
+function parseDataString (data) {
+  const arr = data.split(';')
+  return {
+    alpha: arr[0],
+    beta: arr[1],
+    isPressing: arr[2] === '1'
+  }
+}
+
+export { getViewportSize, pointOutsideCircle, movePointAtAngle, scaleBetween, lineDistance, getRgbaString, midPointBetween, doFor, randomInt, buildDataString, parseDataString }
