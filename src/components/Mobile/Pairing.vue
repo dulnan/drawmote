@@ -9,7 +9,7 @@
         </div>
 
         <form class="code__form absolute overlay" v-on:submit.prevent="onSubmit">
-          <input maxlength="5" v-model="inputValue" class="code__input absolute overlay" type="text" ref="pairing_id"></input>
+          <input maxlength="6" v-model="inputValue" class="code__input absolute overlay" type="text" ref="pairing_id"></input>
         </form>
 
         <transition name="appear">
@@ -30,15 +30,8 @@ export default {
     BackgroundAnimation
   },
 
-  sockets: {
-    connectionFailed: function () {
-      this.codeInvalid = true
-    }
-  },
-
   data () {
     return {
-      isConnected: false,
       inputValue: '',
       codeInvalid: false
     }
@@ -52,16 +45,24 @@ export default {
 
   computed: {
     inputChars: function () {
-      return String(this.inputValue + '     ').slice(0, 5).split('')
+      return String(this.inputValue + '      ').slice(0, 6).split('')
     }
   },
 
   methods: {
     onSubmit () {
-      const pairingId = this.$refs.pairing_id.value
-      this.$socket.emit('sessionConnect', {
-        session: pairingId
-      })
+      const code = parseInt(this.$refs.pairing_id.value)
+      this.validateCode(code)
+    },
+
+    async validateCode (code) {
+      const isValid = await this.$connection.validateCode(code)
+
+      if (isValid) {
+        this.$connection.initPeering()
+      } else {
+        this.codeInvalid = true
+      }
     }
   }
 }

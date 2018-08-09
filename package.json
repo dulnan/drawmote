@@ -12,9 +12,11 @@
   },
   "dependencies": {
     "@hughsk/fulltilt": "^0.7.1",
+    "axios": "^0.18.0",
     "gyronorm": "^2.0.6",
     "socket.io-client": "^2.1.1",
     "socket.io-p2p": "^2.2.0",
+    "socketpeer": "^1.1.0",
     "vanilla-vectors-3d": "^1.0.1",
     "vue": "^2.5.16",
     "vue-router": "^2.8.1",

@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import { EventBus } from '@/events'
+
 import Pairing from '@/components/Desktop/Pairing.vue'
 import Drawing from '@/components/Desktop/Drawing.vue'
 
@@ -19,17 +21,6 @@ export default {
     Pairing,
     Drawing
   },
-  sockets: {
-    connect: function () {
-      this.$socket.emit('createSession')
-    },
-    initialState: function (socketState) {
-      this.pairingCode = socketState.session
-    },
-    connectionEstablished: function () {
-      this.isPaired = true
-    }
-  },
   data () {
     return {
       pairingCode: '',
@@ -37,16 +28,26 @@ export default {
     }
   },
   mounted () {
-    if (this.$socket.connected) {
-      this.$socket.emit('createSession')
-    }
-
     // Pressing P will skip pairing
     window.addEventListener('keydown', (e) => {
       if (e.keyCode === 80) {
         this.isPaired = !this.isPaired
       }
     })
+
+    this.initConnection()
+
+    EventBus.$on('isConnected', () => {
+      this.isPaired = true
+    })
+  },
+
+  methods: {
+    async initConnection () {
+      await this.$connection.registerDesktop()
+      this.$connection.initPeering()
+      this.pairingCode = this.$connection.code
+    }
   }
 }
 </script>

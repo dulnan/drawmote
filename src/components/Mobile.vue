@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import { EventBus } from '@/events'
+
 import Pairing from '@/components/Mobile/Pairing.vue'
 import Controlling from '@/components/Mobile/Controlling.vue'
 
@@ -21,19 +23,16 @@ export default {
     Controlling
   },
 
-  sockets: {
-    connectionEstablished: function () {
-      this.isConnected = true
-    },
-    connectionFailed: function () {
-      console.log('connection FAILED')
-    }
-  },
-
   data () {
     return {
       isConnected: false
     }
+  },
+
+  mounted () {
+    EventBus.$on('isConnected', () => {
+      this.isConnected = true
+    })
   }
 }
 </script>

@@ -17,6 +17,8 @@
 </template>
 
 <script>
+// import { EventBus } from '@/events'
+
 require('@hughsk/fulltilt/dist/fulltilt.min.js')
 var GyroNorm = require('gyronorm')
 
@@ -82,7 +84,7 @@ export default {
         const diffY = touch.pageY - this.touchStart.y
 
         if (Math.abs(diffX) > SWIPE_THRESHOLD || Math.abs(diffY) > SWIPE_THRESHOLD) {
-          this.$socket.emit('sendSlideState', { sliding: true })
+          this.$connection.emit('SlideState', { sliding: true })
           this.isSliding = true
 
           this.slideStart = {
@@ -93,7 +95,7 @@ export default {
       }
 
       if (this.isSliding) {
-        this.$socket.emit('sendSlideData', {
+        this.connection.emit('SlideData', {
           x: Math.max(Math.min(touch.pageX - this.slideStart.x, SLIDE_AREA), -SLIDE_AREA),
           y: Math.max(Math.min(this.slideStart.y - touch.pageY, SLIDE_AREA), -SLIDE_AREA)
         })
@@ -123,14 +125,14 @@ export default {
         this.handleSwipe(direction)
       }
 
-      this.$socket.emit('sendSlideState', { sliding: false })
+      this.$connection.emit('SlideState', { sliding: false })
 
       this.isPressing = false
       this.isSliding = false
     },
 
     handleSwipe (direction) {
-      this.$socket.emit('sendSwipe', direction)
+      this.connection.emit('Swipe', direction)
     },
 
     cancelTimeout () {
@@ -169,7 +171,7 @@ export default {
     },
 
     updateOrientationOffset (newOrientationOffset) {
-      this.$socket.emit('sendOrientationOffset', {
+      this.$connection.emit('OrientationOffset', {
         alpha: newOrientationOffset.alpha,
         beta: newOrientationOffset.beta
       })
@@ -178,7 +180,7 @@ export default {
     dataLoop () {
       const newData = buildDataString(this.orientation, this.isPressing)
       if (newData !== this.lastOrientationString) {
-        this.$socket.emit('sendOrientation', newData)
+        this.$connection.emit('Orientation', newData)
         this.lastOrientationString = newData
       }
       window.requestAnimationFrame(this.dataLoop)

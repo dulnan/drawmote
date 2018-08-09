@@ -19,11 +19,6 @@ export default {
     Brush,
     TouchHandler
   },
-  sockets: {
-    receiveBrush: function (newBrush) {
-      this.brush = newBrush
-    }
-  },
 
   data () {
     return {

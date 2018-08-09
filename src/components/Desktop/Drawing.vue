@@ -81,42 +81,6 @@ export default {
     DrawingCanvas
   },
 
-  sockets: {
-    receiveOrientationOffset: function (data) {
-      this.initialAngles.alpha = data.alpha
-      this.initialAngles.beta = data.beta
-    },
-
-    receiveOrientation: function (data) {
-      const dataObj = parseDataString(data)
-      const calibratedAlpha = 0 - dataObj.alpha + this.initialAngles.alpha
-      const calibratedBeta = dataObj.beta - this.initialAngles.beta
-
-      this.inputCoordinates = gyro.getPointOnScreen(calibratedAlpha, calibratedBeta)
-
-      if (this.isPressing !== dataObj.isPressing) {
-        this.isPressing = dataObj.isPressing
-      }
-    },
-    receiveSlideData: function (slideData) {
-      this.touchSliding = slideData
-    },
-    receiveSlideState: function (slideState) {
-      this.isTouchSliding = slideState.sliding
-    },
-    receiveSwipeData: function (direction) {
-      console.log(direction)
-      switch (direction) {
-        case 'up':
-          this.toolbarVisible = true
-          break
-        case 'down':
-          this.toolbarVisible = false
-          break
-      }
-    }
-  },
-
   data () {
     return {
       viewport: {
@@ -213,22 +177,22 @@ export default {
 
     updateBrushColor (newColor) {
       this.brush.color = newColor
-      this.$socket.emit('sendBrush', this.brush)
+      this.$connection.emit('sendBrush', this.brush)
     },
 
     updateBrushRadius (newRadius) {
       this.brush.radius = Math.min(Math.max(newRadius, RADIUS_MIN), RADIUS_MAX)
-      this.$socket.emit('sendBrush', this.brush)
+      this.$connection.emit('sendBrush', this.brush)
     },
 
     updateBrushHardness (newHardness) {
       this.brush.hardness = Math.min(Math.max(newHardness, HARDNESS_MIN), HARDNESS_MAX)
-      this.$socket.emit('sendBrush', this.brush)
+      this.$connection.emit('sendBrush', this.brush)
     },
 
     updateBrushOpacity (newOpacity) {
       this.brush.opacity = Math.min(Math.max(newOpacity, 0), 1)
-      this.$socket.emit('sendBrush', this.brush)
+      this.$connection.emit('sendBrush', this.brush)
     },
 
     updateBrushStyle (newStyle) {
@@ -250,12 +214,51 @@ export default {
       this.updateBrushColor(newColor)
       this.toolbarVisible = false
     })
+
     EventBus.$on('toggleBrushStyle', () => {
       const newStyle = this.brush.style === 'stroke' ? 'smudge' : 'stroke'
       this.updateBrushStyle(newStyle)
     })
+
     EventBus.$on('updateBrush', (newBrush) => {
       this.updateBrush(newBrush)
+    })
+
+    EventBus.$on('OrientationOffset', (data) => {
+      this.initialAngles.alpha = data.alpha
+      this.initialAngles.beta = data.beta
+    })
+
+    EventBus.$on('Orientation', (data) => {
+      const dataObj = parseDataString(data)
+      const calibratedAlpha = 0 - dataObj.alpha + this.initialAngles.alpha
+      const calibratedBeta = dataObj.beta - this.initialAngles.beta
+
+      this.inputCoordinates = gyro.getPointOnScreen(calibratedAlpha, calibratedBeta)
+
+      if (this.isPressing !== dataObj.isPressing) {
+        this.isPressing = dataObj.isPressing
+      }
+    })
+
+    EventBus.$on('SlideData', (slideData) => {
+      this.touchSliding = slideData
+    })
+
+    EventBus.$on('SlideState', (slideState) => {
+      this.isTouchSliding = slideState.sliding
+    })
+
+    EventBus.$on('SwipeData', (direction) => {
+      console.log(direction)
+      switch (direction) {
+        case 'up':
+          this.toolbarVisible = true
+          break
+        case 'down':
+          this.toolbarVisible = false
+          break
+      }
     })
 
     // Allow usage with mouse and arrow keys for debugging

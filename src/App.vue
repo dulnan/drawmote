@@ -9,6 +9,8 @@
 </template>
 
 <script>
+// import { EventBus } from '@/events'
+
 import Modal from '@/components/Modal'
 
 export default {
@@ -16,6 +18,12 @@ export default {
 
   components: {
     Modal
+  },
+
+  mounted () {
+  },
+
+  methods: {
   }
 }
 </script>
