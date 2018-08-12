@@ -1,49 +1,39 @@
 <template>
-  <div class="relative overlay drawing" ref="drawingApp">
-
-    <div class="absolute header flex">
-      <h1>drawmote</h1>
-    </div>
-
-    <toolbar
-      :visible="toolbarVisible"
-      :selected-color="brush.color"
-      :coords-x="pointerCoordinates.x"
-      :width="viewport.width"
-    ></toolbar>
+  <div class="overlay drawing material" ref="drawingApp">
 
     <overlay :visible="toolbarVisible"></overlay>
 
-    <transition name="appear">
-      <brush-toolbar
-        v-if="brushToolbarVisible"
-        :visible="brushToolbarVisible"
-        :lazy-radius="lazyRadius"
-        :brush="brush"
-        :coordinates="brushCoordinates"
-        :sliding="touchSliding"
-        :viewport="viewport"
-      ></brush-toolbar>
-    </transition>
-
-    <brush
-      :brush="brush"
-      :use-lazy-brush="useLazyBrush"
+    <brush-toolbar
+      v-show="!isPressingAside"
+      :is-pressing="isPressingAside"
       :lazy-radius="lazyRadius"
-      :coordinates="brushCoordinates"
-    ></brush>
+      :brush="brush"
+      :coordinates="pointerCoordinates"
+      :touch-y="touchSlidingY"
+      :viewport="viewport"
+    ></brush-toolbar>
+
+
 
     <pointer
       v-if="useLazyBrush"
       :coordinates="pointerCoordinates"
     ></pointer>
 
-    <drawing-canvas
-      :brush="brush"
-      :coordinates="brushCoordinates"
-      :is-pressing="isPressing"
-      :use-lazy-brush="useLazyBrush"
-    ></drawing-canvas>
+    <div class="canvas-container">
+      <brush
+        :brush="brush"
+        :use-lazy-brush="useLazyBrush"
+        :lazy-radius="lazyRadius"
+        :coordinates="brushCoordinates"
+      ></brush>
+      <drawing-canvas
+        :brush="brush"
+        :coordinates="brushCoordinates"
+        :is-pressing="isPressingMain"
+        :use-lazy-brush="useLazyBrush"
+      ></drawing-canvas>
+    </div>
   </div>
 </template>
 
@@ -96,17 +86,14 @@ export default {
         x: 0,
         y: 0
       },
-      touchSliding: {
-        x: 0,
-        y: 0
-      },
+      touchSlidingY: 0,
       initialAngles: {
         alpha: null,
         beta: null
       },
       brush: BRUSH_DEFAULT,
-      isPressing: false,
-      isTouchSliding: false,
+      isPressingMain: false,
+      isPressingAside: false,
       useLazyBrush: true,
       toolbarVisible: false,
       brushToolbarVisible: false
@@ -115,7 +102,7 @@ export default {
 
   computed: {
     lazyRadius: function () {
-      return Math.max(Math.min(this.brush.radius * 2.25, RADIUS_MAX + 20), 15)
+      return Math.max(Math.min(this.brush.radius * 2.5, RADIUS_MAX + 20), 15)
     },
     canvasCoordinates: function () {
       return {
@@ -126,23 +113,6 @@ export default {
   },
 
   watch: {
-    isTouchSliding: function (isSliding) {
-      if (isSliding) {
-        this.brushToolbarVisible = true
-      } else {
-        this.brushToolbarVisible = false
-      }
-    }
-  },
-
-  created () {
-    // Adding this in the created hook prevents it from being reactive,
-    // thus not cloggin up ressources because these values can change
-    // a lot during movement
-    this.inputCoordinates = {
-      x: 0,
-      y: 0
-    }
   },
 
   methods: {
@@ -204,7 +174,12 @@ export default {
     }
   },
 
-  mounted () {
+  created () {
+    this.inputCoordinates = {
+      x: 0,
+      y: 0
+    }
+
     this.viewport = getViewportSize()
 
     gyro = new GyroTransform(this.viewport.width * 1, this.viewport.width, this.viewport.height)
@@ -236,29 +211,17 @@ export default {
 
       this.inputCoordinates = gyro.getPointOnScreen(calibratedAlpha, calibratedBeta)
 
-      if (this.isPressing !== dataObj.isPressing) {
-        this.isPressing = dataObj.isPressing
+      if (this.isPressingMain !== dataObj.isPressingMain) {
+        this.isPressingMain = dataObj.isPressingMain
+      }
+
+      if (this.isPressingAside !== dataObj.isPressingAside) {
+        this.isPressingAside = dataObj.isPressingAside
       }
     })
 
     EventBus.$on('SlideData', (slideData) => {
-      this.touchSliding = slideData
-    })
-
-    EventBus.$on('SlideState', (slideState) => {
-      this.isTouchSliding = slideState.sliding
-    })
-
-    EventBus.$on('SwipeData', (direction) => {
-      console.log(direction)
-      switch (direction) {
-        case 'up':
-          this.toolbarVisible = true
-          break
-        case 'down':
-          this.toolbarVisible = false
-          break
-      }
+      this.touchSlidingY = slideData
     })
 
     // Allow usage with mouse and arrow keys for debugging
@@ -281,15 +244,14 @@ export default {
       })
 
       document.addEventListener('mousedown', (e) => {
-        this.isPressing = true
+        this.isPressingMain = true
       })
 
       document.addEventListener('mouseup', (e) => {
-        this.isPressing = false
+        this.isPressingMain = false
       })
 
       window.addEventListener('keydown', (e) => {
-        console.log(e)
         let position = Object.assign({}, this.inputCoordinates)
         // Arrow Up
         if (e.keyCode === 38) {
@@ -344,6 +306,8 @@ export default {
 
 <style lang="scss" scoped>
 .drawing {
+  display: flex;
+  flex-direction: row;
   &.appear-enter-active, &.appear-leave-active {
     transition: .5s;
   }
@@ -351,6 +315,10 @@ export default {
     transform: scale(1.05);
     opacity: 0;
   }
+}
+
+.canvas-container {
+  flex: 1;
 }
 
 .header {

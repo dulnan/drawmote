@@ -92,6 +92,15 @@ h2 {
   list-style-type: none;
 }
 
+.list--divided {
+  > li {
+    border-bottom: 1px solid $color-greylight;
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+}
+
 .flex {
   display: flex;
 }
@@ -105,12 +114,20 @@ h2 {
   margin-right: 1rem;
 }
 
+.mrgl {
+  margin-left: 1rem;
+}
+
 .mrgb {
   margin-bottom: 1rem;
 }
 
 .pdg- {
   padding: 0.5rem;
+}
+
+.pdg {
+  padding: 1rem !important;
 }
 
 .button {
@@ -137,5 +154,18 @@ h2 {
   }
 }
 
+.material {
+  box-shadow: 0 9px 15px 0px rgba($color-greydark, 0.1),
+  0 3px 6px 0px rgba($color-greydark, 0.2);
+}
 
 
+.label {
+  margin-bottom: 1rem;
+  font-weight: bold;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: $color-greydark;
+  text-align: left;
+}

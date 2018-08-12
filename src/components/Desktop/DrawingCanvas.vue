@@ -1,5 +1,5 @@
 <template>
-  <div class="app-drawing-canvas relative overlay">
+  <div class="app-drawing-canvas relative" ref="canvasContainer">
     <canvas class="absolute overlay canvas canvas--main" ref="canvas_main"></canvas>
     <canvas class="absolute overlay canvas canvas--temp" ref="canvas_temp"></canvas>
   </div>
@@ -47,19 +47,33 @@ export default {
         height: 0,
         ratio: 1
       },
-      smoothing: SMOOTHING_INIT,
+      smoothing: SMOOTHING_INIT + 90,
       isDrawing: false,
       pointCount: 0,
       currentPath: [],
-      fillStyle: 'gradient'
+      fillStyle: 'gradient',
+      canvasRect: {
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        width: 0,
+        height: 0
+      }
     }
   },
 
   computed: {
-    contextSize: function () {
+    contextSize () {
       return {
-        width: this.viewport.width * this.viewport.ratio,
-        height: this.viewport.height * this.viewport.ratio
+        width: this.canvasRect.width * this.viewport.ratio,
+        height: this.canvasRect.height * this.viewport.ratio
+      }
+    },
+    canvasCoordinates () {
+      return {
+        x: this.coordinates.x - this.canvasRect.left,
+        y: this.coordinates.y - this.canvasRect.top
       }
     }
   },
@@ -71,7 +85,7 @@ export default {
       },
       deep: true
     },
-    coordinates: {
+    canvasCoordinates: {
       handler (newCoordinates, prevCoordinates) {
         if (this.isDrawing && (newCoordinates.x !== prevCoordinates.x || newCoordinates.y !== prevCoordinates.y)) {
           let coordinates = newCoordinates
@@ -101,7 +115,7 @@ export default {
     },
     isPressing: function (isPressing) {
       if (isPressing) {
-        this.currentPath.push(this.coordinates)
+        this.currentPath.push(this.canvasCoordinates)
         this.isDrawing = true
       } else {
         this.copyToMainCanvas()
@@ -122,7 +136,18 @@ export default {
       this.setCanvasLineWidth(brush.radius, brush.hardness)
     },
 
+    setCanvasRect () {
+      const rect = this.$refs.canvasContainer.getBoundingClientRect()
+
+      this.canvasRect.width = rect.width
+      this.canvasRect.height = rect.height
+      this.canvasRect.top = rect.top
+      this.canvasRect.left = rect.left
+    },
+
     setupCanvases () {
+      this.setCanvasRect()
+
       let canvases = [
         this.$refs.canvas_temp,
         this.$refs.canvas_main
@@ -158,7 +183,7 @@ export default {
     },
 
     copyToMainCanvas () {
-      this.contextMain.drawImage(this.$refs.canvas_temp, 0, 0, this.viewport.width, this.viewport.height)
+      this.contextMain.drawImage(this.$refs.canvas_temp, 0, 0, this.canvasRect.width, this.canvasRect.height)
       this.clearCanvas(this.contextTemp)
     },
 
@@ -208,6 +233,8 @@ export default {
 
 <style lang="scss" scoped>
 .app-drawing-canvas {
+  background: white;
+  height: 100%;
 }
 
 .canvas--main {

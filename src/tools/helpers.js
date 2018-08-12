@@ -12,6 +12,10 @@ function pointOutsideCircle (p, c, r) {
   return distancesqured >= r * r
 }
 
+function pointIsInRectangle (p, r) {
+  return r.x1 <= p.x && p.x <= r.x2 && r.y1 <= p.y && p.y <= r.y2
+}
+
 function movePointAtAngle (point, angle, distance) {
   return {
     x: point.x + (Math.cos(angle) * distance),
@@ -48,8 +52,14 @@ const doFor = (count, cb) => {
 
 const randomInt = (min, max = min + (min = 0)) => (Math.random() * (max - min) + min) | 0
 
-function buildDataString (orientation, isPressing) {
-  return `${orientation.alpha};${orientation.beta};${isPressing ? '1' : '0'}`
+function buildDataString (orientation, isPressingMain, isPressingAside) {
+  const values = [
+    orientation.alpha,
+    orientation.beta,
+    isPressingMain ? 1 : 0,
+    isPressingAside ? 1 : 0
+  ]
+  return values.join(';')
 }
 
 function parseDataString (data) {
@@ -57,8 +67,9 @@ function parseDataString (data) {
   return {
     alpha: arr[0],
     beta: arr[1],
-    isPressing: arr[2] === '1'
+    isPressingMain: arr[2] === '1',
+    isPressingAside: arr[3] === '1'
   }
 }
 
-export { getViewportSize, pointOutsideCircle, movePointAtAngle, scaleBetween, lineDistance, getRgbaString, midPointBetween, doFor, randomInt, buildDataString, parseDataString }
+export { getViewportSize, pointOutsideCircle, pointIsInRectangle, movePointAtAngle, scaleBetween, lineDistance, getRgbaString, midPointBetween, doFor, randomInt, buildDataString, parseDataString }

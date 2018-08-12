@@ -1,13 +1,26 @@
 <template>
-  <div>
-    <div class="mobile-touch-handler absolute overlay" @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd">
+  <div class="mobile-controller">
+    <div
+      class="mobile-touch mobile-touch--main"
+      @touchstart="handleMainTouchStart"
+      @touchmove="handleMainTouchMove"
+      @touchend="handleMainTouchEnd"
+      @touchcancel="handleMainTouchCancel">
+    </div>
+    <div
+      class="mobile-touch mobile-touch--aside"
+      @touchstart="handleAsideTouchStart"
+      @touchmove="handleAsideTouchMove"
+      @touchend="handleAsideTouchEnd"
+      @touchcancel="handleAsideTouchCancel">
     </div>
 
     <div style="position: absolute; top: 400px; z-index: 9999; pointer-events: none">
       <div><span style="width: 200px; display: inline-block;">Alpha</span>{{ Math.round(orientation.alpha) }}</div>
       <div><span style="width: 200px; display: inline-block;">Beta</span>{{ Math.round(orientation.beta) }}</div>
       <div><span style="width: 200px; display: inline-block;">Gamma</span>{{ Math.round(orientation.gamma) }}</div>
-      <div><span style="width: 200px; display: inline-block;">isPressing</span>{{ isPressing }}</div>
+      <div><span style="width: 200px; display: inline-block;">isPressingMain</span>{{ isPressingMain }}</div>
+      <div><span style="width: 200px; display: inline-block;">isPressingAside </span>{{ isPressingAside }}</div>
     </div>
 
     <div class="calibration">
@@ -24,12 +37,6 @@ var GyroNorm = require('gyronorm')
 
 import { buildDataString } from '@/tools/helpers.js'
 
-const SWIPE_THRESHOLD = 30
-const SWIPE_RESTRAINT = 100
-const SLIDE_AREA = 140
-
-let touchTimeout = {}
-
 var deviceOrientation
 
 export default {
@@ -37,17 +44,10 @@ export default {
 
   data () {
     return {
-      isPressing: false,
-      isSliding: false,
-      slideStart: {
-        x: 0,
-        y: 0
-      },
-      touchStart: {
-        x: 0,
-        y: 0,
-        time: {}
-      },
+      isPressingMain: false,
+      isPressingAside: false,
+      touchStartY: 0,
+      touchStartTime: {},
       orientation: {
         alpha: 0,
         beta: 0,
@@ -58,85 +58,75 @@ export default {
   },
 
   methods: {
-    handleTouchStart (e) {
-      this.cancelTimeout()
+    handleAsideTouchStart (e) {
       e.preventDefault()
 
-      this.touchStart = {
-        x: e.changedTouches[0].pageX,
-        y: e.changedTouches[0].pageY,
-        time: new Date().getTime()
-      }
+      this.touchStartY = e.changedTouches[0].pageY
+      this.touchStartTime = new Date().getTime()
 
-      touchTimeout = window.setTimeout(() => {
-        this.isPressing = true
-      }, 300)
+      this.isPressingAside = true
     },
 
-    handleTouchMove (e) {
+    handleAsideTouchMove (e) {
       e.preventDefault()
 
-      const diffTime = new Date().getTime() - this.touchStart.time
+      const diffTime = new Date().getTime() - this.touchStartTime
       const touch = e.changedTouches[0]
 
-      if (!this.isSliding && diffTime > 300) {
-        const diffX = touch.pageX - this.touchStart.x
-        const diffY = touch.pageY - this.touchStart.y
+      if (diffTime > 50) {
+        const diffY = touch.pageY - this.touchStartY
 
-        if (Math.abs(diffX) > SWIPE_THRESHOLD || Math.abs(diffY) > SWIPE_THRESHOLD) {
-          this.$connection.emit('SlideState', { sliding: true })
-          this.isSliding = true
-
-          this.slideStart = {
-            x: touch.pageX,
-            y: touch.pageY
-          }
-        }
-      }
-
-      if (this.isSliding) {
-        this.connection.emit('SlideData', {
-          x: Math.max(Math.min(touch.pageX - this.slideStart.x, SLIDE_AREA), -SLIDE_AREA),
-          y: Math.max(Math.min(this.slideStart.y - touch.pageY, SLIDE_AREA), -SLIDE_AREA)
-        })
+        this.$connection.emit('SlideData', diffY)
       }
     },
 
-    handleTouchEnd (e) {
-      this.cancelTimeout()
+    handleAsideTouchEnd (e) {
       e.preventDefault()
 
-      const touch = e.changedTouches[0]
-      const diffX = touch.pageX - this.touchStart.x
-      const diffY = touch.pageY - this.touchStart.y
-      const diffTime = new Date().getTime() - this.touchStart.time
+      /* const touch = e.changedTouches[0] */
+      /* const diffX = touch.pageX - this.touchStart.x */
+      /* const diffY = touch.pageY - this.touchStart.y */
+      /* const diffTime = new Date().getTime() - this.touchStart.time */
+      /*  */
+      /* let direction = '' */
+      /*  */
+      /* if (diffTime <= 300) { */
+      /*   if (Math.abs(diffX) >= SWIPE_THRESHOLD && Math.abs(diffY) <= SWIPE_RESTRAINT) { */
+      /*     direction = (diffX < 0) ? 'left' : 'right' */
+      /*   } else if (Math.abs(diffY) >= SWIPE_THRESHOLD && Math.abs(diffX) <= SWIPE_RESTRAINT) { */
+      /*     direction = (diffY < 0) ? 'up' : 'down' */
+      /*   } */
+      /* } */
+      /*  */
+      /* if (direction) { */
+      /*   this.handleSwipe(direction) */
+      /* } */
 
-      let direction = ''
-
-      if (diffTime <= 300) {
-        if (Math.abs(diffX) >= SWIPE_THRESHOLD && Math.abs(diffY) <= SWIPE_RESTRAINT) {
-          direction = (diffX < 0) ? 'left' : 'right'
-        } else if (Math.abs(diffY) >= SWIPE_THRESHOLD && Math.abs(diffX) <= SWIPE_RESTRAINT) {
-          direction = (diffY < 0) ? 'up' : 'down'
-        }
-      }
-
-      if (direction) {
-        this.handleSwipe(direction)
-      }
-
-      this.$connection.emit('SlideState', { sliding: false })
-
-      this.isPressing = false
-      this.isSliding = false
+      this.isPressingAside = false
     },
 
-    handleSwipe (direction) {
-      this.connection.emit('Swipe', direction)
+    handleAsideTouchCancel (e) {
+      e.preventDefault()
+      this.isPressingAside = false
     },
 
-    cancelTimeout () {
-      window.clearTimeout(touchTimeout)
+    handleMainTouchStart (e) {
+      e.preventDefault()
+      this.isPressingMain = true
+    },
+
+    handleMainTouchMove (e) {
+      e.preventDefault()
+    },
+
+    handleMainTouchEnd (e) {
+      e.preventDefault()
+      this.isPressingMain = false
+    },
+
+    handleMainTouchCancel (e) {
+      e.preventDefault()
+      this.isPressingMain = false
     },
 
     handleCalibrateClick () {
@@ -147,8 +137,8 @@ export default {
       deviceOrientation = new GyroNorm()
 
       const options = {
-        frequency: 15,
-        decimalCount: 3
+        frequency: 10,
+        decimalCount: 0
       }
 
       deviceOrientation.init(options).then(() => {
@@ -178,7 +168,7 @@ export default {
     },
 
     dataLoop () {
-      const newData = buildDataString(this.orientation, this.isPressing)
+      const newData = buildDataString(this.orientation, this.isPressingMain, this.isPressingAside)
       if (newData !== this.lastOrientationString) {
         this.$connection.emit('Orientation', newData)
         this.lastOrientationString = newData
@@ -187,28 +177,46 @@ export default {
     }
   },
 
-  mounted () {
+  created () {
     this.initDataLoop()
   }
 }
 </script>
 
 <style lang="scss">
-.mobile-touch-handler {
-  z-index: 10000;
-}
-.calibration {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 2rem;
-  z-index: 1000000;
-  background: white;
-  .button {
-    width: 100%;
-    background: $color-yellow;
-    padding: 1rem;
+  .mobile-controller {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background: blue;
+    right: 0;
+    display: flex;
   }
-}
+  .mobile-touch {
+  }
+  .mobile-touch--main {
+    background: red;
+    height: 100%;
+    flex: 5;
+  }
+  .mobile-touch--aside {
+    background: green;
+    height: 100%;
+    flex: 2;
+  }
+  .calibration {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem;
+    z-index: 1000000;
+    background: white;
+    .button {
+      width: 100%;
+      background: $color-yellow;
+      padding: 1rem;
+    }
+  }
 </style>

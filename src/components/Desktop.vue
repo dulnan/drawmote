@@ -24,7 +24,7 @@ export default {
   data () {
     return {
       pairingCode: '',
-      isPaired: false
+      isPaired: true
     }
   },
   mounted () {
@@ -52,9 +52,11 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .app-desktop {
   perspective: 700px;
+  background: $color-greylight;
+  padding: 2rem;
 }
 
 .footer {

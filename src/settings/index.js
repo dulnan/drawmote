@@ -1,7 +1,11 @@
 export const COLORS = [
   {
-    name: 'greyLight',
-    rgb: [237, 238, 236]
+    name: 'white',
+    rgb: [255, 255, 255]
+  },
+  {
+    name: 'black',
+    rgb: [56, 60, 71]
   },
   {
     name: 'blue',
@@ -18,10 +22,6 @@ export const COLORS = [
   {
     name: 'red',
     rgb: [253, 121, 75]
-  },
-  {
-    name: 'black',
-    rgb: [56, 60, 71]
   }
 ]
 
@@ -48,3 +48,37 @@ export const BRUSH_DEFAULT = {
   opacity: OPACITY_DEFAULT,
   style: 'smudge'
 }
+
+export const TOOLBAR_TOOLS = [
+  {
+    id: 'freeform',
+    icon: 'icon-freeform'
+  },
+  {
+    id: 'polygon',
+    icon: 'icon-polygon'
+  },
+  {
+    id: 'eraser',
+    icon: 'icon-erase'
+  },
+  {
+    id: 'delete',
+    icon: 'icon-delete'
+  }
+]
+
+export const TOOLBAR_SLIDERS = [
+  {
+    id: 'opacity',
+    icon: ''
+  },
+  {
+    id: 'size',
+    icon: ''
+  },
+  {
+    id: 'hardness',
+    icon: ''
+  }
+]

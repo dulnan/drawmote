@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute anchor" v-bind:style="anchorStyle">
+  <div class="absolute anchor" v-bind:style="anchorStyle" :class="{ 'is-preview': isPreview }">
     <div class="absolute brush" v-bind:style="brushStyle"></div>
     <div v-if="useLazyBrush" class="absolute lazy-area" v-bind:style="lazyStyle"></div>
   </div>
@@ -13,6 +13,7 @@ export default {
   name: 'Brush',
 
   props: {
+    isPreview: Boolean,
     brush: {
       type: Object,
       default: BRUSH_DEFAULT
@@ -27,19 +28,14 @@ export default {
         return RADIUS_DEFAULT
       }
     },
-    coordinates: {
-      type: Object,
-      default: () => {
-        return {
-          x: 0,
-          y: 0
-        }
-      }
-    }
+    coordinates: Object
   },
 
   computed: {
     anchorStyle: function () {
+      if (this.isPreview) {
+        return
+      }
       return {
         transform: `translate(${this.coordinates.x}px, ${this.coordinates.y}px)`
       }
@@ -70,6 +66,9 @@ export default {
   z-index: $index-brush;
   user-select: none;
   pointer-events: none;
+  &.is-preview {
+    position: relative;
+  }
 }
 
 .brush, .lazy-area {
