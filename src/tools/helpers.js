@@ -46,18 +46,34 @@ function getRgbaString (rgb, alpha) {
   return `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${alpha})`
 }
 
+function shadeRgbColor (rgb, percent) {
+  console.log(rgb)
+  let f = rgb
+  let t = percent < 0 ? 0 : 255
+  let p = percent < 0 ? percent * -1 : percent
+  let R = parseInt(f[0])
+  let G = parseInt(f[1])
+  let B = parseInt(f[2])
+
+  return [
+    (Math.round((t - R) * p) + R),
+    (Math.round((t - G) * p) + G),
+    (Math.round((t - B) * p) + B)
+  ]
+}
+
 const doFor = (count, cb) => {
   var i = 0; while (i < count && cb(i++) !== true);
 }
 
 const randomInt = (min, max = min + (min = 0)) => (Math.random() * (max - min) + min) | 0
 
-function buildDataString (orientation, isPressingMain, isPressingAside) {
+function buildDataString (orientation, isPressingMain, touchDiffY) {
   const values = [
     orientation.alpha,
     orientation.beta,
     isPressingMain ? 1 : 0,
-    isPressingAside ? 1 : 0
+    touchDiffY
   ]
   return values.join(';')
 }
@@ -68,8 +84,22 @@ function parseDataString (data) {
     alpha: arr[0],
     beta: arr[1],
     isPressingMain: arr[2] === '1',
-    isPressingAside: arr[3] === '1'
+    touchDiffY: parseInt(arr[3]) || 0
   }
 }
 
-export { getViewportSize, pointOutsideCircle, pointIsInRectangle, movePointAtAngle, scaleBetween, lineDistance, getRgbaString, midPointBetween, doFor, randomInt, buildDataString, parseDataString }
+export {
+  getViewportSize,
+  pointOutsideCircle,
+  pointIsInRectangle,
+  movePointAtAngle,
+  scaleBetween,
+  lineDistance,
+  getRgbaString,
+  shadeRgbColor,
+  midPointBetween,
+  doFor,
+  randomInt,
+  buildDataString,
+  parseDataString
+}

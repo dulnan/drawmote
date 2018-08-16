@@ -4,30 +4,69 @@
     <div class="absolute footer">
       Created by <a href="http://www.janhug.info">Jan Hug</a>, with help from Pascal Thormeier and others.
     </div>
-    <!--<modal></modal>-->
   </div>
 </template>
 
 <script>
-import Modal from '@/components/Modal'
+import { getViewportSize } from '@/tools/helpers'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
-  name: 'app',
+  name: 'App',
 
-  components: {
-    Modal
+  computed: {
+    ...mapState('App', [
+      'viewport',
+      'canvasRect',
+      'toolbarRect'
+    ]),
+    ...mapState('Brush', [
+      'useLazyBrush'
+    ]),
+    ...mapGetters('Brush', [
+      'lazyRadius'
+    ])
+  },
+
+  watch: {
+    viewport (viewport) {
+      this.$global.updateViewport(viewport)
+    },
+    canvasRect (rect) {
+      this.$global.updateCanvasRect(rect)
+    },
+    toolbarRect (rect) {
+      this.$global.updateToolbarRect(rect)
+    },
+    useLazyBrush (useLazyBrush) {
+      this.$global.updateUseLazyBrush(useLazyBrush)
+    },
+    lazyRadius (lazyRadius) {
+      this.$global.updateLazyRadius(lazyRadius)
+    }
+
+  },
+
+  created () {
+    this.$global.init()
   },
 
   mounted () {
+    this.updateViewport()
   },
 
   methods: {
+    updateViewport () {
+      const viewport = getViewportSize()
+      this.$store.commit('App/setViewport', viewport)
+    }
   }
 }
 </script>
 
 <style lang="scss">
 @import 'assets/scss/main.scss';
+
 .footer {
   z-index: $index-footer;
   top: auto;

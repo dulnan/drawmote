@@ -30,11 +30,13 @@ export const RADIUS_DEFAULT = 10
 export const RADIUS_MIN = 1
 export const RADIUS_MAX = 70
 
-export const HARDNESS_DEFAULT = 1
+export const HARDNESS_DEFAULT = 100
 export const HARDNESS_MIN = 0
-export const HARDNESS_MAX = 1
+export const HARDNESS_MAX = 100
 
-export const OPACITY_DEFAULT = 1
+export const OPACITY_DEFAULT = 100
+export const OPACITY_MIN = 1
+export const OPACITY_MAX = 100
 
 // export const SMOOTHING_INIT = 0.85
 export const SMOOTHING_INIT = 1.3
@@ -52,18 +54,22 @@ export const BRUSH_DEFAULT = {
 export const TOOLBAR_TOOLS = [
   {
     id: 'freeform',
+    component: 'ToolbarButton',
     icon: 'icon-freeform'
   },
   {
     id: 'polygon',
+    component: 'ToolbarButton',
     icon: 'icon-polygon'
   },
   {
     id: 'eraser',
+    component: 'ToolbarButton',
     icon: 'icon-erase'
   },
   {
     id: 'delete',
+    component: 'ToolbarButton',
     icon: 'icon-delete'
   }
 ]
@@ -71,14 +77,17 @@ export const TOOLBAR_TOOLS = [
 export const TOOLBAR_SLIDERS = [
   {
     id: 'opacity',
+    component: 'ToolbarSliderOpacity',
     icon: ''
   },
   {
     id: 'size',
+    component: 'ToolbarSliderSize',
     icon: ''
   },
   {
     id: 'hardness',
+    component: 'ToolbarSliderHardness',
     icon: ''
   }
 ]

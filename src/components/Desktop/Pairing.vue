@@ -12,7 +12,7 @@
       </h2>
       <button @click.prevent="skipPairing" type="button" class="button skip-button">Skip this step</button>
     </div>
-    <background-animation></background-animation>
+    <!--<background-animation></background-animation>-->
   </div>
 </template>
 

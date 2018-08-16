@@ -1,11 +1,11 @@
 <template>
-  <div class="app-desktop relative overlay">
-    <transition name="appear">
-      <pairing v-if="!isPaired" :code="pairingCode"></pairing>
-    </transition>
-    <transition name="appear">
+  <div class="desktop relative overlay">
+    <div class="desktop-container relative overlay material">
+      <transition name="appear">
+        <pairing v-if="!isPaired" :code="pairingCode"></pairing>
+      </transition>
       <drawing v-if="isPaired"></drawing>
-    </transition>
+    </div>
   </div>
 </template>
 
@@ -17,24 +17,20 @@ import Drawing from '@/components/Desktop/Drawing.vue'
 
 export default {
   name: 'Desktop',
+
   components: {
     Pairing,
     Drawing
   },
+
   data () {
     return {
       pairingCode: '',
-      isPaired: true
+      isPaired: false
     }
   },
-  mounted () {
-    // Pressing P will skip pairing
-    window.addEventListener('keydown', (e) => {
-      if (e.keyCode === 80) {
-        this.isPaired = !this.isPaired
-      }
-    })
 
+  mounted () {
     this.initConnection()
 
     EventBus.$on('isConnected', () => {
@@ -52,21 +48,14 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-.app-desktop {
+<style lang="scss">
+.desktop {
   perspective: 700px;
   background: $color-greylight;
   padding: 2rem;
 }
 
-.footer {
-  z-index: $index-pairing;
-  top: auto;
-  text-align: left;
-  right: 0;
-  bottom: 0;
-  padding: 1rem;
-  opacity: 0.5;
-  font-size: 0.9rem;
+.desktop-container {
+  background: white;
 }
 </style>

@@ -7,13 +7,6 @@
       @touchend="handleMainTouchEnd"
       @touchcancel="handleMainTouchCancel">
     </div>
-    <div
-      class="mobile-touch mobile-touch--aside"
-      @touchstart="handleAsideTouchStart"
-      @touchmove="handleAsideTouchMove"
-      @touchend="handleAsideTouchEnd"
-      @touchcancel="handleAsideTouchCancel">
-    </div>
 
     <div style="position: absolute; top: 400px; z-index: 9999; pointer-events: none">
       <div><span style="width: 200px; display: inline-block;">Alpha</span>{{ Math.round(orientation.alpha) }}</div>
@@ -45,9 +38,9 @@ export default {
   data () {
     return {
       isPressingMain: false,
-      isPressingAside: false,
       touchStartY: 0,
       touchStartTime: {},
+      touchDiffY: 0,
       orientation: {
         alpha: 0,
         beta: 0,
@@ -58,28 +51,6 @@ export default {
   },
 
   methods: {
-    handleAsideTouchStart (e) {
-      e.preventDefault()
-
-      this.touchStartY = e.changedTouches[0].pageY
-      this.touchStartTime = new Date().getTime()
-
-      this.isPressingAside = true
-    },
-
-    handleAsideTouchMove (e) {
-      e.preventDefault()
-
-      const diffTime = new Date().getTime() - this.touchStartTime
-      const touch = e.changedTouches[0]
-
-      if (diffTime > 50) {
-        const diffY = touch.pageY - this.touchStartY
-
-        this.$connection.emit('SlideData', diffY)
-      }
-    },
-
     handleAsideTouchEnd (e) {
       e.preventDefault()
 
@@ -105,28 +76,38 @@ export default {
       this.isPressingAside = false
     },
 
-    handleAsideTouchCancel (e) {
-      e.preventDefault()
-      this.isPressingAside = false
-    },
-
     handleMainTouchStart (e) {
       e.preventDefault()
+
+      this.touchDiffY = 0
+      this.touchStartY = e.changedTouches[0].pageY
+      this.touchStartTime = new Date().getTime()
+
       this.isPressingMain = true
     },
 
     handleMainTouchMove (e) {
       e.preventDefault()
+
+      const diffTime = new Date().getTime() - this.touchStartTime
+      const touch = e.changedTouches[0]
+
+      if (diffTime > 50) {
+        this.touchDiffY = touch.pageY - this.touchStartY
+      }
     },
 
     handleMainTouchEnd (e) {
       e.preventDefault()
+
       this.isPressingMain = false
     },
 
     handleMainTouchCancel (e) {
       e.preventDefault()
+
       this.isPressingMain = false
+      this.touchDiffY = 0
     },
 
     handleCalibrateClick () {
@@ -168,7 +149,7 @@ export default {
     },
 
     dataLoop () {
-      const newData = buildDataString(this.orientation, this.isPressingMain, this.isPressingAside)
+      const newData = buildDataString(this.orientation, this.isPressingMain, this.touchDiffY)
       if (newData !== this.lastOrientationString) {
         this.$connection.emit('Orientation', newData)
         this.lastOrientationString = newData

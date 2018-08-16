@@ -1,5 +1,5 @@
 <template>
-  <div class="mobile-pairing overlay flex">
+  <div class="mobile-pairing absolute overlay">
     <div class="mobile-pairing__content relative">
       <h1>drawmote</h1>
       <p class="lead">Visit drawmote.io on a desktop device to get your pairing code and establish a connection.</p>

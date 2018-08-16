@@ -2,8 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import * as actions from './actions'
 import * as getters from './getters'
-import socket from './modules/socket'
 import brush from './modules/brush'
+import app from './modules/app'
 
 Vue.use(Vuex)
 
@@ -13,8 +13,8 @@ const store = new Vuex.Store({
   actions,
   getters,
   modules: {
-    Socket: socket,
-    Brush: brush
+    Brush: brush,
+    App: app
   },
   strict: debug
 })

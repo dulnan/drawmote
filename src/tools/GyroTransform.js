@@ -6,7 +6,11 @@ export class GyroTransform {
     this.width = width
     this.height = height
 
-    const phoneZPos = distance
+    this.init()
+  }
+
+  init () {
+    const phoneZPos = this.distance
     const xCenter = this.width / 2
     const yCenter = this.height / 2
 
@@ -32,14 +36,21 @@ export class GyroTransform {
     )
   }
 
+  updateSizes ({ width, height }) {
+    this.width = width
+    this.height = height
+
+    this.init()
+  }
+
   getPointOnScreen (alpha, beta) {
     const phoneLinePrime = this.phoneLine.rotateAroundLine(this.yAxis, alpha)
         .rotateAroundLine(this.xAxis, 180 - beta)
     const interSectionVector = this.screenPlane.getIntersectionWith(phoneLinePrime)
 
     return {
-      x: interSectionVector.x,
-      y: interSectionVector.y
+      x: Math.round(interSectionVector.x),
+      y: Math.round(interSectionVector.y)
     }
   }
 }

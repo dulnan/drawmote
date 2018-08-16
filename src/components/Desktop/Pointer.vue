@@ -1,40 +1,37 @@
 <template>
-  <div class="absolute pointer" v-bind:style="style"></div>
+  <div class="pointer" ref="anchor"></div>
 </template>
 
 <script>
 export default {
   name: 'Pointer',
 
-  props: {
-    coordinates: {
-      type: Object,
-      default: () => {
-        return {
-          x: 0,
-          y: 0
-        }
+  methods: {
+    loop () {
+      if (this.$refs.anchor) {
+        this.$refs.anchor.style.transform = `translate(${this.$global.pointerCoordinates.x}px, ${this.$global.pointerCoordinates.y}px)`
       }
+      window.requestAnimationFrame(this.loop)
     }
   },
 
-  computed: {
-    style: function () {
-      return {
-        transform: `translate(${this.coordinates.x}px, ${this.coordinates.y}px)`
-      }
-    }
+  mounted () {
+    this.loop()
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .pointer {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 1px;
   height: 1px;
   z-index: $index-cursor;
   user-select: none;
   pointer-events: none;
+
   &:before, &:after {
     content: "";
     display: block;

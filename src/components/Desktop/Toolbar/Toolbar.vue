@@ -6,10 +6,11 @@
           <li v-for="tool in group.items" :class="'toolbar-list__item--' + group.type">
             <component
               ref="items"
-              :is="group.component"
+              :is="tool.component"
               :tool="tool"
               :action="group.action"
-              :hovered-key="pointerAreaHovered" />
+              :is-pressing="isPressing"
+              :hovered-key="itemBeingHovered" />
           </li>
         </ul>
       </li>
@@ -18,20 +19,30 @@
 </template>
 
 <script>
-/* import { EventBus } from '@/events' */
+import { mapState } from 'vuex'
 
-import BrushToolbarTool from '@/components/Desktop/BrushToolbarTool.vue'
-import BrushToolbarSlider from '@/components/Desktop/BrushToolbarSlider.vue'
+import { EventBus } from '@/events'
 
-import { RADIUS_MIN, RADIUS_MAX, COLORS, TOOLBAR_TOOLS, TOOLBAR_SLIDERS } from '@/settings'
+import ToolbarButton from '@/components/Desktop/Toolbar/Button.vue'
+import ToolbarButtonColor from '@/components/Desktop/Toolbar/ButtonColor.vue'
+import ToolbarSlider from '@/components/Desktop/Toolbar/Slider.vue'
+import ToolbarSliderSize from '@/components/Desktop/Toolbar/SliderSize.vue'
+import ToolbarSliderOpacity from '@/components/Desktop/Toolbar/SliderOpacity.vue'
+import ToolbarSliderHardness from '@/components/Desktop/Toolbar/SliderHardness.vue'
+
+import { COLORS, TOOLBAR_TOOLS, TOOLBAR_SLIDERS } from '@/settings'
 import { pointIsInRectangle } from '@/tools/helpers.js'
 
 export default {
   name: 'BrushToolbar',
 
   components: {
-    BrushToolbarTool,
-    BrushToolbarSlider
+    ToolbarButton,
+    ToolbarButtonColor,
+    ToolbarSlider,
+    ToolbarSliderSize,
+    ToolbarSliderOpacity,
+    ToolbarSliderHardness
   },
 
   data () {
@@ -41,35 +52,34 @@ export default {
       initialValueSet: false,
       startY: 0,
       pointerAreas: [],
-      pointerAreaHovered: ''
+      itemBeingHovered: ''
     }
   },
 
   computed: {
+    ...mapState('Brush', ['isPressing']),
     toolGroups () {
       return [
         {
-          component: 'BrushToolbarTool',
           type: 'button',
           action: 'tool',
           items: TOOLBAR_TOOLS
         },
 
         {
-          component: 'BrushToolbarSlider',
           type: 'slider',
           action: 'brush',
           items: TOOLBAR_SLIDERS
         },
 
         {
-          component: 'BrushToolbarTool',
           type: 'button',
           action: 'color',
           items: COLORS.map(color => {
             return {
               id: color.name,
-              background: color.rgb
+              component: 'ToolbarButtonColor',
+              color: color
             }
           })
         }
@@ -78,10 +88,6 @@ export default {
   },
 
   props: {
-    isPressing: {
-      type: Boolean,
-      default: false
-    },
     brush: {
       type: Object,
       default: () => {
@@ -101,19 +107,6 @@ export default {
         }
       }
     },
-    coordinates: {
-      type: Object,
-      default: () => {
-        return {
-          x: 0,
-          y: 0
-        }
-      }
-    },
-    touchY: {
-      type: Number,
-      default: 0
-    },
     useLazyBrush: {
       type: Boolean,
       default: true
@@ -121,55 +114,24 @@ export default {
   },
 
   watch: {
-    touchY (y) {
-      this.updateValue(y)
-    },
-
     isPressing (isPressing) {
       if (isPressing) {
         this.initialValueSet = false
       }
+
+      if (this.isPressing && this.itemBeingHovered) {
+        const eventName = 'pointerOver_' + this.itemBeingHovered
+        EventBus.$emit(eventName)
+      }
     },
-    pointerAreaHovered (areaNew, areaBefore) {
+
+    itemBeingHovered (areaNew, areaBefore) {
       console.log(areaNew)
+      console.log(areaBefore)
     }
   },
 
   methods: {
-    updateValue (offset) {
-      switch (this.tools[this.selectedTool]) {
-        case 'size':
-          if (!this.initialValueSet) {
-            this.initialToolValue = this.brush.radius
-            this.initialValueSet = true
-          }
-          this.brush.radius = Math.min(Math.max(this.initialToolValue + (offset / 5), RADIUS_MIN), RADIUS_MAX)
-          break
-        case 'opacity':
-          if (!this.initialValueSet) {
-            this.initialToolValue = this.brush.opacity
-            this.initialValueSet = true
-          }
-          this.brush.opacity = Math.min(Math.max(this.initialToolValue + offset / 100, 0), 1)
-          break
-        case 'hardness':
-          if (!this.initialValueSet) {
-            this.initialToolValue = this.brush.hardness
-            this.initialValueSet = true
-          }
-          this.brush.hardness = Math.min(Math.max(this.initialToolValue + offset / 100, 0), 1)
-          break
-      }
-    },
-
-    incrementValue () {
-      this.updateValue()
-    },
-
-    decrementValue () {
-      this.updateValue(true)
-    },
-
     calculatePointerAreas () {
       let items = []
       this.$refs.items.forEach(item => {
@@ -183,40 +145,37 @@ export default {
       let areaFound = false
 
       this.pointerAreas.forEach(area => {
-        if (pointIsInRectangle(this.coordinates, area.coords)) {
-          this.pointerAreaHovered = area.key
+        if (pointIsInRectangle(this.$global.pointerCoordinates, area.coords)) {
+          this.itemBeingHovered = area.key
           areaFound = true
         }
       })
 
       if (!areaFound) {
-        this.pointerAreaHovered = ''
+        this.itemBeingHovered = ''
       }
 
-      window.requestAnimationFrame(this.pointerLoop)
+      window.requestAnimationFrame(() => this.pointerLoop())
     }
-  },
-
-  beforeDestroy () {
   },
 
   mounted () {
     this.calculatePointerAreas()
     this.pointerLoop()
-  },
-
-  created () {
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .toolbar {
   border-right: 2px dotted $color-greylight;
   background: white;
   z-index: 1000;
-  width: 8.5rem;
-  box-sizing: content-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: $toolbar-width;
 }
 
 .toolbar-dropdown {
@@ -255,6 +214,7 @@ export default {
 
 .toolbar-list {
   flex-wrap: wrap;
+  position: relative;
   li {
     display: block;
     &:nth-child(n+3) {
@@ -268,6 +228,7 @@ export default {
 
 .toolbar-list__item--slider {
   flex: 0 0 100%;
+  margin: 0 !important;
 }
 
 </style>

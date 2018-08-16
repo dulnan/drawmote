@@ -1,14 +1,15 @@
 import SocketPeer from 'socketpeer'
 import axios from 'axios'
 
-const SERVER = 'http://192.168.1.3:3000'
+const SERVER = 'http://172.20.10.7:3000'
 
 export default class Connection {
-  constructor (EventBus) {
+  constructor (EventBus, DataHandler) {
     this.peer = null
     this.hash = ''
     this.code = ''
     this.EventBus = EventBus
+    this.DataHandler = DataHandler
   }
 
   async registerDesktop () {
@@ -46,7 +47,16 @@ export default class Connection {
     })
 
     this.peer.on('data', (data) => {
-      this.EventBus.$emit(data.name, data.data)
+      switch (data.name) {
+        case 'Orientation':
+          this.DataHandler.update(data.data)
+          break
+        case 'OrientationOffset':
+          this.DataHandler.updateOffset(data.data)
+          break
+        default:
+          this.EventBus.$emit(data.name, data.data)
+      }
     })
   }
 
