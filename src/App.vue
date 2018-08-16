@@ -32,19 +32,22 @@ export default {
     viewport (viewport) {
       this.$global.updateViewport(viewport)
     },
+
     canvasRect (rect) {
       this.$global.updateCanvasRect(rect)
     },
+
     toolbarRect (rect) {
       this.$global.updateToolbarRect(rect)
     },
+
     useLazyBrush (useLazyBrush) {
       this.$global.updateUseLazyBrush(useLazyBrush)
     },
+
     lazyRadius (lazyRadius) {
       this.$global.updateLazyRadius(lazyRadius)
     }
-
   },
 
   created () {

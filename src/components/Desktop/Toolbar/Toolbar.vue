@@ -1,5 +1,5 @@
 <template>
-  <div class="toolbar relative">
+  <div class="toolbar relative" ref="toolbar">
     <ul class="list list--divided">
       <li v-for="group in toolGroups" :class="{ 'pdg': group.type !== 'slider' }">
         <ul class="list toolbar-list flex">
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 import { EventBus } from '@/events'
 
@@ -58,6 +58,8 @@ export default {
 
   computed: {
     ...mapState('Brush', ['isPressing']),
+    ...mapState('App', ['isHoveringToolbar']),
+    ...mapGetters('App', ['toolbarArea']),
     toolGroups () {
       return [
         {
@@ -84,32 +86,6 @@ export default {
           })
         }
       ]
-    }
-  },
-
-  props: {
-    brush: {
-      type: Object,
-      default: () => {
-        return {}
-      }
-    },
-    lazyRadius: {
-      type: Number,
-      default: 0
-    },
-    viewport: {
-      type: Object,
-      default: () => {
-        return {
-          width: 0,
-          height: 0
-        }
-      }
-    },
-    useLazyBrush: {
-      type: Boolean,
-      default: true
     }
   },
 
@@ -144,12 +120,20 @@ export default {
     pointerLoop () {
       let areaFound = false
 
-      this.pointerAreas.forEach(area => {
-        if (pointIsInRectangle(this.$global.pointerCoordinates, area.coords)) {
-          this.itemBeingHovered = area.key
-          areaFound = true
-        }
-      })
+      const isHoveringToolbar = pointIsInRectangle(this.$global.pointerCoordinates, this.toolbarArea)
+
+      if (isHoveringToolbar !== this.isHoveringToolbar) {
+        this.$store.commit('App/setIsHoveringToolbar', isHoveringToolbar)
+      }
+
+      if (isHoveringToolbar) {
+        this.pointerAreas.forEach(area => {
+          if (pointIsInRectangle(this.$global.pointerCoordinates, area.coords)) {
+            this.itemBeingHovered = area.key
+            areaFound = true
+          }
+        })
+      }
 
       if (!areaFound) {
         this.itemBeingHovered = ''
@@ -215,6 +199,7 @@ export default {
 .toolbar-list {
   flex-wrap: wrap;
   position: relative;
+  background: white;
   li {
     display: block;
     &:nth-child(n+3) {

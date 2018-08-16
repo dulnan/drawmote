@@ -1,6 +1,8 @@
 <script>
 import { EventBus } from '@/events'
 
+import { getAreaFromDomRect } from '@/tools/helpers'
+
 export default {
   name: 'BrushToolbarItem',
 
@@ -31,12 +33,7 @@ export default {
   methods: {
     getRectangle () {
       const rect = this.$el.getBoundingClientRect()
-
-      let coords = {}
-      coords.x1 = Math.round(rect.left)
-      coords.y1 = Math.round(rect.top)
-      coords.x2 = Math.round(rect.left + rect.width)
-      coords.y2 = Math.round(rect.top + rect.height)
+      const coords = getAreaFromDomRect(rect)
 
       return {
         coords: coords,

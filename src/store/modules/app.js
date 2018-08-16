@@ -1,3 +1,5 @@
+import { getAreaFromDomRect } from '@/tools/helpers'
+
 const namespaced = true
 
 const state = {
@@ -17,11 +19,15 @@ const state = {
     height: 0,
     top: 0,
     left: 0
-  }
+  },
+  isHoveringToolbar: false
 }
 
 // getters
 const getters = {
+  toolbarArea (state) {
+    return getAreaFromDomRect(state.toolbarRect)
+  }
 }
 
 // actions
@@ -42,6 +48,10 @@ const mutations = {
 
   setViewport (state, { width, height, ratio }) {
     state.viewport = { width, height, ratio }
+  },
+
+  setIsHoveringToolbar (state, isHoveringToolbar) {
+    state.isHoveringToolbar = isHoveringToolbar
   }
 }
 

@@ -35,7 +35,8 @@ export default {
     ]),
     ...mapState('App', [
       'viewport',
-      'canvasRect'
+      'canvasRect',
+      'isHoveringToolbar'
     ]),
     contextSize () {
       return {
@@ -63,7 +64,7 @@ export default {
     },
 
     isPressing: function (isPressing) {
-      if (isPressing) {
+      if (isPressing && !this.isHoveringToolbar) {
         this.currentPath.push(this.$global.canvasCoordinates)
         this.isDrawing = true
       } else {
@@ -165,6 +166,11 @@ export default {
 
       contextTemp.lineTo(prevCoord.x, prevCoord.y)
       contextTemp.stroke()
+    },
+
+    eraseCanvas () {
+      const context = this.getContext('main')
+      this.clearCanvas(context)
     }
   },
 
@@ -174,10 +180,8 @@ export default {
 
   mounted () {
     // Add event listeners
-    EventBus.$on('clearCanvas', () => {
-      const context = this.getContext('main')
-      this.clearCanvas(context)
-    })
+    EventBus.$on('clearCanvas', this.eraseCanvas)
+
     this.$nextTick(() => {
       this.setupCanvases()
       this.loop()

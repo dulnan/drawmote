@@ -1,15 +1,29 @@
 import SocketPeer from 'socketpeer'
 import axios from 'axios'
 
+// import { getCookie, setCookie } from '@/tools/helpers'
+
 const SERVER = 'http://172.20.10.7:3000'
 
 export default class Connection {
   constructor (EventBus, DataHandler) {
     this.peer = null
+    this.isDesktop = false
     this.hash = ''
     this.code = ''
     this.EventBus = EventBus
     this.DataHandler = DataHandler
+
+    this.init()
+  }
+
+  init () {
+    // const cookie = getCookie('pairing')
+    //
+    // if (cookie) {
+    //   this.hash = cookie.hash
+    //   this.initPeering()
+    // }
   }
 
   async registerDesktop () {
@@ -17,6 +31,7 @@ export default class Connection {
 
     this.hash = response.data.hash
     this.code = response.data.code
+    this.isDesktop = true
 
     return response.data.code
   }
@@ -36,6 +51,13 @@ export default class Connection {
     return false
   }
 
+  saveSession () {
+    // setCookie('pairing', {
+    //   hash: this.hash,
+    //   isDesktop: this.isDesktop
+    // }, 1)
+  }
+
   initPeering () {
     this.peer = new SocketPeer({
       pairCode: this.hash,
@@ -44,6 +66,7 @@ export default class Connection {
 
     this.peer.on('connect', () => {
       this.EventBus.$emit('isConnected', true)
+      this.saveSession()
     })
 
     this.peer.on('data', (data) => {

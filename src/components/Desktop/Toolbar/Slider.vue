@@ -133,6 +133,7 @@ export default {
 }
 
 .tool-slider__preview {
+  z-index: -1;
   position: absolute;
   top: -1px;
   left: 100%;
