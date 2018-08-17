@@ -1,6 +1,6 @@
 <template>
   <button
-    class="button tool-slider pointer-area pdg"
+    class="button tool-slider pointer-area"
     :class="classes"
     :style="style"
   >
@@ -37,6 +37,7 @@ export default {
       rangeWidth: 0,
       lastTouchY: 0,
       valueStart: 0,
+      touchYStart: 0,
       valueMin: 0,
       valueMax: 0,
       brush: {}
@@ -50,7 +51,7 @@ export default {
       if (touchY !== this.lastTouchY) {
         this.lastTouchY = touchY
 
-        const newValue = Math.max(Math.min(Math.round(this.valueStart - (touchY / 2)), this.valueMax), this.valueMin)
+        const newValue = Math.max(Math.min(Math.round(this.valueStart - ((touchY - this.touchYStart) / 2)), this.valueMax), this.valueMin)
         this.handleValueChange(newValue)
       }
 
@@ -90,6 +91,7 @@ export default {
     isSliding: function (isSliding) {
       if (isSliding) {
         this.valueStart = this.valueStore
+        this.touchYStart = this.$global.slideY
         this.lastTouchY = 0
         this.loop()
       }
@@ -105,6 +107,7 @@ export default {
 
 <style lang="scss">
 .tool-slider {
+  padding: 1.5rem 1rem;
   width: 100%;
   text-align: left;
   transition: 0.15s transform;
@@ -137,7 +140,7 @@ export default {
   position: absolute;
   top: -1px;
   left: 100%;
-  width: 12rem;
+  width: 15rem;
   bottom: -1px;
   background: white;
   border: 1px solid $color-greylight;

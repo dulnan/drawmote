@@ -52,6 +52,10 @@ export default class DataHandler {
     this.updateCanvasCoordinates()
   }
 
+  updateIsPressing (isPressing) {
+    this.isPressing = isPressing
+  }
+
   updateCanvasCoordinates () {
     this.prevCanvasCoordinates = this.canvasCoordinates
 

@@ -47,7 +47,6 @@ function getRgbaString (rgb, alpha) {
 }
 
 function shadeRgbColor (rgb, percent) {
-  console.log(rgb)
   let f = rgb
   let t = percent < 0 ? 0 : 255
   let p = percent < 0 ? percent * -1 : percent

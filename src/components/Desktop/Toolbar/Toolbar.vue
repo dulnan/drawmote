@@ -102,8 +102,6 @@ export default {
     },
 
     itemBeingHovered (areaNew, areaBefore) {
-      console.log(areaNew)
-      console.log(areaBefore)
     }
   },
 

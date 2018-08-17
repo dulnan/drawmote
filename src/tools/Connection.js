@@ -1,7 +1,7 @@
 import SocketPeer from 'socketpeer'
 import axios from 'axios'
 
-// import { getCookie, setCookie } from '@/tools/helpers'
+import { getCookie, setCookie } from '@/tools/helpers'
 
 const SERVER = 'http://172.20.10.7:3000'
 
@@ -18,12 +18,12 @@ export default class Connection {
   }
 
   init () {
-    // const cookie = getCookie('pairing')
-    //
-    // if (cookie) {
-    //   this.hash = cookie.hash
-    //   this.initPeering()
-    // }
+    const cookie = getCookie('pairing')
+
+    if (cookie) {
+      this.hash = cookie.hash
+      this.initPeering()
+    }
   }
 
   async registerDesktop () {
@@ -52,10 +52,10 @@ export default class Connection {
   }
 
   saveSession () {
-    // setCookie('pairing', {
-    //   hash: this.hash,
-    //   isDesktop: this.isDesktop
-    // }, 1)
+    setCookie('pairing', {
+      hash: this.hash,
+      isDesktop: this.isDesktop
+    }, 1)
   }
 
   initPeering () {

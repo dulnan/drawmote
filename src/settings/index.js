@@ -1,7 +1,7 @@
 export const COLORS = [
   {
     name: 'white',
-    rgb: [255, 255, 255]
+    rgb: [234, 226, 183]
   },
   {
     name: 'black',
@@ -9,7 +9,7 @@ export const COLORS = [
   },
   {
     name: 'blue',
-    rgb: [196, 232, 247]
+    rgb: [0, 48, 73]
   },
   {
     name: 'green',
@@ -17,16 +17,16 @@ export const COLORS = [
   },
   {
     name: 'yellow',
-    rgb: [253, 188, 75]
+    rgb: [252, 191, 73]
   },
   {
     name: 'red',
-    rgb: [253, 121, 75]
+    rgb: [214, 40, 40]
   }
 ]
 
 export const DEFAULT_COLOR = COLORS[3]
-export const RADIUS_DEFAULT = 10
+export const RADIUS_DEFAULT = 20
 export const RADIUS_MIN = 1
 export const RADIUS_MAX = 70
 

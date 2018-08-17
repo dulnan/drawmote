@@ -1,24 +1,9 @@
 <template>
   <div class="absolute overlay drawing">
-
-    <overlay :visible="toolbarVisible"></overlay>
-
-    <toolbar
-      :lazy-radius="lazyRadius"
-      :brush="brush"
-      :touch-y="touchSlidingY"
-      :viewport="viewport"
-      ref="toolbar"
-    />
-
+    <toolbar ref="toolbar" />
     <pointer v-if="useLazyBrush" />
-
     <div class="absolute canvas-container" ref="canvasContainer">
-      <brush
-        :brush="brush"
-        :use-lazy-brush="useLazyBrush"
-        :lazy-radius="lazyRadius"
-      ></brush>
+      <brush />
       <drawing-canvas />
     </div>
   </div>
@@ -31,10 +16,7 @@ import { EventBus } from '@/events'
 
 import { RADIUS_MAX, BRUSH_DEFAULT } from '@/settings'
 
-import { getViewportSize } from '@/tools/helpers.js'
-
 import Brush from '@/components/Brush.vue'
-import Overlay from '@/components/Overlay.vue'
 import Pointer from '@/components/Desktop/Pointer.vue'
 import Toolbar from '@/components/Desktop/Toolbar/Toolbar.vue'
 import ColorPicker from '@/components/Desktop/ColorPicker.vue'
@@ -50,19 +32,12 @@ export default {
     Brush,
     Pointer,
     Toolbar,
-    Overlay,
     ColorPicker,
     DrawingCanvas
   },
 
   data () {
     return {
-      viewport: {
-        width: 0,
-        height: 0,
-        ratio: 1
-      },
-      touchSlidingY: 0,
       brush: BRUSH_DEFAULT,
       useLazyBrush: true,
       toolbarVisible: false,
@@ -100,36 +75,6 @@ export default {
   },
 
   created () {
-    this.viewport = getViewportSize()
-
-    // Add event listeners
-    EventBus.$on('setBrushColor', (newColor) => {
-      this.updateBrushColor(newColor)
-      this.toolbarVisible = false
-    })
-
-    EventBus.$on('toggleBrushStyle', () => {
-      const newStyle = this.brush.style === 'stroke' ? 'smudge' : 'stroke'
-      this.updateBrushStyle(newStyle)
-    })
-
-    EventBus.$on('updateBrush', (newBrush) => {
-      this.updateBrush(newBrush)
-    })
-
-    EventBus.$on('OrientationOffset', (data) => {
-      this.initialAngles.alpha = data.alpha
-      this.initialAngles.beta = data.beta
-    })
-
-    EventBus.$on('Orientation', (data) => {
-
-    })
-
-    EventBus.$on('SlideData', (slideData) => {
-      this.touchSlidingY = slideData
-    })
-
     // Allow usage with mouse and arrow keys for debugging
     if (DEBUG) {
       document.addEventListener('wheel', (event) => {
@@ -149,12 +94,12 @@ export default {
         })
       })
 
-      document.addEventListener('mousedown', (e) => {
-        this.$store.commit('Brush/setIsPressing', true)
+      document.addEventListener('mousedown', () => {
+        this.$global.updateIsPressing(true)
       })
 
       document.addEventListener('mouseup', (e) => {
-        this.$store.commit('Brush/setIsPressing', false)
+        this.$global.updateIsPressing(false)
       })
     }
   }

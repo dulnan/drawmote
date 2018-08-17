@@ -26,7 +26,7 @@ export default {
   data () {
     return {
       pairingCode: '',
-      isPaired: false
+      isPaired: true
     }
   },
 

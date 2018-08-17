@@ -41,9 +41,7 @@ export default {
       }
     },
 
-    handleClick () {
-      console.log(this.itemKey)
-    }
+    handleClick () {}
   },
 
   created () {

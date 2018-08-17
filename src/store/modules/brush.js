@@ -16,7 +16,7 @@ const state = {
 // getters
 const getters = {
   lazyRadius (state) {
-    return Math.max(Math.min(state.radius * 2.25, RADIUS_MAX + 20), 15)
+    return Math.max(Math.min(state.radius * 3, RADIUS_MAX + 20), 15)
   }
 }
 

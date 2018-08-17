@@ -52,6 +52,7 @@ export default {
 
   created () {
     this.$global.init()
+    this.$global.updateLazyRadius(this.lazyRadius)
   },
 
   mounted () {
