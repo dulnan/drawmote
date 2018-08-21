@@ -1,176 +1,117 @@
 <template>
-  <div class="app-drawing-canvas relative" ref="canvasContainer">
-    <canvas class="absolute overlay canvas canvas--main" ref="canvas_main"></canvas>
-    <canvas class="absolute overlay canvas canvas--temp" ref="canvas_temp"></canvas>
+  <div>
+    <canvas class="fixed overlay canvas canvas--main" ref="canvas_main"></canvas>
+    <canvas class="fixed overlay canvas canvas--temp" ref="canvas_temp"></canvas>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import Canvas from './Canvas'
 
 import { EventBus } from '@/events'
 
-import { SMOOTHING_INIT } from '@/settings'
-import { getRgbaString, midPointBetween } from '@/tools/helpers.js'
+import { midPointBetween, isSamePoint } from '@/tools/helpers.js'
+
+import { THREAD_BRUSH, THREAD_POINT } from '@/settings/drawthreads'
 
 export default {
+  extends: Canvas,
+
   name: 'DrawingCanvas',
+
+  draw: [
+    {
+      threads: [THREAD_BRUSH],
+      handler: function (state) {
+        console.log('brush')
+        this.setStrokeStyle(state.brush)
+      }
+    },
+    {
+      threads: [THREAD_POINT],
+      handler: function (state) {
+        if (!state.isPressing && this.wasPressingBefore) {
+          this.copyToCanvas(this.$refs.canvas_temp, this.$refs.canvas_main, state.sizes.viewport)
+          this.currentPath = []
+        }
+
+        if (state.isPressing && !isSamePoint(state.points.brush, this.previousPoint)) {
+          this.currentPath.push(state.points.brush)
+
+          const context = this.getContext('temp')
+          this.clear(context, state.sizes.viewport)
+
+          this.drawStroke(this.currentPath)
+          this.clearOutside(context, state.sizes.canvasRect, state.sizes.viewport)
+        }
+
+        this.previousPoint = state.points.brush
+        this.wasPressingBefore = state.isPressing
+      }
+    }
+  ],
 
   data () {
     return {
-      smoothing: SMOOTHING_INIT + 90,
-      isDrawing: false,
-      fillStyle: 'gradient'
-    }
-  },
-
-  computed: {
-    ...mapState('Brush', [
-      'isPressing',
-      'color',
-      'hardness',
-      'opacity',
-      'radius',
-      'useLazyBrush'
-    ]),
-    ...mapState('App', [
-      'viewport',
-      'canvasRect',
-      'isHoveringToolbar'
-    ]),
-    contextSize () {
-      return {
-        width: this.canvasRect.width * this.viewport.ratio,
-        height: this.canvasRect.height * this.viewport.ratio
-      }
-    }
-  },
-
-  watch: {
-    opacity: function (opacity) {
-      this.setCanvasColor(this.color, opacity)
-    },
-
-    color: function (color) {
-      this.setCanvasColor(color, this.opacity)
-    },
-
-    hardness: function (hardness) {
-      this.setCanvasLineWidth(this.radius, hardness)
-    },
-
-    radius: function (radius) {
-      this.setCanvasLineWidth(radius, this.hardness)
-    },
-
-    isPressing: function (isPressing) {
-      if (isPressing && !this.isHoveringToolbar) {
-        this.currentPath.push(this.$global.canvasCoordinates)
-        this.isDrawing = true
-      } else {
-        this.copyToMainCanvas()
-
-        this.currentPath = []
-        this.isDrawing = false
-      }
+      wasPressingBefore: false,
+      previousPoint: {}
     }
   },
 
   methods: {
-    loop: function () {
-      if (this.isDrawing) {
-        const newCoordinates = this.$global.canvasCoordinates
-        const prevCoordinates = this.$global.prevCanvasCoordinates
+    setStrokeStyle (brush) {
+      const context = this.getContext('temp')
 
-        if (this.isDrawing && (newCoordinates.x !== prevCoordinates.x || newCoordinates.y !== prevCoordinates.y)) {
-          this.currentPath.push(newCoordinates)
+      this.setLineWidth(context, brush.radius, brush.hardness)
+      this.setColor(context, brush.color, brush.opacity)
+    },
 
-          this.drawStroke()
-        }
-      }
-      window.requestAnimationFrame(this.loop)
+    setLineWidth (context, radius, hardness) {
+      const blur = ((1 - (hardness / 100)) * radius)
+
+      context.lineJoin = 'round'
+      context.lineCap = 'round'
+      context.lineWidth = ((hardness / 100) + 1) * radius
+      context.filter = `blur(${blur}px)`
+    },
+
+    setColor (context, color, opacity) {
+      context.globalAlpha = 1
+      context.strokeStyle = color.getRgbaString(opacity)
+      context.fillStyle = color.getRgbaString(opacity)
     },
 
     getContext (name) {
       return this.$refs['canvas_' + name].getContext('2d')
     },
 
-    setupCanvases () {
-      let canvases = ['temp', 'main']
-
-      canvases.forEach(id => {
-        let canvas = this.$refs['canvas_' + id]
-        let context = this.$refs['canvas_' + id].getContext('2d')
-
-        canvas.width = this.contextSize.width
-        canvas.height = this.contextSize.height
-
-        context.lineJoin = 'round'
-        context.lineCap = 'round'
-        context.scale(this.viewport.ratio, this.viewport.ratio)
-      })
-
-      this.setCanvasColor(this.color, this.opacity)
-      this.setCanvasLineWidth(this.radius, this.hardness)
-    },
-
-    setCanvasLineWidth (radius, hardness) {
+    drawStroke (points) {
       const context = this.getContext('temp')
 
-      const blur = ((1 - (hardness / 100)) * radius) * this.viewport.ratio
+      let p1 = points[0]
+      let p2 = points[1]
 
-      context.lineWidth = ((hardness / 100) + 1) * radius
-      context.filter = `blur(${blur}px)`
-    },
+      context.beginPath()
+      context.moveTo(p1.x, p1.y)
 
-    setCanvasColor (color, opacity) {
-      const context = this.getContext('temp')
-
-      const rgba = getRgbaString(color.rgb, opacity / 100)
-
-      context.globalAlpha = 1
-      context.strokeStyle = rgba
-      context.fillStyle = rgba
-    },
-
-    clearCanvas (context) {
-      context.clearRect(0, 0, this.contextSize.width, this.contextSize.height)
-    },
-
-    copyToMainCanvas () {
-      const contextTemp = this.getContext('temp')
-      const contextMain = this.getContext('main')
-
-      contextMain.drawImage(this.$refs.canvas_temp, 0, 0, this.canvasRect.width, this.canvasRect.height)
-      this.clearCanvas(contextTemp)
-    },
-
-    drawStroke () {
-      const contextTemp = this.getContext('temp')
-
-      let midPoint = {}
-      let prevCoord = this.currentPath[0]
-      let currentCoord = this.currentPath[1]
-
-      this.clearCanvas(contextTemp)
-      contextTemp.beginPath()
-
-      contextTemp.moveTo(prevCoord.x, prevCoord.y)
-
-      for (var i = 1; i < this.currentPath.length; i++) {
-        midPoint = midPointBetween(prevCoord, currentCoord)
-        contextTemp.quadraticCurveTo(prevCoord.x, prevCoord.y, midPoint.x, midPoint.y)
-        prevCoord = this.currentPath[i]
-        currentCoord = this.currentPath[i + 1]
+      for (let i = 1; i < points.length; i++) {
+        // we pick the point between pi+1 & pi+2 as the
+        // end point and p1 as our control point
+        const midPoint = midPointBetween(p1, p2)
+        context.quadraticCurveTo(p1.x, p1.y, midPoint.x, midPoint.y)
+        p1 = points[i]
+        p2 = points[i + 1]
       }
-
-      contextTemp.lineTo(prevCoord.x, prevCoord.y)
-      contextTemp.stroke()
+      // Draw last line as a straight line while
+      // we wait for the next point to be able to calculate
+      // the bezier control point
+      context.lineTo(p1.x, p1.y)
+      context.stroke()
     },
 
-    eraseCanvas () {
+    handleClearCanvas (state) {
       const context = this.getContext('main')
-      this.clearCanvas(context)
+      this.clear(context, state.sizes.viewport)
     }
   },
 
@@ -180,12 +121,10 @@ export default {
 
   mounted () {
     // Add event listeners
-    EventBus.$on('clearCanvas', this.eraseCanvas)
+    EventBus.$on('clearCanvas', this.handleClearCanvas)
 
-    this.$nextTick(() => {
-      this.setupCanvases()
-      this.loop()
-    })
+    this.setupCanvases(this.$global.state.sizes.viewport)
+    this.setStrokeStyle(this.$global.brush)
   }
 }
 </script>

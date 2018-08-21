@@ -1,26 +1,19 @@
 <template>
   <div class="absolute overlay drawing">
     <toolbar ref="toolbar" />
-    <pointer v-if="useLazyBrush" />
-    <div class="absolute canvas-container" ref="canvasContainer">
-      <brush />
-      <drawing-canvas />
-    </div>
+    <div class="absolute drawing-area" ref="canvasContainer"></div>
+    <drawing-canvas />
+    <interface-canvas />
+
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
-
 import { EventBus } from '@/events'
 
-import { RADIUS_MAX, BRUSH_DEFAULT } from '@/settings'
-
-import Brush from '@/components/Brush.vue'
-import Pointer from '@/components/Desktop/Pointer.vue'
 import Toolbar from '@/components/Desktop/Toolbar/Toolbar.vue'
-import ColorPicker from '@/components/Desktop/ColorPicker.vue'
 import DrawingCanvas from '@/components/Desktop/DrawingCanvas.vue'
+import InterfaceCanvas from '@/components/Desktop/InterfaceCanvas.vue'
 
 // Setting this to true allows movement with mouse and arrow keys
 const DEBUG = true
@@ -29,48 +22,26 @@ export default {
   name: 'Drawing',
 
   components: {
-    Brush,
-    Pointer,
     Toolbar,
-    ColorPicker,
-    DrawingCanvas
-  },
-
-  data () {
-    return {
-      brush: BRUSH_DEFAULT,
-      useLazyBrush: true,
-      toolbarVisible: false,
-      brushToolbarVisible: false
-    }
-  },
-
-  computed: {
-    lazyRadius: function () {
-      return Math.max(Math.min(this.brush.radius * 2.5, RADIUS_MAX + 20), 15)
-    },
-    ...mapState('Brush', ['isPressing'])
+    DrawingCanvas,
+    InterfaceCanvas
   },
 
   methods: {
-    loop () {
-      if (this.isPressing !== this.$global.isPressing) {
-        this.$store.commit('Brush/setIsPressing', this.$global.isPressing)
-      }
-      window.requestAnimationFrame(() => this.loop())
-    },
-
     getElementSizes () {
-      const canvasRect = this.$refs.canvasContainer.getBoundingClientRect()
-      const toolbarRect = this.$refs.toolbar.$el.getBoundingClientRect()
+      if (this.$refs.canvasContainer) {
+        const canvasRect = this.$refs.canvasContainer.getBoundingClientRect()
+        this.$global.updateCanvasRect(canvasRect)
+      }
 
-      this.$store.commit('App/setCanvasRect', canvasRect)
-      this.$store.commit('App/setToolbarRect', toolbarRect)
+      if (this.$refs.toolbar) {
+        const toolbarRect = this.$refs.toolbar.$el.getBoundingClientRect()
+        this.$global.updateToolbarRect(toolbarRect)
+      }
     }
   },
 
   mounted () {
-    this.loop()
     this.getElementSizes()
   },
 
@@ -111,7 +82,7 @@ export default {
   overflow: hidden;
 }
 
-.canvas-container {
+.drawing-area {
   left: $toolbar-width;
   bottom: 0;
   right: 0;

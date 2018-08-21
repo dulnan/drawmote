@@ -1,11 +1,14 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import store from './store'
 
 import { EventBus } from './events'
 import Connection from './tools/Connection'
 import DataHandler from './tools/DataHandler'
+
+import VueLoop from './plugins/VueLoop'
+
+Vue.use(VueLoop)
 
 Vue.config.productionTip = false
 
@@ -18,6 +21,5 @@ Vue.prototype.$connection = new Connection(EventBus, global)
 new Vue({
   el: '#app',
   router,
-  store,
   render: h => h(App)
 })

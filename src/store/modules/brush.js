@@ -1,4 +1,4 @@
-import { DEFAULT_COLOR, RADIUS_DEFAULT, RADIUS_MAX, HARDNESS_DEFAULT, OPACITY_DEFAULT } from '@/settings'
+import { DEFAULT_COLOR, RADIUS_DEFAULT, HARDNESS_DEFAULT, OPACITY_DEFAULT } from '@/settings'
 
 const namespaced = true
 
@@ -16,7 +16,7 @@ const state = {
 // getters
 const getters = {
   lazyRadius (state) {
-    return Math.max(Math.min(state.radius * 3, RADIUS_MAX + 20), 15)
+    return state.radius * 6
   }
 }
 

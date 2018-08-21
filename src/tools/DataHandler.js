@@ -1,122 +1,142 @@
 import { GyroTransform } from '@/tools/GyroTransform.js'
-import { parseDataString, pointOutsideCircle, movePointAtAngle } from '@/tools/helpers.js'
+import { LazyBrush } from 'lazy-brush'
+
+import Brush from '@/classes/Brush'
+import Threads from '@/classes/Threads'
+import Rectangle from '@/classes/Rectangle'
+
+import { THREAD_SLIDE, THREAD_POINT, THREAD_BRUSH, THREAD_STATE, THREAD_TOOLS } from '@/settings/drawthreads'
 
 export default class DataHandler {
   constructor () {
     this.gyro = {}
 
-    this.pointerCoordinates = { x: 0, y: 0 }
-    this.brushCoordinates = { x: 0, y: 0 }
-    this.canvasCoordinates = { x: 0, y: 0 }
-    this.prevCanvasCoordinates = { x: 0, y: 0 }
+    this.lazy = new LazyBrush(50)
+    this.brush = new Brush()
+    this.threads = new Threads()
 
     this.isPressing = false
     this.slideY = 0
 
-    this.angleOffset = { alpha: 0, beta: 0 }
-
-    this.useLazyBrush = true
-    this.lazyRadius = 50
-
-    this.canvasRect = {}
     this.viewport = {
       width: 1280,
       height: 900,
       ratio: 1
     }
+
+    this.canvasRect = new Rectangle(0, 0, 0, 0)
+    this.toolbarRect = new Rectangle(0, 0, 0, 0)
+  }
+
+  get state () {
+    return {
+      brush: this.brush,
+      isPressing: this.isPressing,
+      lazyRadius: this.lazy.radius,
+      sizes: {
+        viewport: this.viewport,
+        canvasRect: this.canvasRect
+      },
+      points: {
+        brush: this.lazy.brush.toObject(),
+        mouse: this.lazy.mouse.toObject()
+      }
+    }
   }
 
   init () {
     this.gyro = new GyroTransform(this.viewport.width * 1, this.viewport.width, this.viewport.height)
+
+    this.threads.trigger(THREAD_BRUSH)
+    this.loop()
   }
 
-  update (dataString) {
-    const data = parseDataString(dataString)
-    const calibratedAlpha = 0 - data.alpha + this.angleOffset.alpha
-    const calibratedBeta = data.beta - this.angleOffset.beta
+  loop () {
+    this.threads.step(this.state, () => {
+      window.requestAnimationFrame(() => this.loop())
+    })
+  }
 
-    this.pointerCoordinates = this.gyro.getPointOnScreen(calibratedAlpha, calibratedBeta)
-    this.updateBrushCoordinates()
-    this.updateCanvasCoordinates()
+  updatePointer (coordinates) {
+    this.lazy.update(coordinates, (hasChanged) => {
+      if (hasChanged) {
+        this.threads.trigger(THREAD_POINT)
+        if (this.toolbarRect.containsPoint(this.lazy.mouse)) {
+          this.threads.trigger(THREAD_TOOLS)
+        }
+      }
+    })
+  }
 
-    if (this.isPressing !== data.isPressingMain) {
-      this.isPressing = data.isPressingMain
-    }
+  updateFromRemote (data) {
+    const coordinates = this.gyro.getPointOnScreen(data)
 
-    this.slideY = data.touchDiffY
+    this.updatePointer(coordinates)
+    this.updateIsPressing(data.isPressingMain)
+    this.updateSlideY(data.touchDiffY)
+  }
+
+  addHandler (event, uid, context) {
+    this.threads.addHandler(event, uid, context)
+  }
+
+  removeHandler (event, uid) {
+    this.threads.removeHandler(event, uid)
   }
 
   updateFromMouse (coordinates) {
-    this.pointerCoordinates = coordinates
-    this.updateBrushCoordinates()
-    this.updateCanvasCoordinates()
+    this.updatePointer(coordinates)
   }
 
   updateIsPressing (isPressing) {
-    this.isPressing = isPressing
-  }
-
-  updateCanvasCoordinates () {
-    this.prevCanvasCoordinates = this.canvasCoordinates
-
-    this.canvasCoordinates = {
-      x: Math.round(this.brushCoordinates.x),
-      y: Math.round(this.brushCoordinates.y)
+    if (this.isPressing !== isPressing) {
+      this.isPressing = isPressing
+      this.threads.trigger(THREAD_POINT)
+      this.threads.trigger(THREAD_TOOLS)
     }
   }
 
-  updateBrushCoordinates () {
-    const coordinates = {
-      x: Math.round(this.pointerCoordinates.x - this.canvasRect.left),
-      y: Math.round(this.pointerCoordinates.y - this.canvasRect.top)
-    }
-    if (this.useLazyBrush) {
-      // Find the difference of the pointer coordinates to the brush
-      const diff = {
-        x: coordinates.x - this.brushCoordinates.x,
-        y: coordinates.y - this.brushCoordinates.y
-      }
-
-      // The distance between the position of the brush and the pointer,
-      // minus the lazyRadius
-      const distance = Math.sqrt(diff.x * diff.x + diff.y * diff.y) - this.lazyRadius
-
-      // If the pointer is outside the lazy area, update the position of the brush
-      if (pointOutsideCircle(coordinates, this.brushCoordinates, this.lazyRadius)) {
-        // Use the difference of the pointer to the brush to get the angle in radians
-        const angle = Math.atan2(diff.y, diff.x)
-
-        // Update the brush coordinates by moving it by the calculated distance to the pointer
-        // and at the right angle.
-        this.brushCoordinates = movePointAtAngle(this.brushCoordinates, angle, distance)
-      }
-    } else {
-      this.brushCoordinates = this.coordinates
+  updateSlideY (slideY) {
+    if (this.slideY !== slideY) {
+      this.slideY = slideY
+      this.threads.trigger(THREAD_SLIDE)
     }
   }
 
-  updateOffset (angle) {
-    this.angleOffset = angle
+  updateCalibrationOffset (angle) {
+    this.gyro.updateCalibrationOffset(angle)
   }
 
   updateCanvasRect (rect) {
-    this.canvasRect = rect
+    this.canvasRect.setFromDOMRect(rect)
+    this.threads.trigger(THREAD_STATE)
   }
 
   updateToolbarRect (rect) {
-    this.toolbarRect = rect
+    this.toolbarRect.setFromDOMRect(rect)
+    this.threads.trigger(THREAD_STATE)
   }
 
   updateViewport (viewport) {
     this.viewport = viewport
     this.gyro.updateSizes(viewport)
+    this.threads.trigger(THREAD_STATE)
   }
 
   updateUseLazyBrush (useLazyBrush) {
-    this.useLazyBrush = useLazyBrush
+    if (useLazyBrush) {
+      this.lazy.enable()
+    } else {
+      this.lazy.disable()
+    }
   }
 
   updateLazyRadius (radius) {
-    this.lazyRadius = radius
+    // this.lazy.setRadius(radius)
+  }
+
+  updateBrushColor (color) {
+    this.brush.setColor(color)
+    this.threads.trigger(THREAD_BRUSH)
   }
 }

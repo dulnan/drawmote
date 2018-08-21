@@ -21,7 +21,7 @@ export default {
 
   computed: {
     valueStore () {
-      return this.$store.state.Brush.hardness
+      return 0
     }
   }
 }

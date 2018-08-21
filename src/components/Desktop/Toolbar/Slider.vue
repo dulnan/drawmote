@@ -12,7 +12,7 @@
     <transition name="appear">
       <div class="tool-slider__preview" v-show="isSliding">
         <div class="relative">
-          <brush :is-preview="true" />
+          <!--<brush :is-preview="true" />-->
         </div>
       </div>
     </transition>
@@ -73,10 +73,6 @@ export default {
   computed: {
     isSliding () {
       return this.hoveredKey === this.itemKey && this.isPressing
-    },
-
-    valueStore () {
-      return 0
     },
 
     knobStyle () {

@@ -1,7 +1,7 @@
 import SocketPeer from 'socketpeer'
 import axios from 'axios'
 
-import { getCookie, setCookie } from '@/tools/helpers'
+import { getCookie, setCookie, parseDataString } from '@/tools/helpers'
 
 const SERVER = 'http://172.20.10.7:3000'
 
@@ -72,10 +72,10 @@ export default class Connection {
     this.peer.on('data', (data) => {
       switch (data.name) {
         case 'Orientation':
-          this.DataHandler.update(data.data)
+          this.DataHandler.update(parseDataString(data.data))
           break
         case 'OrientationOffset':
-          this.DataHandler.updateOffset(data.data)
+          this.DataHandler.updateCalibrationOffset(data.data)
           break
         default:
           this.EventBus.$emit(data.name, data.data)

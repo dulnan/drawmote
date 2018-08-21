@@ -7,20 +7,8 @@ function getViewportSize () {
   }
 }
 
-function pointOutsideCircle (p, c, r) {
-  const distancesqured = (p.x - c.x) * (p.x - c.x) + (p.y - c.y) * (p.y - c.y)
-  return distancesqured >= r * r
-}
-
 function pointIsInRectangle (p, r) {
   return r.x1 <= p.x && p.x <= r.x2 && r.y1 <= p.y && p.y <= r.y2
-}
-
-function movePointAtAngle (point, angle, distance) {
-  return {
-    x: point.x + (Math.cos(angle) * distance),
-    y: point.y + (Math.sin(angle) * distance)
-  }
 }
 
 function lineDistance (x1, y1, x2, y2) {
@@ -123,14 +111,16 @@ function eraseCookie (name) {
   document.cookie = name + '=; Max-Age=-99999999;'
 }
 
+function isSamePoint (p1, p2) {
+  return p1.x === p2.x && p1.y === p2.y
+}
+
 export {
   setCookie,
   getCookie,
   eraseCookie,
   getViewportSize,
-  pointOutsideCircle,
   pointIsInRectangle,
-  movePointAtAngle,
   scaleBetween,
   lineDistance,
   getRgbaString,
@@ -140,5 +130,6 @@ export {
   randomInt,
   buildDataString,
   parseDataString,
-  getAreaFromDomRect
+  getAreaFromDomRect,
+  isSamePoint
 }

@@ -9,50 +9,12 @@
 
 <script>
 import { getViewportSize } from '@/tools/helpers'
-import { mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'App',
 
-  computed: {
-    ...mapState('App', [
-      'viewport',
-      'canvasRect',
-      'toolbarRect'
-    ]),
-    ...mapState('Brush', [
-      'useLazyBrush'
-    ]),
-    ...mapGetters('Brush', [
-      'lazyRadius'
-    ])
-  },
-
-  watch: {
-    viewport (viewport) {
-      this.$global.updateViewport(viewport)
-    },
-
-    canvasRect (rect) {
-      this.$global.updateCanvasRect(rect)
-    },
-
-    toolbarRect (rect) {
-      this.$global.updateToolbarRect(rect)
-    },
-
-    useLazyBrush (useLazyBrush) {
-      this.$global.updateUseLazyBrush(useLazyBrush)
-    },
-
-    lazyRadius (lazyRadius) {
-      this.$global.updateLazyRadius(lazyRadius)
-    }
-  },
-
   created () {
     this.$global.init()
-    this.$global.updateLazyRadius(this.lazyRadius)
   },
 
   mounted () {
@@ -62,7 +24,7 @@ export default {
   methods: {
     updateViewport () {
       const viewport = getViewportSize()
-      this.$store.commit('App/setViewport', viewport)
+      this.$global.updateViewport(viewport)
     }
   }
 }

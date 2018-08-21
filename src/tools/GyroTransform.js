@@ -6,6 +6,8 @@ export class GyroTransform {
     this.width = width
     this.height = height
 
+    this.calibrationOffset = { alpha: 0, beta: 0 }
+
     this.init()
   }
 
@@ -43,9 +45,17 @@ export class GyroTransform {
     this.init()
   }
 
-  getPointOnScreen (alpha, beta) {
-    const phoneLinePrime = this.phoneLine.rotateAroundLine(this.yAxis, alpha)
-        .rotateAroundLine(this.xAxis, 180 - beta)
+  updateCalibrationOffset ({ alpha, beta }) {
+    this.calibrationOffset.alpha = alpha || 0
+    this.calibrationOffset.beta = beta || 0
+  }
+
+  getPointOnScreen ({ alpha, beta }) {
+    const cAlpha = 0 - alpha + this.calibrationOffset.alpha
+    const cBeta = beta - this.calibrationOffset.beta
+
+    const phoneLinePrime = this.phoneLine.rotateAroundLine(this.yAxis, cAlpha)
+        .rotateAroundLine(this.xAxis, 180 - cBeta)
     const interSectionVector = this.screenPlane.getIntersectionWith(phoneLinePrime)
 
     return {

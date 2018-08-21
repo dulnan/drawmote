@@ -9,7 +9,6 @@
               :is="tool.component"
               :tool="tool"
               :action="group.action"
-              :is-pressing="isPressing"
               :hovered-key="itemBeingHovered" />
           </li>
         </ul>
@@ -19,8 +18,6 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
-
 import { EventBus } from '@/events'
 
 import ToolbarButton from '@/components/Desktop/Toolbar/Button.vue'
@@ -31,7 +28,11 @@ import ToolbarSliderOpacity from '@/components/Desktop/Toolbar/SliderOpacity.vue
 import ToolbarSliderHardness from '@/components/Desktop/Toolbar/SliderHardness.vue'
 
 import { COLORS, TOOLBAR_TOOLS, TOOLBAR_SLIDERS } from '@/settings'
+import { THREAD_TOOLS, THREAD_BRUSH } from '@/settings/drawthreads'
+
 import { pointIsInRectangle } from '@/tools/helpers.js'
+
+import Color from '@/classes/Color'
 
 export default {
   name: 'BrushToolbar',
@@ -45,21 +46,43 @@ export default {
     ToolbarSliderHardness
   },
 
+  draw: [
+    {
+      threads: [THREAD_BRUSH],
+      handler: function (state) {
+        this.activeColor = state.brush.color
+      }
+    },
+    {
+      threads: [THREAD_TOOLS],
+      handler: function (state) {
+        let itemBeingHovered = ''
+
+        this.pointerAreas.forEach(area => {
+          if (area.coords.containsPoint(state.points.mouse)) {
+            itemBeingHovered = area.key
+          }
+        })
+
+        this.itemBeingHovered = itemBeingHovered
+
+        if (itemBeingHovered && state.isPressing) {
+          EventBus.$emit('pointerOver_' + itemBeingHovered, state)
+        }
+      }
+    }
+  ],
+
   data () {
     return {
-      selectedTool: 1,
-      initialToolValue: 0,
       initialValueSet: false,
-      startY: 0,
       pointerAreas: [],
-      itemBeingHovered: ''
+      itemBeingHovered: '',
+      activeColor: ''
     }
   },
 
   computed: {
-    ...mapState('Brush', ['isPressing']),
-    ...mapState('App', ['isHoveringToolbar']),
-    ...mapGetters('App', ['toolbarArea']),
     toolGroups () {
       return [
         {
@@ -81,27 +104,11 @@ export default {
             return {
               id: color.name,
               component: 'ToolbarButtonColor',
-              color: color
+              color: new Color(color)
             }
           })
         }
       ]
-    }
-  },
-
-  watch: {
-    isPressing (isPressing) {
-      if (isPressing) {
-        this.initialValueSet = false
-      }
-
-      if (this.isPressing && this.itemBeingHovered) {
-        const eventName = 'pointerOver_' + this.itemBeingHovered
-        EventBus.$emit(eventName)
-      }
-    },
-
-    itemBeingHovered (areaNew, areaBefore) {
     }
   },
 
@@ -143,7 +150,6 @@ export default {
 
   mounted () {
     this.calculatePointerAreas()
-    this.pointerLoop()
   }
 }
 </script>
@@ -174,8 +180,6 @@ export default {
     box-shadow: 0 0 0 1px rgba($color-greydark, 0.5);
   }
 }
-
-
 
 .tool-slider__slider {
   background: $color-greylight;

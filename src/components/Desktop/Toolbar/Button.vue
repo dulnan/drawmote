@@ -29,9 +29,9 @@ export default {
   },
 
   methods: {
-    handleClick () {
+    handleClick (state) {
       if (this.tool.id === 'delete') {
-        EventBus.$emit('clearCanvas')
+        EventBus.$emit('clearCanvas', state)
       }
     }
   }
