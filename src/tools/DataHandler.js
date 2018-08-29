@@ -39,7 +39,7 @@ export default class DataHandler {
       },
       points: {
         brush: this.lazy.brush.toObject(),
-        mouse: this.lazy.mouse.toObject()
+        pointer: this.lazy.pointer.toObject()
       }
     }
   }
@@ -58,14 +58,14 @@ export default class DataHandler {
   }
 
   updatePointer (coordinates) {
-    this.lazy.update(coordinates, (hasChanged) => {
-      if (hasChanged) {
-        this.threads.trigger(THREAD_POINT)
-        if (this.toolbarRect.containsPoint(this.lazy.mouse)) {
-          this.threads.trigger(THREAD_TOOLS)
-        }
+    const hasChanged = this.lazy.update(coordinates)
+
+    if (hasChanged) {
+      this.threads.trigger(THREAD_POINT)
+      if (this.toolbarRect.containsPoint(this.lazy.pointer)) {
+        this.threads.trigger(THREAD_TOOLS)
       }
-    })
+    }
   }
 
   updateFromRemote (data) {

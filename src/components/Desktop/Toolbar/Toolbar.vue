@@ -59,7 +59,7 @@ export default {
         let itemBeingHovered = ''
 
         this.pointerAreas.forEach(area => {
-          if (area.coords.containsPoint(state.points.mouse)) {
+          if (area.coords.containsPoint(state.points.pointer)) {
             itemBeingHovered = area.key
           }
         })

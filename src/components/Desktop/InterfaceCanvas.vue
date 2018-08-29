@@ -46,7 +46,7 @@ export default {
         // Draw mouse point
         context.beginPath()
         context.fillStyle = '#222222'
-        context.arc(state.points.mouse.x, state.points.mouse.y, 2, 0, Math.PI * 2, true)
+        context.arc(state.points.pointer.x, state.points.pointer.y, 2, 0, Math.PI * 2, true)
         context.fill()
       }
     }
