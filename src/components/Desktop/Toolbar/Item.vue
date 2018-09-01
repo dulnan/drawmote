@@ -1,0 +1,73 @@
+<script>
+import Rectangle from '@/classes/Rectangle'
+
+export default {
+  name: 'BrushToolbarItem',
+
+  props: {
+    tool: Object,
+    action: String,
+    hoveredKey: String,
+    isPressing: Boolean,
+    groupId: String
+  },
+
+  computed: {
+    itemKey () {
+      return `${this.action}${this.tool.id}`
+    },
+
+    classes () {
+      return [
+        {
+          'hover': this.itemKey === this.hoveredKey,
+          'active': this.isActive
+        },
+        'toolbar-item',
+        'toolbar-item--' + this.groupId
+      ]
+    },
+
+    style () {
+      return {}
+    }
+  },
+
+  methods: {
+    getRectangle () {
+      const rect = this.$el.getBoundingClientRect()
+
+      const rectangle = new Rectangle(rect.left, rect.top, rect.width, rect.height)
+
+      return {
+        coords: rectangle,
+        key: this.itemKey,
+        el: this.$el
+      }
+    }
+  }
+}
+</script>
+
+<style lang="scss">
+.toolbar-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ddd;
+  overflow: visible;
+  width: 5rem;
+  height: 5rem;
+
+  &.hover {
+    opacity: 0.8;
+    background: $color-greylighter;
+  }
+
+  svg {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+</style>

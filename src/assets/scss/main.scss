@@ -1,0 +1,175 @@
+@import 'range';
+
+@font-face {
+    font-family: 'Colfax';
+    src: url('/static/fonts/ColfaxWebLight.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Colfax';
+    src: url('/static/fonts/ColfaxWebRegular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Colfax';
+    src: url('/static/fonts/ColfaxWebMedium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Colfax';
+    src: url('/static/fonts/ColfaxWebBold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Colfax';
+    src: url('/static/fonts/ColfaxWebBlack.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+}
+
+body {
+  font-family: 'Colfax', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  color: $color-black;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid;
+}
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+h2 {
+  font-size: 3.5rem;
+}
+
+.lead {
+  font-size: 2.5rem;
+  line-height: 3rem;
+  font-weight: 100;
+}
+
+.relative {
+  position: relative;
+}
+
+.fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.absolute {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.overlay {
+  width: 100%;
+  height: 100%;
+}
+
+.list {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+.list--divided {
+  > li {
+    border-bottom: 1px solid $color-greylight;
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+}
+
+.flex {
+  display: flex;
+}
+
+.flex--center {
+  align-items: center;
+  justify-content: center;
+}
+
+.mrgr {
+  margin-right: 1rem;
+}
+
+.mrgl {
+  margin-left: 1rem;
+}
+
+.mrgb {
+  margin-bottom: 1rem;
+}
+
+.pdg- {
+  padding: 0.5rem;
+}
+
+.pdg {
+  padding: 1rem !important;
+}
+
+.button {
+  display: inline-block;
+  overflow: hidden;
+  padding: 0;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  text-decoration: none;
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  line-height: 1;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  cursor: pointer;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  &:focus {
+    outline: none;
+  }
+}
+
+.material {
+  box-shadow: 0 9px 15px 0px rgba($color-greydark, 0.1),
+  0 3px 6px 0px rgba($color-greydark, 0.2);
+}
+
+
+.label {
+  margin-bottom: 1rem;
+  font-weight: bold;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: $color-greydark;
+  text-align: left;
+}
