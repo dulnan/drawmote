@@ -158,7 +158,7 @@ export default {
 .toolbar {
   border-right: 2px dotted $color-greylight;
   background: white;
-  z-index: 1000;
+  z-index: $index-toolbar;
   position: absolute;
   top: 0;
   left: 0;

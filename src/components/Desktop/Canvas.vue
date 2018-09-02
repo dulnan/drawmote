@@ -28,15 +28,16 @@ export default {
       context.clearRect(0, 0, viewport.width, viewport.height)
     },
 
-    clearOutside (context, rect, viewport) {
-      // top
-      context.clearRect(0, 0, viewport.width, rect.top)
-      // left
-      context.clearRect(0, 0, rect.left, viewport.height)
-      // bottom
-      context.clearRect(0, rect.top + rect.height, viewport.width, viewport.height - rect.height - rect.top)
-      // right
-      context.clearRect(rect.left + rect.width, 0, rect.left + rect.width, viewport.height)
+    clearOutside (context, rectangle) {
+      const x = rectangle.p1.x
+      const y = rectangle.p1.y
+
+      const width = rectangle.p2.x - x
+      const height = rectangle.p2.y - y
+
+      context.beginPath()
+      context.rect(x, y, width, height)
+      context.clip()
     }
   }
 }

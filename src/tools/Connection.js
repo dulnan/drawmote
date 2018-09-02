@@ -3,7 +3,7 @@ import axios from 'axios'
 
 import { getCookie, setCookie, parseDataString } from '@/tools/helpers'
 
-const SERVER = 'http://172.20.10.7:3000'
+const SERVER = __API__ // eslint-disable-line
 
 export default class Connection {
   constructor (EventBus, DataHandler) {
@@ -18,6 +18,7 @@ export default class Connection {
   }
 
   init () {
+    console.log(SERVER)
     const cookie = getCookie('pairing')
 
     if (cookie) {
@@ -59,6 +60,7 @@ export default class Connection {
   }
 
   initPeering () {
+    window.doMeasure = false
     this.peer = new SocketPeer({
       pairCode: this.hash,
       url: SERVER + '/socketpeer/'
@@ -72,7 +74,7 @@ export default class Connection {
     this.peer.on('data', (data) => {
       switch (data.name) {
         case 'Orientation':
-          this.DataHandler.update(parseDataString(data.data))
+          this.DataHandler.updateFromRemote(parseDataString(data.data))
           break
         case 'OrientationOffset':
           this.DataHandler.updateCalibrationOffset(data.data)

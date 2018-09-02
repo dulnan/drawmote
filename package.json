@@ -14,6 +14,7 @@
     "@hughsk/fulltilt": "^0.7.1",
     "axios": "^0.18.0",
     "gyronorm": "^2.0.6",
+    "ip": "^1.1.5",
     "socket.io-client": "^2.1.1",
     "socket.io-p2p": "^2.2.0",
     "socketpeer": "^1.1.0",

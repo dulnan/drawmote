@@ -4,6 +4,7 @@
 
 <script>
 import Canvas from './Canvas'
+import { Catenary } from 'catenary-curve'
 
 import { THREAD_BRUSH, THREAD_POINT } from '@/settings/drawthreads'
 
@@ -20,33 +21,34 @@ export default {
 
         this.clear(context, state.sizes.viewport)
 
+        // Save current context before clipping.
+        context.save()
+
+        // Clip region outside actual drawing area
+        this.clearOutside(context, state.sizes.canvasRect)
+
         // Draw brush point
         context.beginPath()
         context.fillStyle = state.brush.color.getRgbaString(state.brush.opacity)
         context.arc(state.points.brush.x, state.points.brush.y, state.brush.radius, 0, Math.PI * 2, true)
         context.fill()
 
-        // Draw lazy circle
-        context.beginPath()
-        context.lineWidth = 1
-        context.strokeStyle = '#cccccc'
-        context.arc(state.points.brush.x, state.points.brush.y, state.lazyRadius, 0, Math.PI * 2, true)
-        context.stroke()
-
         // Draw catharina
         context.beginPath()
-        context.lineWidth = 2
+        context.lineWidth = 1
         context.lineCap = 'round'
-        context.strokeStyle = '#cccccc'
-        // this.catenary.calculateCatenary()
+        context.strokeStyle = 'rgba(50,50,50,1)'
+        context.setLineDash([2, 4])
+        this.catenary.drawToCanvas(context, state.points.pointer, state.points.brush, state.lazyRadius)
         context.stroke()
 
-        this.clearOutside(context, state.sizes.canvasRect, state.sizes.viewport)
+        // Restore the saved context.
+        context.restore()
 
         // Draw mouse point
         context.beginPath()
         context.fillStyle = '#222222'
-        context.arc(state.points.pointer.x, state.points.pointer.y, 2, 0, Math.PI * 2, true)
+        context.arc(state.points.pointer.x, state.points.pointer.y, 4, 0, Math.PI * 2, true)
         context.fill()
       }
     }
@@ -54,6 +56,10 @@ export default {
 
   mounted () {
     this.setupCanvases(this.$global.state.sizes.viewport)
+  },
+
+  created () {
+    this.catenary = new Catenary()
   }
 }
 </script>

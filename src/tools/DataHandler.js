@@ -1,4 +1,4 @@
-import { GyroTransform } from '@/tools/GyroTransform.js'
+import { GyroPlane } from 'gyro-plane'
 import { LazyBrush } from 'lazy-brush'
 
 import Brush from '@/classes/Brush'
@@ -11,7 +11,9 @@ export default class DataHandler {
   constructor () {
     this.gyro = {}
 
-    this.lazy = new LazyBrush(50)
+    this.lazy = new LazyBrush({
+      radius: 120
+    })
     this.brush = new Brush()
     this.threads = new Threads()
 
@@ -45,7 +47,11 @@ export default class DataHandler {
   }
 
   init () {
-    this.gyro = new GyroTransform(this.viewport.width * 1, this.viewport.width, this.viewport.height)
+    this.gyro = new GyroPlane({
+      width: this.viewport.width * 1,
+      height: this.viewport.width,
+      distance: this.viewport.height
+    })
 
     this.threads.trigger(THREAD_BRUSH)
     this.loop()
@@ -69,7 +75,9 @@ export default class DataHandler {
   }
 
   updateFromRemote (data) {
-    const coordinates = this.gyro.getPointOnScreen(data)
+    this.gyro.updateOrientation(data)
+
+    const coordinates = this.gyro.getScreenCoordinates()
 
     this.updatePointer(coordinates)
     this.updateIsPressing(data.isPressingMain)
@@ -104,7 +112,7 @@ export default class DataHandler {
   }
 
   updateCalibrationOffset (angle) {
-    this.gyro.updateCalibrationOffset(angle)
+    this.gyro.updateOffset(angle)
   }
 
   updateCanvasRect (rect) {
@@ -119,7 +127,7 @@ export default class DataHandler {
 
   updateViewport (viewport) {
     this.viewport = viewport
-    this.gyro.updateSizes(viewport)
+    this.gyro.setScreenDimensions(viewport)
     this.threads.trigger(THREAD_STATE)
   }
 
