@@ -1,6 +1,4 @@
 <script>
-import { EventBus } from '@/events'
-
 import Rectangle from '@/classes/Rectangle'
 
 export default {
@@ -38,16 +36,10 @@ export default {
 
       return {
         coords: rectangle,
-        key: this.itemKey
+        key: this.itemKey,
+        el: this.$el
       }
-    },
-
-    handleClick () {}
-  },
-
-  created () {
-    const eventName = 'pointerOver_' + this.itemKey
-    EventBus.$on(eventName, this.handleClick)
+    }
   }
 }
 </script>

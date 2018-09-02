@@ -50,6 +50,7 @@ export default class Threads {
       }
 
       this.threads[thread].add(event, uid, context)
+      this.trigger(thread)
     })
   }
 

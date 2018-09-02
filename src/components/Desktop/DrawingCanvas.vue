@@ -23,7 +23,6 @@ export default {
     {
       threads: [THREAD_BRUSH],
       handler: function (state) {
-        console.log('brush')
         this.setStrokeStyle(state.brush)
       }
     },
@@ -35,7 +34,7 @@ export default {
           this.currentPath = []
         }
 
-        if (state.isPressing && !isSamePoint(state.points.brush, this.previousPoint)) {
+        if (state.isPressing && !isSamePoint(state.points.brush, this.previousPoint) && !state.pointingAtToolbar) {
           this.currentPath.push(state.points.brush)
 
           const context = this.getContext('temp')
@@ -62,23 +61,21 @@ export default {
     setStrokeStyle (brush) {
       const context = this.getContext('temp')
 
-      this.setLineWidth(context, brush.radius, brush.hardness)
-      this.setColor(context, brush.color, brush.opacity)
+      this.setLineWidth(context, brush)
+      this.setColor(context, brush)
     },
 
-    setLineWidth (context, radius, hardness) {
-      const blur = ((1 - (hardness / 100)) * radius)
-
+    setLineWidth (context, brush) {
       context.lineJoin = 'round'
       context.lineCap = 'round'
-      context.lineWidth = ((hardness / 100) + 1) * radius
-      context.filter = `blur(${blur}px)`
+      context.lineWidth = brush.canvasRadius * 2
+      context.filter = `blur(${brush.canvasBlur}px)`
     },
 
-    setColor (context, color, opacity) {
+    setColor (context, brush) {
       context.globalAlpha = 1
-      context.strokeStyle = color.getRgbaString(opacity)
-      context.fillStyle = color.getRgbaString(opacity)
+      context.strokeStyle = brush.canvasColor
+      context.fillStyle = brush.canvasColor
     },
 
     getContext (name) {
@@ -109,9 +106,9 @@ export default {
       context.stroke()
     },
 
-    handleClearCanvas (state) {
+    handleClearCanvas () {
       const context = this.getContext('main')
-      this.clear(context, state.sizes.viewport)
+      this.clear(context, this.$global.state.sizes.viewport)
     }
   },
 
@@ -120,8 +117,9 @@ export default {
   },
 
   mounted () {
-    // Add event listeners
-    EventBus.$on('clearCanvas', this.handleClearCanvas)
+    EventBus.$on('clearCanvas', () => {
+      this.handleClearCanvas()
+    })
 
     this.setupCanvases(this.$global.state.sizes.viewport)
     this.setStrokeStyle(this.$global.brush)

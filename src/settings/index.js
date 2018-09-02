@@ -26,9 +26,9 @@ export const COLORS = [
 ]
 
 export const DEFAULT_COLOR = COLORS[3]
-export const RADIUS_DEFAULT = 20
+export const RADIUS_DEFAULT = 16
 export const RADIUS_MIN = 1
-export const RADIUS_MAX = 70
+export const RADIUS_MAX = 36
 
 export const HARDNESS_DEFAULT = 100
 export const HARDNESS_MIN = 0
@@ -69,7 +69,7 @@ export const TOOLBAR_TOOLS = [
   },
   {
     id: 'delete',
-    component: 'ToolbarButton',
+    component: 'ToolbarButtonClear',
     icon: 'icon-delete'
   }
 ]

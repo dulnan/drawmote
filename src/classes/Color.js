@@ -11,6 +11,6 @@ export default class Color {
   }
 
   getRgbaString (alpha) {
-    return getRgbaString(this.rgb, alpha)
+    return getRgbaString(this.rgb, alpha / 100)
   }
 }

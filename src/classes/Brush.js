@@ -16,6 +16,18 @@ export default class Brush {
     this.style = 'smudge'
   }
 
+  get canvasRadius () {
+    return ((this.hardness / 100) + 1) * this.radius
+  }
+
+  get canvasBlur () {
+    return ((1 - (this.hardness / 100)) * this.radius)
+  }
+
+  get canvasColor () {
+    return this.color.getRgbaString(this.opacity)
+  }
+
   setColor (color) {
     this.color = color
   }

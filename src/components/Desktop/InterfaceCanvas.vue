@@ -6,7 +6,7 @@
 import Canvas from './Canvas'
 import { Catenary } from 'catenary-curve'
 
-import { THREAD_BRUSH, THREAD_POINT } from '@/settings/drawthreads'
+import { THREAD_BRUSH, THREAD_POINT, THREAD_SLIDE } from '@/settings/drawthreads'
 
 export default {
   extends: Canvas,
@@ -15,7 +15,7 @@ export default {
 
   draw: [
     {
-      threads: [THREAD_BRUSH, THREAD_POINT],
+      threads: [THREAD_BRUSH, THREAD_POINT, THREAD_SLIDE],
       handler: function (state) {
         const context = this.$refs.canvas_interface.getContext('2d')
 
@@ -29,25 +29,33 @@ export default {
 
         // Draw brush point
         context.beginPath()
-        context.fillStyle = state.brush.color.getRgbaString(state.brush.opacity)
-        context.arc(state.points.brush.x, state.points.brush.y, state.brush.radius, 0, Math.PI * 2, true)
+        context.fillStyle = state.brush.canvasColor
+        context.filter = `blur(${state.brush.canvasBlur}px)`
+        context.arc(state.points.brush.x, state.points.brush.y, state.brush.canvasRadius, 0, Math.PI * 2, true)
         context.fill()
+        context.filter = 'none'
 
         // Draw catharina
         context.beginPath()
         context.lineWidth = 1
         context.lineCap = 'round'
-        context.strokeStyle = 'rgba(50,50,50,1)'
+        context.strokeStyle = 'rgba(50,50,50,0.6)'
         context.setLineDash([2, 4])
         this.catenary.drawToCanvas(context, state.points.pointer, state.points.brush, state.lazyRadius)
         context.stroke()
+
+        // Draw brush anchor
+        context.beginPath()
+        context.fillStyle = 'rgba(50,50,50,0.6)'
+        context.arc(state.points.brush.x, state.points.brush.y, 4, 0, Math.PI * 2, true)
+        context.fill()
 
         // Restore the saved context.
         context.restore()
 
         // Draw mouse point
         context.beginPath()
-        context.fillStyle = '#222222'
+        context.fillStyle = 'rgba(50,50,50,0.6)'
         context.arc(state.points.pointer.x, state.points.pointer.y, 4, 0, Math.PI * 2, true)
         context.fill()
       }

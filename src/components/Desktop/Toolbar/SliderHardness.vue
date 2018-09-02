@@ -1,5 +1,6 @@
 <script>
 import { HARDNESS_MIN, HARDNESS_MAX } from '@/settings'
+import { THREAD_BRUSH_HARDNESS } from '@/settings/drawthreads'
 
 import Slider from '@/components/Desktop/Toolbar/Slider.vue'
 
@@ -8,20 +9,27 @@ export default {
 
   name: 'ToolbarSliderHardness',
 
-  methods: {
-    initSlider () {
-      this.valueMin = HARDNESS_MIN
-      this.valueMax = HARDNESS_MAX
-    },
+  draw: [
+    {
+      threads: [THREAD_BRUSH_HARDNESS],
+      handler: function (state) {
+        if (this.value !== state.brush.hardness) {
+          this.value = state.brush.hardness
+        }
+      }
+    }
+  ],
 
-    handleValueChange (newValue) {
-      this.$store.commit('Brush/setHardness', newValue)
+  data () {
+    return {
+      min: HARDNESS_MIN,
+      max: HARDNESS_MAX
     }
   },
 
-  computed: {
-    valueStore () {
-      return 0
+  methods: {
+    handleValueChange (value) {
+      this.$global.updateBrushHardness(value)
     }
   }
 }

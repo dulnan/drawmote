@@ -3,6 +3,7 @@
     class="button tool pointer-area"
     :class="classes"
     :style="style"
+    @click="handleClick"
   >
     <component v-if="iconComponent" :is="iconComponent" />
   </button>
@@ -30,10 +31,12 @@ export default {
 
   methods: {
     handleClick (state) {
-      if (this.tool.id === 'delete') {
-        EventBus.$emit('clearCanvas', state)
-      }
     }
+  },
+
+  created () {
+    const eventName = 'pointerOver_' + this.itemKey
+    EventBus.$on(eventName, this.handleClick)
   }
 }
 </script>

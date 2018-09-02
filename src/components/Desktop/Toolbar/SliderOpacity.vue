@@ -1,5 +1,6 @@
 <script>
 import { OPACITY_MIN, OPACITY_MAX } from '@/settings'
+import { THREAD_BRUSH_OPACITY } from '@/settings/drawthreads'
 
 import Slider from '@/components/Desktop/Toolbar/Slider.vue'
 
@@ -8,20 +9,33 @@ export default {
 
   name: 'ToolbarSliderOpacity',
 
-  methods: {
-    initSlider () {
-      this.valueMin = OPACITY_MIN
-      this.valueMax = OPACITY_MAX
-    },
+  draw: [
+    {
+      threads: [THREAD_BRUSH_OPACITY],
+      handler: function (state) {
+        if (this.value !== state.brush.opacity) {
+          this.value = state.brush.opacity
+        }
+      }
+    }
+  ],
 
-    handleValueChange (newValue) {
-      this.$store.commit('Brush/setOpacity', newValue)
+  data () {
+    return {
+      min: OPACITY_MIN,
+      max: OPACITY_MAX
     }
   },
 
-  computed: {
-    valueStore () {
-      return 0
+  methods: {
+    handleStateChange (state) {
+      if (this.value !== state.brush.opacity) {
+        this.value = state.brush.opacity
+      }
+    },
+
+    handleValueChange (value) {
+      this.$global.updateBrushOpacity(value)
     }
   }
 }

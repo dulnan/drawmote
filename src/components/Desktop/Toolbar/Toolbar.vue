@@ -9,7 +9,7 @@
               :is="tool.component"
               :tool="tool"
               :action="group.action"
-              :hovered-key="itemBeingHovered" />
+              :hovered-key="toolBeingHovered" />
           </li>
         </ul>
       </li>
@@ -18,19 +18,16 @@
 </template>
 
 <script>
-import { EventBus } from '@/events'
-
 import ToolbarButton from '@/components/Desktop/Toolbar/Button.vue'
 import ToolbarButtonColor from '@/components/Desktop/Toolbar/ButtonColor.vue'
+import ToolbarButtonClear from '@/components/Desktop/Toolbar/ButtonClear.vue'
 import ToolbarSlider from '@/components/Desktop/Toolbar/Slider.vue'
 import ToolbarSliderSize from '@/components/Desktop/Toolbar/SliderSize.vue'
 import ToolbarSliderOpacity from '@/components/Desktop/Toolbar/SliderOpacity.vue'
 import ToolbarSliderHardness from '@/components/Desktop/Toolbar/SliderHardness.vue'
 
 import { COLORS, TOOLBAR_TOOLS, TOOLBAR_SLIDERS } from '@/settings'
-import { THREAD_TOOLS, THREAD_BRUSH } from '@/settings/drawthreads'
-
-import { pointIsInRectangle } from '@/tools/helpers.js'
+import { THREAD_TOOLS } from '@/settings/drawthreads'
 
 import Color from '@/classes/Color'
 
@@ -40,6 +37,7 @@ export default {
   components: {
     ToolbarButton,
     ToolbarButtonColor,
+    ToolbarButtonClear,
     ToolbarSlider,
     ToolbarSliderSize,
     ToolbarSliderOpacity,
@@ -48,26 +46,34 @@ export default {
 
   draw: [
     {
-      threads: [THREAD_BRUSH],
-      handler: function (state) {
-        this.activeColor = state.brush.color
-      }
-    },
-    {
       threads: [THREAD_TOOLS],
       handler: function (state) {
-        let itemBeingHovered = ''
+        let tool = this.getToolAtPoint(state.points.pointer)
 
-        this.pointerAreas.forEach(area => {
-          if (area.coords.containsPoint(state.points.pointer)) {
-            itemBeingHovered = area.key
+        this.toolBeingHovered = tool ? tool.key : ''
+
+        if (tool && state.isPressing) {
+          if (this.lastItemClick !== tool.key) {
+            tool.el.click()
+            this.lastItemClick = tool.key
           }
-        })
 
-        this.itemBeingHovered = itemBeingHovered
+          const wheel = state.slideY - this.wheelDelta
 
-        if (itemBeingHovered && state.isPressing) {
-          EventBus.$emit('pointerOver_' + itemBeingHovered, state)
+          if (wheel !== 0) {
+            let event = new WheelEvent('wheel', {
+              bubbles: false,
+              cancelable: true,
+              deltaX: 0,
+              deltaY: wheel
+            })
+            tool.el.dispatchEvent(event)
+          }
+
+          this.wheelDelta = state.slideY
+        } else {
+          this.wheelDelta = 0
+          this.lastItemClick = ''
         }
       }
     }
@@ -75,10 +81,10 @@ export default {
 
   data () {
     return {
-      initialValueSet: false,
       pointerAreas: [],
-      itemBeingHovered: '',
-      activeColor: ''
+      toolBeingHovered: '',
+      lastItemClick: '',
+      wheelDelta: 0
     }
   },
 
@@ -113,6 +119,14 @@ export default {
   },
 
   methods: {
+    getToolAtPoint (point) {
+      for (let i = 0; i < this.pointerAreas.length; i++) {
+        const area = this.pointerAreas[i]
+        if (area.coords.containsPoint(point)) {
+          return area
+        }
+      }
+    },
     calculatePointerAreas () {
       let items = []
       this.$refs.items.forEach(item => {
@@ -120,31 +134,6 @@ export default {
       })
 
       this.pointerAreas = items
-    },
-
-    pointerLoop () {
-      let areaFound = false
-
-      const isHoveringToolbar = pointIsInRectangle(this.$global.pointerCoordinates, this.toolbarArea)
-
-      if (isHoveringToolbar !== this.isHoveringToolbar) {
-        this.$store.commit('App/setIsHoveringToolbar', isHoveringToolbar)
-      }
-
-      if (isHoveringToolbar) {
-        this.pointerAreas.forEach(area => {
-          if (pointIsInRectangle(this.$global.pointerCoordinates, area.coords)) {
-            this.itemBeingHovered = area.key
-            areaFound = true
-          }
-        })
-      }
-
-      if (!areaFound) {
-        this.itemBeingHovered = ''
-      }
-
-      window.requestAnimationFrame(() => this.pointerLoop())
     }
   },
 
@@ -164,38 +153,6 @@ export default {
   left: 0;
   bottom: 0;
   width: $toolbar-width;
-}
-
-.toolbar-dropdown {
-  flex-direction: row;
-  background: white;
-}
-
-.tool-slider {
-  text-align: left;
-  transition: 0.15s transform;
-
-  &.hover {
-    background: $color-greylighter;
-    box-shadow: 0 0 0 1px rgba($color-greydark, 0.5);
-  }
-}
-
-.tool-slider__slider {
-  background: $color-greylight;
-  height: 0.25rem;
-  width: 100%;
-  position: relative;
-}
-
-.tool-slider__knob {
-  position: absolute;
-  top: -5px;
-  left: 0;
-  height: 0.75rem;
-  width: 0.75rem;
-  background: $color-greydark;
-  border-radius: 100%;
 }
 
 .toolbar-list {
