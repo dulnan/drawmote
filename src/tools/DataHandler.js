@@ -13,6 +13,7 @@ import {
   THREAD_BRUSH_RADIUS,
   THREAD_BRUSH_HARDNESS,
   THREAD_BRUSH_OPACITY,
+  THREAD_BRUSH_COLOR,
   THREAD_LAZYRADIUS
 } from '@/settings/drawthreads'
 
@@ -45,6 +46,7 @@ export default class DataHandler {
     this.toolbarRect = new Rectangle(0, 0, 0, 0)
 
     this.pointingAtToolbar = false
+    this.hasCalibrated = false
   }
 
   get state () {
@@ -82,7 +84,8 @@ export default class DataHandler {
   }
 
   updatePointer (coordinates) {
-    const hasChanged = this.lazyBrush.update(coordinates)
+    const hasChanged = this.lazyBrush.update(coordinates, { both: this.hasCalibrated })
+    this.hasCalibrated = false
 
     if (hasChanged) {
       this.threads.trigger(THREAD_POINT)
@@ -143,6 +146,7 @@ export default class DataHandler {
 
   updateCalibrationOffset (angle) {
     this.gyro.updateOffset(angle)
+    this.hasCalibrated = true
   }
 
   updateCanvasRect (rect) {
@@ -178,6 +182,7 @@ export default class DataHandler {
   updateBrushColor (color) {
     this.brush.setColor(color)
     this.threads.trigger(THREAD_BRUSH)
+    this.threads.trigger(THREAD_BRUSH_COLOR)
   }
 
   updateBrushOpacity (opacity) {

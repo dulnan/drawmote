@@ -1,13 +1,14 @@
 <template>
   <div class="toolbar relative" ref="toolbar">
-    <ul class="list list--divided">
-      <li v-for="group in toolGroups" :class="{ 'pdg': group.type !== 'slider' }">
-        <ul class="list toolbar-list flex">
-          <li v-for="tool in group.items" :class="'toolbar-list__item--' + group.type">
+    <ul class="list toolbar-list">
+      <li v-for="group in toolGroups" class="toolbar-group" :class="'toolbar-group--' + group.id">
+        <ul class="list toolbar-group-list flex">
+          <li v-for="tool in group.items">
             <component
               ref="items"
               :is="tool.component"
               :tool="tool"
+              :group-id="group.id"
               :action="group.action"
               :hovered-key="toolBeingHovered" />
           </li>
@@ -94,18 +95,13 @@ export default {
     toolGroups () {
       return [
         {
+          id: 'tools',
           type: 'button',
           action: 'tool',
           items: TOOLBAR_TOOLS
         },
-
         {
-          type: 'slider',
-          action: 'brush',
-          items: TOOLBAR_SLIDERS
-        },
-
-        {
+          id: 'colors',
           type: 'button',
           action: 'color',
           items: COLORS.map(color => {
@@ -115,6 +111,12 @@ export default {
               color: new Color(color)
             }
           })
+        },
+        {
+          id: 'sliders',
+          type: 'slider',
+          action: 'brush',
+          items: TOOLBAR_SLIDERS
         }
       ]
     }
@@ -147,34 +149,61 @@ export default {
 
 <style lang="scss">
 .toolbar {
-  border-right: 2px dotted $color-greylight;
+  border-bottom: 2px dotted $color-greylight;
   background: white;
   z-index: $index-toolbar;
   position: absolute;
-  top: 0;
   left: 0;
-  bottom: 0;
-  width: $toolbar-width;
+  top: 0;
+  right: 0;
+  height: $toolbar-height;
+  overflow: hidden;
 }
 
-.toolbar-list {
-  flex-wrap: wrap;
-  position: relative;
-  background: white;
+.toolbar-group {
+  flex: 0 0 auto;
+}
+
+.toolbar-group--tools {
+  border-right: 2px dotted $color-greylight;
+  li:not(:last-child) {
+    border-right: 2px dotted $color-greylight;
+  }
+}
+
+.toolbar-group--colors {
+  padding: 1rem;
+  border-right: 2px dotted $color-greylight;
+
+  li:not(:last-child) {
+    margin-right: 1rem;
+  }
+}
+
+.toolbar-group--sliders {
+  padding: 0;
+  flex: 1;
+
   li {
-    display: block;
-    &:nth-child(n+3) {
-      margin-top: 0.5rem;
-    }
-    &:nth-child(odd) {
-      margin-right: 0.5rem;
+    flex: 1;
+    margin-right: 0;
+    &:not(:last-child) {
+      border-right: 2px dotted $color-greylight;
     }
   }
 }
 
-.toolbar-list__item--slider {
-  flex: 0 0 100%;
-  margin: 0 !important;
+.toolbar-list {
+  display: flex;
+}
+
+.toolbar-group-list {
+  flex-direction: row;
+  position: relative;
+  background: white;
+  li {
+    display: block;
+  }
 }
 
 </style>

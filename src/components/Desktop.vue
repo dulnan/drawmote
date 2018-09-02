@@ -5,6 +5,7 @@
         <pairing v-if="!isPaired" :code="pairingCode"></pairing>
       </transition>
       <drawing v-if="isPaired"></drawing>
+      <the-footer />
     </div>
   </div>
 </template>
@@ -14,13 +15,15 @@ import { EventBus } from '@/events'
 
 import Pairing from '@/components/Desktop/Pairing.vue'
 import Drawing from '@/components/Desktop/Drawing.vue'
+import TheFooter from '@/components/Footer.vue'
 
 export default {
   name: 'Desktop',
 
   components: {
     Pairing,
-    Drawing
+    Drawing,
+    TheFooter
   },
 
   data () {

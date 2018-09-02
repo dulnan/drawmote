@@ -5,8 +5,10 @@
     :style="style"
     @wheel="handleWheel"
   >
-    <div class="label">{{ tool.id }}</div>
-    <input type="range" :min="min" :max="max" step="1" v-model="value" />
+    <div>
+      <div class="label tool-slider__label">{{ tool.id }}</div>
+      <input type="range" :min="min" :max="max" step="1" v-model="value" />
+    </div>
   </div>
 </template>
 
@@ -42,15 +44,17 @@ export default {
 
 <style lang="scss">
 .tool-slider {
-  padding: 1.5rem 1rem;
+  padding: 1rem;
   width: 100%;
   text-align: left;
   transition: 0.15s transform;
-
-  &.hover {
-    background: $color-greylighter;
-    box-shadow: 0 0 0 1px rgba($color-greydark, 0.5);
+  > div {
+    flex: 1;
   }
+}
+
+.tool-slider__label {
+  margin-bottom: 0.5rem;
 }
 
 .tool-slider__preview {

@@ -1,12 +1,10 @@
-$color-red:                   #FF0000;
-
 $color-greylighter:           #f5f5f5;
 $color-greylight:             rgb(237, 238, 236);
 $color-greydark:              rgb(113, 116, 122);
 $color-red:                   rgb(253, 121, 75);
 $color-yellow:                rgb(253, 188, 75);
 $color-blue:                  rgb(196, 232, 247);
-$color-black:                 rgb(56, 60, 71);
+$color-black:                 #121212;
 
 $index-canvas-main:           100;
 $index-canvas-temp:           110;
@@ -28,4 +26,4 @@ $index-background-animation:  800;
 $index-pairing:               900;
 
 
-$toolbar-width:               8.75rem;
+$toolbar-height:              5rem;

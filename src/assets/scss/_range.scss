@@ -1,11 +1,11 @@
 @import 'variables';
 
 $track-color: $color-greylighter;
-$thumb-color: #607d8b;
+$thumb-color: $color-greydark;
 
-$thumb-radius: 8px;
-$thumb-height: 16px;
-$thumb-width: 16px;
+$thumb-radius: 12px;
+$thumb-height: 12px;
+$thumb-width: 12px;
 $thumb-shadow-size: 0px;
 $thumb-shadow-blur: 0px;
 $thumb-shadow-color: rgba(0, 0, 0, .2);
@@ -13,11 +13,11 @@ $thumb-border-width: 0px;
 $thumb-border-color: #eceff1;
 
 $track-width: 100%;
-$track-height: 8px;
+$track-height: 4px;
 $track-shadow-size: 0px;
 $track-shadow-blur: 1px;
 $track-shadow-color: rgba(0, 0, 0, .2);
-$track-border-width: 1px;
+$track-border-width: 0px;
 $track-border-color: $color-greylight;
 
 $track-radius: 5px;

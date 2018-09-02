@@ -8,7 +8,8 @@ export default {
     tool: Object,
     action: String,
     hoveredKey: String,
-    isPressing: Boolean
+    isPressing: Boolean,
+    groupId: String
   },
 
   computed: {
@@ -17,10 +18,14 @@ export default {
     },
 
     classes () {
-      return {
-        'hover': this.itemKey === this.hoveredKey,
-        'active': this.isActive
-      }
+      return [
+        {
+          'hover': this.itemKey === this.hoveredKey,
+          'active': this.isActive
+        },
+        'toolbar-item',
+        'toolbar-item--' + this.groupId
+      ]
     },
 
     style () {
@@ -43,3 +48,26 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.toolbar-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ddd;
+  overflow: visible;
+  width: 5rem;
+  height: 5rem;
+
+  &.hover {
+    opacity: 0.8;
+    background: $color-greylighter;
+  }
+
+  svg {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+</style>

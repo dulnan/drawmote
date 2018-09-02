@@ -54,10 +54,7 @@ export default {
 
 <style lang="scss" scoped>
 .pairing {
-  color: $color-black;
-  align-items: center;
-  justify-content: center;
-  padding: 4rem;
+  color: black;
   transform-style: preserve-3d;
   perspective: 700px;
   &.appear-enter-active, &.appear-leave-active {
@@ -80,29 +77,34 @@ export default {
 }
 
 .title {
-  font-size: 7rem;
+  color: $color-red;
+  font-size: 9rem;
+  font-weight: 900;
 }
 
 .lead {
-  font-size: 1.75rem;
-  font-weight: 100;
+  font-size: 2rem;
+  line-height: 2.25rem;
+  font-weight: 500;
   max-width: 660px;
   margin: 0.5rem 0 2rem;
 }
 
 .code {
-  font-size: 1.75rem;
+  font-size: 3rem;
   font-weight: 900;
-  min-height: 3rem;
+  min-height: 6rem;
+  text-align: center;
   span {
-    width: 3rem;
-    height: 3rem;
-    line-height: 3rem;
+    width: 6rem;
+    height: 6rem;
+    line-height: 6rem;
     margin: 0 0.5rem;
     display: inline-block;
     border-radius: 10rem;
-    background: $color-black;
-    color: white;
+    border: 4px solid;
+    color: $color-black;
+    color: $color-red;
   }
 }
 

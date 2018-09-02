@@ -83,8 +83,9 @@ export default {
 }
 
 .drawing-area {
-  left: $toolbar-width;
-  bottom: 0;
+  top: $toolbar-height;
+  left: 0;
   right: 0;
+  bottom: 0;
 }
 </style>

@@ -40,7 +40,7 @@ export const RADIUS_MIN = 1
 export const RADIUS_MAX = 36
 
 export const LAZY_RADIUS_MIN = 3
-export const LAZY_RADIUS_MAX = 4 * RADIUS_MAX
+export const LAZY_RADIUS_MAX = 6 * RADIUS_MAX
 export const LAZY_RADIUS_DEFAULT = 20
 
 export const HARDNESS_DEFAULT = 100
@@ -65,21 +65,21 @@ export const BRUSH_DEFAULT = {
 }
 
 export const TOOLBAR_TOOLS = [
-  {
-    id: 'freeform',
-    component: 'ToolbarButton',
-    icon: 'icon-freeform'
-  },
-  {
-    id: 'polygon',
-    component: 'ToolbarButton',
-    icon: 'icon-polygon'
-  },
-  {
-    id: 'eraser',
-    component: 'ToolbarButton',
-    icon: 'icon-erase'
-  },
+  // {
+  //   id: 'freeform',
+  //   component: 'ToolbarButton',
+  //   icon: 'icon-freeform'
+  // },
+  // {
+  //   id: 'polygon',
+  //   component: 'ToolbarButton',
+  //   icon: 'icon-polygon'
+  // },
+  // {
+  //   id: 'eraser',
+  //   component: 'ToolbarButton',
+  //   icon: 'icon-erase'
+  // },
   {
     id: 'delete',
     component: 'ToolbarButtonClear',
