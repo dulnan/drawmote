@@ -12,7 +12,8 @@ import {
   THREAD_TOOLS,
   THREAD_BRUSH_RADIUS,
   THREAD_BRUSH_HARDNESS,
-  THREAD_BRUSH_OPACITY
+  THREAD_BRUSH_OPACITY,
+  THREAD_LAZYRADIUS
 } from '@/settings/drawthreads'
 
 export default class DataHandler {
@@ -169,7 +170,9 @@ export default class DataHandler {
   }
 
   updateLazyRadius (radius) {
-    // this.lazyBrush.setRadius(radius)
+    this.lazyBrush.setRadius(radius)
+    this.threads.trigger(THREAD_BRUSH)
+    this.threads.trigger(THREAD_LAZYRADIUS)
   }
 
   updateBrushColor (color) {

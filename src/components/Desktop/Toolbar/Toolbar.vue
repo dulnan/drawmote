@@ -25,6 +25,7 @@ import ToolbarSlider from '@/components/Desktop/Toolbar/Slider.vue'
 import ToolbarSliderSize from '@/components/Desktop/Toolbar/SliderSize.vue'
 import ToolbarSliderOpacity from '@/components/Desktop/Toolbar/SliderOpacity.vue'
 import ToolbarSliderHardness from '@/components/Desktop/Toolbar/SliderHardness.vue'
+import ToolbarSliderLazyRadius from '@/components/Desktop/Toolbar/SliderLazyRadius.vue'
 
 import { COLORS, TOOLBAR_TOOLS, TOOLBAR_SLIDERS } from '@/settings'
 import { THREAD_TOOLS } from '@/settings/drawthreads'
@@ -41,7 +42,8 @@ export default {
     ToolbarSlider,
     ToolbarSliderSize,
     ToolbarSliderOpacity,
-    ToolbarSliderHardness
+    ToolbarSliderHardness,
+    ToolbarSliderLazyRadius
   },
 
   draw: [

@@ -1,34 +1,47 @@
 export const COLORS = [
   {
-    name: 'white',
-    rgb: [234, 226, 183]
+    name: 'lightblue',
+    hex: '#3cc6ed'
   },
   {
-    name: 'black',
-    rgb: [56, 60, 71]
-  },
-  {
-    name: 'blue',
-    rgb: [0, 48, 73]
-  },
-  {
-    name: 'green',
-    rgb: [184, 221, 190]
+    name: 'darkblue',
+    hex: '#204e87'
   },
   {
     name: 'yellow',
-    rgb: [252, 191, 73]
+    hex: '#ffb750'
   },
   {
-    name: 'red',
-    rgb: [214, 40, 40]
+    name: 'orange',
+    hex: '#f36747'
+  },
+  {
+    name: 'lightgreen',
+    hex: '#c3d57f'
+  },
+  {
+    name: 'darkgreen',
+    hex: '#798f16'
+  },
+  {
+    name: 'grey',
+    hex: '#e3e3e3'
+  },
+  {
+    name: 'darkbrown',
+    hex: '#3e372e'
   }
+
 ]
 
 export const DEFAULT_COLOR = COLORS[3]
 export const RADIUS_DEFAULT = 16
 export const RADIUS_MIN = 1
 export const RADIUS_MAX = 36
+
+export const LAZY_RADIUS_MIN = 3
+export const LAZY_RADIUS_MAX = 4 * RADIUS_MAX
+export const LAZY_RADIUS_DEFAULT = 20
 
 export const HARDNESS_DEFAULT = 100
 export const HARDNESS_MIN = 0
@@ -88,6 +101,11 @@ export const TOOLBAR_SLIDERS = [
   {
     id: 'hardness',
     component: 'ToolbarSliderHardness',
+    icon: ''
+  },
+  {
+    id: 'lazyradius',
+    component: 'ToolbarSliderLazyRadius',
     icon: ''
   }
 ]

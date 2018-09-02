@@ -39,15 +39,15 @@ export default {
         context.beginPath()
         context.lineWidth = 1
         context.lineCap = 'round'
-        context.strokeStyle = 'rgba(50,50,50,0.6)'
+        context.strokeStyle = 'rgba(30,30,30,0.8)'
         context.setLineDash([2, 4])
         this.catenary.drawToCanvas(context, state.points.pointer, state.points.brush, state.lazyRadius)
         context.stroke()
 
         // Draw brush anchor
         context.beginPath()
-        context.fillStyle = 'rgba(50,50,50,0.6)'
-        context.arc(state.points.brush.x, state.points.brush.y, 4, 0, Math.PI * 2, true)
+        context.fillStyle = 'rgba(50,50,50,1)'
+        context.arc(state.points.brush.x, state.points.brush.y, 2, 0, Math.PI * 2, true)
         context.fill()
 
         // Restore the saved context.
@@ -55,9 +55,17 @@ export default {
 
         // Draw mouse point
         context.beginPath()
-        context.fillStyle = 'rgba(50,50,50,0.6)'
+        context.fillStyle = 'rgba(50,50,50,0.2)'
         context.arc(state.points.pointer.x, state.points.pointer.y, 4, 0, Math.PI * 2, true)
         context.fill()
+
+        context.beginPath()
+        context.strokeStyle = 'rgba(20,20,20,1)'
+        context.moveTo(state.points.pointer.x - 10, state.points.pointer.y)
+        context.lineTo(state.points.pointer.x + 10, state.points.pointer.y)
+        context.moveTo(state.points.pointer.x, state.points.pointer.y - 10)
+        context.lineTo(state.points.pointer.x, state.points.pointer.y + 10)
+        context.stroke()
       }
     }
   ],
