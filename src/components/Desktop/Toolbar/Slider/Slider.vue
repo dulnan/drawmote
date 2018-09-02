@@ -38,7 +38,7 @@ export default {
 </script>
 
 <style lang="scss">
-.tool-slider {
+.button.tool-slider {
   padding: 1rem;
   width: 100%;
   text-align: left;

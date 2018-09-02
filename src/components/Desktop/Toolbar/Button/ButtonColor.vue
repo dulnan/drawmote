@@ -41,7 +41,7 @@ export default {
 </script>
 
 <style lang="scss">
-.toolbar-item--colors {
+.button.toolbar-item--colors {
   width: 3rem;
   height: 3rem;
   border: 3px solid white;

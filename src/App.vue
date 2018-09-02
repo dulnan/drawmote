@@ -12,7 +12,7 @@ import Desktop from '@/components/Desktop.vue'
 import Mobile from '@/components/Mobile.vue'
 
 export default {
-  name: 'App',
+  name: 'app',
 
   components: {
     Desktop,
@@ -48,7 +48,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-@import 'assets/scss/main.scss';
-</style>

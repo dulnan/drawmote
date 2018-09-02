@@ -23,11 +23,10 @@
 </template>
 
 <script>
-require('@hughsk/fulltilt/dist/fulltilt.min.js')
-var GyroNorm = require('gyronorm')
-
 import { buildDataString } from '@/tools/helpers.js'
 
+require('@hughsk/fulltilt/dist/fulltilt.min.js')
+var GyroNorm = require('gyronorm')
 var deviceOrientation
 
 export default {

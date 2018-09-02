@@ -5,11 +5,11 @@
       <p class="lead">Visit drawmote.io on a desktop device to get your pairing code and establish a connection.</p>
       <div class="code relative">
         <div class="code__circles flex">
-          <div v-for="char in inputChars" v-bind:class="{ 'contains': char !== ' ' }">{{ char }}</div>
+          <div v-for="(char, index) in inputChars" v-bind:class="{ 'contains': char !== ' ' }" :key="char + index">{{ char }}</div>
         </div>
 
         <form class="code__form absolute overlay" v-on:submit.prevent="onSubmit">
-          <input maxlength="6" v-model="inputValue" class="code__input absolute overlay" type="text" ref="pairing_id"></input>
+          <input maxlength="6" v-model="inputValue" class="code__input absolute overlay" type="text" ref="pairing_id">
         </form>
 
         <transition name="appear">
@@ -126,7 +126,6 @@ h1 {
   letter-spacing: 2.65rem;
   padding-left: 2.6rem;
 }
-
 
 .code__error {
   top: 100%;

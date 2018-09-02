@@ -49,10 +49,6 @@ function shadeRgbColor (rgb, percent) {
   ]
 }
 
-const doFor = (count, cb) => {
-  var i = 0; while (i < count && cb(i++) !== true);
-}
-
 const randomInt = (min, max = min + (min = 0)) => (Math.random() * (max - min) + min) | 0
 
 function buildDataString (orientation, isPressingMain, touchDiffY) {
@@ -126,7 +122,6 @@ export {
   getRgbaString,
   shadeRgbColor,
   midPointBetween,
-  doFor,
   randomInt,
   buildDataString,
   parseDataString,
