@@ -2,18 +2,17 @@
 import { RADIUS_MIN, RADIUS_MAX } from '@/settings'
 import { THREAD_BRUSH_RADIUS } from '@/settings/drawthreads'
 
-import Slider from '@/components/Desktop/Toolbar/Slider.vue'
+import Slider from '@/components/Desktop/Toolbar/Slider/Slider.vue'
 
 export default {
   extends: Slider,
 
-  name: 'ToolbarSliderSize',
+  name: 'SliderBrushRadius',
 
   draw: [
     {
       threads: [THREAD_BRUSH_RADIUS],
       handler: function (state) {
-        console.log('sizeeee')
         if (this.value !== state.brush.radius) {
           this.value = state.brush.radius
         }

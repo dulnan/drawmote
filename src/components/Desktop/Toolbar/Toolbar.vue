@@ -19,14 +19,12 @@
 </template>
 
 <script>
-import ToolbarButton from '@/components/Desktop/Toolbar/Button.vue'
-import ToolbarButtonColor from '@/components/Desktop/Toolbar/ButtonColor.vue'
-import ToolbarButtonClear from '@/components/Desktop/Toolbar/ButtonClear.vue'
-import ToolbarSlider from '@/components/Desktop/Toolbar/Slider.vue'
-import ToolbarSliderSize from '@/components/Desktop/Toolbar/SliderSize.vue'
-import ToolbarSliderOpacity from '@/components/Desktop/Toolbar/SliderOpacity.vue'
-import ToolbarSliderHardness from '@/components/Desktop/Toolbar/SliderHardness.vue'
-import ToolbarSliderLazyRadius from '@/components/Desktop/Toolbar/SliderLazyRadius.vue'
+import ButtonColor from '@/components/Desktop/Toolbar/Button/ButtonColor.vue'
+import ButtonClear from '@/components/Desktop/Toolbar/Button/ButtonClear.vue'
+import SliderBrushRadius from '@/components/Desktop/Toolbar/Slider/SliderBrushRadius.vue'
+import SliderBrushOpacity from '@/components/Desktop/Toolbar/Slider/SliderBrushOpacity.vue'
+import SliderBrushHardness from '@/components/Desktop/Toolbar/Slider/SliderBrushHardness.vue'
+import SliderLazyRadius from '@/components/Desktop/Toolbar/Slider/SliderLazyRadius.vue'
 
 import { COLORS, TOOLBAR_TOOLS, TOOLBAR_SLIDERS } from '@/settings'
 import { THREAD_TOOLS } from '@/settings/drawthreads'
@@ -37,14 +35,12 @@ export default {
   name: 'BrushToolbar',
 
   components: {
-    ToolbarButton,
-    ToolbarButtonColor,
-    ToolbarButtonClear,
-    ToolbarSlider,
-    ToolbarSliderSize,
-    ToolbarSliderOpacity,
-    ToolbarSliderHardness,
-    ToolbarSliderLazyRadius
+    ButtonColor,
+    ButtonClear,
+    SliderBrushRadius,
+    SliderBrushOpacity,
+    SliderBrushHardness,
+    SliderLazyRadius
   },
 
   draw: [
@@ -107,7 +103,7 @@ export default {
           items: COLORS.map(color => {
             return {
               id: color.name,
-              component: 'ToolbarButtonColor',
+              component: 'ButtonColor',
               color: new Color(color)
             }
           })

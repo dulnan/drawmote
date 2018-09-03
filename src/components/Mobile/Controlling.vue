@@ -1,6 +1,5 @@
 <template>
   <div class="controlling">
-    <brush :coordinates="brushCoordinates" :brush="brush"></brush>
     <touch-handler></touch-handler>
   </div>
 </template>
@@ -10,13 +9,11 @@ import { DEFAULT_COLOR, RADIUS_DEFAULT } from '@/settings'
 
 import { getViewportSize } from '@/tools/helpers.js'
 
-import Brush from '@/components/Brush.vue'
 import TouchHandler from '@/components/Mobile/TouchHandler.vue'
 
 export default {
   name: 'Mobile',
   components: {
-    Brush,
     TouchHandler
   },
 

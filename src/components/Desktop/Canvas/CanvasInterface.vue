@@ -11,7 +11,7 @@ import { THREAD_BRUSH, THREAD_POINT, THREAD_SLIDE } from '@/settings/drawthreads
 export default {
   extends: Canvas,
 
-  name: 'InterfaceCanvas',
+  name: 'CanvasInterface',
 
   draw: [
     {

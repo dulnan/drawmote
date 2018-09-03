@@ -2,12 +2,12 @@
 import { OPACITY_MIN, OPACITY_MAX } from '@/settings'
 import { THREAD_BRUSH_OPACITY } from '@/settings/drawthreads'
 
-import Slider from '@/components/Desktop/Toolbar/Slider.vue'
+import Slider from '@/components/Desktop/Toolbar/Slider/Slider.vue'
 
 export default {
   extends: Slider,
 
-  name: 'ToolbarSliderOpacity',
+  name: 'SliderBrushOpacity',
 
   draw: [
     {

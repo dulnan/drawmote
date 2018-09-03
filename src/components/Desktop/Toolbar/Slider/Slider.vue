@@ -6,7 +6,7 @@
     @wheel="handleWheel"
   >
     <div>
-      <div class="label tool-slider__label">{{ tool.id }}</div>
+      <div class="label tool-slider__label">{{ tool.label }}</div>
       <input type="range" :min="min" :max="max" step="1" v-model="value" />
     </div>
   </div>
@@ -14,14 +14,9 @@
 
 <script>
 import ToolbarItem from '@/components/Desktop/Toolbar/Item.vue'
-import Brush from '@/components/Brush.vue'
 
 export default {
   extends: ToolbarItem,
-
-  components: {
-    Brush
-  },
 
   name: 'ToolbarSlider',
 

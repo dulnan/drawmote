@@ -2,12 +2,12 @@
 import { LAZY_RADIUS_MIN, LAZY_RADIUS_MAX } from '@/settings'
 import { THREAD_LAZYRADIUS } from '@/settings/drawthreads'
 
-import Slider from '@/components/Desktop/Toolbar/Slider.vue'
+import Slider from '@/components/Desktop/Toolbar/Slider/Slider.vue'
 
 export default {
   extends: Slider,
 
-  name: 'ToolbarSliderLazyRadius',
+  name: 'SliderLazyRadius',
 
   draw: [
     {

@@ -2,8 +2,8 @@
   <div class="absolute overlay drawing">
     <toolbar ref="toolbar" />
     <div class="absolute drawing-area" ref="canvasContainer"></div>
-    <drawing-canvas />
-    <interface-canvas />
+    <canvas-drawing />
+    <canvas-interface />
 
   </div>
 </template>
@@ -12,8 +12,8 @@
 import { EventBus } from '@/events'
 
 import Toolbar from '@/components/Desktop/Toolbar/Toolbar.vue'
-import DrawingCanvas from '@/components/Desktop/DrawingCanvas.vue'
-import InterfaceCanvas from '@/components/Desktop/InterfaceCanvas.vue'
+import CanvasDrawing from '@/components/Desktop/Canvas/CanvasDrawing.vue'
+import CanvasInterface from '@/components/Desktop/Canvas/CanvasInterface.vue'
 
 // Setting this to true allows movement with mouse and arrow keys
 const DEBUG = true
@@ -23,8 +23,8 @@ export default {
 
   components: {
     Toolbar,
-    DrawingCanvas,
-    InterfaceCanvas
+    CanvasDrawing,
+    CanvasInterface
   },
 
   methods: {

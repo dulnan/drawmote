@@ -1,5 +1,5 @@
 <script>
-import Button from '@/components/Desktop/Toolbar/Button.vue'
+import Button from '@/components/Desktop/Toolbar/Button/Button.vue'
 
 import { getRgbaString, shadeRgbColor } from '@/tools/helpers.js'
 

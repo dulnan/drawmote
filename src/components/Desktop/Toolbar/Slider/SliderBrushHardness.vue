@@ -2,12 +2,12 @@
 import { HARDNESS_MIN, HARDNESS_MAX } from '@/settings'
 import { THREAD_BRUSH_HARDNESS } from '@/settings/drawthreads'
 
-import Slider from '@/components/Desktop/Toolbar/Slider.vue'
+import Slider from '@/components/Desktop/Toolbar/Slider/Slider.vue'
 
 export default {
   extends: Slider,
 
-  name: 'ToolbarSliderHardness',
+  name: 'SliderBrushHardness',
 
   draw: [
     {

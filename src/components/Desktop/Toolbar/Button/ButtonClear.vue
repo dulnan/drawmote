@@ -1,7 +1,7 @@
 <script>
 import { EventBus } from '@/events'
 
-import Button from '@/components/Desktop/Toolbar/Button.vue'
+import Button from '@/components/Desktop/Toolbar/Button/Button.vue'
 
 export default {
   extends: Button,

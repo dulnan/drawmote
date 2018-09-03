@@ -81,31 +81,35 @@ export const TOOLBAR_TOOLS = [
   //   icon: 'icon-erase'
   // },
   {
-    id: 'delete',
-    component: 'ToolbarButtonClear',
+    id: 'canvasClear',
+    component: 'ButtonClear',
     icon: 'icon-delete'
   }
 ]
 
 export const TOOLBAR_SLIDERS = [
   {
-    id: 'opacity',
-    component: 'ToolbarSliderOpacity',
+    id: 'brushOpacity',
+    label: 'Opacity',
+    component: 'SliderBrushOpacity',
     icon: ''
   },
   {
-    id: 'size',
-    component: 'ToolbarSliderSize',
+    id: 'brushRadius',
+    label: 'Radius',
+    component: 'SliderBrushRadius',
     icon: ''
   },
   {
-    id: 'hardness',
-    component: 'ToolbarSliderHardness',
+    id: 'brushHardness',
+    label: 'Hardness',
+    component: 'SliderBrushHardness',
     icon: ''
   },
   {
-    id: 'lazyradius',
-    component: 'ToolbarSliderLazyRadius',
+    id: 'lazyRadius',
+    label: 'Lazy Radius',
+    component: 'SliderLazyRadius',
     icon: ''
   }
 ]
