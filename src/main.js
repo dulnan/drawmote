@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import App from './App'
-import router from './router'
 
 import { EventBus } from './events'
 import Connection from './tools/Connection'
@@ -20,6 +19,5 @@ Vue.prototype.$connection = new Connection(EventBus, global)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
-  router,
   render: h => h(App)
 })

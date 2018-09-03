@@ -17,8 +17,7 @@
     "input-range-scss": "^1.5.1",
     "socketpeer": "^1.1.0",
     "vanilla-vectors-3d": "^1.0.1",
-    "vue": "^2.5.16",
-    "vue-router": "^2.8.1"
+    "vue": "^2.5.16"
   },
   "devDependencies": {
     "ip": "^1.1.5",
