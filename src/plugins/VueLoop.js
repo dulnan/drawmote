@@ -2,8 +2,6 @@ const PROPERTY = 'draw'
 
 export default {
   install (Vue, options) {
-    Vue.prototype.$test = 'haloo'
-
     Vue.mixin({
       mounted () {
         let events = this.$options[PROPERTY]

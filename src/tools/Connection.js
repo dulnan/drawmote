@@ -3,7 +3,7 @@ import axios from 'axios'
 
 import { getCookie, setCookie, parseDataString } from '@/tools/helpers'
 
-const SERVER = __API__ // eslint-disable-line
+const SERVER = `http://${process.env.VUE_APP_API_URL}:${process.env.VUE_APP_API_PORT}`
 
 export default class Connection {
   constructor (EventBus, DataHandler) {

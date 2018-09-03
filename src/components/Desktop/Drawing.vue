@@ -1,7 +1,7 @@
 <template>
-  <div class="absolute overlay drawing">
+  <div class="drawing">
     <toolbar ref="toolbar" />
-    <div class="absolute drawing-area" ref="canvasContainer"></div>
+    <div class="drawing-area" ref="canvasContainer"></div>
     <canvas-drawing />
     <canvas-interface />
 
@@ -80,9 +80,15 @@ export default {
 <style lang="scss">
 .drawing {
   overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .drawing-area {
+  position: absolute;
   top: $toolbar-height;
   left: 0;
   right: 0;

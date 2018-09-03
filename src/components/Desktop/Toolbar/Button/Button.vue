@@ -5,7 +5,7 @@
     :style="style"
     @click="handleClick"
   >
-    <component v-if="iconComponent" :is="iconComponent" />
+    <icon v-if="hasIcon" />
   </button>
 </template>
 
@@ -22,16 +22,6 @@ export default {
   data () {
     return {
       isActive: false
-    }
-  },
-
-  computed: {
-    iconComponent () {
-      if (!this.tool.icon) {
-        return null
-      }
-
-      return () => import(`@/assets/icons/${this.tool.icon}.svg`)
     }
   },
 

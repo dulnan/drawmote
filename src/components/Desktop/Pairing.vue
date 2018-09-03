@@ -6,7 +6,7 @@
       <h2 class="code">
         <transition name="appear">
           <div v-if="code" class="code__content">
-            <span v-for="number in pairingCodeNumbers">{{ number }}</span>
+            <span v-for="(number, index) in pairingCodeNumbers" :key="index">{{ number }}</span>
           </div>
         </transition>
       </h2>

@@ -1,9 +1,9 @@
 <template>
-  <div class="toolbar relative" ref="toolbar">
+  <div class="toolbar" ref="toolbar">
     <ul class="list toolbar-list">
-      <li v-for="group in toolGroups" class="toolbar-group" :class="'toolbar-group--' + group.id">
+      <li v-for="group in toolGroups" class="toolbar-group" :class="'toolbar-group--' + group.id" :key="group.id">
         <ul class="list toolbar-group-list flex">
-          <li v-for="tool in group.items">
+          <li v-for="tool in group.items" :key="group.action + tool.id">
             <component
               ref="items"
               :is="tool.component"

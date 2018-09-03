@@ -2,7 +2,7 @@
 import Rectangle from '@/classes/Rectangle'
 
 export default {
-  name: 'BrushToolbarItem',
+  name: 'ToolbarItem',
 
   props: {
     tool: Object,
@@ -10,6 +10,12 @@ export default {
     hoveredKey: String,
     isPressing: Boolean,
     groupId: String
+  },
+
+  data () {
+    return {
+      hasIcon: false
+    }
   },
 
   computed: {
@@ -50,7 +56,7 @@ export default {
 </script>
 
 <style lang="scss">
-.toolbar-item {
+.button.toolbar-item {
   position: relative;
   display: flex;
   align-items: center;

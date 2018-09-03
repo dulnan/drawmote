@@ -1,76 +1,59 @@
 {
   "name": "drawmote-client",
-  "version": "1.0.0",
-  "description": "A Vue.js project",
+  "version": "0.1.0",
+  "description": "client application for drawmote",
   "author": "Jan Hug <me@dulnan.net>",
   "private": true,
   "scripts": {
-    "dev": "node build/dev-server.js",
-    "start": "node build/dev-server.js",
-    "build": "node build/build.js",
-    "lint": "eslint --ext .js,.vue src"
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
     "@hughsk/fulltilt": "^0.7.1",
     "axios": "^0.18.0",
+    "catenary-curve": "github:dulnan/catenary-curve",
+    "gyro-plane": "github:dulnan/gyro-plane",
     "gyronorm": "^2.0.6",
     "input-range-scss": "^1.5.1",
-    "socketpeer": "^1.1.0",
-    "vanilla-vectors-3d": "^1.0.1",
-    "vue": "^2.5.16"
+    "lazy-brush": "github:dulnan/lazy-brush",
+    "socketpeer": "github:dulnan/socketpeer#update-dependencies",
+    "vue": "^2.5.17"
   },
   "devDependencies": {
-    "ip": "^1.1.5",
-    "autoprefixer": "^7.2.6",
-    "babel-core": "^6.26.3",
-    "babel-eslint": "^7.1.1",
-    "babel-loader": "^7.1.5",
-    "babel-plugin-transform-runtime": "^6.22.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-stage-2": "^6.22.0",
-    "babel-register": "^6.22.0",
-    "chalk": "^2.4.1",
-    "connect-history-api-fallback": "^1.5.0",
-    "copy-webpack-plugin": "^4.5.2",
-    "css-loader": "^0.28.11",
-    "cssnano": "^3.10.0",
-    "eslint": "^3.19.0",
-    "eslint-config-standard": "^6.2.1",
-    "eslint-friendly-formatter": "^3.0.0",
-    "eslint-loader": "^1.7.1",
-    "eslint-plugin-html": "^3.0.0",
-    "eslint-plugin-promise": "^3.8.0",
-    "eslint-plugin-standard": "^2.0.1",
-    "eventsource-polyfill": "^0.9.6",
-    "express": "^4.16.3",
-    "extract-text-webpack-plugin": "^2.0.0",
-    "file-loader": "^0.11.1",
-    "friendly-errors-webpack-plugin": "^1.7.0",
-    "html-webpack-plugin": "^2.28.0",
-    "http-proxy-middleware": "^0.18.0",
-    "node-sass": "^4.9.2",
-    "opn": "^5.3.0",
-    "optimize-css-assets-webpack-plugin": "^2.0.0",
-    "ora": "^1.4.0",
-    "rimraf": "^2.6.0",
-    "sass-loader": "^6.0.7",
-    "semver": "^5.5.0",
-    "shelljs": "^0.7.6",
-    "style-loader": "^0.19.1",
-    "url-loader": "^0.5.8",
-    "vue-loader": "^13.7.2",
-    "vue-style-loader": "^3.1.2",
-    "vue-svg-loader": "^0.5.0",
-    "vue-template-compiler": "^2.5.16",
-    "webpack": "^2.6.1",
-    "webpack-bundle-analyzer": "^2.13.1",
-    "webpack-dev-middleware": "^1.12.2",
-    "webpack-hot-middleware": "^2.22.2",
-    "webpack-merge": "^4.1.3"
+    "@vue/cli-plugin-babel": "^3.0.1",
+    "@vue/cli-plugin-eslint": "^3.0.1",
+    "@vue/cli-plugin-unit-mocha": "^3.0.1",
+    "@vue/cli-service": "^3.0.1",
+    "@vue/eslint-config-standard": "^3.0.1",
+    "@vue/test-utils": "^1.0.0-beta.20",
+    "chai": "^4.1.2",
+    "node-sass": "^4.9.0",
+    "sass-loader": "^7.0.1",
+    "style-resources-loader": "^1.2.1",
+    "vue-cli-plugin-style-resources-loader": "^0.1.3",
+    "vue-svg-loader": "^0.8.0",
+    "vue-template-compiler": "^2.5.17"
   },
-  "engines": {
-    "node": ">= 4.0.0",
-    "npm": ">= 3.0.0"
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "@vue/standard"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
   },
   "browserslist": [
     "> 1%",

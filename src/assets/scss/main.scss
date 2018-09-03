@@ -1,42 +1,42 @@
 @import 'range';
 
-@font-face {
-    font-family: 'Colfax';
-    src: url('/static/fonts/ColfaxWebLight.woff') format('woff');
-    font-weight: 100;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Colfax';
-    src: url('/static/fonts/ColfaxWebRegular.woff') format('woff');
-    font-weight: 400;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Colfax';
-    src: url('/static/fonts/ColfaxWebMedium.woff') format('woff');
-    font-weight: 500;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Colfax';
-    src: url('/static/fonts/ColfaxWebBold.woff') format('woff');
-    font-weight: 700;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Colfax';
-    src: url('/static/fonts/ColfaxWebBlack.woff') format('woff');
-    font-weight: 900;
-    font-style: normal;
-}
+// @font-face {
+//     font-family: 'Colfax';
+//     src: url('/static/fonts/ColfaxWebLight.woff') format('woff');
+//     font-weight: 100;
+//     font-style: normal;
+// }
+//
+// @font-face {
+//     font-family: 'Colfax';
+//     src: url('/static/fonts/ColfaxWebRegular.woff') format('woff');
+//     font-weight: 400;
+//     font-style: normal;
+// }
+//
+// @font-face {
+//     font-family: 'Colfax';
+//     src: url('/static/fonts/ColfaxWebMedium.woff') format('woff');
+//     font-weight: 500;
+//     font-style: normal;
+// }
+//
+// @font-face {
+//     font-family: 'Colfax';
+//     src: url('/static/fonts/ColfaxWebBold.woff') format('woff');
+//     font-weight: 700;
+//     font-style: normal;
+// }
+//
+// @font-face {
+//     font-family: 'Colfax';
+//     src: url('/static/fonts/ColfaxWebBlack.woff') format('woff');
+//     font-weight: 900;
+//     font-style: normal;
+// }
 
 body {
-  font-family: 'Colfax', Helvetica, Arial, sans-serif;
+  font-family: 'Barlow', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   margin: 0;

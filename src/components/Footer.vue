@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute footer">
+  <div class="footer">
     Created by <a href="http://www.janhug.info">Jan Hug</a>, with help from Pascal Thormeier and others.
   </div>
 </template>
@@ -12,6 +12,7 @@ export default {
 
 <style lang="scss">
 .footer {
+  position: absolute;
   z-index: $index-footer;
   top: auto;
   text-align: center;
