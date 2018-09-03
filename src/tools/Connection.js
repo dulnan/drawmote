@@ -3,7 +3,7 @@ import axios from 'axios'
 
 import { getCookie, setCookie, parseDataString } from '@/tools/helpers'
 
-const SERVER = `http://${process.env.VUE_APP_API_URL}:${process.env.VUE_APP_API_PORT}`
+const SERVER = process.env.VUE_APP_API_URL
 
 export default class Connection {
   constructor (EventBus, DataHandler) {
