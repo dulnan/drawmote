@@ -22,8 +22,7 @@
     "vanilla-vectors-3d": "^1.0.1",
     "vue": "^2.5.16",
     "vue-router": "^2.8.1",
-    "vue-socket.io": "^2.1.1-b",
-    "vuex": "^2.5.0"
+    "vue-socket.io": "^2.1.1-b"
   },
   "devDependencies": {
     "autoprefixer": "^7.2.6",
