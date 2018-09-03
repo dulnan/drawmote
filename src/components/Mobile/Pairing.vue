@@ -79,15 +79,17 @@ export default {
 .mobile-pairing__content {
   z-index: $index-pairing;
   margin-top: 3rem;
+  text-align: center;
 }
 
 h1 {
-  font-size: 4rem;
+  font-size: 2rem;
 }
 
 .lead {
   font-size: 1.25rem;
-  font-weight: 100;
+  line-height: 1.2;
+  font-weight: 300;
 }
 
 .code {
@@ -98,14 +100,15 @@ h1 {
   align-items: center;
   justify-content: center;
   div {
-    width: 3rem;
-    height: 3rem;
+    text-align: center;
+    width: 2.5rem;
+    height: 2.5rem;
     border-radius: 100%;
     margin: 0 0.25rem;
     color: white;
     font-weight: 900;
-    font-size: 1.75rem;
-    line-height: 2.75rem;
+    font-size: 1.5rem;
+    line-height: 2.5rem;
     text-transform: uppercase;
     border: 2px solid $color-black;
     &.contains {

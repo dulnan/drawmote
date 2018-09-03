@@ -10,7 +10,9 @@
           </div>
         </transition>
       </h2>
-      <button @click.prevent="skipPairing" type="button" class="button skip-button">Skip this step</button>
+      <div>
+        <button @click.prevent="skipPairing" type="button" class="button skip-button">Skip this step</button>
+      </div>
     </div>
     <!--<background-animation></background-animation>-->
   </div>
@@ -72,39 +74,46 @@ export default {
 }
 
 .pairing__content {
-  padding: 2rem;
+  padding: 5rem;
   z-index: $index-pairing;
+  display: flex;
+  flex-direction: column;
 }
 
 .title {
-  color: $color-red;
-  font-size: 9rem;
+  font-size: 3.5rem;
+  line-height: 1;
   font-weight: 900;
+  color: $color-red;
+  letter-spacing: 2px;
 }
 
 .lead {
   font-size: 2rem;
-  line-height: 2.25rem;
-  font-weight: 500;
-  max-width: 660px;
+  line-height: 3rem;
+  font-weight: 300;
+  max-width: 50rem;
   margin: 0.5rem 0 2rem;
+  color: #555;
 }
 
 .code {
   font-size: 3rem;
   font-weight: 900;
-  min-height: 6rem;
-  text-align: center;
+  min-height: 4rem;
+  margin-bottom: auto;
+  margin-top: 2rem;
   span {
     width: 6rem;
     height: 6rem;
-    line-height: 6rem;
-    margin: 0 0.5rem;
+    line-height: 6.2rem;
     display: inline-block;
     border-radius: 10rem;
-    border: 4px solid;
-    color: $color-black;
-    color: $color-red;
+    color: white;
+    color: white;
+    text-align: center;
+    background: #111;
+    margin-right: 1.25rem;
   }
 }
 
@@ -126,10 +135,10 @@ export default {
 .skip-button {
   text-transform: uppercase;
   font-size: 0.875rem;
-  font-weight: 100;
+  font-weight: 500;
   margin-top: 2rem;
   border: 1px solid;
-  padding: 0.2em 0.5em;
+  padding: 0.4em 0.5em;
   border-radius: 10rem;
 }
 </style>
