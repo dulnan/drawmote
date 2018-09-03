@@ -15,16 +15,13 @@
     "axios": "^0.18.0",
     "gyronorm": "^2.0.6",
     "input-range-scss": "^1.5.1",
-    "ip": "^1.1.5",
-    "socket.io-client": "^2.1.1",
-    "socket.io-p2p": "^2.2.0",
     "socketpeer": "^1.1.0",
     "vanilla-vectors-3d": "^1.0.1",
     "vue": "^2.5.16",
-    "vue-router": "^2.8.1",
-    "vue-socket.io": "^2.1.1-b"
+    "vue-router": "^2.8.1"
   },
   "devDependencies": {
+    "ip": "^1.1.5",
     "autoprefixer": "^7.2.6",
     "babel-core": "^6.26.3",
     "babel-eslint": "^7.1.1",

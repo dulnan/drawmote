@@ -23,8 +23,6 @@
 </template>
 
 <script>
-// import { EventBus } from '@/events'
-
 require('@hughsk/fulltilt/dist/fulltilt.min.js')
 var GyroNorm = require('gyronorm')
 
