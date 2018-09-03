@@ -13,7 +13,6 @@
       <div><span style="width: 200px; display: inline-block;">Beta</span>{{ Math.round(orientation.beta) }}</div>
       <div><span style="width: 200px; display: inline-block;">Gamma</span>{{ Math.round(orientation.gamma) }}</div>
       <div><span style="width: 200px; display: inline-block;">isPressingMain</span>{{ isPressingMain }}</div>
-      <div><span style="width: 200px; display: inline-block;">isPressingAside </span>{{ isPressingAside }}</div>
     </div>
 
     <div class="calibration">
@@ -25,8 +24,8 @@
 <script>
 import { buildDataString } from '@/tools/helpers.js'
 
+import GyroNorm from 'gyronorm'
 require('@hughsk/fulltilt/dist/fulltilt.min.js')
-var GyroNorm = require('gyronorm')
 var deviceOrientation
 
 export default {
@@ -69,8 +68,6 @@ export default {
       /* if (direction) { */
       /*   this.handleSwipe(direction) */
       /* } */
-
-      this.isPressingAside = false
     },
 
     handleMainTouchStart (e) {

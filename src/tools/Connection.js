@@ -14,11 +14,12 @@ export default class Connection {
     this.EventBus = EventBus
     this.DataHandler = DataHandler
 
+    this.isConnected = false
+
     this.init()
   }
 
   init () {
-    console.log(SERVER)
     const cookie = getCookie('pairing')
 
     if (cookie) {
@@ -60,7 +61,6 @@ export default class Connection {
   }
 
   initPeering () {
-    window.doMeasure = false
     this.peer = new SocketPeer({
       pairCode: this.hash,
       url: SERVER + '/socketpeer/'
@@ -68,27 +68,34 @@ export default class Connection {
 
     this.peer.on('connect', () => {
       this.EventBus.$emit('isConnected', true)
+      this.isConnected = true
       this.saveSession()
     })
 
-    this.peer.on('data', (data) => {
+    this.peer.on('data', (dataString) => {
+      const data = JSON.parse(dataString)
+
       switch (data.name) {
         case 'Orientation':
-          this.DataHandler.updateFromRemote(parseDataString(data.data))
+          this.DataHandler.updateFromRemote(parseDataString(data.myData))
           break
         case 'OrientationOffset':
-          this.DataHandler.updateCalibrationOffset(data.data)
+          this.DataHandler.updateCalibrationOffset(data.myData)
           break
         default:
-          this.EventBus.$emit(data.name, data.data)
+          this.EventBus.$emit(data.name, data.myData)
       }
     })
   }
 
   emit (name, data) {
-    this.peer.send({
+    if (!this.isConnected) {
+      return
+    }
+
+    this.peer.send(JSON.stringify({
       name: name,
-      data: data
-    })
+      myData: data
+    }))
   }
 }
