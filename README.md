@@ -23,11 +23,11 @@ During the development of drawmote some important functionality has been
 extracted to separate repositories and modules:
 
 | Name | Description | Demo |
-| ------------- | ------------- |
+| ------------- | ------------- | ------------- |
 | [drawmote-server](https://github.com/dulnan/drawmote-server) | The server used to generate pairing codes and hashes for establishing a WebRTC connection. Acts as a Websockets server as a fallback. | |
-| [lazy-brush](https://github.com/dulnan/lazy-brush) | Smooth drawing by pulling the brush with a rope connected to the brush and pointer | [https://dulnan.net/var/lazy-brush](Demo) |
-| [catenary-curve](https://github.com/dulnan/catenary-curve) | Calculate and draw a cantary curve on a canvas | [https://dulnan.net/var/catenary-curve](Demo) |
-| [gyro-plane](https://github.com/dulnan/gyro-plane) | Using alpha and beta angles from a gyroscope, calculate where its pointing at on a screen | [https://dulnan.net/var/gyro-plane](Demo) |
+| [lazy-brush](https://github.com/dulnan/lazy-brush) | Smooth drawing by pulling the brush with a rope connected to the brush and pointer | [Demo](https://dulnan.net/var/lazy-brush) |
+| [catenary-curve](https://github.com/dulnan/catenary-curve) | Calculate and draw a cantary curve on a canvas | [Demo](https://dulnan.net/var/catenary-curve) |
+| [gyro-plane](https://github.com/dulnan/gyro-plane) | Using alpha and beta angles from a gyroscope, calculate where its pointing at on a screen | [Demo](https://dulnan.net/var/gyro-plane) |
 | TODO: vue-animation-threads | Combine animation loops from multiple components into a single requestAnimationFrame loop and provide a consistent state. | TODO |
 
 ### History
