@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="relative overlay" v-if="hasLoaded">
+  <div id="app" class="relative" v-if="hasLoaded">
     <mobile v-if="isRemote" />
     <desktop v-else />
   </div>

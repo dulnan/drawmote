@@ -1,22 +1,21 @@
 <template>
-  <div class="mobile-controller">
+  <div class="mobile-controller mobile-font-size">
     <div
       class="mobile-touch mobile-touch--main"
       @touchstart="handleMainTouchStart"
       @touchmove="handleMainTouchMove"
       @touchend="handleMainTouchEnd"
-      @touchcancel="handleMainTouchCancel">
-    </div>
-
-    <div style="position: absolute; top: 400px; z-index: 9999; pointer-events: none">
-      <div><span style="width: 200px; display: inline-block;">Alpha</span>{{ Math.round(orientation.alpha) }}</div>
-      <div><span style="width: 200px; display: inline-block;">Beta</span>{{ Math.round(orientation.beta) }}</div>
-      <div><span style="width: 200px; display: inline-block;">Gamma</span>{{ Math.round(orientation.gamma) }}</div>
-      <div><span style="width: 200px; display: inline-block;">isPressingMain</span>{{ isPressingMain }}</div>
+      @touchcancel="handleMainTouchCancel"
+    >
+      <div class="lead mobile-controller__text">
+        Move your phone and point it at the screen. Press the circle to click or draw.
+        Interact with sliders by sliding up and down.
+      </div>
+      <div class="click-area"></div>
     </div>
 
     <div class="calibration">
-      <button class="button" @click="handleCalibrateClick">Calibrate</button>
+      <button class="button button--primary button--responsive" @click="handleCalibrateClick"><span>Reset to center</span></button>
     </div>
   </div>
 </template>
@@ -159,39 +158,40 @@ export default {
 </script>
 
 <style lang="scss">
-  .mobile-controller {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    background: blue;
-    right: 0;
-    display: flex;
-  }
-  .mobile-touch {
-  }
-  .mobile-touch--main {
-    background: red;
-    height: 100%;
-    flex: 5;
-  }
-  .mobile-touch--aside {
-    background: green;
-    height: 100%;
-    flex: 2;
-  }
-  .calibration {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 2rem;
-    z-index: 1000000;
-    background: white;
-    .button {
-      width: 100%;
-      background: $color-yellow;
-      padding: 1rem;
-    }
-  }
+.mobile-controller {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  padding: 2rem;
+}
+.mobile-controller__text {
+  font-size: 0.5em !important;
+}
+.mobile-touch {
+}
+.mobile-touch--main {
+  height: 100%;
+  flex: 5;
+}
+.calibration {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2rem;
+  z-index: 1000000;
+  background: white;
+  border-top: 1px solid $color-greylight;
+}
+
+.click-area {
+  width: 6em;
+  height: 6em;
+  margin: 1em auto 0;
+  border-radius: 100%;
+  border: 1px solid #ccc;
+}
 </style>

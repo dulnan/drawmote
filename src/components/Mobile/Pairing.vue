@@ -1,34 +1,36 @@
 <template>
-  <div class="mobile-pairing absolute overlay">
+  <div class="mobile-pairing absolute mobile-font-size">
     <div class="mobile-pairing__content relative">
-      <h1>drawmote</h1>
-      <p class="lead">Visit drawmote.io on a desktop device to get your pairing code and establish a connection.</p>
+      <h1 class="title">drawmote</h1>
+      <p class="lead">Visit drawmote.app on a desktop device to get your pairing code and establish a connection.</p>
       <div class="code relative">
         <div class="code__circles flex">
-          <div v-for="(char, index) in inputChars" v-bind:class="{ 'contains': char !== ' ' }" :key="char + index">{{ char }}</div>
+          <div class="code-circle" v-for="(char, index) in inputChars" v-bind:class="{ 'contains': char !== ' ' }" :key="char + index"><span>{{ char }}</span></div>
         </div>
 
-        <form class="code__form absolute overlay" v-on:submit.prevent="onSubmit">
-          <input maxlength="6" v-model="inputValue" class="code__input absolute overlay" type="text" ref="pairing_id">
+        <form class="code__form absolute" @submit.prevent="onSubmit">
+          <input maxlength="6" v-model="inputValue" class="code__input absolute" type="tel" pattern="[0-9]*" novalidate ref="pairing_id">
         </form>
 
+        <button
+          v-show="inputValue.length > 0"
+          @click="onSubmit"
+          class="button button--primary code-submit-button button--responsive"
+        >
+          <span>Pair with desktop</span>
+        </button>
+
         <transition name="appear">
-          <div v-if="codeInvalid" class="code__error absolute">The entered code is not valid :(</div>
+          <div v-if="codeInvalid" class="code__error">The entered code is not valid :(</div>
         </transition>
       </div>
     </div>
-    <background-animation></background-animation>
   </div>
 </template>
 
 <script>
-import BackgroundAnimation from '@/components/BackgroundAnimation.vue'
-
 export default {
   name: 'Pairing',
-  components: {
-    BackgroundAnimation
-  },
 
   data () {
     return {
@@ -78,66 +80,51 @@ export default {
 
 .mobile-pairing__content {
   z-index: $index-pairing;
-  margin-top: 3rem;
 }
 
-h1 {
-  font-size: 4rem;
+.title {
+  font-size: 1em;
 }
 
 .lead {
-  font-size: 1.25rem;
-  font-weight: 100;
+  font-size: 0.45em;
 }
 
 .code {
-  margin-top: 1.5rem;
+  margin-top: .5em;
 }
 
 .code__circles {
-  align-items: center;
-  justify-content: center;
   div {
-    width: 3rem;
-    height: 3rem;
-    border-radius: 100%;
-    margin: 0 0.25rem;
     color: white;
-    font-weight: 900;
-    font-size: 1.75rem;
-    line-height: 2.75rem;
-    text-transform: uppercase;
-    border: 2px solid $color-black;
+    font-size: 1em;
     &.contains {
-      background: $color-black;
+      background: $color-code;
     }
   }
 }
 
 .code__form {
-
+  width: 100%;
+  height: 1em;
 }
 
 .code__input {
   background: none;
   opacity: 0;
-  font-size: 1.75rem;
+  font-size: 0.7em;
+  line-height: 0;
+  width: 100%;
   font-family: monospace;
-  letter-spacing: 2.65rem;
-  padding-left: 2.6rem;
+  letter-spacing: 1.12em;
+  padding-left: 0.65em;
+  margin-right: -1em;
 }
 
 .code__error {
-  top: 100%;
-  text-align: center;
-  right: 0;
-  background: $color-red;
-  border-radius: 10rem;
-  width: 17rem;
-  margin: 1.5rem auto 0;
-  text-transform: uppercase;
-  font-weight: 900;
-  color: white;
+  margin-top: 1em;
+  font-weight: 700;
+  color: $color-red;
   font-size: 0.875rem;
   letter-spacing: 0.5px;
   padding: 0.25rem 0;
@@ -148,5 +135,9 @@ h1 {
     opacity: 0;
     transform: translateY(50%);
   }
+}
+
+.code-submit-button {
+  margin-top: 0.5em;
 }
 </style>
