@@ -1,9 +1,17 @@
 import SocketPeer from 'socketpeer'
 import axios from 'axios'
 
-import { getCookie, setCookie, parseDataString } from '@/tools/helpers'
+import { getCookie, setCookie, parseDataString, buildDevServerUrl } from '@/tools/helpers'
 
-const SERVER = process.env.VUE_APP_API_URL
+function getServerUrl () {
+  if (process.env.VUE_APP_API_URL) {
+    return process.env.VUE_APP_API_URL
+  } else {
+    return buildDevServerUrl(window.location.hostname, '3000')
+  }
+}
+
+const SERVER = getServerUrl()
 
 export default class Connection {
   constructor (EventBus, DataHandler) {
@@ -23,8 +31,8 @@ export default class Connection {
     const cookie = getCookie('pairing')
 
     if (cookie) {
-      this.hash = cookie.hash
-      this.initPeering()
+      // this.hash = cookie.hash
+      // this.initPeering()
     }
   }
 

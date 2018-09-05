@@ -1,5 +1,5 @@
 <template>
-  <div class="mobile overlay">
+  <div class="mobile">
     <transition name="appear">
       <pairing v-if="!isConnected"></pairing>
     </transition>

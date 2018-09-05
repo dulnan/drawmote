@@ -1,5 +1,5 @@
 <template>
-  <div class="desktop relative overlay">
+  <div class="desktop relative">
     <div class="desktop-container relative overlay material">
       <transition name="appear">
         <pairing v-if="!isPaired" :code="pairingCode"></pairing>
@@ -56,6 +56,7 @@ export default {
   perspective: 700px;
   background: $color-greylight;
   padding: 2rem;
+  height: 100vh;
 }
 
 .desktop-container {

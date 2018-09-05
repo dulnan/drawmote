@@ -6,11 +6,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
   color: $color-black;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
 }
 
 a {
@@ -28,10 +23,17 @@ h2 {
   font-size: 3.5rem;
 }
 
+.title {
+  color: $color-red;
+  font-weight: 900;
+}
+
 .lead {
   font-size: 2.5rem;
-  line-height: 3rem;
-  font-weight: 100;
+  line-height: 1.3333333;
+  font-weight: 300;
+  color: #999;
+  hyphens: auto;
 }
 
 .relative {
@@ -123,6 +125,15 @@ h2 {
   }
 }
 
+.button--primary {
+  background: $color-red;
+  color: white;
+  padding: 1rem 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border-radius: 3px;
+}
+
 .material {
   border: 1px solid $color-grey;
   // box-shadow: 0 5px 10px 0px rgba($color-greydark, 0.1);
@@ -137,4 +148,42 @@ h2 {
   letter-spacing: 0.06em;
   color: $color-greydark;
   text-align: left;
+}
+
+.code-circle {
+  border: 1px solid $color-code;
+  color: $color-code;
+  font-size: 4rem;
+  width: 1em;
+  height: 1em;
+  border-radius: $code-radius;
+  text-transform: uppercase;
+  text-align: center;
+  display: inline-block;
+  margin-right: $code-margin;
+  line-height: 0.75em;
+  font-weight: 700;
+  span {
+    font-size: 0.6em;
+  }
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.button--responsive {
+  width: 100%;
+  font-size: inherit;
+  line-height: 0;
+  border-radius: $code-radius;
+  height: 1.25em;
+  span {
+    font-size: 0.4em;
+    line-height: 1;
+    display: inline-block;
+  }
+}
+
+.mobile-font-size {
+  font-size: calc((100vw - 4rem) / 7);
 }

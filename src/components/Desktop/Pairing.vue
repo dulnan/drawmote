@@ -6,7 +6,7 @@
       <h2 class="code">
         <transition name="appear">
           <div v-if="code" class="code__content">
-            <span v-for="(number, index) in pairingCodeNumbers" :key="index">{{ number }}</span>
+            <div class="code-circle" v-for="(number, index) in pairingCodeNumbers" :key="index"><span>{{ number }}</span></div>
           </div>
         </transition>
       </h2>
@@ -14,18 +14,12 @@
         <button @click.prevent="skipPairing" type="button" class="button skip-button">Skip this step</button>
       </div>
     </div>
-    <!--<background-animation></background-animation>-->
   </div>
 </template>
 
 <script>
-import BackgroundAnimation from '@/components/BackgroundAnimation.vue'
-
 export default {
   name: 'Pairing',
-  components: {
-    BackgroundAnimation
-  },
 
   data () {
     return {
@@ -83,37 +77,22 @@ export default {
 .title {
   font-size: 3.5rem;
   line-height: 1;
-  font-weight: 900;
-  color: $color-red;
   letter-spacing: 2px;
 }
 
 .lead {
   font-size: 2rem;
-  line-height: 3rem;
-  font-weight: 300;
   max-width: 50rem;
   margin: 0.5rem 0 2rem;
-  color: #555;
 }
 
 .code {
-  font-size: 3rem;
+  font-size: 2.25rem;
   font-weight: 900;
-  min-height: 4rem;
   margin-bottom: auto;
   margin-top: 2rem;
-  span {
-    width: 6rem;
-    height: 6rem;
-    line-height: 6.2rem;
-    display: inline-block;
-    border-radius: 10rem;
-    color: white;
-    color: white;
-    text-align: center;
-    background: #111;
-    margin-right: 1.25rem;
+  div {
+    color: $color-greydark;
   }
 }
 
