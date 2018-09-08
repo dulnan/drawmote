@@ -29,6 +29,10 @@ export default {
         background: getRgbaString(this.tool.color.rgb, 1),
         color: getRgbaString(shadeRgbColor(this.tool.color.rgb, -0.2), 0.5)
       }
+    },
+
+    additionalClasses () {
+      return ['toolbar-item--color-' + this.tool.color.name]
     }
   },
 
@@ -46,6 +50,10 @@ export default {
   height: 3rem;
   border: 3px solid white;
   border-radius: 100%;
+
+  &.toolbar-item--color-white {
+    box-shadow: 0 0 0 1px #eee;
+  }
 
   &.active {
     box-shadow: 0 0px 0px 2px currentColor;

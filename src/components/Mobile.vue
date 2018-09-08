@@ -39,5 +39,6 @@ export default {
 
 <style lang="scss" scoped>
 .mobile {
+  height: 100%;
 }
 </style>

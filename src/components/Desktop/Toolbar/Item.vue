@@ -30,8 +30,13 @@ export default {
           'active': this.isActive
         },
         'toolbar-item',
-        'toolbar-item--' + this.groupId
+        'toolbar-item--' + this.groupId,
+        ...this.additionalClasses
       ]
+    },
+
+    additionalClasses () {
+      return []
     },
 
     style () {

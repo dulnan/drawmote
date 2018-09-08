@@ -24,6 +24,10 @@ export const COLORS = [
     hex: '#798f16'
   },
   {
+    name: 'white',
+    hex: '#ffffff'
+  },
+  {
     name: 'grey',
     hex: '#e3e3e3'
   },
