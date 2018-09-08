@@ -7,6 +7,12 @@ module.exports = {
       patterns: [
         path.resolve(__dirname, 'src/assets/scss/variables.scss')
       ]
+    },
+    i18n: {
+      locale: 'en',
+      fallbackLocale: 'en',
+      localeDir: 'locales',
+      enableInSFC: false
     }
   },
   chainWebpack: (config) => {

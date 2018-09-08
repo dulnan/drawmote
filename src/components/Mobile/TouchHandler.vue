@@ -7,15 +7,17 @@
       @touchend="handleMainTouchEnd"
       @touchcancel="handleMainTouchCancel"
     >
-      <div class="lead mobile-controller__text">
-        Move your phone and point it at the screen. Press the circle to click or draw.
-        Interact with sliders by sliding up and down.
-      </div>
+      <div class="lead mobile-controller__text">{{ $t('mobile.controllingInfo') }}</div>
       <div class="click-area"></div>
     </div>
 
     <div class="calibration">
-      <button class="button button--primary button--responsive" @click="handleCalibrateClick"><span>Reset to center</span></button>
+      <button
+        class="button button--primary button--responsive"
+        @click="handleCalibrateClick"
+      >
+        <span>{{ $t('mobile.calibrationButton') }}</span>
+      </button>
     </div>
   </div>
 </template>

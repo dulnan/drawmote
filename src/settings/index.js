@@ -90,25 +90,21 @@ export const TOOLBAR_TOOLS = [
 export const TOOLBAR_SLIDERS = [
   {
     id: 'brushOpacity',
-    label: 'Opacity',
     component: 'SliderBrushOpacity',
     icon: ''
   },
   {
     id: 'brushRadius',
-    label: 'Radius',
     component: 'SliderBrushRadius',
     icon: ''
   },
   {
     id: 'brushHardness',
-    label: 'Hardness',
     component: 'SliderBrushHardness',
     icon: ''
   },
   {
     id: 'lazyRadius',
-    label: 'Lazy Radius',
     component: 'SliderLazyRadius',
     icon: ''
   }

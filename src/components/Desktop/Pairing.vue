@@ -2,7 +2,7 @@
   <div class="overlay pairing relative flex">
     <div class="relative pairing__content">
       <h1 class="title">drawmote</h1>
-      <p class="lead">Use your phone to draw on this screen. Visit drawmote.io on your mobile device and enter the following code to connect to this session.</p>
+      <p class="lead">{{ $t('desktop.lead') }}</p>
       <h2 class="code">
         <transition name="appear">
           <div v-if="code" class="code__content">
@@ -11,7 +11,7 @@
         </transition>
       </h2>
       <div>
-        <button @click.prevent="skipPairing" type="button" class="button skip-button">Skip this step</button>
+        <button @click.prevent="skipPairing" type="button" class="button skip-button">{{ $t('desktop.skipButton') }}</button>
       </div>
     </div>
   </div>

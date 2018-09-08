@@ -6,7 +6,7 @@
     @wheel="handleWheel"
   >
     <div>
-      <div class="label tool-slider__label">{{ tool.label }}</div>
+      <div class="label tool-slider__label">{{ $t('tools.' + tool.id) }}</div>
       <input type="range" :min="min" :max="max" step="1" v-model="value" />
     </div>
   </div>
