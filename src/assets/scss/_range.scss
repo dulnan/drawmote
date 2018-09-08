@@ -1,7 +1,5 @@
-@import 'variables';
-
-$track-color: $color-greylighter;
-$thumb-color: $color-greydark;
+$track-color: $alt-color-lighter;
+$thumb-color: $alt-color;
 
 $thumb-radius: 12px;
 $thumb-height: 12px;
@@ -18,7 +16,7 @@ $track-shadow-size: 0px;
 $track-shadow-blur: 1px;
 $track-shadow-color: rgba(0, 0, 0, .2);
 $track-border-width: 0px;
-$track-border-color: $color-greylight;
+$track-border-color: $alt-color-light;
 
 $track-radius: 5px;
 $contrast: 5%;

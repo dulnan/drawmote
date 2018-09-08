@@ -1,8 +1,8 @@
 <template>
-  <div class="mobile-pairing mobile-font-size">
+  <div class="mobile-pairing pdg+">
     <div class="mobile-pairing__content relative">
-      <h1 class="title">drawmote</h1>
-      <p class="lead text-muted">{{ $t('mobile.lead') }}</p>
+      <h1 class="text-brand text-heavy">drawmote</h1>
+      <p class="h2 text-muted text-light text-hyphens mrgb+ mrgt">{{ $t('mobile.lead') }}</p>
       <div class="code relative">
         <div class="code__circles flex">
           <div class="code-circle" v-for="(char, index) in inputChars" v-bind:class="{ 'contains': char !== ' ' }" :key="char + index"><span>{{ char }}</span></div>
@@ -15,7 +15,7 @@
         <button
           v-show="inputValue.length > 0"
           @click="onSubmit"
-          class="button button--primary code-submit-button button--responsive"
+          class="btn btn--primary btn--block mrgt+"
         >
           <span>{{ $t('mobile.pairButton') }}</span>
         </button>
@@ -83,7 +83,6 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  padding: 2rem;
   color: $color-black;
   height: 100%;
 }
@@ -93,17 +92,8 @@ export default {
   margin-bottom: auto;
 }
 
-.title {
-  font-size: 1em;
-}
-
-.lead {
-  font-size: 0.45em;
-}
-
 .code {
-  margin-top: .5em;
-  margin-bottom: 3rem;
+  font-size: calc((100vw - 3rem) / 7);
 }
 
 .code__circles {
@@ -136,7 +126,7 @@ export default {
 .code__error {
   margin-top: 1em;
   font-weight: 700;
-  color: $color-red;
+  color: $brand-color;
   font-size: 0.875rem;
   letter-spacing: 0.5px;
   padding: 0.25rem 0;
@@ -147,9 +137,5 @@ export default {
     opacity: 0;
     transform: translateY(50%);
   }
-}
-
-.code-submit-button {
-  margin-top: 0.5em;
 }
 </style>

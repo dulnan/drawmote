@@ -145,7 +145,7 @@ export default {
 
 <style lang="scss">
 .toolbar {
-  border-bottom: 2px dotted $color-greylight;
+  border-bottom: 2px dotted $alt-color-light;
   background: white;
   z-index: $index-toolbar;
   position: absolute;
@@ -161,15 +161,15 @@ export default {
 }
 
 .toolbar-group--tools {
-  border-right: 2px dotted $color-greylight;
+  border-right: 2px dotted $alt-color-light;
   li:not(:last-child) {
-    border-right: 2px dotted $color-greylight;
+    border-right: 2px dotted $alt-color-light;
   }
 }
 
 .toolbar-group--colors {
   padding: 1rem;
-  border-right: 2px dotted $color-greylight;
+  border-right: 2px dotted $alt-color-light;
 
   li:not(:last-child) {
     margin-right: 1rem;
@@ -184,7 +184,7 @@ export default {
     flex: 1;
     margin-right: 0;
     &:not(:last-child) {
-      border-right: 2px dotted $color-greylight;
+      border-right: 2px dotted $alt-color-light;
     }
   }
 }

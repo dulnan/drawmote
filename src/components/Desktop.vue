@@ -63,7 +63,7 @@ export default {
 <style lang="scss">
 .desktop {
   perspective: 700px;
-  background: $color-greylight;
+  background: $alt-color-lighter;
   padding: 2rem;
   height: 100vh;
 }

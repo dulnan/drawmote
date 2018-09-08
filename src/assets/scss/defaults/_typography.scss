@@ -1,0 +1,166 @@
+/*----------------------------------------*\
+  TYPOGRAPHY SCAFFOLDING
+\*----------------------------------------*/
+
+html {
+  font-family: $font-family-default;
+  // Use percentage value for root font-size
+  // see https://github.com/liip/kanbasu/issues/29
+  font-size: 100%;
+  line-height: 1.5;
+  color: $text-color;
+
+  // Cleaner font rendering
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+/**
+ * Links
+ */
+
+a {
+  color: $link-color;
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+}
+
+
+/**
+ * Headings
+ */
+
+@include headings {
+  margin: 0;
+  font-weight: inherit;
+  line-height: 1.2;
+}
+
+h1,
+.h1 {
+  margin-top: 0;
+  @include font-values($font-h1);
+}
+
+h2,
+.h2 {
+  @include font-values($font-h2);
+}
+
+h3,
+.h3 {
+  @include font-values($font-h3);
+}
+
+h4,
+.h4 {
+  @include font-values($font-h4);
+}
+
+h5,
+.h5 {
+  @include font-values($font-h5);
+}
+
+h6,
+.h6 {
+  @include font-values($font-h6);
+}
+
+
+/**
+ * Paragraphs
+ */
+
+p {
+  margin-top: 1em;
+  margin-bottom: 1.3em;
+}
+
+
+/**
+ * Preformatted text
+ */
+
+pre,
+code {
+  font-family: Monaco, monospace;
+  font-weight: normal;
+  tab-size: 4;
+
+  background-color: #f5f5f5;
+}
+
+pre {
+  padding: $spacing-unit-default;
+  margin: 0 0 2em;
+  overflow: auto;
+
+  font-size: rem(14px);
+
+  border-radius: $border-radius-default;
+}
+
+code {
+  display: inline-block;
+  padding: 1px 5px;
+
+  pre & {
+    display: block;
+    padding: 0;
+  }
+}
+
+
+/**
+ * Lists
+ */
+
+ul,
+ol {
+  #{$padding-left}: $spacing-unit-default;
+  margin: 1em 0;
+
+  ul,
+  ol {
+    margin: 0;
+  }
+}
+
+dl {
+  @include clearfix;
+}
+
+  dt {
+    font-weight: bold;
+  }
+
+  dd {
+    #{$margin-left}: 0;
+    margin-bottom: .5em;
+  }
+
+  .dl--inline {
+    dt {
+      float: flip(left, right);
+      width: 100px;
+    }
+
+    dd {
+      @include clearfix;
+      #{$margin-left}: calc(100px + #{$spacing-unit-small});
+    }
+  }
+
+
+/**
+ * Miscellaenous
+ */
+
+abbr {
+  cursor: help;
+}

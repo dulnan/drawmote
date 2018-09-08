@@ -1,0 +1,68 @@
+.relative {
+  position: relative;
+}
+
+.fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.absolute {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.overlay {
+  width: 100%;
+  height: 100%;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.flex--center {
+  align-items: center;
+  justify-content: center;
+}
+
+.label {
+  margin-bottom: 1rem;
+  font-weight: bold;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: $alt-color;
+  text-align: left;
+}
+
+.code-circle {
+  border: 1px solid $color-code;
+  color: $color-code;
+  font-size: 4rem;
+  width: 1em;
+  height: 1em;
+  border-radius: $code-radius;
+  text-transform: uppercase;
+  text-align: center;
+  display: inline-block;
+  margin-right: $code-margin;
+  line-height: 0.75em;
+  font-weight: 700;
+  span {
+    font-size: 0.6em;
+  }
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.mobile-font-size {
+  font-size: calc((100vw - 4rem) / 7);
+}

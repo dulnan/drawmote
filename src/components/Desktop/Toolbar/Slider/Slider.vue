@@ -60,7 +60,7 @@ export default {
   width: 15rem;
   bottom: -1px;
   background: white;
-  border: 1px solid $color-greylight;
+  border: 1px solid $alt-color-light;
   display: flex;
   align-items: center;
   justify-content: center;

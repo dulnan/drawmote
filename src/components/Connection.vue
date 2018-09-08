@@ -1,20 +1,22 @@
 <template>
   <transition name="appear">
-    <div class="connection" v-if="connectionRestorable">
-      <div class="connection__content">
+    <div class="connection pdg+ sm-pdg++" v-if="connectionRestorable">
+      <div>
+        <h3 class="text-bold">Restore Connection</h3>
+        <p class="mrg0 h4 text-light text-hyphens mrgb sm-mrgb0">You can use a previously made connection. Press "restore" on both devices.</p>
+      </div>
+      <div class="connection__buttons flex md-mrgl">
         <div>
-          <h3>Restore Connection</h3>
-          <p>You can use a previously made connection. Press "restore" on both devices.</p>
-        </div>
-        <div class="connection__actions">
           <button
-            class="button button--secondary connection__button-clear"
+            class="btn btn--default connection__button-clear"
             @click="deleteConnection"
           >
             <span>Delete</span>
           </button>
+        </div>
+        <div class="flex-1 pdgl- md-pdgl">
           <button
-            class="button button--primary connection__button connection__button--restore"
+            class="btn btn--primary connection__button connection__button--restore relative btn--block"
             :class="{'restoring': isRestoring, 'is-restored': isRestored }"
             @click="restoreConnection"
           >
@@ -89,10 +91,17 @@ export default {
   right: 0;
   bottom: 0;
   background: white;
-  border-top: 1px solid $color-border;
+  border-top: 1px solid $alt-color-light;
 
-  padding: 2rem;
   opacity: 1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  @include media('md') {
+    flex-direction: row;
+  }
 
   &.appear-enter-active, &.appear-leave-active {
     transition: .5s;
@@ -100,18 +109,6 @@ export default {
   &.appear-enter, &.appear-leave-to {
     transform: translateY(100%);
   }
-}
-
-.connection__content {
-  @include desktop() {
-    display: flex;
-  }
-}
-
-.connection__actions {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
 }
 
 @keyframes iconrotate {
@@ -123,8 +120,11 @@ export default {
   }
 }
 
+.connection__buttons {
+  align-items: center;
+}
+
 .button.connection__button--restore {
-  transition: 0.3s;
   position: relative;
   margin-left: auto;
   margin-left: 1rem;
@@ -132,8 +132,8 @@ export default {
     transition: 0.3s;
   }
   &.restoring {
-    background: $color-greylight;
-    border-color: $color-greylight;
+    background: $alt-color-light;
+    border-color: $alt-color-light;
     span {
       opacity: 0;
     }
@@ -155,7 +155,7 @@ export default {
     opacity: 1;
   }
   svg {
-    fill: $color-greydark;
+    fill: $alt-color;
     display: block;
     width: 2rem;
     height: 2rem;

@@ -1,19 +1,21 @@
 <template>
-  <div class="mobile-controller mobile-font-size">
+  <div class="mobile-controller">
     <div
-      class="mobile-touch mobile-touch--main"
+      class="mobile-touch pdg"
       @touchstart="handleMainTouchStart"
       @touchmove="handleMainTouchMove"
       @touchend="handleMainTouchEnd"
       @touchcancel="handleMainTouchCancel"
     >
-      <div class="lead mobile-controller__text">{{ $t('mobile.controllingInfo') }}</div>
-      <div class="click-area"></div>
+      <div class="h3 text-muted">{{ $t('mobile.controllingInfo') }}</div>
+      <div class="click-area">
+        <div class="click-area__circle"></div>
+      </div>
     </div>
 
-    <div class="calibration">
+    <div class="calibration pdg">
       <button
-        class="button button--primary button--responsive"
+        class="btn btn--primary btn--block"
         @click="handleCalibrateClick"
       >
         <span>{{ $t('mobile.calibrationButton') }}</span>
@@ -48,29 +50,6 @@ export default {
   },
 
   methods: {
-    handleAsideTouchEnd (e) {
-      e.preventDefault()
-
-      /* const touch = e.changedTouches[0] */
-      /* const diffX = touch.pageX - this.touchStart.x */
-      /* const diffY = touch.pageY - this.touchStart.y */
-      /* const diffTime = new Date().getTime() - this.touchStart.time */
-      /*  */
-      /* let direction = '' */
-      /*  */
-      /* if (diffTime <= 300) { */
-      /*   if (Math.abs(diffX) >= SWIPE_THRESHOLD && Math.abs(diffY) <= SWIPE_RESTRAINT) { */
-      /*     direction = (diffX < 0) ? 'left' : 'right' */
-      /*   } else if (Math.abs(diffY) >= SWIPE_THRESHOLD && Math.abs(diffX) <= SWIPE_RESTRAINT) { */
-      /*     direction = (diffY < 0) ? 'up' : 'down' */
-      /*   } */
-      /* } */
-      /*  */
-      /* if (direction) { */
-      /*   this.handleSwipe(direction) */
-      /* } */
-    },
-
     handleMainTouchStart (e) {
       e.preventDefault()
 
@@ -167,32 +146,28 @@ export default {
   bottom: 0;
   right: 0;
   display: flex;
-  padding: 2rem;
-}
-.mobile-controller__text {
-  font-size: 0.5em !important;
+  flex-direction: column;
 }
 .mobile-touch {
-}
-.mobile-touch--main {
   height: 100%;
-  flex: 5;
+  display: flex;
+  flex-direction: column;
 }
 .calibration {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 2rem;
-  z-index: 1000000;
-  background: white;
-  border-top: 1px solid $color-greylight;
+  margin-top: auto;
+  border-top: 1px solid $alt-color-light;
 }
 
 .click-area {
-  width: 6em;
-  height: 6em;
-  margin: 1em auto 0;
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.click-area__circle {
+  width: 14rem;
+  height: 14rem;
+  margin: 0 auto;
   border-radius: 100%;
   border: 1px solid #ccc;
 }

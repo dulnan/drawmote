@@ -73,7 +73,7 @@ export default {
 
   &.hover {
     opacity: 0.8;
-    background: $color-greylighter;
+    background: $alt-color-lighter;
   }
 
   svg {
