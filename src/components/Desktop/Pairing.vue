@@ -2,7 +2,7 @@
   <div class="overlay pairing relative flex">
     <div class="relative pairing__content">
       <h1 class="title">drawmote</h1>
-      <p class="lead">{{ $t('desktop.lead') }}</p>
+      <p class="lead text-muted">{{ $t('desktop.lead') }}</p>
       <h2 class="code">
         <transition name="appear">
           <div v-if="code" class="code__content">
@@ -10,16 +10,23 @@
           </div>
         </transition>
       </h2>
-      <div>
+      <div class="actions">
         <button @click.prevent="skipPairing" type="button" class="button skip-button">{{ $t('desktop.skipButton') }}</button>
       </div>
+      <browser-support checks="desktop" />
     </div>
   </div>
 </template>
 
 <script>
+import BrowserSupport from '@/components/BrowserSupport.vue'
+
 export default {
   name: 'Pairing',
+
+  components: {
+    BrowserSupport
+  },
 
   data () {
     return {
@@ -89,7 +96,6 @@ export default {
 .code {
   font-size: 2.25rem;
   font-weight: 900;
-  margin-bottom: auto;
   margin-top: 2rem;
   div {
     color: $color-greydark;
@@ -111,13 +117,15 @@ export default {
   }
 }
 
+.actions {
+  margin-bottom: auto;
+}
+
 .skip-button {
-  text-transform: uppercase;
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: 1rem;
+  font-weight: 700;
   margin-top: 2rem;
-  border: 1px solid;
-  padding: 0.4em 0.5em;
-  border-radius: 10rem;
+  color: $color-red;
+  border-bottom: 1px solid;
 }
 </style>

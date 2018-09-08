@@ -1,8 +1,8 @@
 <template>
-  <div class="mobile-pairing absolute mobile-font-size">
+  <div class="mobile-pairing mobile-font-size">
     <div class="mobile-pairing__content relative">
       <h1 class="title">drawmote</h1>
-      <p class="lead">{{ $t('mobile.lead') }}</p>
+      <p class="lead text-muted">{{ $t('mobile.lead') }}</p>
       <div class="code relative">
         <div class="code__circles flex">
           <div class="code-circle" v-for="(char, index) in inputChars" v-bind:class="{ 'contains': char !== ' ' }" :key="char + index"><span>{{ char }}</span></div>
@@ -25,12 +25,19 @@
         </transition>
       </div>
     </div>
+    <browser-support checks="mobile" />
   </div>
 </template>
 
 <script>
+import BrowserSupport from '@/components/BrowserSupport.vue'
+
 export default {
   name: 'Pairing',
+
+  components: {
+    BrowserSupport
+  },
 
   data () {
     return {
@@ -72,14 +79,18 @@ export default {
 
 <style lang="scss" scoped>
 .mobile-pairing {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: flex-start;
   padding: 2rem;
   color: $color-black;
+  height: 100%;
 }
 
 .mobile-pairing__content {
   z-index: $index-pairing;
+  margin-bottom: auto;
 }
 
 .title {
@@ -92,6 +103,7 @@ export default {
 
 .code {
   margin-top: .5em;
+  margin-bottom: 3rem;
 }
 
 .code__circles {

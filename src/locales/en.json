@@ -15,5 +15,27 @@
     "brushRadius": "radius",
     "brushHardness": "hardness",
     "lazyRadius": "lazy radius"
+  },
+  "browserSupport": {
+    "webRTC": {
+      "label": "WebRTC",
+      "supported": "Low latency connection between both devices.",
+      "notSupported": "Unfortunately your browser doesn't support WebRTC. This is required for a seamless experience."
+    },
+    "webSocket": {
+      "label": "WebSocket",
+      "supported": "This is used as a fallback to WebRTC. Latency will be high and thus the experience not optimal.",
+      "notSupported": "Your browser doesn't support native WebSocket connections. If possible, fallback options will be used, but they have not been tested."
+    },
+    "gyroscope": {
+      "label": "Gyroscope",
+      "supported": "Device can be used to calculate point on desktop screen.",
+      "notSupported": "No gyroscope could be detected. It might be possible to still use the app."
+    },
+    "canvasFilter": {
+      "label": "Canvas Filter",
+      "supported": "All brush options can be used.",
+      "notSupported": "Without this feature you won't be able to adjust the brush hardness."
+    }
   }
 }
