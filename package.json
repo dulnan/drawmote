@@ -1,8 +1,6 @@
 {
   "name": "drawmote-client",
   "version": "0.1.0",
-  "description": "client application for drawmote",
-  "author": "Jan Hug <me@dulnan.net>",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -19,7 +17,8 @@
     "input-range-scss": "^1.5.1",
     "lazy-brush": "github:dulnan/lazy-brush",
     "socketpeer": "github:dulnan/socketpeer#update-dependencies",
-    "vue": "^2.5.17"
+    "vue": "^2.5.17",
+    "vue-i18n": "^8.0.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.1",
@@ -32,6 +31,7 @@
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.1",
     "style-resources-loader": "^1.2.1",
+    "vue-cli-plugin-i18n": "^0.5.0",
     "vue-cli-plugin-style-resources-loader": "^0.1.3",
     "vue-svg-loader": "^0.8.0",
     "vue-template-compiler": "^2.5.17"
@@ -59,5 +59,7 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "author": "Jan Hug <me@dulnan.net>",
+  "description": "client application for drawmote"
 }

@@ -1,0 +1,19 @@
+{
+  "desktop": {
+    "lead": "Use your phone to draw on this screen. Visit drawmote.io on your mobile device and enter the following code to connect to this session.",
+    "skipButton": "Continue without pairing"
+  },
+  "mobile": {
+    "lead": "Visit drawmote.app on a desktop device to get your pairing code and establish a connection.",
+    "pairButton": "Pair with desktop",
+    "codeInvalid": "The entered code is not valid :(",
+    "controllingInfo": "Move your phone and point it at the screen. Press the circle to click or draw. Interact with sliders by sliding up and down.",
+    "calibrationButton": "Reset to center"
+  },
+  "tools": {
+    "brushOpacity": "opacity",
+    "brushRadius": "radius",
+    "brushHardness": "hardness",
+    "lazyRadius": "lazy radius"
+  }
+}

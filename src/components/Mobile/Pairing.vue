@@ -2,7 +2,7 @@
   <div class="mobile-pairing absolute mobile-font-size">
     <div class="mobile-pairing__content relative">
       <h1 class="title">drawmote</h1>
-      <p class="lead">Visit drawmote.app on a desktop device to get your pairing code and establish a connection.</p>
+      <p class="lead">{{ $t('mobile.lead') }}</p>
       <div class="code relative">
         <div class="code__circles flex">
           <div class="code-circle" v-for="(char, index) in inputChars" v-bind:class="{ 'contains': char !== ' ' }" :key="char + index"><span>{{ char }}</span></div>
@@ -17,11 +17,11 @@
           @click="onSubmit"
           class="button button--primary code-submit-button button--responsive"
         >
-          <span>Pair with desktop</span>
+          <span>{{ $t('mobile.pairButton') }}</span>
         </button>
 
         <transition name="appear">
-          <div v-if="codeInvalid" class="code__error">The entered code is not valid :(</div>
+          <div v-if="codeInvalid" class="code__error">{{ $t('mobile.codeInvalid') }}</div>
         </transition>
       </div>
     </div>

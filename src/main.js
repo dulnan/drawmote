@@ -1,4 +1,5 @@
 import Vue from 'vue'
+
 import App from './App.vue'
 
 import { EventBus } from './events'
@@ -8,6 +9,7 @@ import DataHandler from './tools/DataHandler'
 import './assets/scss/main.scss'
 
 import VueLoop from './plugins/VueLoop'
+import i18n from './i18n'
 
 Vue.use(VueLoop)
 
@@ -19,5 +21,6 @@ Vue.prototype.$global = global
 Vue.prototype.$connection = new Connection(EventBus, global)
 
 new Vue({
+  i18n,
   render: h => h(App)
 }).$mount('#app')
