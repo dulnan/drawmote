@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import { EventBus } from '@/events'
+
 import BrowserSupport from '@/components/BrowserSupport.vue'
 
 export default {
@@ -43,7 +45,7 @@ export default {
 
   methods: {
     skipPairing () {
-
+      EventBus.$emit('isConnected')
     }
   },
 
