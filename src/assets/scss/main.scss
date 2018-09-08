@@ -19,8 +19,40 @@ a {
   box-sizing: border-box;
 }
 
-h2 {
-  font-size: 3.5rem;
+h1, .h1 {
+  font-size: $font-xl;
+  @include desktop () {
+    font-size: $font-xxl;
+  }
+}
+
+h2, .h2 {
+  font-size: $font-l;
+  @include desktop () {
+    font-size: $font-xl;
+  }
+}
+
+h3, .h3 {
+  font-size: $font-m;
+  @include desktop () {
+    font-size: $font-l;
+  }
+}
+
+h4, .h4 {
+  font-size: $font-s;
+  @include desktop () {
+    font-size: $font-m;
+  }
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-light {
+  font-weight: 300;
 }
 
 .title {
@@ -128,13 +160,25 @@ h2 {
   }
 }
 
+.button--primary,
+.button--secondary {
+  padding: 1rem 1.5rem;
+  font-weight: 600;
+  border-radius: 3px;
+  border: 2px solid $color-red;
+  font-size: $font-s;
+  @include desktop() {
+    font-size: $font-m;
+  }
+}
+
 .button--primary {
   background: $color-red;
   color: white;
-  padding: 1rem 1.5rem;
-  font-size: 1.5rem;
-  font-weight: 600;
-  border-radius: 3px;
+}
+
+.button--secondary {
+  color: $color-red;
 }
 
 .material {

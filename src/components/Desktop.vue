@@ -6,6 +6,7 @@
       </transition>
       <drawing v-if="isPaired"></drawing>
       <the-footer />
+      <connection />
     </div>
   </div>
 </template>
@@ -15,6 +16,7 @@ import { EventBus } from '@/events'
 
 import Pairing from '@/components/Desktop/Pairing.vue'
 import Drawing from '@/components/Desktop/Drawing.vue'
+import Connection from '@/components/Connection.vue'
 import TheFooter from '@/components/Footer.vue'
 
 export default {
@@ -23,6 +25,7 @@ export default {
   components: {
     Pairing,
     Drawing,
+    Connection,
     TheFooter
   },
 
@@ -36,16 +39,22 @@ export default {
   mounted () {
     this.initConnection()
 
-    EventBus.$on('isConnected', () => {
+    EventBus.$on('isConnected', (isConnected) => {
+      this.isPaired = isConnected
+    })
+
+    EventBus.$on('connectionClosed', () => {
       this.isPaired = true
     })
   },
 
   methods: {
     async initConnection () {
-      await this.$connection.registerDesktop()
-      this.$connection.initPeering()
-      this.pairingCode = this.$connection.code
+      const peering = await this.$connection.getPeeringCode()
+      this.$connection.initPeering(peering.code, peering.hash)
+      this.pairingCode = peering.code
+
+      this.$connection.getStoredPeerings()
     }
   }
 }

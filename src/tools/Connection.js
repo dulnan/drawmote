@@ -1,7 +1,7 @@
 import SocketPeer from 'socketpeer'
 import axios from 'axios'
 
-import { getCookie, setCookie, parseDataString, buildDevServerUrl } from '@/tools/helpers'
+import { getCookie, setCookie, eraseCookie, parseDataString, buildDevServerUrl } from '@/tools/helpers'
 
 function getServerUrl () {
   if (process.env.VUE_APP_API_URL) {
@@ -23,61 +23,99 @@ export default class Connection {
     this.DataHandler = DataHandler
 
     this.isConnected = false
-
-    this.init()
   }
 
-  init () {
+  async getStoredPeerings () {
     const cookie = getCookie('pairing')
 
     if (cookie) {
-      // this.hash = cookie.hash
-      // this.initPeering()
+      const data = JSON.parse(cookie)
+      const peering = await this.getPeeringHash(parseInt(data.code))
+
+      if (peering.isValid) {
+        this.EventBus.$emit('connectionRestorable', peering)
+      } else {
+        this.deleteSession()
+      }
     }
   }
 
-  async registerDesktop () {
+  async getPeeringCode () {
     const response = await axios.get(SERVER + '/code/get')
-
-    this.hash = response.data.hash
-    this.code = response.data.code
     this.isDesktop = true
 
-    return response.data.code
+    return {
+      hash: response.data.hash,
+      code: response.data.code
+    }
   }
 
-  async validateCode (code) {
+  async getPeeringHash (code) {
     const response = await axios.post(SERVER + '/code/validate', {
       code: code
     })
 
     if (response.data.isValid) {
-      this.hash = response.data.hash
-      this.code = response.data.code
-
-      return true
+      return {
+        isValid: true,
+        hash: response.data.hash,
+        code: response.data.code
+      }
     }
 
-    return false
+    return {
+      isValid: false
+    }
   }
 
-  saveSession () {
-    setCookie('pairing', {
-      hash: this.hash,
+  saveSession (code, hash) {
+    setCookie('pairing', JSON.stringify({
+      hash: hash,
+      code: code,
       isDesktop: this.isDesktop
-    }, 1)
+    }), 1)
   }
 
-  initPeering () {
+  deleteSession () {
+    eraseCookie('pairing')
+  }
+
+  initPeering (code, hash) {
     this.peer = new SocketPeer({
-      pairCode: this.hash,
-      url: SERVER + '/socketpeer/'
+      pairCode: hash,
+      url: SERVER + '/socketpeer/',
+      serveLibrary: false
     })
 
     this.peer.on('connect', () => {
+      console.log(this.peer)
+      console.log('is connected')
       this.EventBus.$emit('isConnected', true)
       this.isConnected = true
-      this.saveSession()
+      this.saveSession(code, hash)
+    })
+
+    this.peer.on('close', () => {
+      console.log('closed')
+      this.isConnected = false
+      // this.EventBus.$emit('isConnected', true)
+      // this.isConnected = true
+      // this.saveSession()
+    })
+
+    this.peer.on('connect_timeout', () => {
+      this.EventBus.$emit('connectionTimeout')
+      console.log('connect_timeout')
+    })
+
+    this.peer.on('connect_error', () => {
+      console.log('connect_error')
+    })
+
+    this.peer.on('error', (data) => {
+      this.peer.close()
+      this.isConnected = false
+      this.EventBus.$emit('connectionTimeout')
     })
 
     this.peer.on('data', (dataString) => {

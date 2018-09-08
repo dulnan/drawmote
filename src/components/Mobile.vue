@@ -6,6 +6,8 @@
     <transition name="appear">
       <controlling v-if="isConnected"></controlling>
     </transition>
+
+    <connection />
   </div>
 </template>
 
@@ -14,12 +16,14 @@ import { EventBus } from '@/events'
 
 import Pairing from '@/components/Mobile/Pairing.vue'
 import Controlling from '@/components/Mobile/Controlling.vue'
+import Connection from '@/components/Connection.vue'
 
 export default {
   name: 'Mobile',
 
   components: {
     Pairing,
+    Connection,
     Controlling
   },
 
@@ -33,6 +37,8 @@ export default {
     EventBus.$on('isConnected', () => {
       this.isConnected = true
     })
+
+    this.$connection.getStoredPeerings()
   }
 }
 </script>

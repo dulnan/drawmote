@@ -65,10 +65,10 @@ export default {
     },
 
     async validateCode (code) {
-      const isValid = await this.$connection.validateCode(code)
+      const peering = await this.$connection.getPeeringHash(code)
 
-      if (isValid) {
-        this.$connection.initPeering()
+      if (peering.isValid) {
+        this.$connection.initPeering(peering.code, peering.hash)
       } else {
         this.codeInvalid = true
       }
