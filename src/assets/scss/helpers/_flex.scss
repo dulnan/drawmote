@@ -6,6 +6,10 @@
   flex-direction: column;
 }
 
+.flex--align-stretch {
+  align-items: stretch !important;
+}
+
 .flex-1 {
   flex: 1;
 }

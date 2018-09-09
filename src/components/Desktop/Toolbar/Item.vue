@@ -68,8 +68,16 @@ export default {
   justify-content: center;
   color: #ddd;
   overflow: visible;
-  width: 5rem;
+  width: 3rem;
   height: 5rem;
+
+  @include media('md') {
+    width: 4rem;
+  }
+
+  @include media('lg') {
+    width: 5rem;
+  }
 
   &.hover {
     opacity: 0.8;

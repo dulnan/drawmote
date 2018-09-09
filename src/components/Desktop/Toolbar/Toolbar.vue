@@ -1,9 +1,27 @@
 <template>
-  <div class="toolbar" ref="toolbar">
-    <ul class="list toolbar-list">
-      <li v-for="group in toolGroups" class="toolbar-group" :class="'toolbar-group--' + group.id" :key="group.id">
-        <ul class="list toolbar-group-list flex">
-          <li v-for="tool in group.items" :key="group.action + tool.id">
+  <div class="toolbar bg-white" ref="toolbar">
+    <ul class="list-inline list-inline--tight list-inline--divided toolbar-list flex--align-stretch">
+      <li
+        v-for="group in toolGroups"
+        :key="group.id"
+        class="toolbar-group flex"
+        :class="[
+          'toolbar-group--' + group.id,
+          { 'flex-1': group.id === 'sliders' }
+        ]" >
+        <ul
+          class="list-inline toolbar-group-list"
+          :class="{
+            'list-inline--tight': group.id !== 'colors',
+            'list-inline--small pdgh': group.id === 'colors',
+            'flex-1 list-inline--divided': group.id === 'sliders',
+          }"
+        >
+          <li
+            v-for="tool in group.items"
+            :key="group.action + tool.id"
+            :class="{ 'flex-1': group.id === 'sliders' }"
+          >
             <component
               ref="items"
               :is="tool.component"
@@ -145,8 +163,7 @@ export default {
 
 <style lang="scss">
 .toolbar {
-  border-bottom: 2px dotted $alt-color-light;
-  background: white;
+  border-bottom: $list-separator-style;
   z-index: $index-toolbar;
   position: absolute;
   left: 0;
@@ -156,50 +173,8 @@ export default {
   overflow: hidden;
 }
 
-.toolbar-group {
-  flex: 0 0 auto;
-}
-
-.toolbar-group--tools {
-  border-right: 2px dotted $alt-color-light;
-  li:not(:last-child) {
-    border-right: 2px dotted $alt-color-light;
-  }
-}
-
-.toolbar-group--colors {
-  padding: 1rem;
-  border-right: 2px dotted $alt-color-light;
-
-  li:not(:last-child) {
-    margin-right: 1rem;
-  }
-}
-
-.toolbar-group--sliders {
-  padding: 0;
-  flex: 1;
-
-  li {
-    flex: 1;
-    margin-right: 0;
-    &:not(:last-child) {
-      border-right: 2px dotted $alt-color-light;
-    }
-  }
-}
-
-.toolbar-list {
-  display: flex;
-}
-
 .toolbar-group-list {
-  flex-direction: row;
   position: relative;
-  background: white;
-  li {
-    display: block;
-  }
 }
 
 </style>

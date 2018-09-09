@@ -46,10 +46,21 @@ export default {
 
 <style lang="scss">
 .btn.toolbar-item--colors {
-  width: 3rem;
-  height: 3rem;
-  border: 3px solid white;
+  width: 2rem;
+  height: 2rem;
+  border: 2px solid white;
   border-radius: 100%;
+
+  @include media('md') {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  @include media('lg') {
+    width: 3rem;
+    height: 3rem;
+    border: 3px solid white;
+  }
 
   &.toolbar-item--color-white {
     box-shadow: 0 0 0 1px #eee;
