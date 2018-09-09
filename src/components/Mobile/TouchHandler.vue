@@ -141,6 +141,7 @@ export default {
 <style lang="scss">
 .mobile-controller {
   position: fixed;
+  padding-top: 3.5rem;
   top: 0;
   left: 0;
   bottom: 0;
