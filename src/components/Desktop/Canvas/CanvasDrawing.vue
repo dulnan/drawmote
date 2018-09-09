@@ -10,8 +10,8 @@ import Canvas from './Canvas'
 
 import { EventBus } from '@/events'
 
-import { midPointBetween, isSamePoint } from '@/tools/helpers.js'
-
+import CanvasState from '@/classes/CanvasState.js'
+import { isSamePoint } from '@/tools/helpers.js'
 import { THREAD_BRUSH, THREAD_POINT } from '@/settings/drawthreads'
 
 export default {
@@ -23,29 +23,27 @@ export default {
     {
       threads: [THREAD_BRUSH],
       handler: function (state) {
-        this.setStrokeStyle(state.brush)
       }
     },
     {
       threads: [THREAD_POINT],
       handler: function (state) {
         if (!state.isPressing && this.wasPressingBefore) {
-          this.copyToCanvas(this.$refs.canvas_temp, this.$refs.canvas_main, state.sizes.viewport)
-          this.currentPath = []
+          this.canvasState.release()
+          this.wasPressingBefore = false
+          this.updateCanvasState()
         }
 
         if (state.isPressing && !isSamePoint(state.points.brush, this.previousPoint) && !state.pointingAtToolbar) {
-          this.currentPath.push(state.points.brush)
+          if (!this.wasPressingBefore) {
+            this.canvasState.start(state.brush.canvasProperties)
+            this.wasPressingBefore = true
+          }
 
-          const context = this.getContext('temp')
-          this.clear(context, state.sizes.viewport)
-
-          this.drawStroke(this.currentPath)
-          this.clearOutside(context, state.sizes.canvasRect, state.sizes.viewport)
+          this.canvasState.move(state.points.brush)
         }
 
         this.previousPoint = state.points.brush
-        this.wasPressingBefore = state.isPressing
       }
     }
   ],
@@ -58,71 +56,45 @@ export default {
   },
 
   methods: {
-    setStrokeStyle (brush) {
-      const context = this.getContext('temp')
-
-      this.setLineWidth(context, brush)
-      this.setColor(context, brush)
+    handleErase () {
+      this.canvasState.erase()
+      this.updateCanvasState()
     },
 
-    setLineWidth (context, brush) {
-      context.lineJoin = 'round'
-      context.lineCap = 'round'
-      context.lineWidth = brush.canvasRadius * 2
-      context.filter = `blur(${brush.canvasBlur}px)`
+    handleUndo () {
+      this.canvasState.undo()
+      this.updateCanvasState()
     },
 
-    setColor (context, brush) {
-      context.globalAlpha = 1
-      context.strokeStyle = brush.canvasColor
-      context.fillStyle = brush.canvasColor
+    handleRedo () {
+      this.canvasState.redo()
+      this.updateCanvasState()
     },
 
-    getContext (name) {
-      return this.$refs['canvas_' + name].getContext('2d')
-    },
-
-    drawStroke (points) {
-      const context = this.getContext('temp')
-
-      let p1 = points[0]
-      let p2 = points[1]
-
-      context.beginPath()
-      context.moveTo(p1.x, p1.y)
-
-      for (let i = 1; i < points.length; i++) {
-        // we pick the point between pi+1 & pi+2 as the
-        // end point and p1 as our control point
-        const midPoint = midPointBetween(p1, p2)
-        context.quadraticCurveTo(p1.x, p1.y, midPoint.x, midPoint.y)
-        p1 = points[i]
-        p2 = points[i + 1]
-      }
-      // Draw last line as a straight line while
-      // we wait for the next point to be able to calculate
-      // the bezier control point
-      context.lineTo(p1.x, p1.y)
-      context.stroke()
-    },
-
-    handleClearCanvas () {
-      const context = this.getContext('main')
-      this.clear(context, this.$global.state.sizes.viewport)
+    updateCanvasState () {
+      const state = this.canvasState.state
+      EventBus.$emit('canvasState', state)
     }
   },
 
-  created () {
-    this.currentPath = []
+  beforeDestroy () {
+    EventBus.$off('clearCanvas', this.handleErase)
+    EventBus.$off('undoCanvas', this.handleUndo)
+    EventBus.$off('redoCanvas', this.handleRedo)
   },
 
   mounted () {
-    EventBus.$on('clearCanvas', () => {
-      this.handleClearCanvas()
-    })
-
+    this.wasPressingBefore = false
     this.setupCanvases(this.$global.state.sizes.viewport)
-    this.setStrokeStyle(this.$global.brush)
+
+    const canvasMain = this.$refs['canvas_main']
+    const canvasTemp = this.$refs['canvas_temp']
+
+    this.canvasState = new CanvasState(canvasMain, canvasTemp)
+
+    EventBus.$on('clearCanvas', this.handleErase)
+    EventBus.$on('undoCanvas', this.handleUndo)
+    EventBus.$on('redoCanvas', this.handleRedo)
   }
 }
 </script>

@@ -2,12 +2,12 @@
 import { EventBus } from '@/events'
 
 import Button from '@/components/Desktop/Toolbar/Button/Button.vue'
-import Icon from '@/assets/icons/icon-delete.svg'
+import Icon from '@/assets/icons/icon-redo.svg'
 
 export default {
   extends: Button,
 
-  name: 'ButtonClear',
+  name: 'ButtonRedo',
 
   components: {
     Icon
@@ -28,11 +28,10 @@ export default {
 
   methods: {
     handleClick () {
-      EventBus.$emit('clearCanvas')
+      EventBus.$emit('redoCanvas')
     },
-
-    updateCanvasState ({ clearPossible }) {
-      this.possible = clearPossible
+    updateCanvasState ({ redoPossible }) {
+      this.possible = redoPossible
     }
   },
 

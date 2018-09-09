@@ -69,5 +69,9 @@ export default {
   &.active {
     box-shadow: 0 0px 0px 2px currentColor;
   }
+
+  &:hover, &.hover {
+    opacity: 0.75;
+  }
 }
 </style>

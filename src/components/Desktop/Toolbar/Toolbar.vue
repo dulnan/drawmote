@@ -39,6 +39,8 @@
 <script>
 import ButtonColor from '@/components/Desktop/Toolbar/Button/ButtonColor.vue'
 import ButtonClear from '@/components/Desktop/Toolbar/Button/ButtonClear.vue'
+import ButtonUndo from '@/components/Desktop/Toolbar/Button/ButtonUndo.vue'
+import ButtonRedo from '@/components/Desktop/Toolbar/Button/ButtonRedo.vue'
 import SliderBrushRadius from '@/components/Desktop/Toolbar/Slider/SliderBrushRadius.vue'
 import SliderBrushOpacity from '@/components/Desktop/Toolbar/Slider/SliderBrushOpacity.vue'
 import SliderBrushHardness from '@/components/Desktop/Toolbar/Slider/SliderBrushHardness.vue'
@@ -55,6 +57,8 @@ export default {
   components: {
     ButtonColor,
     ButtonClear,
+    ButtonUndo,
+    ButtonRedo,
     SliderBrushRadius,
     SliderBrushOpacity,
     SliderBrushHardness,

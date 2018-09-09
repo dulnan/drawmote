@@ -11,7 +11,6 @@ function hexToRgb (hex) {
 
 export default class Color {
   constructor ({ name, rgb = [0, 0, 0], hex } = {}) {
-    console.log(hex)
     this.name = name
     this.rgb = hex ? hexToRgb(hex) : rgb
   }
