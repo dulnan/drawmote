@@ -70,7 +70,6 @@ export default {
 
         gn.init().then(() => {
           const isAvailable = gn.isAvailable()
-          resolve(false)
           resolve(isAvailable.deviceOrientationAvailable)
         }).catch((e) => {
           resolve(false)
@@ -129,7 +128,7 @@ export default {
     margin-top: 2px;
     border-radius: 100%;
     float: left;
-    background: $color-red;
+    background: $brand-color;
     .supported & {
       background: $color-green;
     }

@@ -1,0 +1,118 @@
+$rhythm-spacing-base: 16;
+
+@mixin font-values($font, $force: null) {
+  @if ($force == force) {
+    $force: !important;
+  }
+
+  @each $breakpoint, $values in $font {
+    $fontsize: #{map-get($values, size) / $rhythm-spacing-base}rem $force;
+    $lineheight: #{map-get($values, leading)}rem $force;
+
+    @if ($breakpoint == xs) {
+      font-size: $fontsize;
+      line-height: $lineheight;
+    } @else {
+      @include media($breakpoint) {
+        font-size: $fontsize;
+        line-height: $lineheight;
+      }
+    }
+  }
+}
+
+$rhythm-size-xxxl: (
+  size: 70,
+  leading: 4.5
+);
+
+$rhythm-size-xxl: (
+  size: 52,
+  leading: 4
+);
+
+$rhythm-size-xl: (
+  size: 42,
+  leading: 3
+);
+
+$rhythm-size-l: (
+  size: 32,
+  leading: 2.5
+);
+
+$rhythm-size-m: (
+  size: 28,
+  leading: 2
+);
+
+$rhythm-size-s: (
+  size: 21,
+  leading: 1.75
+);
+
+$rhythm-size-xs: (
+  size: 18,
+  leading: 1.5
+);
+
+$rhythm-size-xxs: (
+  size: 15,
+  leading: 2.5
+);
+
+$rhythm-size-xxxs: (
+  size: 13,
+  leading: 2.5
+);
+
+
+$font-h1: (
+  xs: $rhythm-size-xl,
+  sm: $rhythm-size-xl,
+  md: $rhythm-size-xxl,
+  lg: $rhythm-size-xxxl,
+);
+
+$font-h2: (
+  xs: $rhythm-size-s,
+  md: $rhythm-size-m,
+  lg: $rhythm-size-l,
+);
+
+$font-h3: (
+  xs: $rhythm-size-xs,
+  sm: $rhythm-size-s,
+  md: $rhythm-size-s,
+  lg: $rhythm-size-m,
+);
+
+$font-h4: (
+  xs: $rhythm-size-xs,
+  sm: $rhythm-size-s,
+  md: $rhythm-size-s,
+  lg: $rhythm-size-s,
+);
+
+$font-h5: (
+  xs: $rhythm-size-xs,
+);
+
+$font-h6: (
+  xs: $rhythm-size-xs,
+);
+
+$font-default: (
+  xs: $rhythm-size-xs,
+);
+
+$font-btn: (
+  xs: $rhythm-size-xs,
+  md: $rhythm-size-s,
+  lg: $rhythm-size-s
+);
+
+$font-btn-small: (
+  xs: $rhythm-size-xxs,
+  md: $rhythm-size-xs,
+);

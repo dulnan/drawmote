@@ -61,19 +61,27 @@ export default {
 </script>
 
 <style lang="scss">
-.button.toolbar-item {
+.btn.toolbar-item {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #ddd;
   overflow: visible;
-  width: 5rem;
+  width: 3rem;
   height: 5rem;
+
+  @include media('md') {
+    width: 4rem;
+  }
+
+  @include media('lg') {
+    width: 5rem;
+  }
 
   &.hover {
     opacity: 0.8;
-    background: $color-greylighter;
+    background: $alt-color-lighter;
   }
 
   svg {
