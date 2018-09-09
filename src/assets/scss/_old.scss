@@ -19,18 +19,7 @@
   height: 100%;
 }
 
-.flex {
-  display: flex;
-}
 
-.flex-1 {
-  flex: 1;
-}
-
-.flex--center {
-  align-items: center;
-  justify-content: center;
-}
 
 .label {
   margin-bottom: 1rem;
@@ -42,21 +31,83 @@
   text-align: left;
 }
 
+$code-numbers: (
+  0: ($color-yellow, 40%),
+  1: ($color-green, 40%),
+  2: ($color-greendark, 40%),
+  3: ($color-bluelight, 40%),
+  4: ($color-bluedark, 40%),
+  5: ($color-orange, 30%),
+  6: ($color-lavender, 40%),
+  7: ($color-turquoise, 55%),
+  8: ($color-red, 40%),
+  9: ($color-pink, 40%)
+);
 .code-circle {
-  border: 1px solid $color-code;
   color: $color-code;
   font-size: 4rem;
   width: 1em;
   height: 1em;
-  border-radius: $code-radius;
+  border-radius: 3px;
   text-transform: uppercase;
-  text-align: center;
   display: inline-block;
+
+  line-height: 0.7em;
+  text-align: center;
+  font-weight: 500;
+  color: $alt-color-dark;
+  position: relative;
+  background: white;
+  box-shadow: 0 3px 4px rgba($alt-color, 0.1),
+              0 0px 2px rgba($alt-color, 0.1);
+
   margin-right: $code-margin;
-  line-height: 0.75em;
-  font-weight: 700;
+  &:before {
+    content: "";
+    position: absolute;
+    bottom: 0.05em;
+    right: 0.05em;
+    left: 0.05em;
+    height: 0.1em;
+    // width: 0.15em;
+    border-radius: inherit;
+    background: $alt-color-lighter;
+  }
+  @include media('sm') {
+    margin-right: 1rem;
+    box-shadow: 0 3px 10px rgba($alt-color, 0.2),
+                0 2px 4px 1px rgba($alt-color, 0.1);
+
+    &:before {
+      bottom: 0.25rem;
+      right: 0.25rem;
+      left: 0.25rem;
+    }
+  }
+  @include media('lg') {
+    margin-right: 1.5rem;
+    font-size: 5rem;
+    &:before {
+      height: rem(5px);
+    }
+  }
+  &.contains {
+  }
+  &.contains.invalid {
+    color: $alt-color-light !important;
+    border-color: $color-red;
+  }
+
+  @each $index, $color in $code-numbers {
+    &.code-circle--#{$index} {
+      color: darken(nth($color, 1), nth($color, 2));
+      &:before {
+        background: nth($color, 1);
+      }
+    }
+  }
   span {
-    font-size: 0.6em;
+    font-size: 0.55em;
   }
   &:last-child {
     margin-right: 0;

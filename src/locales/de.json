@@ -5,7 +5,7 @@
   },
   "mobile": {
     "lead": "Öffne drawmote.app auf deinem Desktop Browser um einen Verbindungscode zu generieren.",
-    "pairButton": "Mit Desktoop verbinden",
+    "pairButton": "Mit Desktop verbinden",
     "codeInvalid": "Der eingegebene Code ist leider ungültig :(",
     "controllingInfo": "Bewege dein Smartphone und richte es auf deinen Bildschirm. Drücke den Kreis um zu malen. Bewege den Finger nach oben oder unten um Sliderwerte anzupassen.",
     "calibrationButton": "Pinsel zentrieren"

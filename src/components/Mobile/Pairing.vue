@@ -1,11 +1,18 @@
 <template>
   <div class="mobile-pairing pdg+">
     <div class="mobile-pairing__content relative">
-      <h1 class="text-brand text-heavy">drawmote</h1>
+      <h1 class="text-heavy">drawmote</h1>
       <p class="h2 text-muted text-light text-hyphens mrgb+ mrgt">{{ $t('mobile.lead') }}</p>
       <div class="code relative">
         <div class="code__circles flex">
-          <div class="code-circle" v-for="(char, index) in inputChars" v-bind:class="{ 'contains': char !== ' ' }" :key="char + index"><span>{{ char }}</span></div>
+          <div
+            class="code-circle"
+            v-for="(char, index) in inputChars"
+            :class="[{ 'contains': char !== ' ', 'invalid': char.search(/[0-9]/g) }, 'code-circle--' + char]"
+            :key="char + index"
+          >
+            <span>{{ char }}</span>
+          </div>
         </div>
 
         <form class="code__form absolute" @submit.prevent="onSubmit">
@@ -13,7 +20,7 @@
         </form>
 
         <button
-          v-show="inputValue.length > 0"
+          v-show="inputValue.length === 6"
           @click="onSubmit"
           class="btn btn--primary btn--block mrgt+"
         >
@@ -98,17 +105,13 @@ export default {
 
 .code__circles {
   div {
-    color: white;
     font-size: 1em;
-    &.contains {
-      background: $color-code;
-    }
   }
 }
 
 .code__form {
-  width: 100%;
   height: 1em;
+  right: -1rem;
 }
 
 .code__input {

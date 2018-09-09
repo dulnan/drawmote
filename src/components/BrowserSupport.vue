@@ -70,7 +70,6 @@ export default {
 
         gn.init().then(() => {
           const isAvailable = gn.isAvailable()
-          resolve(false)
           resolve(isAvailable.deviceOrientationAvailable)
         }).catch((e) => {
           resolve(false)
