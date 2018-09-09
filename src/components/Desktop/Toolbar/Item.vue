@@ -61,7 +61,7 @@ export default {
 </script>
 
 <style lang="scss">
-.button.toolbar-item {
+.btn.toolbar-item {
   position: relative;
   display: flex;
   align-items: center;

@@ -8,7 +8,7 @@
       @touchcancel="handleMainTouchCancel"
     >
       <div class="h3 text-muted">{{ $t('mobile.controllingInfo') }}</div>
-      <div class="click-area">
+      <div class="click-area" :class="{ 'is-pressing': isPressingMain }">
         <div class="click-area__circle"></div>
       </div>
     </div>
@@ -156,6 +156,7 @@ export default {
 .calibration {
   margin-top: auto;
   border-top: 1px solid $alt-color-light;
+  background: white;
 }
 
 .click-area {
@@ -165,10 +166,34 @@ export default {
 }
 
 .click-area__circle {
-  width: 14rem;
-  height: 14rem;
+  width: 20rem;
+  height: 20rem;
+  padding: 1rem;
   margin: 0 auto;
   border-radius: 100%;
-  border: 1px solid #ccc;
+  border: 1px solid $alt-color-lighter;
+  background: linear-gradient(lighten($alt-color-lighter, 0%), lighten($alt-color-lighter, 2%));
+  position: relative;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    bottom: 1rem;
+    right: 1rem;
+    border-radius: inherit;
+    background: linear-gradient(lighten($alt-color-lighter, 1%), lighten($alt-color-light, 9%));
+    box-shadow: 0 3px 10px rgba($alt-color, 0.15),
+              0 4px 3px rgba($alt-color, 0.3),
+              inset 0 4px 3px rgba(white, 0.5);
+  }
+  .is-pressing & {
+    &:before {
+    background: linear-gradient(lighten($alt-color-lighter, 2%), lighten($alt-color-light, 4%));
+    box-shadow: inset 0 3px 10px rgba($alt-color, 0.15),
+                inset 0 4px 2px rgba($alt-color, 0.1);
+    }
+  }
 }
 </style>

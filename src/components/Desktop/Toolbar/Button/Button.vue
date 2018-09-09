@@ -1,6 +1,6 @@
 <template>
   <button
-    class="button tool pointer-area"
+    class="btn btn--bare tool pointer-area"
     :class="classes"
     :style="style"
     @click="handleClick"
