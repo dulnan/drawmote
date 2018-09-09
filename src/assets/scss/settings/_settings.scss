@@ -1,7 +1,6 @@
 @import 'typography';
 
 $color-red:                   #ff653b;
-$color-red:                   #ff6d51;
 $color-yellow:                #ffde56;
 $color-orange:                #ff9f1e;
 
@@ -70,7 +69,8 @@ $rtl:                               false;
  * Colors
  */
 
-$brand-color:                       $color-red;
+$brand-color:                       #1fdc86;
+$brand-color:                       #279ce2;
 $alt-color-lighter:                 #f7f7f6;
 $alt-color-light:                   #dedede;
 $alt-color:                         #9c9c9c;
@@ -148,9 +148,9 @@ $breakpoints-desc:                  (
  * Miscellaneous
  */
 
-$border-radius-default:             6px;
-$border-radius-small:               4px;
-$border-radius-large:               10px;
+$border-radius-default:             4px;
+$border-radius-small:               2px;
+$border-radius-large:               6px;
 
 
 /*----------------------------------------*\
@@ -165,7 +165,7 @@ $btn-padding:                       1rem;
 $btn-color:                         inherit;
 $btn-font-size:                     inherit;
 $btn-font-family:                   inherit;
-$btn-border:                        1px solid transparent;
+$btn-border:                        0;
 $btn-bkg:                           transparent;
 $btn-border-radius:                 $border-radius-default;
 

@@ -14,7 +14,7 @@
             <span>Delete</span>
           </button>
         </div>
-        <div class="flex-1 pdgl- md-pdgl">
+        <div class="flex-1 pdgl">
           <button
             class="btn btn--primary connection__button connection__button--restore relative btn--block"
             :class="{'restoring': isRestoring, 'is-restored': isRestored }"
@@ -124,16 +124,12 @@ export default {
   align-items: center;
 }
 
-.button.connection__button--restore {
+.btn.connection__button--restore {
   position: relative;
-  margin-left: auto;
-  margin-left: 1rem;
   span {
     transition: 0.3s;
   }
   &.restoring {
-    background: $alt-color-light;
-    border-color: $alt-color-light;
     span {
       opacity: 0;
     }
@@ -155,7 +151,7 @@ export default {
     opacity: 1;
   }
   svg {
-    fill: $alt-color;
+    fill: white;
     display: block;
     width: 2rem;
     height: 2rem;

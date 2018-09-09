@@ -21,7 +21,7 @@
 
         <button
           v-show="inputValue.length === 6"
-          @click="onSubmit"
+          @click.prevent="onSubmit"
           class="btn btn--primary btn--block mrgt+"
         >
           <span>{{ $t('mobile.pairButton') }}</span>
