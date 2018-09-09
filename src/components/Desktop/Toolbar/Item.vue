@@ -71,6 +71,10 @@ export default {
   width: 3rem;
   height: 5rem;
 
+  &.disabled {
+    opacity: 0.2;
+  }
+
   @include media('md') {
     width: 4rem;
   }
@@ -79,8 +83,7 @@ export default {
     width: 5rem;
   }
 
-  &.hover {
-    opacity: 0.8;
+  &.hover:not(.disabled) {
     background: $alt-color-lighter;
   }
 

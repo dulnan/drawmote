@@ -128,7 +128,7 @@ export default {
     margin-top: 2px;
     border-radius: 100%;
     float: left;
-    background: $brand-color;
+    background: $color-red;
     .supported & {
       background: $color-green;
     }

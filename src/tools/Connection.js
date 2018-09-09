@@ -88,24 +88,17 @@ export default class Connection {
     })
 
     this.peer.on('connect', () => {
-      console.log(this.peer)
-      console.log('is connected')
       this.EventBus.$emit('isConnected', true)
       this.isConnected = true
       this.saveSession(code, hash)
     })
 
     this.peer.on('close', () => {
-      console.log('closed')
       this.isConnected = false
-      // this.EventBus.$emit('isConnected', true)
-      // this.isConnected = true
-      // this.saveSession()
     })
 
     this.peer.on('connect_timeout', () => {
       this.EventBus.$emit('connectionTimeout')
-      console.log('connect_timeout')
     })
 
     this.peer.on('connect_error', () => {

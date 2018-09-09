@@ -5,8 +5,8 @@
         <pairing v-if="!isPaired" :code="pairingCode"></pairing>
       </transition>
       <drawing v-if="isPaired"></drawing>
-      <the-footer />
       <connection />
+      <the-footer />
     </div>
   </div>
 </template>
@@ -64,7 +64,6 @@ export default {
 .desktop {
   perspective: 700px;
   background: $alt-color-lighter;
-  padding: 2rem;
   height: 100vh;
 }
 

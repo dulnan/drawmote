@@ -95,7 +95,7 @@ export default {
 }
 
 .mobile-pairing__content {
-  z-index: $index-pairing;
+  z-index: $index-mobile-pairing;
   margin-bottom: auto;
 }
 

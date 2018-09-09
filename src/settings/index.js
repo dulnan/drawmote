@@ -79,15 +79,17 @@ export const TOOLBAR_TOOLS = [
   //   component: 'ToolbarButton',
   //   icon: 'icon-polygon'
   // },
-  // {
-  //   id: 'eraser',
-  //   component: 'ToolbarButton',
-  //   icon: 'icon-erase'
-  // },
   {
     id: 'canvasClear',
-    component: 'ButtonClear',
-    icon: 'icon-delete'
+    component: 'ButtonClear'
+  },
+  {
+    id: 'undo',
+    component: 'ButtonUndo'
+  },
+  {
+    id: 'redo',
+    component: 'ButtonRedo'
   }
 ]
 
