@@ -1,19 +1,21 @@
 <template>
-  <div class="mobile-controller mobile-font-size">
+  <div class="mobile-controller">
     <div
-      class="mobile-touch mobile-touch--main"
+      class="mobile-touch pdg"
       @touchstart="handleMainTouchStart"
       @touchmove="handleMainTouchMove"
       @touchend="handleMainTouchEnd"
       @touchcancel="handleMainTouchCancel"
     >
-      <div class="lead mobile-controller__text">{{ $t('mobile.controllingInfo') }}</div>
-      <div class="click-area"></div>
+      <div class="h3 text-muted">{{ $t('mobile.controllingInfo') }}</div>
+      <div class="click-area" :class="{ 'is-pressing': isPressingMain }">
+        <div class="click-area__circle"></div>
+      </div>
     </div>
 
-    <div class="calibration">
+    <div class="calibration pdg">
       <button
-        class="button button--primary button--responsive"
+        class="btn btn--primary btn--block"
         @click="handleCalibrateClick"
       >
         <span>{{ $t('mobile.calibrationButton') }}</span>
@@ -48,29 +50,6 @@ export default {
   },
 
   methods: {
-    handleAsideTouchEnd (e) {
-      e.preventDefault()
-
-      /* const touch = e.changedTouches[0] */
-      /* const diffX = touch.pageX - this.touchStart.x */
-      /* const diffY = touch.pageY - this.touchStart.y */
-      /* const diffTime = new Date().getTime() - this.touchStart.time */
-      /*  */
-      /* let direction = '' */
-      /*  */
-      /* if (diffTime <= 300) { */
-      /*   if (Math.abs(diffX) >= SWIPE_THRESHOLD && Math.abs(diffY) <= SWIPE_RESTRAINT) { */
-      /*     direction = (diffX < 0) ? 'left' : 'right' */
-      /*   } else if (Math.abs(diffY) >= SWIPE_THRESHOLD && Math.abs(diffX) <= SWIPE_RESTRAINT) { */
-      /*     direction = (diffY < 0) ? 'up' : 'down' */
-      /*   } */
-      /* } */
-      /*  */
-      /* if (direction) { */
-      /*   this.handleSwipe(direction) */
-      /* } */
-    },
-
     handleMainTouchStart (e) {
       e.preventDefault()
 
@@ -167,33 +146,54 @@ export default {
   bottom: 0;
   right: 0;
   display: flex;
-  padding: 2rem;
-}
-.mobile-controller__text {
-  font-size: 0.5em !important;
+  flex-direction: column;
 }
 .mobile-touch {
-}
-.mobile-touch--main {
   height: 100%;
-  flex: 5;
+  display: flex;
+  flex-direction: column;
 }
 .calibration {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 2rem;
-  z-index: 1000000;
+  margin-top: auto;
+  border-top: 1px solid $alt-color-light;
   background: white;
-  border-top: 1px solid $color-greylight;
 }
 
 .click-area {
-  width: 6em;
-  height: 6em;
-  margin: 1em auto 0;
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.click-area__circle {
+  width: 20rem;
+  height: 20rem;
+  padding: 1rem;
+  margin: 0 auto;
   border-radius: 100%;
-  border: 1px solid #ccc;
+  border: 1px solid $alt-color-lighter;
+  background: linear-gradient(lighten($alt-color-lighter, 0%), lighten($alt-color-lighter, 2%));
+  position: relative;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    bottom: 1rem;
+    right: 1rem;
+    border-radius: inherit;
+    background: linear-gradient(lighten($alt-color-lighter, 1%), lighten($alt-color-light, 9%));
+    box-shadow: 0 3px 10px rgba($alt-color, 0.15),
+              0 4px 3px rgba($alt-color, 0.3),
+              inset 0 4px 3px rgba(white, 0.5);
+  }
+  .is-pressing & {
+    &:before {
+    background: linear-gradient(lighten($alt-color-lighter, 2%), lighten($alt-color-light, 4%));
+    box-shadow: inset 0 3px 10px rgba($alt-color, 0.15),
+                inset 0 4px 2px rgba($alt-color, 0.1);
+    }
+  }
 }
 </style>

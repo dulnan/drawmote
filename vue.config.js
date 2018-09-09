@@ -5,7 +5,7 @@ module.exports = {
     'style-resources-loader': {
       preProcessor: 'scss',
       patterns: [
-        path.resolve(__dirname, 'src/assets/scss/variables.scss')
+        path.resolve(__dirname, 'src/assets/scss/vue_include.scss')
       ]
     },
     i18n: {

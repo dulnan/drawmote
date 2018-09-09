@@ -1,17 +1,24 @@
 <template>
-  <div class="overlay pairing relative flex">
-    <div class="relative pairing__content">
-      <h1 class="title">drawmote</h1>
-      <p class="lead text-muted">{{ $t('desktop.lead') }}</p>
-      <h2 class="code">
+  <div class="overlay pairing relative flex pdg++">
+    <div class="flex flex--column">
+      <h1 class="text-heavy mrgb+">drawmote</h1>
+      <p class="text-muted text-light mrgt0 h2 pairing-lead">{{ $t('desktop.lead') }}</p>
+      <h2 class="code mrgv++">
         <transition name="appear">
           <div v-if="code" class="code__content">
-            <div class="code-circle" v-for="(number, index) in pairingCodeNumbers" :key="index"><span>{{ number }}</span></div>
+            <div
+              class="code-circle contains"
+              :class="'code-circle--' + number"
+              v-for="(number, index) in pairingCodeNumbers"
+              :key="index"
+            >
+              <span>{{ number }}</span>
+            </div>
           </div>
         </transition>
       </h2>
-      <div class="actions">
-        <button @click.prevent="skipPairing" type="button" class="button skip-button">{{ $t('desktop.skipButton') }}</button>
+      <div class="actions mrgt">
+        <button @click.prevent="skipPairing" type="button" class="btn btn--bare btn--small">{{ $t('desktop.skipButton') }}</button>
       </div>
       <browser-support checks="desktop" />
     </div>
@@ -59,7 +66,6 @@ export default {
 
 <style lang="scss" scoped>
 .pairing {
-  color: black;
   transform-style: preserve-3d;
   perspective: 700px;
   &.appear-enter-active, &.appear-leave-active {
@@ -76,58 +82,29 @@ export default {
   }
 }
 
-.pairing__content {
-  padding: 5rem;
-  z-index: $index-pairing;
-  display: flex;
-  flex-direction: column;
-}
-
-.title {
-  font-size: 3.5rem;
-  line-height: 1;
-  letter-spacing: 2px;
-}
-
-.lead {
-  font-size: 2rem;
-  max-width: 50rem;
-  margin: 0.5rem 0 2rem;
-}
-
-.code {
-  font-size: 2.25rem;
-  font-weight: 900;
-  margin-top: 2rem;
-  div {
-    color: $color-greydark;
-  }
-}
-
 .code__content {
   &.appear-enter-active, &.appear-leave-active {
     transition: .5s;
-    span {
+    .code-circle {
       transition: .5s;
     }
   }
   &.appear-enter, &.appear-leave-to {
     opacity: 0;
-    span {
-      transform: rotate(45deg) scale(0.7);
+    .code-circle {
+      transform: rotate(45deg) scale(0.1);
     }
+  }
+}
+
+.pairing-lead {
+  max-width: 34rem;
+  @include media('lg') {
+    max-width: 44rem;
   }
 }
 
 .actions {
   margin-bottom: auto;
-}
-
-.skip-button {
-  font-size: 1rem;
-  font-weight: 700;
-  margin-top: 2rem;
-  color: $color-red;
-  border-bottom: 1px solid;
 }
 </style>

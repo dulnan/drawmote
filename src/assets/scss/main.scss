@@ -1,236 +1,79 @@
-@import 'range';
+/*!
+ *  カンバス KANBASU
+ *  Distributed under the MIT License
+ *  Copyright (c) 2015 Liip AG
+ */
 
-body {
-  font-family: 'Heebo', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  margin: 0;
-  color: $color-black;
-}
+/**
+ * Settings
+ */
 
-a {
-  color: inherit;
-  text-decoration: none;
-  border-bottom: 1px solid;
-}
-
-* {
-  margin: 0;
-  box-sizing: border-box;
-}
-
-h1, .h1 {
-  font-size: $font-xl;
-  @include desktop () {
-    font-size: $font-xxl;
-  }
-}
-
-h2, .h2 {
-  font-size: $font-l;
-  @include desktop () {
-    font-size: $font-xl;
-  }
-}
-
-h3, .h3 {
-  font-size: $font-m;
-  @include desktop () {
-    font-size: $font-l;
-  }
-}
-
-h4, .h4 {
-  font-size: $font-s;
-  @include desktop () {
-    font-size: $font-m;
-  }
-}
-
-.font-bold {
-  font-weight: 700;
-}
-
-.font-light {
-  font-weight: 300;
-}
-
-.title {
-  color: $color-red;
-  font-weight: 900;
-}
-
-.lead {
-  font-size: 2.5rem;
-  line-height: 1.3333333;
-  font-weight: 300;
-  hyphens: auto;
-}
-
-.text-muted {
-  color: #999;
-}
-
-.relative {
-  position: relative;
-}
-
-.fixed {
-  position: fixed;
-  top: 0;
-  left: 0;
-}
-
-.absolute {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.overlay {
-  width: 100%;
-  height: 100%;
-}
-
-.list {
-  padding: 0;
-  margin: 0;
-  list-style-type: none;
-}
-
-.list--divided {
-  > li {
-    border-bottom: 1px solid $color-greylight;
-    &:last-child {
-      border-bottom: 0;
-    }
-  }
-}
-
-.flex {
-  display: flex;
-}
-
-.flex--center {
-  align-items: center;
-  justify-content: center;
-}
-
-.mrgr {
-  margin-right: 1rem;
-}
-
-.mrgl {
-  margin-left: 1rem;
-}
-
-.mrgb {
-  margin-bottom: 1rem;
-}
-
-.pdg- {
-  padding: 0.5rem;
-}
-
-.pdg {
-  padding: 1rem !important;
-}
-
-.button {
-  display: inline-block;
-  overflow: hidden;
-  padding: 0;
-  font-family: inherit;
-  font-size: inherit;
-  color: inherit;
-  text-decoration: none;
-  text-align: center;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  vertical-align: middle;
-  line-height: 1;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  cursor: pointer;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  &:focus {
-    outline: none;
-  }
-}
-
-.button--primary,
-.button--secondary {
-  padding: 1rem 1.5rem;
-  font-weight: 600;
-  border-radius: 3px;
-  border: 2px solid $color-red;
-  font-size: $font-s;
-  @include desktop() {
-    font-size: $font-m;
-  }
-}
-
-.button--primary {
-  background: $color-red;
-  color: white;
-}
-
-.button--secondary {
-  color: $color-red;
-}
-
-.material {
-  border: 1px solid $color-grey;
-  // box-shadow: 0 5px 10px 0px rgba($color-greydark, 0.1);
-}
+@import '../../../node_modules/kanbasu/src/scss/settings/settings';
+@import 'settings/settings';
 
 
-.label {
-  margin-bottom: 1rem;
-  font-weight: bold;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: $color-greydark;
-  text-align: left;
-}
+/**
+ * Tools
+ */
 
-.code-circle {
-  border: 1px solid $color-code;
-  color: $color-code;
-  font-size: 4rem;
-  width: 1em;
-  height: 1em;
-  border-radius: $code-radius;
-  text-transform: uppercase;
-  text-align: center;
-  display: inline-block;
-  margin-right: $code-margin;
-  line-height: 0.75em;
-  font-weight: 700;
-  span {
-    font-size: 0.6em;
-  }
-  &:last-child {
-    margin-right: 0;
-  }
-}
+@import '../../../node_modules/kanbasu/src/scss/tools/functions';
+@import '../../../node_modules/kanbasu/src/scss/tools/mixins';
+@import '../../../node_modules/kanbasu/src/scss/tools/rtl';
 
-.button--responsive {
-  width: 100%;
-  font-size: inherit;
-  line-height: 0;
-  border-radius: $code-radius;
-  height: 1.25em;
-  span {
-    font-size: 0.4em;
-    line-height: 1;
-    display: inline-block;
-  }
-}
 
-.mobile-font-size {
-  font-size: calc((100vw - 4rem) / 7);
-}
+/**
+ * Vendors
+ */
+
+@import '../../../node_modules/kanbasu/src/scss/vendor/normalize';
+
+
+/**
+ * Defaults
+ */
+
+@import '../../../node_modules/kanbasu/src/scss/defaults/box-model';
+@import '../../../node_modules/kanbasu/src/scss/defaults/elements';
+@import 'defaults/typography';
+// @import '../../../node_modules/kanbasu/src/scss/defaults/table';
+@import '../../../node_modules/kanbasu/src/scss/defaults/forms';
+
+
+/**
+ * Helpers
+ */
+
+@import '../../../node_modules/kanbasu/src/scss/helpers/text';
+@import '../../../node_modules/kanbasu/src/scss/helpers/text-responsive';
+@import '../../../node_modules/kanbasu/src/scss/helpers/float';
+@import '../../../node_modules/kanbasu/src/scss/helpers/spacings';
+@import '../../../node_modules/kanbasu/src/scss/helpers/spacings-responsive';
+// @import '../../../node_modules/kanbasu/src/scss/helpers/images';
+@import '../../../node_modules/kanbasu/src/scss/helpers/positionning';
+@import '../../../node_modules/kanbasu/src/scss/helpers/display';
+// @import '../../../node_modules/kanbasu/src/scss/helpers/align';
+// @import '../../../node_modules/kanbasu/src/scss/helpers/align-responsive';
+@import 'helpers/typography';
+@import 'helpers/flex';
+
+
+/**
+ * Components
+ */
+
+@import '../../../node_modules/kanbasu/src/scss/components/grid';
+@import '../../../node_modules/kanbasu/src/scss/components/widths';
+@import '../../../node_modules/kanbasu/src/scss/components/widths-responsive';
+@import 'components/btn';
+// @import '../../../node_modules/kanbasu/src/scss/components/box';
+// @import '../../../node_modules/kanbasu/src/scss/components/media';
+// @import '../../../node_modules/kanbasu/src/scss/components/media-responsive';
+@import '../../../node_modules/kanbasu/src/scss/components/list';
+@import '../../../node_modules/kanbasu/src/scss/components/list-inline';
+// @import '../../../node_modules/kanbasu/src/scss/components/list-stacked';
+// @import '../../../node_modules/kanbasu/src/scss/components/embed-responsive';
+// @import '../../../node_modules/kanbasu/src/scss/components/container';
+// @import '../../../node_modules/kanbasu/src/scss/components/pusher';
+// @import '../../../node_modules/kanbasu/src/scss/components/table-responsive';
+@import '_old';
+@import '_range';

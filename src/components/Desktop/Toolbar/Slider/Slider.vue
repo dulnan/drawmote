@@ -1,12 +1,12 @@
 <template>
   <div
-    class="button tool-slider pointer-area"
+    class="btn btn--bare tool-slider pointer-area"
     :class="classes"
     :style="style"
     @wheel="handleWheel"
   >
     <div>
-      <div class="label tool-slider__label">{{ $t('tools.' + tool.id) }}</div>
+      <div class="label pdg0 mrgb- tool-slider__label">{{ $t('tools.' + tool.id) }}</div>
       <input type="range" :min="min" :max="max" step="1" v-model="value" />
     </div>
   </div>
@@ -38,7 +38,7 @@ export default {
 </script>
 
 <style lang="scss">
-.button.tool-slider {
+.btn.tool-slider {
   padding: 1rem;
   width: 100%;
   text-align: left;
@@ -60,7 +60,7 @@ export default {
   width: 15rem;
   bottom: -1px;
   background: white;
-  border: 1px solid $color-greylight;
+  border: 1px solid $alt-color-light;
   display: flex;
   align-items: center;
   justify-content: center;

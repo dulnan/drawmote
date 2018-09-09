@@ -87,11 +87,11 @@ export default {
 }
 
 .stroke--1 {
-  stroke: $color-red;
+  stroke: $brand-color;
   animation: 8s stroke_1 linear infinite;
   stroke-dasharray: 0,2000;
   .strokes--trail & {
-    stroke: rgba($color-red, 0.3);
+    stroke: rgba($brand-color, 0.3);
     stroke-dasharray: 500,1500;
   }
 }
