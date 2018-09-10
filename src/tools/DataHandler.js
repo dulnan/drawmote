@@ -5,6 +5,8 @@ import Brush from '@/classes/Brush'
 import Threads from '@/classes/Threads'
 import Rectangle from '@/classes/Rectangle'
 
+import { getCookie, setCookie } from '@/tools/helpers'
+
 import {
   THREAD_POINT,
   THREAD_BRUSH,
@@ -30,7 +32,7 @@ export default class DataHandler {
       enabled: true
     })
 
-    this.brush = new Brush()
+    this.brush = null
     this.threads = new Threads()
 
     this.isPressing = false
@@ -47,6 +49,8 @@ export default class DataHandler {
 
     this.pointingAtToolbar = false
     this.hasCalibrated = false
+
+    this.cookieTimout = null
   }
 
   get state () {
@@ -72,6 +76,15 @@ export default class DataHandler {
       width: this.viewport.width,
       height: this.viewport.height
     })
+
+    const cookie = getCookie('brush')
+    let brush = {}
+
+    if (cookie) {
+      brush = JSON.parse(cookie)
+    }
+
+    this.brush = new Brush(brush)
 
     this.threads.trigger(THREAD_BRUSH)
     this.loop()
@@ -177,29 +190,41 @@ export default class DataHandler {
     this.lazyBrush.setRadius(radius)
     this.threads.trigger(THREAD_BRUSH)
     this.threads.trigger(THREAD_LAZYRADIUS)
+    this.storeBrushCookie()
   }
 
   updateBrushColor (color) {
     this.brush.setColor(color)
     this.threads.trigger(THREAD_BRUSH)
     this.threads.trigger(THREAD_BRUSH_COLOR)
+    this.storeBrushCookie()
   }
 
   updateBrushOpacity (opacity) {
     this.brush.setOpacity(opacity)
     this.threads.trigger(THREAD_BRUSH)
     this.threads.trigger(THREAD_BRUSH_OPACITY)
+    this.storeBrushCookie()
   }
 
   updateBrushRadius (radius) {
     this.brush.setRadius(radius)
     this.threads.trigger(THREAD_BRUSH)
     this.threads.trigger(THREAD_BRUSH_RADIUS)
+    this.storeBrushCookie()
   }
 
   updateBrushHardness (hardness) {
     this.brush.setHardness(hardness)
     this.threads.trigger(THREAD_BRUSH)
     this.threads.trigger(THREAD_BRUSH_HARDNESS)
+    this.storeBrushCookie()
+  }
+
+  storeBrushCookie () {
+    window.clearTimeout(this.cookieTimout)
+    this.cookieTimout = window.setTimeout(() => {
+      setCookie('brush', JSON.stringify(this.brush.state))
+    }, 5000)
   }
 }

@@ -28,7 +28,9 @@ export default {
 
   methods: {
     handleClick () {
-      EventBus.$emit('redoCanvas')
+      if (this.possible) {
+        EventBus.$emit('redoCanvas')
+      }
     },
     updateCanvasState ({ redoPossible }) {
       this.possible = redoPossible

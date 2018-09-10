@@ -52,7 +52,7 @@ export default {
 
   methods: {
     skipPairing () {
-      EventBus.$emit('isConnected')
+      EventBus.$emit('isConnected', true)
     }
   },
 

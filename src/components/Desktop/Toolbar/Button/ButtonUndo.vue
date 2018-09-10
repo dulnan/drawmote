@@ -28,7 +28,9 @@ export default {
 
   methods: {
     handleClick () {
-      EventBus.$emit('undoCanvas')
+      if (this.possible) {
+        EventBus.$emit('undoCanvas')
+      }
     },
 
     updateCanvasState ({ undoPossible }) {
