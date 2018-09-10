@@ -8,12 +8,22 @@ import {
 import Color from '@/classes/Color'
 
 export default class Brush {
-  constructor () {
-    this.color = new Color(DEFAULT_COLOR)
-    this.radius = RADIUS_DEFAULT
-    this.hardness = HARDNESS_DEFAULT
-    this.opacity = OPACITY_DEFAULT
+  constructor (brush = {}) {
+    this.color = new Color(brush.color || DEFAULT_COLOR)
+    this.radius = brush.radius || RADIUS_DEFAULT
+    this.hardness = brush.hardness || HARDNESS_DEFAULT
+    this.opacity = brush.opacity || OPACITY_DEFAULT
     this.style = 'smudge'
+  }
+
+  get state () {
+    return {
+      color: this.color,
+      radius: this.radius,
+      hardness: this.hardness,
+      opacity: this.opacity,
+      style: this.style
+    }
   }
 
   get canvasRadius () {
