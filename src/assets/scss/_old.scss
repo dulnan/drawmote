@@ -57,6 +57,7 @@ $code-numbers: (
   color: $alt-color-dark;
   position: relative;
   background: white;
+  border: 1px solid $alt-color;
   box-shadow: 0 3px 4px rgba($alt-color, 0.1),
               0 0px 2px rgba($alt-color, 0.3);
 
@@ -70,7 +71,7 @@ $code-numbers: (
     height: 0.1em;
     // width: 0.15em;
     border-radius: inherit;
-    background: $alt-color-lighter;
+    background: $alt-color-light;
   }
   @include media('sm') {
     margin-right: 1rem;
@@ -91,6 +92,7 @@ $code-numbers: (
     }
   }
   &.contains {
+    border-color: $alt-color-dark;
   }
   &.contains.invalid {
     color: $alt-color-light !important;
@@ -99,7 +101,7 @@ $code-numbers: (
 
   @each $index, $color in $code-numbers {
     &.code-circle--#{$index} {
-      color: darken(nth($color, 1), nth($color, 2));
+      //border-color: darken(nth($color, 1), nth($color, 2));
       &:before {
         background: nth($color, 1);
       }
