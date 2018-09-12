@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 501 524" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <linearGradient x1="21.1563564%" y1="22.861045%" x2="97.3864396%" y2="96.1445706%" id="linearGradient-1">
+            <stop stop-color="#FF653B" offset="0%"></stop>
+            <stop stop-color="#FFDF2B" offset="30.2818666%"></stop>
+            <stop stop-color="#BED772" offset="67.2294975%"></stop>
+            <stop stop-color="#00C8F2" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M-11.9789614,71.6752851 C209.021039,404.675285 196.220826,508.295021 133.914039,526.675285 C18.6583097,560.675285 11.6427435,233.675285 127.900697,207.675285 C244.15865,181.675285 360.416604,416.675285 284.2476,433.675285 C208.078596,450.675285 221.107504,234.675285 284.2476,245.675285 C347.387695,256.675285 358.412156,357.675285 377.454407,362.675285 C396.496658,367.675285 379.458855,279.675285 402.510001,268.675285 C425.561147,257.675285 429.570042,349.150988 494.714585,359.413136" id="Path-5-Copy-2" stroke="url(#linearGradient-1)" stroke-width="47" transform="translate(241.367812, 300.413136) rotate(12.000000) translate(-241.367812, -300.413136) "></path>
+    </g>
+</svg>
