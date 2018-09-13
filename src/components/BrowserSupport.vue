@@ -88,6 +88,10 @@ export default {
       if (this.checks === 'desktop') {
         this.canvasFilter = this.supportsCanvasFilter()
       }
+
+      if (this.webRTC === false || this.webSocket === false || this.gyroscope === false || this.canvasFilter === false) {
+        this.$emit('notSupported')
+      }
     }
   },
 

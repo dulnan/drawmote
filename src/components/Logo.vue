@@ -72,31 +72,44 @@ $logo-base: 768;
   }
 }
 
+.logo {
+}
 
 .logo__app {
   position: relative;
   width: 1em;
   height: 1em;
   background: white;
-  border-radius: 0.2em;
+  border-radius: 0.23em;
   display: flex;
   align-items: center;
   justify-content: center;
   background-image: radial-gradient(46% -46%, #FFFFFF 52%, #EAEAEA 100%);
   background-image: linear-gradient(21deg, #FFFFFF 14%, rgba(255,255,255,0.00) 89%);
-  box-shadow: 0 ((14 / $logo-base) * 1em) ((120 / $logo-base) * 1em) rgba(0,0,0,0.09);
+  // box-shadow: 0 ((14 / $logo-base) * 1em) ((120 / $logo-base) * 1em) rgba(0,0,0,0.09);
+  box-shadow: 0 ((20 / $logo-base) * 1em) ((100 / $logo-base) * 1em) ((1 / $logo-base) * 1em) rgba(0,0,0,0.07),
+  0 ((1 / $logo-base) * 1em) ((4 / $logo-base) * 1em) ((2 / $logo-base) * 1em) rgba(0,0,0,0.01);
 
   // animation: 1s pulse cubic-bezier(1, -0.04, 0.63, 1.01) infinite alternate;
-  font-size: 12rem;
+  font-size: 10rem;
 
   @include media('sm') {
+    font-size: 13rem;
+  }
+
+  @include media('md') {
     font-size: 15rem;
+  }
+
+  @include media('lg') {
+    font-size: 12rem;
   }
 
   svg {
     height: auto;
-    width: 70%;
+    width: 60%;
     display: block;
+    margin-right: ((-11 / $logo-base) * 1em);
   }
 
   // &:before {

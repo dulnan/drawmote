@@ -2,6 +2,7 @@
   <div id="app" class="relative" v-if="hasLoaded">
     <mobile v-if="isRemote" />
     <desktop v-else />
+    <the-footer :is-mobile="isRemote" />
   </div>
 </template>
 
@@ -10,13 +11,15 @@ import { getViewportSize } from '@/tools/helpers'
 
 import Desktop from '@/components/Desktop.vue'
 import Mobile from '@/components/Mobile.vue'
+import TheFooter from '@/components/Footer.vue'
 
 export default {
   name: 'app',
 
   components: {
     Desktop,
-    Mobile
+    Mobile,
+    TheFooter
   },
 
   data () {
@@ -51,11 +54,15 @@ export default {
 
 <style lang="scss">
 #app {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 100;
+  min-height: 90vh;
+  @include media('sm') {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    min-height: none;
+  }
 }
 </style>

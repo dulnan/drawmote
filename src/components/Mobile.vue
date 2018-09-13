@@ -1,6 +1,5 @@
 <template>
   <div class="mobile">
-    <the-footer />
     <transition name="appear">
       <pairing v-if="!isConnected"></pairing>
     </transition>
@@ -18,7 +17,6 @@ import { EventBus } from '@/events'
 import Pairing from '@/components/Mobile/Pairing.vue'
 import Controlling from '@/components/Mobile/Controlling.vue'
 import Connection from '@/components/Connection.vue'
-import TheFooter from '@/components/Footer.vue'
 
 export default {
   name: 'Mobile',
@@ -26,8 +24,7 @@ export default {
   components: {
     Pairing,
     Connection,
-    Controlling,
-    TheFooter
+    Controlling
   },
 
   data () {

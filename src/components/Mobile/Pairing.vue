@@ -33,19 +33,16 @@
         </transition>
       </div>
     </div>
-    <browser-support checks="mobile" />
   </div>
 </template>
 
 <script>
-import BrowserSupport from '@/components/BrowserSupport.vue'
 import Logo from '@/components/Logo.vue'
 
 export default {
   name: 'Pairing',
 
   components: {
-    BrowserSupport,
     Logo
   },
 

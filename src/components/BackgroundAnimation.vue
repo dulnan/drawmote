@@ -40,13 +40,16 @@ export default {
     },
 
     circleDistance () {
-      return 50
+      return this.w >= 640 ? 65 : 25
+    },
+
+    speed () {
+      return this.w >= 640 ? 9 : 5
     }
   },
 
   watch: {
     center: function () {
-      console.log('watch')
       this.setSizes()
     }
   },
@@ -64,7 +67,7 @@ export default {
 
       const ctx = this.$refs.canvas.getContext('2d')
 
-      count = count + (delta * 10)
+      count = count + (delta * this.speed)
 
       this.clear()
 
@@ -78,7 +81,7 @@ export default {
 
         const color = (((count / 5) - i) % (this.circleDistance))
 
-        const r = scaleBetween(color, [0, this.circleDistance], [230, 250])
+        const r = scaleBetween(color, [0, this.circleDistance], [240, 250])
         const g = r
         const b = r
 
@@ -116,7 +119,7 @@ export default {
 
 <style lang="scss">
 .background-animation {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
