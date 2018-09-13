@@ -70,5 +70,6 @@ export default {
   left: 0;
   bottom: 0;
   border-top: $list-separator-style;
+  user-select: none;
 }
 </style>

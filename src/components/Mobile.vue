@@ -29,7 +29,7 @@ export default {
 
   data () {
     return {
-      isConnected: false
+      isConnected: true
     }
   },
 
