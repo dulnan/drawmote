@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed overlay background-animation">
+  <div class="absolute overlay background-animation">
     <canvas ref="canvas" />
   </div>
 </template>

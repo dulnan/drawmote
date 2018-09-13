@@ -1,12 +1,19 @@
 <template>
   <div class="footer">
     <ul class="list-inline list-inline--divided text-small">
-      <li class="pdg">
-        <div class="text-bold" @click="showBrowserSupport">
-          <span v-if="browserNotSupported">Reduced functionality</span>
-          <span v-else>All features available</span>
+      <li class="pdg relative">
+        <div
+          class="text-bold check"
+          @click="toggleBrowserSupport"
+          :class="{ 'supported': browserNotSupported === false, 'not-supported': browserNotSupported === true}"
+        >
+          <div class="check__title">
+            <span v-if="browserNotSupported === false">All features available</span>
+            <span v-if="browserNotSupported === true">Reduced functionality</span>
+            <span v-else>Checking browser...</span>
+          </div>
         </div>
-        <browser-support v-show="browserSupportVisible" @notSupported="handleBrowserSupportState"/>
+        <browser-support :is-mobile="isMobile" v-show="browserSupportVisible" @notSupported="handleBrowserSupportState"/>
       </li>
       <li class="pdg flex-1 text-center hidden-sm-down">Made by <a href="http://www.janhug.info">Jan Hug</a>, with help from Pascal Thormeier and others.</li>
       <li class="pdg text-bold mrgla hidden-sm-down"><a href="#" @click="skipPairing">Use without phone</a></li>
@@ -32,7 +39,7 @@ export default {
 
   data () {
     return {
-      browserNotSupported: false,
+      browserNotSupported: null,
       browserSupportVisible: false
     }
   },
@@ -42,8 +49,8 @@ export default {
       EventBus.$emit('isConnected', true)
     },
 
-    showBrowserSupport () {
-      this.browserSupportVisible = true
+    toggleBrowserSupport () {
+      this.browserSupportVisible = !this.browserSupportVisible
     },
 
     handleBrowserSupportState () {

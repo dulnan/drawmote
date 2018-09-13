@@ -92,7 +92,7 @@ export default {
   align-items: center;
   text-align: center;
   color: $color-black;
-  height: 100%;
+  margin-bottom: 3rem;
 }
 
 .mobile-pairing__content {
