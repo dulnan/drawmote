@@ -100,6 +100,7 @@ export default {
 <style lang="scss">
 .browser-support {
   display: block;
+  text-align: left;
   h3 {
     text-transform: uppercase;
   }

@@ -12,6 +12,7 @@
     "@hughsk/fulltilt": "^0.7.1",
     "axios": "^0.18.0",
     "catenary-curve": "github:dulnan/catenary-curve",
+    "debounced-resize": "^1.1.1",
     "gyro-plane": "github:dulnan/gyro-plane",
     "gyronorm": "^2.0.6",
     "input-range-scss": "^1.5.1",

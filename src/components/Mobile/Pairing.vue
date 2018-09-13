@@ -1,7 +1,8 @@
 <template>
   <div class="mobile-pairing pdg+">
+    <logo />
     <div class="mobile-pairing__content relative">
-      <h1 class="text-heavy">drawmote</h1>
+      <h1 class="text-heavy mrgt">drawmote</h1>
       <p class="h2 text-muted text-light text-hyphens mrgb+ mrgt">{{ $t('mobile.lead') }}</p>
       <div class="code relative">
         <div class="code__circles flex">
@@ -38,12 +39,14 @@
 
 <script>
 import BrowserSupport from '@/components/BrowserSupport.vue'
+import Logo from '@/components/Logo.vue'
 
 export default {
   name: 'Pairing',
 
   components: {
-    BrowserSupport
+    BrowserSupport,
+    Logo
   },
 
   data () {
@@ -89,7 +92,8 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
+  text-align: center;
   color: $color-black;
   height: 100%;
 }
