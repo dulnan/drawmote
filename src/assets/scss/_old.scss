@@ -19,9 +19,6 @@
   height: 100%;
 }
 
-* {
-  user-select: none;
-}
 
 .label {
   font-weight: bold;
@@ -152,4 +149,9 @@ $code-numbers: (
       background: $color-green;
     }
   }
+}
+
+.icon {
+  width: 1em;
+  height: 1em;
 }

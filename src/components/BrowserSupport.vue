@@ -1,7 +1,10 @@
 <template>
   <transition name="appear">
     <div class="browser-support pdg" :class="{ 'done': done }">
-      <div class="browser-support__content pdg">
+      <div class="browser-support__content pdg relative">
+        <button class="btn browser-support__close pdg" @click="$emit('close')">
+          <icon-close class="icon" />
+        </button>
         <h3 class="label">Browser Support</h3>
         <ul class="list check-list">
           <li class="check check--small" v-for="check in doneChecks" :key="check.id" :class="{ 'not-supported': !check.supported, 'supported': check.supported }">
@@ -18,6 +21,8 @@
 </template>
 
 <script>
+import IconClose from '@/assets/icons/icon-close.svg'
+
 import GyroNorm from 'gyronorm'
 require('@hughsk/fulltilt/dist/fulltilt.min.js')
 
@@ -25,6 +30,10 @@ const simplePeer = require('simple-peer')
 
 export default {
   name: 'BrowserSupport',
+
+  components: {
+    IconClose
+  },
 
   data () {
     return {
@@ -126,6 +135,15 @@ export default {
   }
   h3 {
     text-transform: uppercase;
+  }
+}
+
+.browser-support__close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  svg {
+
   }
 }
 

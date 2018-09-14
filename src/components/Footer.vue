@@ -13,7 +13,12 @@
             <span v-else>Checking browser...</span>
           </div>
         </div>
-        <browser-support :is-mobile="isMobile" v-show="browserSupportVisible" @notSupported="handleBrowserSupportState"/>
+        <browser-support
+          :is-mobile="isMobile"
+          v-show="browserSupportVisible"
+          @notSupported="handleBrowserSupportState"
+          @close="closeBrowserSupport"
+        />
       </li>
       <li class="pdg flex-1 text-center hidden-sm-down">Made by <a href="http://www.janhug.info">Jan Hug</a>, with help from Pascal Thormeier and others.</li>
       <li class="pdg text-bold mrgla hidden-sm-down"><a href="#" @click="skipPairing">Use without phone</a></li>
@@ -56,6 +61,10 @@ export default {
     handleBrowserSupportState () {
       this.browserNotSupported = true
       this.browserSupportVisible = true
+    },
+
+    closeBrowserSupport () {
+      this.browserSupportVisible = false
     }
   }
 }
