@@ -45,7 +45,7 @@ $index-mobile-pairing:        700;
 $toolbar-height:              5rem;
 
 
-$shadow-s:                    0 3px 10px rgba($alt-color, 0.2),
+$shadow-s:                    0 3px 10px rgba($alt-color, 0.13),
                               0 2px 4px 1px rgba($alt-color, 0.1);
 
 /*----------------------------------------*\
@@ -63,8 +63,8 @@ $rtl:                               false;
  * Colors
  */
 
-$brand-color:                       #1fdc86;
 $brand-color:                       #279ce2;
+$brand-color-darker:                darken(#279ce2, 10%);
 $alt-color-lighter:                 #f7f7f6;
 $alt-color-light:                   #dedede;
 $alt-color:                         #cecece;

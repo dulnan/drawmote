@@ -142,11 +142,14 @@ $code-numbers: (
     border-radius: 100%;
     float: left;
     background: $alt-color;
-    .not-supported & {
+    .unsupported & {
       background: $color-red;
     }
     .supported & {
       background: $color-green;
+    }
+    .partial & {
+      background: $color-yellow;
     }
   }
 }
@@ -154,4 +157,15 @@ $code-numbers: (
 .icon {
   width: 1em;
   height: 1em;
+}
+
+.block {
+  display: block;
+}
+
+a {
+  text-decoration: none;
+  &:hover {
+    color: $brand-color-darker;
+  }
 }

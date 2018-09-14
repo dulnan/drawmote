@@ -2,17 +2,18 @@
   <transition name="appear">
     <div class="browser-support pdg" :class="{ 'done': done }">
       <div class="browser-support__content pdg relative">
-        <button class="btn browser-support__close pdg" @click="$emit('close')">
-          <icon-close class="icon" />
+        <button class="btn btn--bare browser-support__close" @click="$emit('close')">
+          <div class="pdg">
+            <icon-close class="icon block" />
+          </div>
         </button>
         <h3 class="label">Browser Support</h3>
         <ul class="list check-list">
-          <li class="check check--small" v-for="check in doneChecks" :key="check.id" :class="{ 'not-supported': !check.supported, 'supported': check.supported }">
+          <li class="check check--small" v-for="check in doneChecks" :key="check.id" :class="check.state">
             <div class="check__title">
               {{ $t(`browserSupport.${check.id}.label`) }}
             </div>
-            <div class="check__notice" v-if="check.supported">{{ $t(`browserSupport.${check.id}.supported`) }}</div>
-            <div class="check__notice" v-else>{{ $t(`browserSupport.${check.id}.notSupported`) }}</div>
+            <div class="check__notice">{{ $t(`browserSupport.${check.id}.${check.state}`) }}</div>
           </li>
         </ul>
       </div>
@@ -58,7 +59,7 @@ export default {
       return checks.filter(c => this[c] !== null).map(c => {
         return {
           id: c,
-          supported: this[c] === true
+          state: this[c] === true ? 'supported' : 'unsupported'
         }
       })
     }
@@ -103,9 +104,17 @@ export default {
         this.canvasFilter = this.supportsCanvasFilter()
       }
 
-      if (this.webRTC === false || this.webSocket === false || this.gyroscope === false || this.canvasFilter === false) {
-        this.$emit('notSupported')
+      let supportState = 'supported'
+
+      if ((this.webRTC === false && this.webSocket === true) || this.canvasFilter === false) {
+        supportState = 'partial'
       }
+
+      if (this.webSocket === false || this.gyroscope === false) {
+        supportState = 'unsupported'
+      }
+
+      this.$emit('supportState', supportState)
 
       this.done = true
     }

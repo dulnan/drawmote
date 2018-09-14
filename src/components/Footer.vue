@@ -1,28 +1,34 @@
 <template>
   <div class="footer">
-    <ul class="list-inline list-inline--divided text-small">
-      <li class="pdg relative">
-        <div
-          class="text-bold check"
+    <ul class="list-inline list-inline--divided list-inline--tight text-small footer__list">
+      <li class="relative hover">
+        <button
+          class="btn btn--bare text-bold check pdg"
           @click="toggleBrowserSupport"
-          :class="{ 'supported': browserNotSupported === false, 'not-supported': browserNotSupported === true}"
+          :class="supportState"
         >
           <div class="check__title">
-            <span v-if="browserNotSupported === false">All features available</span>
-            <span v-if="browserNotSupported === true">Reduced functionality</span>
-            <span v-else>Checking browser...</span>
+            <span>{{ $t(`browserSupport.footer.${supportState}`) }}</span>
           </div>
-        </div>
+        </button>
         <browser-support
           :is-mobile="isMobile"
           v-show="browserSupportVisible"
-          @notSupported="handleBrowserSupportState"
+          @supportState="handleBrowserSupportState"
           @close="closeBrowserSupport"
         />
       </li>
-      <li class="pdg flex-1 text-center hidden-sm-down">Made by <a href="http://www.janhug.info">Jan Hug</a>, with help from Pascal Thormeier and others.</li>
-      <li class="pdg text-bold mrgla hidden-sm-down"><a href="#" @click="skipPairing">Use without phone</a></li>
-      <li class="pdg text-bold mrgla"><a href="https://github.com/dulnan/drawmote-client">View on GitHub</a></li>
+      <li class="flex-1 text-center hidden-sm-down">
+        <div class="pdg">
+          Made by <a href="http://www.janhug.info">Jan Hug</a>, with help from Pascal Thormeier and others.
+        </div>
+      </li>
+      <li class="text-bold mrgla hidden-sm-down hover">
+        <button class="btn btn--bare btn--link pdg" @click="skipPairing">Use without phone</button>
+      </li>
+      <li class="text-bold mrgla hover">
+        <a class="pdg block" href="https://github.com/dulnan/drawmote-client">View on GitHub</a>
+      </li>
     </ul>
   </div>
 </template>
@@ -44,7 +50,7 @@ export default {
 
   data () {
     return {
-      browserNotSupported: null,
+      supportState: 'checking',
       browserSupportVisible: false
     }
   },
@@ -58,9 +64,12 @@ export default {
       this.browserSupportVisible = !this.browserSupportVisible
     },
 
-    handleBrowserSupportState () {
-      this.browserNotSupported = true
-      this.browserSupportVisible = true
+    handleBrowserSupportState (state) {
+      this.supportState = state
+
+      if (state !== 'supported') {
+        this.browserSupportVisible = true
+      }
     },
 
     closeBrowserSupport () {
@@ -80,5 +89,12 @@ export default {
   bottom: 0;
   border-top: $list-separator-style;
   user-select: none;
+}
+
+.footer__list {
+  align-items: stretch;
+  .hover:hover {
+    background: white;
+  }
 }
 </style>
