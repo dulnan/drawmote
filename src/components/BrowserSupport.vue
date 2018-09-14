@@ -134,6 +134,7 @@ export default {
   top: 0;
   left: 0;
   width: 100vw;
+  max-width: 30rem;
   transform: translateY(-100%);
   &.appear-enter-active, &.appear-leave-active {
     transition: .5s;

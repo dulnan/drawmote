@@ -1,7 +1,7 @@
 <template>
   <div class="footer">
     <ul class="list-inline list-inline--divided list-inline--tight text-small footer__list">
-      <li class="relative hover">
+      <li class="relative hover footer__browser-support">
         <button
           class="btn btn--bare text-bold check pdg"
           @click="toggleBrowserSupport"
@@ -95,6 +95,17 @@ export default {
   align-items: stretch;
   .hover:hover {
     background: white;
+  }
+}
+
+.footer__browser-support {
+  flex: 1;
+  > .btn {
+    width: 100%;
+    text-align: left;
+  }
+  @include media('sm') {
+    flex: 0 0 auto;
   }
 }
 </style>
