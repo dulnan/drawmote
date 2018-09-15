@@ -1,4 +1,5 @@
 {
+  "subtitle": "Draw remotely with your phone",
   "desktop": {
     "lead": "Use your phone to draw on this screen. Visit drawmote.app on your mobile device and enter the following code to connect to this session.",
     "skipButton": "Continue without pairing"
@@ -43,5 +44,15 @@
       "supported": "All brush options can be used.",
       "unsupported": "Without this feature you won't be able to adjust the brush hardness."
     }
+  },
+  "connection": {
+    "title": "Restore your last connection",
+    "text": "Click the big blue button on both your devices to quickly establish a connection between them.",
+    "delete": "Remove",
+    "reconnect": "Reconnect devices"
+  },
+  "footer": {
+    "nophone": "Use without phone",
+    "copyright": "Made by"
   }
 }

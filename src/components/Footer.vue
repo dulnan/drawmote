@@ -22,11 +22,12 @@
         </li>
         <li class="flex-1 text-center hidden-sm-down">
           <div class="pdg lg-pdg+">
-            Made by <a href="http://www.janhug.info">Jan Hug</a>, with help from Pascal Thormeier and others.
+            Made by <a href="http://www.janhug.info" class="text-bold">Jan Hug</a> –
+            Contributions from <a href="https://github.com/thormeier">@thormeier</a> and <a href="https://github.com/munxar">@munxar</a>. Thanks!
           </div>
         </li>
         <li class="text-bold mrgla hidden-sm-down hover">
-          <button class="btn btn--bare btn--link pdg lg-pdg+ h-100" @click="skipPairing">Use without phone</button>
+          <button class="btn btn--bare btn--link pdg lg-pdg+ h-100" @click="skipPairing">{{ $t('footer.nophone') }}</button>
         </li>
         <li class="text-bold mrgla hover">
           <a class="pdg lg-pdg+ block" href="https://github.com/dulnan/drawmote-client">
