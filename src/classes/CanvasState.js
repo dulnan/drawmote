@@ -28,12 +28,17 @@ export default class CanvasState {
   }
 
   init () {
-    this.setSizes()
+    this.setSizes({ width: window.innerWidth, height: window.innerHeight })
   }
 
-  setSizes () {
-    this._size.width = window.innerWidth
-    this._size.height = window.innerHeight
+  setSizes ({ width, height }) {
+    this._size.width = width
+    this._size.height = height
+  }
+
+  updateSizes (viewport) {
+    this.setSizes(viewport)
+    this.redraw()
   }
 
   start (canvasProperties) {
@@ -115,8 +120,13 @@ export default class CanvasState {
 
     if (this._historyIndex <= this.actions.length) {
       this.clear(this._canvasMain)
-      this.drawActions(length)
+      this.drawActions()
     }
+  }
+
+  redraw () {
+    this.clear(this._canvasMain)
+    this.drawActions()
   }
 
   drawActions () {

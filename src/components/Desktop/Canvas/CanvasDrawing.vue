@@ -12,7 +12,7 @@ import { EventBus } from '@/events'
 
 import CanvasState from '@/classes/CanvasState.js'
 import { isSamePoint } from '@/tools/helpers.js'
-import { THREAD_BRUSH, THREAD_POINT } from '@/settings/drawthreads'
+import { THREAD_POINT, THREAD_SIZES } from '@/settings/drawthreads'
 
 export default {
   extends: Canvas,
@@ -21,8 +21,10 @@ export default {
 
   draw: [
     {
-      threads: [THREAD_BRUSH],
+      threads: [THREAD_SIZES],
       handler: function (state) {
+        this.setupCanvases(state.sizes.viewport)
+        this.canvasState.updateSizes(state.sizes.viewport)
       }
     },
     {

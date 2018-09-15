@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import debouncedResize from 'debounced-resize'
+import { THREAD_SIZES } from '@/settings/drawthreads'
 
 import LogoStroke from '@/assets/images/logo.svg'
 import BackgroundAnimation from '@/components/BackgroundAnimation.vue'
@@ -20,6 +20,15 @@ export default {
     LogoStroke,
     BackgroundAnimation
   },
+
+  draw: [
+    {
+      threads: [THREAD_SIZES],
+      handler: function (state) {
+        this.setCenter()
+      }
+    }
+  ],
 
   data () {
     return {
@@ -50,10 +59,6 @@ export default {
     window.setTimeout(() => {
       this.setCenter()
     }, 500)
-
-    debouncedResize((e) => {
-      this.setCenter()
-    })
   }
 }
 </script>

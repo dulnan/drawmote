@@ -12,6 +12,7 @@ import {
   THREAD_BRUSH,
   THREAD_STATE,
   THREAD_TOOLS,
+  THREAD_SIZES,
   THREAD_BRUSH_RADIUS,
   THREAD_BRUSH_HARDNESS,
   THREAD_BRUSH_OPACITY,
@@ -126,8 +127,9 @@ export default class DataHandler {
     if (hasChanged) {
       this.updatePointer(this.lazyPointer.brush)
       this.updateIsPressing(data.isPressingMain)
-      this.updateSlideY(data.touchDiffY)
     }
+
+    this.updateSlideY(data.touchDiffY)
   }
 
   addHandler (event, uid, context) {
@@ -142,18 +144,21 @@ export default class DataHandler {
     this.updatePointer(coordinates)
   }
 
-  updateIsPressing (isPressing) {
+  updateIsPressing (isPressing, { fromMouse } = {}) {
     if (this.isPressing !== isPressing) {
       this.isPressing = isPressing
       this.threads.trigger(THREAD_POINT)
-      this.threads.trigger(THREAD_TOOLS)
+
+      if (!fromMouse) {
+        this.threads.trigger(THREAD_TOOLS)
+      }
     }
   }
 
   updateSlideY (slideY) {
     if (this.slideY !== slideY && this.pointingAtToolbar) {
       this.slideY = slideY
-      this.threads.trigger(THREAD_POINT)
+      this.threads.trigger(THREAD_TOOLS)
     }
   }
 
@@ -176,6 +181,7 @@ export default class DataHandler {
     this.viewport = viewport
     this.gyro.setScreenDimensions(viewport)
     this.threads.trigger(THREAD_STATE)
+    this.threads.trigger(THREAD_SIZES)
   }
 
   updateUseLazyBrush (useLazyBrush) {

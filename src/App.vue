@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import debouncedResize from 'debounced-resize'
+
 import { getViewportSize } from '@/tools/helpers'
 
 import Desktop from '@/components/Desktop.vue'
@@ -35,6 +37,10 @@ export default {
 
   mounted () {
     this.updateViewport()
+
+    debouncedResize((e) => {
+      this.updateViewport()
+    })
   },
 
   methods: {

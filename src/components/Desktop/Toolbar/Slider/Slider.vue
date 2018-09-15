@@ -7,7 +7,7 @@
   >
     <div>
       <div class="label pdg0 mrgb- tool-slider__label">{{ $t('tools.' + tool.id) }}</div>
-      <input type="range" :min="min" :max="max" step="1" v-model="value" />
+      <input type="range" :min="min" :max="max" :step="step" :value="value" @input="handleInput" />
     </div>
   </div>
 </template>
@@ -24,14 +24,20 @@ export default {
     return {
       min: 0,
       max: 100,
-      value: 0
+      value: 0,
+      step: 0.1
     }
   },
 
   methods: {
     handleWheel (e) {
-      const newValue = Math.max(Math.min(Math.round(this.value - (e.deltaY / 2)), this.max), this.min)
+      const delta = Math.max(Math.min(e.deltaY, 5), -5) * (this.max / 100)
+      const newValue = Math.max(Math.min(this.value - delta, this.max), this.min)
       this.handleValueChange(newValue)
+    },
+
+    handleInput (e) {
+      this.handleValueChange(parseFloat(e.target.value))
     }
   }
 }

@@ -47,7 +47,7 @@ import SliderBrushHardness from '@/components/Desktop/Toolbar/Slider/SliderBrush
 import SliderLazyRadius from '@/components/Desktop/Toolbar/Slider/SliderLazyRadius.vue'
 
 import { COLORS, TOOLBAR_TOOLS, TOOLBAR_SLIDERS } from '@/settings'
-import { THREAD_TOOLS } from '@/settings/drawthreads'
+import { THREAD_TOOLS, THREAD_SIZES } from '@/settings/drawthreads'
 
 import Color from '@/classes/Color'
 
@@ -67,6 +67,12 @@ export default {
 
   draw: [
     {
+      threads: [THREAD_SIZES],
+      handler: function (state) {
+        this.calculatePointerAreas()
+      }
+    },
+    {
       threads: [THREAD_TOOLS],
       handler: function (state) {
         let tool = this.getToolAtPoint(state.points.pointer)
@@ -74,7 +80,7 @@ export default {
         this.toolBeingHovered = tool ? tool.key : ''
 
         if (tool && state.isPressing) {
-          if (this.lastItemClick !== tool.key) {
+          if (this.lastItemClick !== this.toolBeingHovered && !this.wasPressingBefore) {
             tool.el.click()
             this.lastItemClick = tool.key
           }
@@ -86,7 +92,7 @@ export default {
               bubbles: false,
               cancelable: true,
               deltaX: 0,
-              deltaY: wheel
+              deltaY: wheel / 2
             })
             tool.el.dispatchEvent(event)
           }
@@ -96,6 +102,8 @@ export default {
           this.wheelDelta = 0
           this.lastItemClick = ''
         }
+
+        this.wasPressingBefore = state.isPressing
       }
     }
   ],
@@ -105,6 +113,7 @@ export default {
       pointerAreas: [],
       toolBeingHovered: '',
       lastItemClick: '',
+      wasPressingBefore: false,
       wheelDelta: 0
     }
   },
