@@ -29,8 +29,8 @@ export default class DataHandler {
     })
 
     this.lazyPointer = new LazyBrush({
-      radius: 2,
-      enabled: true
+      radius: 5,
+      enabled: false
     })
 
     this.brush = null

@@ -25,11 +25,15 @@
 </template>
 
 <script>
+import Smoothing from '@/classes/Smoothing'
 import { buildDataString } from '@/tools/helpers.js'
-
 import GyroNorm from 'gyronorm'
+
 require('@hughsk/fulltilt/dist/fulltilt.min.js')
-var deviceOrientation
+let deviceOrientation
+
+let smoothAlpha = new Smoothing()
+let smoothBeta = new Smoothing()
 
 export default {
   name: 'TouchHandler',
@@ -40,11 +44,8 @@ export default {
       touchStartY: 0,
       touchStartTime: {},
       touchDiffY: 0,
-      orientation: {
-        alpha: 0,
-        beta: 0,
-        gamma: 0
-      },
+      alpha: 0,
+      beta: 0,
       lastOrientationString: ''
     }
   },
@@ -85,20 +86,21 @@ export default {
     },
 
     handleCalibrateClick () {
-      this.updateOrientationOffset(this.orientation)
+      this.updateOrientationOffset()
     },
 
     initDataLoop () {
       deviceOrientation = new GyroNorm()
 
       const options = {
-        frequency: 10,
-        decimalCount: 0
+        frequency: 5,
+        decimalCount: 2
       }
 
       deviceOrientation.init(options).then(() => {
         deviceOrientation.start((data) => {
-          this.updateOrientation(data.do)
+          this.alpha = smoothAlpha.next((data.do.alpha + 180) % 360)
+          this.beta = smoothBeta.next(data.do.beta)
         })
 
         this.dataLoop()
@@ -107,23 +109,15 @@ export default {
       })
     },
 
-    updateOrientation (newOrientation) {
-      this.orientation = {
-        alpha: newOrientation.alpha,
-        beta: newOrientation.beta,
-        gamma: newOrientation.gamma
-      }
-    },
-
     updateOrientationOffset (newOrientationOffset) {
       this.$connection.emit('OrientationOffset', {
-        alpha: newOrientationOffset.alpha,
-        beta: newOrientationOffset.beta
+        alpha: this.alpha,
+        beta: this.beta
       })
     },
 
     dataLoop () {
-      const newData = buildDataString(this.orientation, this.isPressingMain, this.touchDiffY)
+      const newData = buildDataString(this.alpha, this.beta, this.isPressingMain, this.touchDiffY)
       if (newData !== this.lastOrientationString) {
         this.$connection.emit('Orientation', newData)
         this.lastOrientationString = newData
