@@ -1,5 +1,5 @@
 <template>
-  <div class="logo" ref="logo">
+  <div class="logo mrgt+" ref="logo">
     <div class="logo__app">
       <logo-stroke />
     </div>
@@ -72,6 +72,18 @@ $logo-base: 768;
 }
 
 .logo {
+  font-size: 9rem;
+
+  @include media('sm') {
+    font-size: 14rem;
+  }
+  @include media('md') {
+    font-size: 10rem;
+  }
+  @include media('lg') {
+    margin-left: -1em;
+    font-size: 12rem;
+  }
 }
 
 .logo__app {
@@ -88,21 +100,7 @@ $logo-base: 768;
   background-image: linear-gradient(21deg, #FFFFFF 14%, rgba(255,255,255,0.00) 89%);
   box-shadow: 0 ((20 / $logo-base) * 1em) ((100 / $logo-base) * 1em) ((1 / $logo-base) * 1em) rgba(0,0,0,0.07),
   0 ((1 / $logo-base) * 1em) ((4 / $logo-base) * 1em) ((2 / $logo-base) * 1em) rgba(0,0,0,0.01);
-
   // animation: 0.7s pulse cubic-bezier(1, -0.04, 0.63, 1.01) infinite alternate;
-  font-size: 10rem;
-
-  @include media('sm') {
-    font-size: 14rem;
-  }
-
-  @include media('md') {
-    font-size: 10rem;
-  }
-
-  @include media('lg') {
-    font-size: 12rem;
-  }
 
   svg {
     height: auto;

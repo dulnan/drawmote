@@ -33,7 +33,7 @@ $rhythm-size-xxl: (
 
 $rhythm-size-xl: (
   size: 36,
-  leading: 3.5
+  leading: 2
 );
 
 $rhythm-size-l: (
@@ -68,14 +68,15 @@ $rhythm-size-xxxs: (
 
 
 $font-h1: (
-  xs: $rhythm-size-xl,
+  xs: $rhythm-size-l,
   sm: $rhythm-size-xl,
   md: $rhythm-size-xxl,
   lg: $rhythm-size-xxxl,
 );
 
 $font-h2: (
-  xs: $rhythm-size-s,
+  xs: $rhythm-size-xs,
+  sm: $rhythm-size-s,
   md: $rhythm-size-s,
   lg: $rhythm-size-m,
 );

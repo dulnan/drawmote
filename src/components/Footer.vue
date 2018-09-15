@@ -1,44 +1,49 @@
 <template>
   <div class="footer">
-    <ul class="list-inline list-inline--divided list-inline--tight text-small footer__list">
-      <li class="relative hover footer__browser-support">
-        <button
-          class="btn btn--bare text-bold check pdg h-100"
-          @click="toggleBrowserSupport"
-          :class="supportState"
-        >
-          <div class="check__title">
-            <span>{{ $t(`browserSupport.footer.${supportState}`) }}</span>
+    <connection />
+    <div class="footer__content">
+      <ul class="list-inline list-inline--divided list-inline--tight text-small footer__list">
+        <li class="relative footer__browser-support">
+          <button
+            class="btn btn--bare text-bold check pdg lg-pdg+ h-100 hover"
+            @click="toggleBrowserSupport"
+            :class="supportState"
+          >
+            <div class="check__title">
+              <span>{{ $t(`browserSupport.footer.${supportState}`) }}</span>
+            </div>
+          </button>
+          <browser-support
+            :is-mobile="isMobile"
+            v-show="browserSupportVisible"
+            @supportState="handleBrowserSupportState"
+            @close="closeBrowserSupport"
+          />
+        </li>
+        <li class="flex-1 text-center hidden-sm-down">
+          <div class="pdg lg-pdg+">
+            Made by <a href="http://www.janhug.info">Jan Hug</a>, with help from Pascal Thormeier and others.
           </div>
-        </button>
-        <browser-support
-          :is-mobile="isMobile"
-          v-show="browserSupportVisible"
-          @supportState="handleBrowserSupportState"
-          @close="closeBrowserSupport"
-        />
-      </li>
-      <li class="flex-1 text-center hidden-sm-down">
-        <div class="pdg">
-          Made by <a href="http://www.janhug.info">Jan Hug</a>, with help from Pascal Thormeier and others.
-        </div>
-      </li>
-      <li class="text-bold mrgla hidden-sm-down hover">
-        <button class="btn btn--bare btn--link pdg h-100" @click="skipPairing">Use without phone</button>
-      </li>
-      <li class="text-bold mrgla hover">
-        <a class="pdg block" href="https://github.com/dulnan/drawmote-client">
-          <icon-github class="icon icon--large" />
-          GitHub
-        </a>
-      </li>
-    </ul>
+        </li>
+        <li class="text-bold mrgla hidden-sm-down hover">
+          <button class="btn btn--bare btn--link pdg lg-pdg+ h-100" @click="skipPairing">Use without phone</button>
+        </li>
+        <li class="text-bold mrgla hover">
+          <a class="pdg lg-pdg+ block" href="https://github.com/dulnan/drawmote-client">
+            <icon-github class="icon icon--large" />
+            GitHub
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
 import { EventBus } from '@/events'
 import BrowserSupport from '@/components/BrowserSupport.vue'
+import Connection from '@/components/Connection.vue'
+
 import IconGithub from '@/assets/icons/icon-github.svg'
 
 export default {
@@ -46,7 +51,8 @@ export default {
 
   components: {
     BrowserSupport,
-    IconGithub
+    IconGithub,
+    Connection
   },
 
   props: {
@@ -87,13 +93,17 @@ export default {
 <style lang="scss">
 .footer {
   position: absolute;
-  background: white;
-  z-index: $index-footer;
   right: 0;
   left: 0;
   bottom: 0;
-  border-top: $list-separator-style;
   user-select: none;
+}
+
+.footer__content {
+  position: relative;
+  z-index: $index-footer;
+  background: white;
+  border-top: $list-separator-style;
 }
 
 .footer__list {
@@ -109,9 +119,11 @@ export default {
 
 .footer__browser-support {
   flex: 1;
+  z-index: 1;
   > .btn {
     width: 100%;
     text-align: left;
+    background: white;
   }
   @include media('sm') {
     flex: 0 0 auto;

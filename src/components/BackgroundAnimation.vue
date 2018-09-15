@@ -5,8 +5,6 @@
 </template>
 
 <script>
-import { scaleBetween } from '@/tools/helpers'
-
 let count = 0
 
 let then = Date.now()

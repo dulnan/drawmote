@@ -5,7 +5,6 @@
         <pairing v-if="!isPaired" :code="pairingCode"></pairing>
       </transition>
       <drawing v-if="isPaired"></drawing>
-      <connection />
     </div>
   </div>
 </template>
@@ -15,15 +14,13 @@ import { EventBus } from '@/events'
 
 import Pairing from '@/components/Desktop/Pairing.vue'
 import Drawing from '@/components/Desktop/Drawing.vue'
-import Connection from '@/components/Connection.vue'
 
 export default {
   name: 'Desktop',
 
   components: {
     Pairing,
-    Drawing,
-    Connection
+    Drawing
   },
 
   data () {

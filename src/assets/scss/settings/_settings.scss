@@ -34,13 +34,13 @@ $index-overlay:               470;
 $index-toolbar:               500;
 $index-brush-toolbar:         500;
 
-$index-footer:                800;
-$index-modal:                 600;
-
-$index-background-animation:  800;
-$index-pairing:               900;
 $index-mobile-pairing:        700;
 
+$index-background-animation:  800;
+$index-footer:                800;
+$index-pairing:               700;
+
+$index-modal:                1000;
 
 $toolbar-height:              5rem;
 
@@ -65,6 +65,8 @@ $rtl:                               false;
 
 $brand-color:                       #279ce2;
 $brand-color-darker:                darken(#279ce2, 10%);
+
+$alt-color-lightest:                #fbfbfb;
 $alt-color-lighter:                 #f7f7f6;
 $alt-color-light:                   #dedede;
 $alt-color:                         #cecece;

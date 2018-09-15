@@ -1,6 +1,6 @@
 <template>
   <transition name="appear">
-    <div class="browser-support pdg" :class="{ 'done': done }">
+    <div class="browser-support" :class="{ 'done': done }">
       <div class="browser-support__content pdg relative">
         <button class="btn btn--bare browser-support__close" @click="$emit('close')">
           <div class="pdg">
@@ -131,17 +131,26 @@ export default {
   display: block;
   text-align: left;
   position: absolute;
-  top: 0;
+  bottom: 100%;
   left: 0;
-  width: 100vw;
-  max-width: 30rem;
-  transform: translateY(-100%);
+  width: calc(100% + 1px);
+  border: $list-separator-style;
+  border-width: 1px 1px 0 0;
+  z-index: -1;
+  background: white;
+
   &.appear-enter-active, &.appear-leave-active {
     transition: .5s;
+    .browser-support__content {
+      transition: .2s;
+      transition-delay: 0.3s;
+    }
   }
   &.appear-enter, &.appear-leave-to {
-    opacity: 0;
-    transform: translateY(-100%) translateY(2rem);
+    transform: translateY(100%);
+    .browser-support__content {
+      opacity: 0;
+    }
   }
   h3 {
     text-transform: uppercase;
@@ -159,8 +168,6 @@ export default {
 
 .browser-support__content {
   background: white;
-  border-radius: $border-radius-default;
-  box-shadow: $shadow-s;
 }
 
 .check-list {
