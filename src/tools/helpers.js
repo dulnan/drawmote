@@ -51,10 +51,10 @@ function shadeRgbColor (rgb, percent) {
 
 const randomInt = (min, max = min + (min = 0)) => (Math.random() * (max - min) + min) | 0
 
-function buildDataString (orientation, isPressingMain, touchDiffY) {
+function buildDataString (alpha, beta, isPressingMain, touchDiffY) {
   const values = [
-    orientation.alpha,
-    orientation.beta,
+    alpha,
+    beta,
     isPressingMain ? 1 : 0,
     touchDiffY
   ]
@@ -64,7 +64,7 @@ function buildDataString (orientation, isPressingMain, touchDiffY) {
 function parseDataString (data) {
   const arr = data.split(';')
   return {
-    alpha: arr[0],
+    alpha: (arr[0] + 180) % 360,
     beta: arr[1],
     isPressingMain: arr[2] === '1',
     touchDiffY: parseInt(arr[3]) || 0
