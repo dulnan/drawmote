@@ -86,7 +86,7 @@ export default {
 
 <style lang="scss">
 .footer {
-  position: fixed;
+  position: absolute;
   background: white;
   z-index: $index-footer;
   right: 0;
@@ -98,9 +98,11 @@ export default {
 
 .footer__list {
   align-items: stretch !important;
-  .hover {
-    &:hover {
-      background: $alt-color-lighter;
+  @include media('sm') {
+    .hover {
+      &:hover {
+        background: $alt-color-lighter;
+      }
     }
   }
 }
