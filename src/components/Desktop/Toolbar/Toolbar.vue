@@ -80,7 +80,7 @@ export default {
         this.toolBeingHovered = tool ? tool.key : ''
 
         if (tool && state.isPressing) {
-          if (this.lastItemClick !== this.toolBeingHovered) {
+          if (this.lastItemClick !== this.toolBeingHovered && !this.wasPressingBefore) {
             tool.el.click()
             this.lastItemClick = tool.key
           }
@@ -102,6 +102,8 @@ export default {
           this.wheelDelta = 0
           this.lastItemClick = ''
         }
+
+        this.wasPressingBefore = state.isPressing
       }
     }
   ],
@@ -111,6 +113,7 @@ export default {
       pointerAreas: [],
       toolBeingHovered: '',
       lastItemClick: '',
+      wasPressingBefore: false,
       wheelDelta: 0
     }
   },
