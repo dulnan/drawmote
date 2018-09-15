@@ -127,8 +127,9 @@ export default class DataHandler {
     if (hasChanged) {
       this.updatePointer(this.lazyPointer.brush)
       this.updateIsPressing(data.isPressingMain)
-      this.updateSlideY(data.touchDiffY)
     }
+
+    this.updateSlideY(data.touchDiffY)
   }
 
   addHandler (event, uid, context) {
@@ -143,7 +144,7 @@ export default class DataHandler {
     this.updatePointer(coordinates)
   }
 
-  updateIsPressing (isPressing, { fromMouse }) {
+  updateIsPressing (isPressing, { fromMouse } = {}) {
     if (this.isPressing !== isPressing) {
       this.isPressing = isPressing
       this.threads.trigger(THREAD_POINT)
@@ -157,7 +158,7 @@ export default class DataHandler {
   updateSlideY (slideY) {
     if (this.slideY !== slideY && this.pointingAtToolbar) {
       this.slideY = slideY
-      this.threads.trigger(THREAD_POINT)
+      this.threads.trigger(THREAD_TOOLS)
     }
   }
 

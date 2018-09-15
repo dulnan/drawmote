@@ -92,7 +92,7 @@ export default {
               bubbles: false,
               cancelable: true,
               deltaX: 0,
-              deltaY: wheel
+              deltaY: wheel / 2
             })
             tool.el.dispatchEvent(event)
           }
