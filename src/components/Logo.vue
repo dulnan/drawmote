@@ -76,6 +76,7 @@ $logo-base: 768;
 
 .logo__app {
   position: relative;
+  z-index: 1;
   width: 1em;
   height: 1em;
   background: white;

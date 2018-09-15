@@ -83,7 +83,7 @@ export default {
 
         const color = (((count / 5) - i) % (this.circleDistance))
 
-        const r = scaleBetween(color, [0, this.circleDistance], [230, 242])
+        const r = scaleBetween(color, [-1, this.circleDistance], [230, 242])
         const g = r
         const b = r
 
@@ -136,10 +136,13 @@ export default {
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: -1;
+  z-index: 0;
   // background: #f9f9f8;
   pointer-events: none;
   overflow: hidden;
+  @include media('sm') {
+    z-index: -1;
+  }
 
   canvas {
     width: 100%;

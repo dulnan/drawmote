@@ -55,6 +55,7 @@ export default {
 <style lang="scss">
 #app {
   min-height: 90vh;
+  background: #fbfdfa;
   @include media('sm') {
     position: absolute;
     top: 0;

@@ -29,6 +29,11 @@
   text-align: left;
 }
 
+$code-size-xs: 4rem;
+$code-size-sm: 4rem;
+$code-size-md: 4rem;
+$code-size-lg: 5rem;
+
 $code-numbers: (
   0: ($color-yellow, 40%),
   1: ($color-green, 40%),
@@ -48,7 +53,7 @@ $code-numbers: (
 
 .code-circle {
   color: $color-code;
-  font-size: 4rem;
+  font-size: $code-size-xs;
   width: 1em;
   height: 1em;
   border-radius: 3px;
@@ -67,12 +72,6 @@ $code-numbers: (
   box-shadow: 0 3px 4px rgba($alt-color, 0.1),
               0 0px 2px rgba($alt-color, 0.3);
 
-  margin-right: $code-margin;
-  @include media('sm') {
-    border: 0;
-    box-shadow: 0 5px 4px rgba($alt-color, 0.2),
-                0 0px 2px 1px rgba($alt-color, 0.3);
-  }
   &:before {
     content: "";
     position: absolute;
@@ -84,24 +83,7 @@ $code-numbers: (
     border-radius: inherit;
     background: $alt-color-light;
   }
-  @include media('sm') {
-    margin-right: 1rem;
-    box-shadow: 0 3px 10px rgba($alt-color, 0.2),
-                0 2px 4px 1px rgba($alt-color, 0.1);
-
-    &:before {
-      bottom: 0.25rem;
-      right: 0.25rem;
-      left: 0.25rem;
-    }
-  }
-  @include media('lg') {
-    margin-right: 1.5rem;
-    font-size: 5rem;
-    &:before {
-      height: rem(5px);
-    }
-  }
+  
   &.contains {
     border-color: $alt-color-dark;
   }
@@ -121,6 +103,41 @@ $code-numbers: (
   span {
     font-size: 0.55em;
     display: inline-block;
+    margin-top: -0.1em;
+  }
+
+  @include media('sm') {
+    font-size: $code-size-sm;
+    border: 0;
+    box-shadow: 0 5px 4px rgba($alt-color, 0.2),
+                0 0px 2px 1px rgba($alt-color, 0.3);
+    box-shadow: 0 3px 10px rgba($alt-color, 0.2),
+                0 2px 4px 1px rgba($alt-color, 0.1);
+
+    &:before {
+      bottom: 0.25rem;
+      right: 0.25rem;
+      left: 0.25rem;
+    }
+  }
+  @include media('md') {
+    font-size: $code-size-md;
+  }
+  @include media('lg') {
+    font-size: $code-size-lg;
+    &:before {
+      height: rem(5px);
+    }
+  }
+}
+
+.code__item {
+  margin-right: $code-margin;
+  @include media('sm') {
+    margin-right: 1rem;
+  }
+  @include media('lg') {
+    margin-right: 1.5rem;
   }
   &:last-child {
     margin-right: 0;
@@ -165,6 +182,13 @@ $code-numbers: (
 .icon {
   width: 1em;
   height: 1em;
+  fill: currentColor;
+  vertical-align: -0.2em;
+}
+
+.icon--large {
+  width: 1.2em;
+  height: 1.2em;
 }
 
 .block {

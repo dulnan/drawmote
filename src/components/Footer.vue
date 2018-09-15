@@ -27,7 +27,10 @@
         <button class="btn btn--bare btn--link pdg h-100" @click="skipPairing">Use without phone</button>
       </li>
       <li class="text-bold mrgla hover">
-        <a class="pdg block" href="https://github.com/dulnan/drawmote-client">View on GitHub</a>
+        <a class="pdg block" href="https://github.com/dulnan/drawmote-client">
+          <icon-github class="icon icon--large" />
+          GitHub
+        </a>
       </li>
     </ul>
   </div>
@@ -36,12 +39,14 @@
 <script>
 import { EventBus } from '@/events'
 import BrowserSupport from '@/components/BrowserSupport.vue'
+import IconGithub from '@/assets/icons/icon-github.svg'
 
 export default {
   name: 'Footer',
 
   components: {
-    BrowserSupport
+    BrowserSupport,
+    IconGithub
   },
 
   props: {
@@ -82,7 +87,7 @@ export default {
 <style lang="scss">
 .footer {
   position: fixed;
-  background: $alt-color-lighter;
+  background: white;
   z-index: $index-footer;
   right: 0;
   left: 0;
@@ -93,8 +98,10 @@ export default {
 
 .footer__list {
   align-items: stretch !important;
-  .hover:hover {
-    background: white;
+  .hover {
+    &:hover {
+      background: $alt-color-lighter;
+    }
   }
 }
 

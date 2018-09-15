@@ -6,13 +6,13 @@
       <p class="h2 text-muted text-light text-hyphens mrgb+ mrgt">{{ $t('mobile.lead') }}</p>
       <div class="code relative">
         <div class="code__circles flex">
-          <div
-            class="code-circle"
-            v-for="(char, index) in inputChars"
-            :class="[{ 'contains': char !== ' ', 'invalid': char.search(/[0-9]/g) }, 'code-circle--' + char]"
-            :key="char + index"
-          >
-            <span>{{ char }}</span>
+          <div class="code__item" v-for="(char, index) in inputChars" :key="char + index">
+            <div
+              class="code-circle"
+              :class="[{ 'contains': char !== ' ', 'invalid': char.search(/[0-9]/g) }, 'code-circle--' + char]"
+            >
+              <span>{{ char }}</span>
+            </div>
           </div>
         </div>
 

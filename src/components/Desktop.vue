@@ -62,8 +62,4 @@ export default {
   perspective: 700px;
   height: 100%;
 }
-
-.desktop-container {
-  background: #faf7f5;
-}
 </style>

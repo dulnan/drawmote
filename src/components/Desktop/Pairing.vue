@@ -9,18 +9,13 @@
         <p class="h2 text-bold mrgb+ text-muted">Draw remotely with your phone</p>
         <p class="text-muted text-light mrgt0 h2 pairing-lead">{{ $t('desktop.lead') }}</p>
         <div class="code mrgv++">
-          <transition name="appear">
-            <div v-if="code" class="code__content">
-              <div
-                class="code-circle contains"
-                :class="'code-circle--' + number"
-                v-for="(number, index) in pairingCodeNumbers"
-                :key="index"
-              >
+          <div class="code__content">
+            <div v-for="(number, index) in pairingCodeNumbers" :key="index" class="code__item" :class="{ 'visible': loaded }">
+              <div class="code-circle contains" :class="'code-circle--' + number">
                 <span>{{ number }}</span>
               </div>
             </div>
-          </transition>
+          </div>
         </div>
       </div>
     </div>
@@ -39,14 +34,15 @@ export default {
 
   data () {
     return {
-      showModal: false
+      showModal: false,
+      loaded: false
     }
   },
 
   props: {
     code: {
       type: String,
-      default: ''
+      default: '      '
     }
   },
 
@@ -54,6 +50,12 @@ export default {
     pairingCodeNumbers: function () {
       return this.code.split('')
     }
+  },
+
+  mounted () {
+    window.setTimeout(() => {
+      this.loaded = true
+    }, 100)
   }
 }
 </script>
@@ -99,17 +101,35 @@ export default {
   }
 }
 
-.code__content {
-  &.appear-enter-active, &.appear-leave-active {
-    transition: .5s;
-    .code-circle {
-      transition: .5s;
+.code__item {
+  opacity: 0;
+  transform: scale(1.3);
+  transition: 0.55s cubic-bezier(0.79, -1.26, 0.21, 1.99);
+  span {
+    opacity: 0;
+    transition: 0.4s cubic-bezier(0.64, 0.1, 0.61, 1.18);
+    transform: scale(0.8);
+  }
+  .code-circle:before {
+    transition: 0.5s cubic-bezier(0.57,-0.26, 0.24, 1.08);
+    transform-origin: center;
+    transform: scaleX(0);
+  }
+  @for $i from 1 through 6 {
+    &:nth-child(#{$i}) {
+      transition-delay: ($i / 8) * 1s;
+      span {
+        transition-delay: (($i / 8) * 1s) + 0.32s;
+      }
+      .code-circle:before {
+        transition-delay: (($i / 8) * 1s) + 0.1s;
+      }
     }
   }
-  &.appear-enter, &.appear-leave-to {
-    opacity: 0;
-    .code-circle {
-      transform: rotate(45deg) scale(0.1);
+  &.visible {
+    &, span, .code-circle:before {
+      opacity: 1;
+      transform: none;
     }
   }
 }
