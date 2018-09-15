@@ -141,13 +141,14 @@ export default {
 <style lang="scss">
 .mobile-controller {
   position: fixed;
-  padding-top: 3.5rem;
+  padding-top: 0;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
   display: flex;
   flex-direction: column;
+  padding-bottom: 53px;
 }
 .mobile-touch {
   height: 100%;
@@ -167,8 +168,8 @@ export default {
 }
 
 .click-area__circle {
-  width: 20rem;
-  height: 20rem;
+  width: 70vw;
+  height: 70vw;
   padding: 1rem;
   margin: 0 auto;
   border-radius: 100%;
@@ -191,7 +192,7 @@ export default {
   }
   .is-pressing & {
     &:before {
-    background: linear-gradient(lighten($alt-color-lighter, 2%), lighten($alt-color-light, 4%));
+    background: linear-gradient(0deg, lighten($alt-color-lighter, 2%), lighten($alt-color-light, 4%));
     box-shadow: inset 0 3px 10px rgba($alt-color, 0.15),
                 inset 0 4px 2px rgba($alt-color, 0.1);
     }

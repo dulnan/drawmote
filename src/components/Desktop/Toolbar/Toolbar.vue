@@ -175,6 +175,7 @@ export default {
   right: 0;
   height: $toolbar-height;
   overflow: hidden;
+  user-select: none;
 }
 
 .toolbar-group-list {

@@ -1,33 +1,132 @@
 <template>
   <div class="footer">
-    <ul class="list-inline list-inline--divided text-small">
-      <li class="pdg"><span class="text-bold">drawmote.app</span></li>
-      <li class="pdg flex-1 text-center hidden-sm-down">Made by <a href="http://www.janhug.info">Jan Hug</a>, with help from Pascal Thormeier and others.</li>
-      <li class="pdg text-bold mrgla"><a href="https://github.com/dulnan/drawmote-client">View on GitHub</a></li>
-    </ul>
+    <connection />
+    <div class="footer__content">
+      <ul class="list-inline list-inline--divided list-inline--tight text-small footer__list">
+        <li class="relative footer__browser-support">
+          <button
+            class="btn btn--bare text-bold check pdg lg-pdg+ h-100 hover"
+            @click="toggleBrowserSupport"
+            :class="supportState"
+          >
+            <div class="check__title">
+              <span>{{ $t(`browserSupport.footer.${supportState}`) }}</span>
+            </div>
+          </button>
+          <browser-support
+            :is-mobile="isMobile"
+            v-show="browserSupportVisible"
+            @supportState="handleBrowserSupportState"
+            @close="closeBrowserSupport"
+          />
+        </li>
+        <li class="flex-1 text-center hidden-sm-down">
+          <div class="pdg lg-pdg+">
+            Made by <a href="http://www.janhug.info">Jan Hug</a>, with help from Pascal Thormeier and others.
+          </div>
+        </li>
+        <li class="text-bold mrgla hidden-sm-down hover">
+          <button class="btn btn--bare btn--link pdg lg-pdg+ h-100" @click="skipPairing">Use without phone</button>
+        </li>
+        <li class="text-bold mrgla hover">
+          <a class="pdg lg-pdg+ block" href="https://github.com/dulnan/drawmote-client">
+            <icon-github class="icon icon--large" />
+            GitHub
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
+import { EventBus } from '@/events'
+import BrowserSupport from '@/components/BrowserSupport.vue'
+import Connection from '@/components/Connection.vue'
+
+import IconGithub from '@/assets/icons/icon-github.svg'
+
 export default {
-  name: 'Footer'
+  name: 'Footer',
+
+  components: {
+    BrowserSupport,
+    IconGithub,
+    Connection
+  },
+
+  props: {
+    isMobile: false
+  },
+
+  data () {
+    return {
+      supportState: 'checking',
+      browserSupportVisible: false
+    }
+  },
+
+  methods: {
+    skipPairing () {
+      EventBus.$emit('isConnected', true)
+    },
+
+    toggleBrowserSupport () {
+      this.browserSupportVisible = !this.browserSupportVisible
+    },
+
+    handleBrowserSupportState (state) {
+      this.supportState = state
+
+      if (state !== 'supported') {
+        this.browserSupportVisible = true
+      }
+    },
+
+    closeBrowserSupport () {
+      this.browserSupportVisible = false
+    }
+  }
 }
 </script>
 
 <style lang="scss">
 .footer {
-  position: fixed;
-  background: $alt-color-lighter;
-  z-index: $index-footer;
-  top: 0;
+  position: absolute;
   right: 0;
   left: 0;
-  border-bottom: $list-separator-style;
+  bottom: 0;
+  user-select: none;
+}
+
+.footer__content {
+  position: relative;
+  z-index: $index-footer;
+  background: white;
+  border-top: $list-separator-style;
+}
+
+.footer__list {
+  align-items: stretch !important;
   @include media('sm') {
-    top: auto;
-    bottom: 0;
-    border-bottom: 0;
-    border-top: $list-separator-style;
+    .hover {
+      &:hover {
+        background: $alt-color-lighter;
+      }
+    }
+  }
+}
+
+.footer__browser-support {
+  flex: 1;
+  z-index: 1;
+  > .btn {
+    width: 100%;
+    text-align: left;
+    background: white;
+  }
+  @include media('sm') {
+    flex: 0 0 auto;
   }
 }
 </style>

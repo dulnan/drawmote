@@ -34,16 +34,19 @@ $index-overlay:               470;
 $index-toolbar:               500;
 $index-brush-toolbar:         500;
 
-$index-footer:                800;
-$index-modal:                 600;
-
-$index-background-animation:  800;
-$index-pairing:               900;
 $index-mobile-pairing:        700;
 
+$index-background-animation:  800;
+$index-footer:                800;
+$index-pairing:               700;
+
+$index-modal:                1000;
 
 $toolbar-height:              5rem;
 
+
+$shadow-s:                    0 3px 10px rgba($alt-color, 0.13),
+                              0 2px 4px 1px rgba($alt-color, 0.1);
 
 /*----------------------------------------*\
   GLOBAL SETTINGS
@@ -60,8 +63,10 @@ $rtl:                               false;
  * Colors
  */
 
-$brand-color:                       #1fdc86;
 $brand-color:                       #279ce2;
+$brand-color-darker:                darken(#279ce2, 10%);
+
+$alt-color-lightest:                #fbfbfb;
 $alt-color-lighter:                 #f7f7f6;
 $alt-color-light:                   #dedede;
 $alt-color:                         #cecece;
@@ -73,7 +78,7 @@ $alt-color-darker:                  #292321;
  * Typography
  */
 
-$font-family-default:               'Heebo', -apple-system, BlinkMacSystemFont,
+$font-family-default:               "neusa-next-std", 'Heebo', -apple-system, BlinkMacSystemFont,
                                     'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
                                     'Fira Sans', 'Droid Sans', 'Helvetica Neue',
                                     sans-serif;

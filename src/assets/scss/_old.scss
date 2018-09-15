@@ -1,3 +1,7 @@
+body {
+  background: $alt-color-lightest;
+}
+
 .relative {
   position: relative;
 }
@@ -20,15 +24,19 @@
 }
 
 
-
 .label {
   font-weight: bold;
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: $alt-color;
+  color: $alt-color-dark;
   text-align: left;
 }
+
+$code-size-xs: 4rem;
+$code-size-sm: 4rem;
+$code-size-md: 4rem;
+$code-size-lg: 5rem;
 
 $code-numbers: (
   0: ($color-yellow, 40%),
@@ -42,16 +50,23 @@ $code-numbers: (
   8: ($color-red, 40%),
   9: ($color-pink, 40%)
 );
+
+.code__content {
+  display: flex;
+}
+
 .code-circle {
   color: $color-code;
-  font-size: 4rem;
+  font-size: $code-size-xs;
   width: 1em;
   height: 1em;
   border-radius: 3px;
   text-transform: uppercase;
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  line-height: 0.7em;
+  line-height: 1;
   text-align: center;
   font-weight: 500;
   color: $alt-color-dark;
@@ -61,7 +76,6 @@ $code-numbers: (
   box-shadow: 0 3px 4px rgba($alt-color, 0.1),
               0 0px 2px rgba($alt-color, 0.3);
 
-  margin-right: $code-margin;
   &:before {
     content: "";
     position: absolute;
@@ -73,24 +87,7 @@ $code-numbers: (
     border-radius: inherit;
     background: $alt-color-light;
   }
-  @include media('sm') {
-    margin-right: 1rem;
-    box-shadow: 0 3px 10px rgba($alt-color, 0.2),
-                0 2px 4px 1px rgba($alt-color, 0.1);
-
-    &:before {
-      bottom: 0.25rem;
-      right: 0.25rem;
-      left: 0.25rem;
-    }
-  }
-  @include media('lg') {
-    margin-right: 1.5rem;
-    font-size: 5rem;
-    &:before {
-      height: rem(5px);
-    }
-  }
+  
   &.contains {
     border-color: $alt-color-dark;
   }
@@ -109,6 +106,42 @@ $code-numbers: (
   }
   span {
     font-size: 0.55em;
+    display: inline-block;
+    margin-top: -0.1em;
+  }
+
+  @include media('sm') {
+    font-size: $code-size-sm;
+    border: 0;
+    box-shadow: 0 5px 4px rgba($alt-color, 0.2),
+                0 0px 2px 1px rgba($alt-color, 0.3);
+    box-shadow: 0 3px 10px rgba($alt-color, 0.2),
+                0 2px 4px 1px rgba($alt-color, 0.1);
+
+    &:before {
+      bottom: 0.25rem;
+      right: 0.25rem;
+      left: 0.25rem;
+    }
+  }
+  @include media('md') {
+    font-size: $code-size-md;
+  }
+  @include media('lg') {
+    font-size: $code-size-lg;
+    &:before {
+      height: rem(5px);
+    }
+  }
+}
+
+.code__item {
+  margin-right: $code-margin;
+  @include media('sm') {
+    margin-right: 1rem;
+  }
+  @include media('lg') {
+    margin-right: 1.5rem;
   }
   &:last-child {
     margin-right: 0;
@@ -117,4 +150,62 @@ $code-numbers: (
 
 .mobile-font-size {
   font-size: calc((100vw - 4rem) / 7);
+}
+
+
+.check--small {
+  font-size: .8125rem;
+  line-height: 1.230769231;
+}
+
+.check__title {
+  font-weight: 700;
+  position: relative;
+  &:before {
+    content: "";
+    display: block;
+    width: 10px;
+    height: 10px;
+    margin-right: 3px;
+    margin-top: 0.25em;
+    border-radius: 100%;
+    float: left;
+    background: $alt-color;
+    .unsupported & {
+      background: $color-red;
+    }
+    .supported & {
+      background: $color-green;
+    }
+    .partial & {
+      background: $color-yellow;
+    }
+  }
+}
+
+.icon {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+  vertical-align: -0.2em;
+}
+
+.icon--large {
+  width: 1.2em;
+  height: 1.2em;
+}
+
+.block {
+  display: block;
+}
+
+a {
+  text-decoration: none;
+  &:hover {
+    color: $brand-color-darker;
+  }
+}
+
+.h-100 {
+  height: 100%;
 }

@@ -1,58 +1,48 @@
 <template>
-  <div class="overlay pairing relative flex pdg++">
-    <div class="flex flex--column">
-      <h1 class="text-heavy mrgb+">drawmote</h1>
-      <p class="text-muted text-light mrgt0 h2 pairing-lead">{{ $t('desktop.lead') }}</p>
-      <h2 class="code mrgv++">
-        <transition name="appear">
-          <div v-if="code" class="code__content">
-            <div
-              class="code-circle contains"
-              :class="'code-circle--' + number"
-              v-for="(number, index) in pairingCodeNumbers"
-              :key="index"
-            >
-              <span>{{ number }}</span>
+  <div class="overlay pairing absolute flex pdg++">
+    <div class="pairing__container">
+      <div class="md-mrgr++">
+        <logo />
+      </div>
+      <div>
+        <h1 class="text-heavy sm-mrgt md-mrgt+ lg-mrgt++">drawmote</h1>
+        <p class="h2 text-bold mrgb+ text-muted">Draw remotely with your phone</p>
+        <p class="text-muted text-light mrgt0 h2 pairing-lead">{{ $t('desktop.lead') }}</p>
+        <div class="code mrgv++">
+          <div class="code__content">
+            <div v-for="(number, index) in pairingCodeNumbers" :key="index" class="code__item" :class="{ 'visible': loaded }">
+              <div class="code-circle contains" :class="'code-circle--' + number">
+                <span>{{ number }}</span>
+              </div>
             </div>
           </div>
-        </transition>
-      </h2>
-      <div class="actions mrgt">
-        <button @click.prevent="skipPairing" type="button" class="btn btn--bare btn--small">{{ $t('desktop.skipButton') }}</button>
+        </div>
       </div>
-      <browser-support checks="desktop" />
     </div>
   </div>
 </template>
 
 <script>
-import { EventBus } from '@/events'
-
-import BrowserSupport from '@/components/BrowserSupport.vue'
+import Logo from '@/components/Logo.vue'
 
 export default {
   name: 'Pairing',
 
   components: {
-    BrowserSupport
+    Logo
   },
 
   data () {
     return {
-      showModal: false
+      showModal: false,
+      loaded: false
     }
   },
 
   props: {
     code: {
       type: String,
-      default: ''
-    }
-  },
-
-  methods: {
-    skipPairing () {
-      EventBus.$emit('isConnected', true)
+      default: '      '
     }
   },
 
@@ -60,6 +50,12 @@ export default {
     pairingCodeNumbers: function () {
       return this.code.split('')
     }
+  },
+
+  mounted () {
+    window.setTimeout(() => {
+      this.loaded = true
+    }, 100)
   }
 }
 </script>
@@ -68,6 +64,9 @@ export default {
 .pairing {
   transform-style: preserve-3d;
   perspective: 700px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   &.appear-enter-active, &.appear-leave-active {
     transition: .5s;
     .pairing__content {
@@ -82,17 +81,55 @@ export default {
   }
 }
 
-.code__content {
-  &.appear-enter-active, &.appear-leave-active {
-    transition: .5s;
-    .code-circle {
-      transition: .5s;
+.pairing__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  @include media('md') {
+    flex-direction: row;
+    align-items: flex-start;
+    text-align: left;
+  }
+}
+
+.code {
+  display: flex;
+  justify-content: center;
+  @include media('md') {
+    justify-content: flex-start;
+  }
+}
+
+.code__item {
+  opacity: 0;
+  transform: scale(1.3);
+  transition: 0.55s cubic-bezier(0.79, -1.26, 0.21, 1.99);
+  span {
+    opacity: 0;
+    transition: 0.4s cubic-bezier(0.64, 0.1, 0.61, 1.18);
+    transform: scale(0.8);
+  }
+  .code-circle:before {
+    transition: 0.5s cubic-bezier(0.57,-0.26, 0.24, 1.08);
+    transform-origin: center;
+    transform: scaleX(0);
+  }
+  @for $i from 1 through 6 {
+    &:nth-child(#{$i}) {
+      transition-delay: ($i / 8) * 1s;
+      span {
+        transition-delay: (($i / 8) * 1s) + 0.32s;
+      }
+      .code-circle:before {
+        transition-delay: (($i / 8) * 1s) + 0.1s;
+      }
     }
   }
-  &.appear-enter, &.appear-leave-to {
-    opacity: 0;
-    .code-circle {
-      transform: rotate(45deg) scale(0.1);
+  &.visible {
+    &, span, .code-circle:before {
+      opacity: 1;
+      transform: none;
     }
   }
 }
@@ -100,11 +137,7 @@ export default {
 .pairing-lead {
   max-width: 34rem;
   @include media('lg') {
-    max-width: 44rem;
+    max-width: 40rem;
   }
-}
-
-.actions {
-  margin-bottom: auto;
 }
 </style>

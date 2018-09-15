@@ -1,9 +1,14 @@
 <template>
   <transition name="appear">
-    <div class="connection pdg+ sm-pdg++" v-if="connectionRestorable">
-      <div>
-        <h3 class="text-bold">Restore Connection</h3>
-        <p class="mrg0 h4 text-light text-hyphens mrgb sm-mrgb0">You can use a previously made connection. Press "restore" on both devices.</p>
+    <div class="connection pdg lg-pdg+" v-if="connectionRestorable">
+      <div class="flex-1 flex">
+        <div class="connection__icon hidden-md-down mrgr lg-mrgr+">
+          <icon-restore />
+        </div>
+        <div>
+          <h3 class="text-bold">Restore Connection</h3>
+          <p class="mrg0 h4 text-light text-hyphens mrgb sm-mrgb0">You can use a previously made connection. Press "restore" on both devices.</p>
+        </div>
       </div>
       <div class="connection__buttons flex md-mrgl">
         <div>
@@ -86,10 +91,12 @@ export default {
 <style lang="scss">
 .connection {
   position: absolute;
-  z-index: $index-modal;
+  z-index: 0;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: 100%;
+  z-index: $index-footer - 1;
+  margin-bottom: 1px;
   background: white;
   border-top: 1px solid $alt-color-light;
 
@@ -99,7 +106,7 @@ export default {
   flex-direction: column;
   justify-content: space-between;
 
-  @include media('md') {
+  @include media('sm') {
     flex-direction: row;
   }
 
@@ -108,6 +115,24 @@ export default {
   }
   &.appear-enter, &.appear-leave-to {
     transform: translateY(100%);
+  }
+}
+
+.connection__icon {
+  background: $brand-color;
+  border-radius: $border-radius-default;
+  font-size: 3.75rem;
+  flex: 0 0 1em;
+  width: 1em;
+  height: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  svg {
+    height: 0.7em;
+    width: 0.7em;
+    fill: white;
+    display: block;
   }
 }
 

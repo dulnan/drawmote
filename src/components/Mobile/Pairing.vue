@@ -1,17 +1,18 @@
 <template>
   <div class="mobile-pairing pdg+">
+    <logo />
     <div class="mobile-pairing__content relative">
-      <h1 class="text-heavy">drawmote</h1>
+      <h1 class="text-heavy mrgt">drawmote</h1>
       <p class="h2 text-muted text-light text-hyphens mrgb+ mrgt">{{ $t('mobile.lead') }}</p>
       <div class="code relative">
         <div class="code__circles flex">
-          <div
-            class="code-circle"
-            v-for="(char, index) in inputChars"
-            :class="[{ 'contains': char !== ' ', 'invalid': char.search(/[0-9]/g) }, 'code-circle--' + char]"
-            :key="char + index"
-          >
-            <span>{{ char }}</span>
+          <div class="code__item" v-for="(char, index) in inputChars" :key="char + index">
+            <div
+              class="code-circle"
+              :class="[{ 'contains': char !== ' ', 'invalid': char.search(/[0-9]/g) }, 'code-circle--' + char]"
+            >
+              <span>{{ char }}</span>
+            </div>
           </div>
         </div>
 
@@ -32,18 +33,17 @@
         </transition>
       </div>
     </div>
-    <browser-support checks="mobile" />
   </div>
 </template>
 
 <script>
-import BrowserSupport from '@/components/BrowserSupport.vue'
+import Logo from '@/components/Logo.vue'
 
 export default {
   name: 'Pairing',
 
   components: {
-    BrowserSupport
+    Logo
   },
 
   data () {
@@ -89,9 +89,10 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
+  text-align: center;
   color: $color-black;
-  height: 100%;
+  margin-bottom: 3rem;
 }
 
 .mobile-pairing__content {

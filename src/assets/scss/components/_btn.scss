@@ -4,7 +4,6 @@
 
 .btn,
 %btn {
-  @include font-values($font-btn);
 
   display: inline-block;
   overflow: hidden;
@@ -65,6 +64,18 @@
 /**
  * Styles
  */
+
+.btn--link {
+  color: $brand-color;
+  &:hover {
+    color: $brand-color-darker;
+  }
+}
+
+.btn--default,
+.btn--primary {
+  @include font-values($font-btn);
+}
 
 .btn--default,
 %btn--default {

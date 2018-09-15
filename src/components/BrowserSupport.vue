@@ -1,19 +1,29 @@
 <template>
-  <div class="browser-support">
-    <h3 class="label">Browser Support</h3>
-    <ul class="list check-list">
-      <li class="check" v-for="check in doneChecks" :key="check.id" :class="{'supported': check.supported }">
-        <div class="check__title">
-          {{ $t(`browserSupport.${check.id}.label`) }}
-        </div>
-        <div class="check__notice" v-if="check.supported">{{ $t(`browserSupport.${check.id}.supported`) }}</div>
-        <div class="check__notice" v-else>{{ $t(`browserSupport.${check.id}.notSupported`) }}</div>
-      </li>
-    </ul>
-  </div>
+  <transition name="appear">
+    <div class="browser-support" :class="{ 'done': done }">
+      <div class="browser-support__content pdg relative">
+        <button class="btn btn--bare browser-support__close" @click="$emit('close')">
+          <div class="pdg">
+            <icon-close class="icon block" />
+          </div>
+        </button>
+        <h3 class="label">Browser Support</h3>
+        <ul class="list check-list">
+          <li class="check check--small" v-for="check in doneChecks" :key="check.id" :class="check.state">
+            <div class="check__title">
+              {{ $t(`browserSupport.${check.id}.label`) }}
+            </div>
+            <div class="check__notice">{{ $t(`browserSupport.${check.id}.${check.state}`) }}</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </transition>
 </template>
 
 <script>
+import IconClose from '@/assets/icons/icon-close.svg'
+
 import GyroNorm from 'gyronorm'
 require('@hughsk/fulltilt/dist/fulltilt.min.js')
 
@@ -22,19 +32,24 @@ const simplePeer = require('simple-peer')
 export default {
   name: 'BrowserSupport',
 
+  components: {
+    IconClose
+  },
+
   data () {
     return {
       webRTC: null,
       webSocket: null,
       gyroscope: null,
-      canvasFilter: null
+      canvasFilter: null,
+      done: false
     }
   },
 
   props: {
-    checks: {
-      type: String,
-      default: 'desktop'
+    isMobile: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -44,7 +59,7 @@ export default {
       return checks.filter(c => this[c] !== null).map(c => {
         return {
           id: c,
-          supported: this[c] === true
+          state: this[c] === true ? 'supported' : 'unsupported'
         }
       })
     }
@@ -81,13 +96,27 @@ export default {
       this.webRTC = this.supportsWebRTC()
       this.webSocket = this.webRTC ? null : this.supportsWebSocket()
 
-      if (this.checks === 'mobile') {
+      if (this.isMobile) {
         this.gyroscope = await this.supportsGyroscope()
       }
 
-      if (this.checks === 'desktop') {
+      if (!this.isMobile) {
         this.canvasFilter = this.supportsCanvasFilter()
       }
+
+      let supportState = 'supported'
+
+      if ((this.webRTC === false && this.webSocket === true) || this.canvasFilter === false) {
+        supportState = 'partial'
+      }
+
+      if (this.webSocket === false || this.gyroscope === false) {
+        supportState = 'unsupported'
+      }
+
+      this.$emit('supportState', supportState)
+
+      this.done = true
     }
   },
 
@@ -100,38 +129,50 @@ export default {
 <style lang="scss">
 .browser-support {
   display: block;
+  text-align: left;
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  width: calc(100% + 1px);
+  border: $list-separator-style;
+  border-width: 1px 1px 0 0;
+  z-index: -1;
+  background: white;
+
+  &.appear-enter-active, &.appear-leave-active {
+    transition: .5s;
+    .browser-support__content {
+      transition: .2s;
+      transition-delay: 0.3s;
+    }
+  }
+  &.appear-enter, &.appear-leave-to {
+    transform: translateY(100%);
+    .browser-support__content {
+      opacity: 0;
+    }
+  }
   h3 {
     text-transform: uppercase;
   }
 }
 
-.check-list {
-  li:not(:last-child) {
-    margin-bottom: 0.75rem;
+.browser-support__close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  svg {
+
   }
 }
 
-.check {
-  font-size: .8125rem;
-  line-height: 1.230769231;
+.browser-support__content {
+  background: white;
 }
 
-.check__title {
-  font-weight: 700;
-  position: relative;
-  &:before {
-    content: "";
-    display: block;
-    width: 10px;
-    height: 10px;
-    margin-right: 3px;
-    margin-top: 2px;
-    border-radius: 100%;
-    float: left;
-    background: $color-red;
-    .supported & {
-      background: $color-green;
-    }
+.check-list {
+  li:not(:last-child) {
+    margin-bottom: 0.75rem;
   }
 }
 </style>
