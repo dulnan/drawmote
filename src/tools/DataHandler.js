@@ -143,11 +143,14 @@ export default class DataHandler {
     this.updatePointer(coordinates)
   }
 
-  updateIsPressing (isPressing) {
+  updateIsPressing (isPressing, { fromMouse }) {
     if (this.isPressing !== isPressing) {
       this.isPressing = isPressing
       this.threads.trigger(THREAD_POINT)
-      this.threads.trigger(THREAD_TOOLS)
+
+      if (!fromMouse) {
+        this.threads.trigger(THREAD_TOOLS)
+      }
     }
   }
 

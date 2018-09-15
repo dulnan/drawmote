@@ -80,7 +80,7 @@ export default {
         this.toolBeingHovered = tool ? tool.key : ''
 
         if (tool && state.isPressing) {
-          if (this.lastItemClick !== tool.key) {
+          if (this.lastItemClick !== this.toolBeingHovered) {
             tool.el.click()
             this.lastItemClick = tool.key
           }

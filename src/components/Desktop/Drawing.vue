@@ -76,11 +76,15 @@ export default {
       })
 
       document.addEventListener('mousedown', () => {
-        this.$global.updateIsPressing(true)
+        this.$global.updateIsPressing(true, {
+          fromMouse: true
+        })
       })
 
       document.addEventListener('mouseup', (e) => {
-        this.$global.updateIsPressing(false)
+        this.$global.updateIsPressing(false, {
+          fromMouse: true
+        })
       })
     }
   }
