@@ -81,7 +81,7 @@ export default {
         const radius = (i * (this.circleDistance)) + count % (this.circleDistance)
         // const step = count % this.circleDistance
 
-        const color = (((count / 5) - i) % (this.circleDistance))
+        const color = (((count / this.speed) - i) % (this.circleDistance))
 
         const r = scaleBetween(color, [-1, this.circleDistance], [230, 242])
         const g = r
