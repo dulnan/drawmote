@@ -67,7 +67,7 @@ $logo-base: 768;
   }
 
   100% {
-    transform: scale(0.9);
+    transform: scale(0.95);
   }
 }
 
@@ -89,7 +89,7 @@ $logo-base: 768;
   box-shadow: 0 ((20 / $logo-base) * 1em) ((100 / $logo-base) * 1em) ((1 / $logo-base) * 1em) rgba(0,0,0,0.07),
   0 ((1 / $logo-base) * 1em) ((4 / $logo-base) * 1em) ((2 / $logo-base) * 1em) rgba(0,0,0,0.01);
 
-  // animation: 1s pulse cubic-bezier(1, -0.04, 0.63, 1.01) infinite alternate;
+  // animation: 0.7s pulse cubic-bezier(1, -0.04, 0.63, 1.01) infinite alternate;
   font-size: 10rem;
 
   @include media('sm') {

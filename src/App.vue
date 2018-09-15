@@ -54,7 +54,7 @@ export default {
 
 <style lang="scss">
 #app {
-  background: #fbfaf8;
+  background: #fbfbfb;
   position: absolute;
   top: 0;
   left: 0;

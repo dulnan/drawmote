@@ -45,7 +45,7 @@ export default {
     },
 
     speed () {
-      return this.w >= 640 ? 9 : 5
+      return this.w >= 640 ? 5 : 5
     }
   },
 
@@ -75,19 +75,10 @@ export default {
 
       ctx.lineWidth = 1
       ctx.lineCap = 'round'
+      ctx.strokeStyle = '#ecebe7'
+
       for (let i = 0; i < this.circlesNeeded; i++) {
-        // const base = (i + count) % this.circleDistance
-
-        const radius = (i * (this.circleDistance)) + count % (this.circleDistance)
-        // const step = count % this.circleDistance
-
-        const color = (((count / this.speed) - i) % (this.circleDistance))
-
-        const r = scaleBetween(color, [-1, this.circleDistance], [230, 242])
-        const g = r
-        const b = r
-
-        ctx.strokeStyle = `rgb(${r},${g},${b})`
+        const radius = (i * (this.circleDistance)) + (count % (this.circleDistance))
         ctx.beginPath()
         ctx.arc(this.center.x, this.center.y, radius, 0, Math.PI * 2, true)
         ctx.stroke()
