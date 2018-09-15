@@ -6,7 +6,7 @@
       </div>
       <div>
         <h1 class="text-heavy sm-mrgt md-mrgt+ lg-mrgt++">drawmote</h1>
-        <p class="h2 text-bold mrgb+ text-muted">Draw remotely with your phone</p>
+        <p class="h2 text-bold mrgb+ text-muted">{{ $t('subtitle') }}</p>
         <p class="text-muted text-light mrgt0 h2 pairing-lead">{{ $t('desktop.lead') }}</p>
         <div class="code mrgv++">
           <div class="code__content">

@@ -6,8 +6,8 @@
           <icon-restore />
         </div>
         <div>
-          <h3 class="text-bold">Restore Connection</h3>
-          <p class="mrg0 h4 text-light text-hyphens mrgb sm-mrgb0">You can use a previously made connection. Press "restore" on both devices.</p>
+          <h3 class="text-bold">{{ $t('connection.title') }}</h3>
+          <p class="mrg0 h4 text-light text-hyphens mrgb sm-mrgb0">{{ $t('connection.text') }}</p>
         </div>
       </div>
       <div class="connection__buttons flex md-mrgl">
@@ -16,7 +16,7 @@
             class="btn btn--default connection__button-clear"
             @click="deleteConnection"
           >
-            <span>Delete</span>
+            <span>{{ $t('connection.delete') }}</span>
           </button>
         </div>
         <div class="flex-1 pdgl">
@@ -25,7 +25,7 @@
             :class="{'restoring': isRestoring, 'is-restored': isRestored }"
             @click="restoreConnection"
           >
-            <span>Restore Connection</span>
+            <span>{{ $t('connection.reconnect') }}</span>
             <div class="connection__button-animation">
               <icon-restore />
             </div>
