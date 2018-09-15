@@ -6,7 +6,7 @@
 import Canvas from './Canvas'
 import { Catenary } from 'catenary-curve'
 
-import { THREAD_BRUSH, THREAD_POINT, THREAD_SLIDE } from '@/settings/drawthreads'
+import { THREAD_BRUSH, THREAD_POINT, THREAD_SLIDE, THREAD_SIZES } from '@/settings/drawthreads'
 
 export default {
   extends: Canvas,
@@ -14,6 +14,12 @@ export default {
   name: 'CanvasInterface',
 
   draw: [
+    {
+      threads: [THREAD_SIZES],
+      handler: function (state) {
+        this.setupCanvases(state.sizes.viewport)
+      }
+    },
     {
       threads: [THREAD_BRUSH, THREAD_POINT, THREAD_SLIDE],
       handler: function (state) {

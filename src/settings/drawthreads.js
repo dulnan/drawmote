@@ -3,6 +3,7 @@ export const THREAD_POINT = 'point'
 export const THREAD_SLIDE = 'slide'
 export const THREAD_STATE = 'state'
 export const THREAD_TOOLS = 'tools'
+export const THREAD_SIZES = 'sizes'
 
 export const THREAD_BRUSH_RADIUS = 'brushRadius'
 export const THREAD_BRUSH_OPACITY = 'brushOpacity'

@@ -47,7 +47,7 @@ import SliderBrushHardness from '@/components/Desktop/Toolbar/Slider/SliderBrush
 import SliderLazyRadius from '@/components/Desktop/Toolbar/Slider/SliderLazyRadius.vue'
 
 import { COLORS, TOOLBAR_TOOLS, TOOLBAR_SLIDERS } from '@/settings'
-import { THREAD_TOOLS } from '@/settings/drawthreads'
+import { THREAD_TOOLS, THREAD_SIZES } from '@/settings/drawthreads'
 
 import Color from '@/classes/Color'
 
@@ -66,6 +66,12 @@ export default {
   },
 
   draw: [
+    {
+      threads: [THREAD_SIZES],
+      handler: function (state) {
+        this.calculatePointerAreas()
+      }
+    },
     {
       threads: [THREAD_TOOLS],
       handler: function (state) {

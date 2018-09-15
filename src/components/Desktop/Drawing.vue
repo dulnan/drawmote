@@ -10,6 +10,7 @@
 
 <script>
 import { EventBus } from '@/events'
+import { THREAD_SIZES } from '@/settings/drawthreads'
 
 import Toolbar from '@/components/Desktop/Toolbar/Toolbar.vue'
 import CanvasDrawing from '@/components/Desktop/Canvas/CanvasDrawing.vue'
@@ -26,6 +27,15 @@ export default {
     CanvasDrawing,
     CanvasInterface
   },
+
+  draw: [
+    {
+      threads: [THREAD_SIZES],
+      handler: function (state) {
+        this.getElementSizes()
+      }
+    }
+  ],
 
   methods: {
     getElementSizes () {
@@ -85,6 +95,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
+  background: white;
 }
 
 .drawing-area {

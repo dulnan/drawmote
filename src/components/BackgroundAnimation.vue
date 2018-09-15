@@ -49,7 +49,6 @@ export default {
 
   watch: {
     center: function (center) {
-      console.log(center)
       this.setSizes()
     }
   },
