@@ -4,7 +4,7 @@
     <div class="mobile-pairing__content relative">
       <h1 class="text-heavy mrgt">drawmote</h1>
       <p class="h2 text-muted text-light text-hyphens mrgb+ mrgt">{{ $t('mobile.lead') }}</p>
-      <div class="code relative">
+      <div class="code code--mobile relative">
         <div class="code__circles flex">
           <div class="code__item" v-for="(char, index) in inputChars" :key="char + index">
             <div
@@ -86,7 +86,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .mobile-pairing {
   display: flex;
   flex-direction: column;
@@ -102,46 +102,46 @@ export default {
   margin-bottom: auto;
 }
 
-.code {
+.code--mobile {
   font-size: calc((100vw - 3rem) / 7);
-}
 
-.code__circles {
-  div {
-    font-size: 1em;
+  .code__circles {
+    div {
+      font-size: 1em;
+    }
   }
-}
 
-.code__form {
-  height: 1em;
-  right: -1rem;
-}
-
-.code__input {
-  background: none;
-  opacity: 0;
-  font-size: 0.7em;
-  line-height: 0;
-  width: 100%;
-  font-family: monospace;
-  letter-spacing: 1.12em;
-  padding-left: 0.65em;
-  margin-right: -1em;
-}
-
-.code__error {
-  margin-top: 1em;
-  font-weight: 700;
-  color: $brand-color;
-  font-size: 0.875rem;
-  letter-spacing: 0.5px;
-  padding: 0.25rem 0;
-  &.appear-enter-active, &.appear-leave-active {
-    transition: .5s;
+  .code__form {
+    height: 1em;
+    right: -1rem;
   }
-  &.appear-enter, &.appear-leave-to {
+
+  .code__input {
+    background: none;
     opacity: 0;
-    transform: translateY(50%);
+    font-size: 0.7em;
+    line-height: 0;
+    width: 100%;
+    font-family: monospace;
+    letter-spacing: 1.12em;
+    padding-left: 0.65em;
+    margin-right: -1em;
+  }
+
+  .code__error {
+    margin-top: 1em;
+    font-weight: 700;
+    color: $brand-color;
+    font-size: 0.875rem;
+    letter-spacing: 0.5px;
+    padding: 0.25rem 0;
+    &.appear-enter-active, &.appear-leave-active {
+      transition: .5s;
+    }
+    &.appear-enter, &.appear-leave-to {
+      opacity: 0;
+      transform: translateY(50%);
+    }
   }
 }
 </style>
