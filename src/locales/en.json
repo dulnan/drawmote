@@ -1,14 +1,16 @@
 {
   "subtitle": "Draw remotely with your phone",
   "desktop": {
-    "lead": "Use your phone to draw on this screen. Visit drawmote.app on your mobile device and enter the following code to connect to this session.",
-    "skipButton": "Continue without pairing"
+    "lead": "Visit drawpmote.app on your phone, enter the following code and start drawing!",
+    "countdownPrefix": "Code is valid for ",
+    "countdownSeconds": "0 seconds | 1 second | {count} seconds",
+    "countdownSuffix": "."
   },
   "mobile": {
-    "lead": "Visit drawmote.app on a desktop device to get your pairing code and establish a connection.",
+    "lead": "Visit drawmote.app on your computer or tablet to get a pairing code and start drawing.",
     "pairButton": "Pair with desktop",
-    "codeInvalid": "The entered code is not valid :(",
-    "controllingInfo": "Move your phone and point it at the screen. Press the circle to click or draw. Interact with sliders by sliding up and down.",
+    "codeInvalid": "The entered code is not valid.",
+    "controllingInfo": "Point your phone at your screen and press the circle to draw or click a button. Slide up or down to change a slider.",
     "calibrationButton": "Reset to center"
   },
   "tools": {
@@ -18,36 +20,37 @@
     "lazyRadius": "lazy radius"
   },
   "browserSupport": {
+    "title": "Browser support",
     "footer": {
       "checking": "Checking compatibility...",
-      "supported": "All features supported",
+      "supported": "Device is supported",
       "partial": "Reduced functionality",
-      "unsupported": "Browser not supported"
+      "unsupported": "Device not supported"
     },
     "webRTC": {
       "label": "WebRTC",
       "supported": "Low latency connection between both devices.",
-      "unsupported": "Unfortunately your browser doesn't support WebRTC. This is required for a seamless experience."
+      "unsupported": "Unfortunately your browser doesn't support WebRTC. This is required for the best experience."
     },
     "webSocket": {
       "label": "WebSocket",
-      "supported": "This is used as a fallback to WebRTC. Latency will be high and thus the experience not optimal.",
-      "unsupported": "Your browser doesn't support native WebSocket connections. If possible, fallback options will be used, but they have not been tested."
+      "supported": "This is used as a fallback to WebRTC. High latency is likely, resulting in a noticeable delay.",
+      "unsupported": "Your browser doesn't support native WebSocket connections. It's likely that you won't be able to use this app."
     },
     "gyroscope": {
       "label": "Gyroscope",
-      "supported": "Device can be used to calculate point on desktop screen.",
-      "unsupported": "No gyroscope could be detected. It might be possible to still use the app."
+      "supported": "Your phone can be used to draw on a screen.",
+      "unsupported": "No gyroscope could be detected. Drawing won't be possible."
     },
     "canvasFilter": {
       "label": "Canvas Filter",
-      "supported": "All brush options can be used.",
-      "unsupported": "Without this feature you won't be able to adjust the brush hardness."
+      "supported": "All brush features can be used.",
+      "unsupported": "You won't be able to use all brush features."
     }
   },
   "connection": {
     "title": "Restore your last connection",
-    "text": "Click the big blue button on both your devices to quickly establish a connection between them.",
+    "text": "Click the big blue button on both devices to quickly reestablish a connection between them.",
     "delete": "Remove",
     "reconnect": "Reconnect devices"
   },

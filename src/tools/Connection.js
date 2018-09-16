@@ -29,11 +29,11 @@ export default class Connection {
     const cookie = getCookie('pairing')
 
     if (cookie) {
-      const data = JSON.parse(cookie)
-      const peering = await this.getPeeringHash(parseInt(data.code))
+      const connection = JSON.parse(cookie)
+      const isValid = await this.pairingIsValid(connection.pairing)
 
-      if (peering.isValid) {
-        this.EventBus.$emit('connectionRestorable', peering)
+      if (isValid) {
+        this.EventBus.$emit('connectionRestorable', connection.pairing)
       } else {
         this.deleteSession()
       }
@@ -55,23 +55,28 @@ export default class Connection {
       code: code
     })
 
-    if (response.data.isValid) {
+    if (response.data.code && response.data.hash) {
       return {
-        isValid: true,
         hash: response.data.hash,
         code: response.data.code
       }
     }
 
-    return {
-      isValid: false
-    }
+    return {}
+  }
+
+  async pairingIsValid (pairing) {
+    const response = await axios.post(SERVER + '/pairing/validate', pairing)
+
+    return response.data.isValid
   }
 
   saveSession (code, hash) {
     setCookie('pairing', JSON.stringify({
-      hash: hash,
-      code: code,
+      pairing: {
+        hash: hash,
+        code: code
+      },
       isDesktop: this.isDesktop
     }), 1)
   }

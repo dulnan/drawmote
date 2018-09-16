@@ -2,7 +2,7 @@
   <div class="desktop relative">
     <div class="desktop-container relative overlay material">
       <transition name="appear">
-        <pairing v-if="!isPaired" :code="pairingCode"></pairing>
+        <pairing v-if="!isPaired" :code="pairingCode" @pairingTimeout="handleTimeout"></pairing>
       </transition>
       <drawing v-if="isPaired"></drawing>
     </div>
@@ -14,6 +14,8 @@ import { EventBus } from '@/events'
 
 import Pairing from '@/components/Desktop/Pairing.vue'
 import Drawing from '@/components/Desktop/Drawing.vue'
+
+let timeout = null
 
 export default {
   name: 'Desktop',
@@ -31,7 +33,13 @@ export default {
   },
 
   mounted () {
-    this.initConnection()
+    if (timeout) {
+      window.clearTimeout(timeout)
+    }
+    timeout = window.setTimeout(() => {
+      this.getPairingCode()
+      this.$connection.getStoredPeerings()
+    }, 500)
 
     EventBus.$on('isConnected', (isConnected) => {
       this.isPaired = isConnected
@@ -43,12 +51,16 @@ export default {
   },
 
   methods: {
-    async initConnection () {
+    async getPairingCode () {
       const peering = await this.$connection.getPeeringCode()
+
       this.$connection.initPeering(peering.code, peering.hash)
       this.pairingCode = peering.code
+    },
 
-      this.$connection.getStoredPeerings()
+    handleTimeout () {
+      this.pairingCode = ''
+      this.getPairingCode()
     }
   }
 }

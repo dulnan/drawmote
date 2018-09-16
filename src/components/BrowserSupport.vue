@@ -7,7 +7,7 @@
             <icon-close class="icon block" />
           </div>
         </button>
-        <h3 class="label">Browser Support</h3>
+        <h3 class="label">{{ $t('browserSupport.title') }}</h3>
         <ul class="list check-list">
           <li class="check check--small" v-for="check in doneChecks" :key="check.id" :class="check.state">
             <div class="check__title">

@@ -67,15 +67,15 @@ export default {
 
   methods: {
     onSubmit () {
-      const code = parseInt(this.$refs.pairing_id.value)
+      const code = this.$refs.pairing_id.value
       this.validateCode(code)
     },
 
     async validateCode (code) {
-      const peering = await this.$connection.getPeeringHash(code)
+      const pairing = await this.$connection.getPeeringHash(code)
 
-      if (peering.isValid) {
-        this.$connection.initPeering(peering.code, peering.hash)
+      if (pairing.code && pairing.hash) {
+        this.$connection.initPeering(pairing.code, pairing.hash)
       } else {
         this.codeInvalid = true
       }
