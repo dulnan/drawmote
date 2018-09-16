@@ -3,7 +3,7 @@
     <ul class="list-inline list-inline--divided list-inline--tight text-small footer__list">
       <li class="relative hover footer__browser-support">
         <button
-          class="btn btn--bare text-bold check pdg"
+          class="btn btn--bare text-bold check pdg h-100"
           @click="toggleBrowserSupport"
           :class="supportState"
         >
@@ -24,7 +24,7 @@
         </div>
       </li>
       <li class="text-bold mrgla hidden-sm-down hover">
-        <button class="btn btn--bare btn--link pdg" @click="skipPairing">Use without phone</button>
+        <button class="btn btn--bare btn--link pdg h-100" @click="skipPairing">Use without phone</button>
       </li>
       <li class="text-bold mrgla hover">
         <a class="pdg block" href="https://github.com/dulnan/drawmote-client">View on GitHub</a>
@@ -92,7 +92,7 @@ export default {
 }
 
 .footer__list {
-  align-items: stretch;
+  align-items: stretch !important;
   .hover:hover {
     background: white;
   }

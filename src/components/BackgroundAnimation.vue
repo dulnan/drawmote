@@ -29,7 +29,8 @@ export default {
   data () {
     return {
       w: 0,
-      h: 0
+      h: 0,
+      dpi: 1
     }
   },
 
@@ -40,7 +41,7 @@ export default {
     },
 
     circleDistance () {
-      return this.w >= 640 ? 65 : 25
+      return this.w >= 640 ? 65 : 35
     },
 
     speed () {
@@ -49,7 +50,8 @@ export default {
   },
 
   watch: {
-    center: function () {
+    center: function (center) {
+      console.log(center)
       this.setSizes()
     }
   },
@@ -81,7 +83,7 @@ export default {
 
         const color = (((count / 5) - i) % (this.circleDistance))
 
-        const r = scaleBetween(color, [0, this.circleDistance], [240, 250])
+        const r = scaleBetween(color, [0, this.circleDistance], [230, 242])
         const g = r
         const b = r
 
@@ -96,16 +98,26 @@ export default {
 
     setSizes () {
       this.clear()
+
       const canvas = this.$refs.canvas
-      // const dpi = window.devicePixelRatio
+      const rect = canvas.getBoundingClientRect()
+      const width = rect.width
+      const height = rect.height
 
-      this.w = window.innerWidth
-      this.h = window.innerHeight
+      let dpi = 1
 
-      canvas.width = this.w
-      canvas.height = this.h
+      if (width < 641) {
+        dpi = Math.min(window.devicePixelRatio, 1.5)
+      }
 
-      // canvas.getContext('2d').scale(dpi, dpi)
+      canvas.width = width * dpi
+      canvas.height = height * dpi
+
+      canvas.getContext('2d').scale(dpi, dpi)
+
+      this.w = width
+      this.h = height
+      this.dpi = dpi
     }
   },
 
@@ -122,11 +134,12 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   z-index: -1;
   // background: #f9f9f8;
   pointer-events: none;
+  overflow: hidden;
 
   canvas {
     width: 100%;

@@ -41,6 +41,11 @@ $code-numbers: (
   8: ($color-red, 40%),
   9: ($color-pink, 40%)
 );
+
+.code__content {
+  display: flex;
+}
+
 .code-circle {
   color: $color-code;
   font-size: 4rem;
@@ -48,9 +53,11 @@ $code-numbers: (
   height: 1em;
   border-radius: 3px;
   text-transform: uppercase;
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  line-height: 0.57em;
+  line-height: 1;
   text-align: center;
   font-weight: 500;
   color: $alt-color-dark;
@@ -113,6 +120,7 @@ $code-numbers: (
   }
   span {
     font-size: 0.55em;
+    display: inline-block;
   }
   &:last-child {
     margin-right: 0;
@@ -168,4 +176,8 @@ a {
   &:hover {
     color: $brand-color-darker;
   }
+}
+
+.h-100 {
+  height: 100%;
 }

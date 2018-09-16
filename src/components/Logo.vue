@@ -47,11 +47,10 @@ export default {
   mounted () {
     this.setCenter()
 
-    if (process.env.NODE_ENV === 'development') {
-      window.setTimeout(() => {
-        this.setCenter()
-      }, 500)
-    }
+    window.setTimeout(() => {
+      this.setCenter()
+    }, 500)
+
     debouncedResize((e) => {
       this.setCenter()
     })
@@ -86,7 +85,6 @@ $logo-base: 768;
   justify-content: center;
   background-image: radial-gradient(46% -46%, #FFFFFF 52%, #EAEAEA 100%);
   background-image: linear-gradient(21deg, #FFFFFF 14%, rgba(255,255,255,0.00) 89%);
-  // box-shadow: 0 ((14 / $logo-base) * 1em) ((120 / $logo-base) * 1em) rgba(0,0,0,0.09);
   box-shadow: 0 ((20 / $logo-base) * 1em) ((100 / $logo-base) * 1em) ((1 / $logo-base) * 1em) rgba(0,0,0,0.07),
   0 ((1 / $logo-base) * 1em) ((4 / $logo-base) * 1em) ((2 / $logo-base) * 1em) rgba(0,0,0,0.01);
 
@@ -94,11 +92,11 @@ $logo-base: 768;
   font-size: 10rem;
 
   @include media('sm') {
-    font-size: 13rem;
+    font-size: 14rem;
   }
 
   @include media('md') {
-    font-size: 15rem;
+    font-size: 10rem;
   }
 
   @include media('lg') {
@@ -111,42 +109,5 @@ $logo-base: 768;
     display: block;
     margin-right: ((-11 / $logo-base) * 1em);
   }
-
-  // &:before {
-  //   content: "";
-  //   width: 100vw;
-  //   height: 100vh;
-  //   position: fixed;
-  //   top: 0;
-  //   left: 0;
-  //   opacity: 0.8;
-  //   background: radial-gradient(
-  //     circle at 50% 35%,
-  //     #F2F1EF   0%,
-
-  //     white    10%,
-
-  //     #EAE8E5  20%,
-  //     #EDECE9  20%,
-
-  //     #E6E3DF  30%,
-  //     #EAE8E5  30%,
-
-  //     #E3DFDA  40%,
-  //     #E6E3DF  40%,
-
-  //     #DFDBD5  50%,
-  //     #E3DFDA  50%,
-
-  //     #DCD7D0  60%,
-  //     #DFDBD5  60%,
-
-  //     #D8D2CA  70%,
-  //     #DCD7D0  70%,
-
-  //     #D8D2CA  80%
-  //     );
-  //   z-index: -1;
-  // }
 }
 </style>

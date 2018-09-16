@@ -60,11 +60,10 @@ export default {
 <style lang="scss">
 .desktop {
   perspective: 700px;
-  background: $alt-color-lighter;
-  height: 100vh;
+  height: 100%;
 }
 
 .desktop-container {
-  background: white;
+  background: #faf7f5;
 }
 </style>

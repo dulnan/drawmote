@@ -62,7 +62,7 @@ export default {
     right: 0;
     bottom: 0;
     z-index: 100;
-    min-height: none;
+    min-height: auto;
   }
 }
 </style>

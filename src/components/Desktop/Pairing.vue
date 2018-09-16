@@ -1,14 +1,14 @@
 <template>
-  <div class="overlay pairing relative flex pdg++">
-    <div class="flex">
-      <div class="mrgr++">
+  <div class="overlay pairing absolute flex pdg++">
+    <div class="pairing__container">
+      <div class="md-mrgr++">
         <logo />
       </div>
       <div>
-        <h1 class="text-heavy mrgt++">drawmote</h1>
+        <h1 class="text-heavy sm-mrgt md-mrgt+ lg-mrgt++">drawmote</h1>
         <p class="h2 text-bold mrgb+ text-muted">Draw remotely with your phone</p>
         <p class="text-muted text-light mrgt0 h2 pairing-lead">{{ $t('desktop.lead') }}</p>
-        <h2 class="code mrgv++">
+        <div class="code mrgv++">
           <transition name="appear">
             <div v-if="code" class="code__content">
               <div
@@ -21,7 +21,7 @@
               </div>
             </div>
           </transition>
-        </h2>
+        </div>
       </div>
     </div>
   </div>
@@ -76,6 +76,26 @@ export default {
     .pairing__content {
       transform: translateZ(5rem);
     }
+  }
+}
+
+.pairing__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  @include media('md') {
+    flex-direction: row;
+    align-items: flex-start;
+    text-align: left;
+  }
+}
+
+.code {
+  display: flex;
+  justify-content: center;
+  @include media('md') {
+    justify-content: flex-start;
   }
 }
 
