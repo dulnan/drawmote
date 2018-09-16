@@ -10,7 +10,7 @@
             :class="supportState"
           >
             <div class="check__title">
-              <span>{{ $t(`browserSupport.footer.${supportState}`) }}</span>
+              <span class="arrow-after">{{ $t(`browserSupport.footer.${supportState}`) }}</span>
             </div>
           </button>
           <browser-support
@@ -20,10 +20,19 @@
             @close="closeBrowserSupport"
           />
         </li>
-        <li class="flex-1 text-center hidden-sm-down">
+        <li class="text-bold mrgla hover relative language">
+          <select v-model="$i18n.locale" class="language__select">
+            <option v-for="(lang, i) in languages" :key="`Lang${i}`" :value="lang.key">{{ lang.label }}</option>
+          </select>
+          <div class="text-bold pdg lg-pdg+ h-100 language__button">
+            <span class="arrow-after hidden-sm-down">{{ currentLanguage.label }}</span>
+            <span class="arrow-after hidden-md-up text-uppercase">{{ currentLanguage.key }}</span>
+          </div>
+        </li>
+        <li class="flex-1 text-center hidden-xs-down">
           <div class="pdg lg-pdg+">
-            Made by <a href="http://www.janhug.info" class="text-bold">Jan Hug</a> –
-            Contributions from <a href="https://github.com/thormeier">@thormeier</a> and <a href="https://github.com/munxar">@munxar</a>. Thanks!
+            Made by <a href="http://www.janhug.info" class="text-bold">Jan Hug</a>
+            <span class="hidden-md-down">– Contributions from <a href="https://github.com/thormeier">@thormeier</a> and <a href="https://github.com/munxar">@munxar</a>. Thanks!</span>
           </div>
         </li>
         <li class="text-bold mrgla hidden-sm-down hover">
@@ -32,7 +41,7 @@
         <li class="text-bold mrgla hover">
           <a class="pdg lg-pdg+ block" href="https://github.com/dulnan/drawmote-client">
             <icon-github class="icon icon--large" />
-            GitHub
+            <span class="hidden-sm-down">GitHub</span>
           </a>
         </li>
       </ul>
@@ -63,7 +72,23 @@ export default {
   data () {
     return {
       supportState: 'checking',
-      browserSupportVisible: false
+      browserSupportVisible: false,
+      languages: [
+        {
+          key: 'de',
+          label: 'Deutsch'
+        },
+        {
+          key: 'en',
+          label: 'English'
+        }
+      ]
+    }
+  },
+
+  computed: {
+    currentLanguage () {
+      return this.languages.find(l => l.key === this.$i18n.locale)
     }
   },
 
@@ -128,6 +153,19 @@ export default {
   }
   @include media('sm') {
     flex: 0 0 auto;
+  }
+}
+
+.language__select {
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  &:focus {
+    outline: none;
   }
 }
 </style>
