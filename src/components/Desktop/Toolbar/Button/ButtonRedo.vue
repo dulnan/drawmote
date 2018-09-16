@@ -30,6 +30,7 @@ export default {
     handleClick () {
       if (this.possible) {
         EventBus.$emit('redoCanvas')
+        this.$track('Toolbar', 'history', 'redo')
       }
     },
     updateCanvasState ({ redoPossible }) {

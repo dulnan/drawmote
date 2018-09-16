@@ -96,12 +96,17 @@ export default {
       this.webRTC = this.supportsWebRTC()
       this.webSocket = this.webRTC ? null : this.supportsWebSocket()
 
+      this.$track('BrowserSupport', 'webrtc', this.webRTC)
+      this.$track('BrowserSupport', 'websocket', this.webSocket)
+
       if (this.isMobile) {
         this.gyroscope = await this.supportsGyroscope()
+        this.$track('BrowserSupport', 'gyroscope', this.gyroscope)
       }
 
       if (!this.isMobile) {
         this.canvasFilter = this.supportsCanvasFilter()
+        this.$track('BrowserSupport', 'canvasfilter', this.canvasFilter)
       }
 
       let supportState = 'supported'
@@ -115,6 +120,8 @@ export default {
       }
 
       this.$emit('supportState', supportState)
+
+      this.$track('BrowserSupport', 'supportstate', supportState)
 
       this.done = true
     }

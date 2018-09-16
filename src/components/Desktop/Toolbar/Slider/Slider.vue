@@ -15,6 +15,8 @@
 <script>
 import ToolbarItem from '@/components/Desktop/Toolbar/Item.vue'
 
+let timeout = null
+
 export default {
   extends: ToolbarItem,
 
@@ -34,6 +36,12 @@ export default {
       const delta = Math.max(Math.min(e.deltaY, 5), -5) * (this.max / 100)
       const newValue = Math.max(Math.min(this.value - delta, this.max), this.min)
       this.handleValueChange(newValue)
+
+      if (!timeout) {
+        timeout = window.setTimeout(() => {
+          this.$track('Toolbar', this.tool.id, this.value)
+        }, 8000)
+      }
     },
 
     handleInput (e) {

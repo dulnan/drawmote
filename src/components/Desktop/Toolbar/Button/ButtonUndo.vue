@@ -30,6 +30,7 @@ export default {
     handleClick () {
       if (this.possible) {
         EventBus.$emit('undoCanvas')
+        this.$track('Toolbar', 'history', 'undo')
       }
     },
 

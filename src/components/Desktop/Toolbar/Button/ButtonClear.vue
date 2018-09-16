@@ -29,6 +29,7 @@ export default {
   methods: {
     handleClick () {
       EventBus.$emit('clearCanvas')
+      this.$track('Toolbar', 'history', 'clear')
     },
 
     updateCanvasState ({ clearPossible }) {

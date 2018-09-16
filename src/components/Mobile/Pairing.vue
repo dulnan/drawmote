@@ -76,8 +76,10 @@ export default {
 
       if (pairing.code && pairing.hash) {
         this.$connection.initPeering(pairing.code, pairing.hash)
+        this.$track('Pairing', 'valid', '1')
       } else {
         this.codeInvalid = true
+        this.$track('Pairing', 'valid', '0')
       }
     }
   }
