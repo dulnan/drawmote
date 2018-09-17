@@ -2,7 +2,7 @@
   "subtitle": "Draw remotely with your phone",
   "desktop": {
     "lead": "Visit drawmote.app on your phone, enter the following code and start drawing!",
-    "countdownPrefix": "Code is valid for ",
+    "countdownPrefix": "New code will be generated in ",
     "countdownSeconds": "0 seconds | 1 second | {count} seconds",
     "countdownSuffix": "."
   },
