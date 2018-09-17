@@ -130,7 +130,7 @@ export default {
 
   .code__error {
     margin-top: 1em;
-    font-weight: 700;
+    font-weight: 500;
     color: $brand-color;
     font-size: 0.875rem;
     letter-spacing: 0.5px;
