@@ -52,6 +52,8 @@ export default class DataHandler {
     this.hasCalibrated = false
 
     this.cookieTimout = null
+
+    this.canvasFilterSupported = false
   }
 
   get state () {
@@ -97,8 +99,10 @@ export default class DataHandler {
     })
   }
 
-  updatePointer (coordinates) {
-    const hasChanged = this.lazyBrush.update(coordinates, { both: this.hasCalibrated })
+  updatePointer (coordinates, both = false) {
+    const updateBoth = both || this.hasCalibrated
+    const hasChanged = this.lazyBrush.update(coordinates, { both: updateBoth })
+
     this.hasCalibrated = false
 
     if (hasChanged) {
@@ -140,8 +144,8 @@ export default class DataHandler {
     this.threads.removeHandler(event, uid)
   }
 
-  updateFromMouse (coordinates) {
-    this.updatePointer(coordinates)
+  updateFromMouse (coordinates, both) {
+    this.updatePointer(coordinates, both)
   }
 
   updateIsPressing (isPressing, { fromMouse } = {}) {
@@ -225,6 +229,11 @@ export default class DataHandler {
     this.threads.trigger(THREAD_BRUSH)
     this.threads.trigger(THREAD_BRUSH_HARDNESS)
     this.storeBrushCookie()
+  }
+
+  updateCanvasFilterSupport (isSupported) {
+    this.canvasFilterSupported = isSupported
+    this.brush.setFilterSupport(isSupported)
   }
 
   storeBrushCookie () {

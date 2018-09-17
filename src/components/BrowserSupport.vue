@@ -124,6 +124,8 @@ export default {
       this.$track('BrowserSupport', 'supportstate', supportState)
 
       this.done = true
+
+      this.$global.updateCanvasFilterSupport(this.canvasFilter)
     }
   },
 

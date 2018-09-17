@@ -14,6 +14,8 @@ export default class Brush {
     this.hardness = brush.hardness || HARDNESS_DEFAULT
     this.opacity = brush.opacity || OPACITY_DEFAULT
     this.style = 'smudge'
+
+    this.useFilter = false
   }
 
   get state () {
@@ -27,6 +29,9 @@ export default class Brush {
   }
 
   get canvasRadius () {
+    if (!this.useFilter) {
+      return this.radius
+    }
     return ((this.hardness / 100) + 1) * this.radius
   }
 
@@ -39,15 +44,20 @@ export default class Brush {
   }
 
   get canvasProperties () {
-    return {
+    const properties = {
       lineJoin: 'round',
       lineCap: 'round',
       lineWidth: this.canvasRadius * 2,
-      filter: `blur(${this.canvasBlur}px)`,
       globalAlpha: 1,
       strokeStyle: this.canvasColor,
       fillStyle: this.canvasColor
     }
+
+    if (this.useFilter) {
+      properties.filter = `blur(${this.canvasBlur}px)`
+    }
+
+    return properties
   }
 
   setColor (color) {
@@ -68,5 +78,9 @@ export default class Brush {
 
   setStyle (style) {
     this.style = style
+  }
+
+  setFilterSupport (isSupported) {
+    this.useFilter = isSupported
   }
 }
