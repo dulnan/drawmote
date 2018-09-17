@@ -18,9 +18,7 @@
           </div>
         </div>
         <p class="code-timeout text-muted text-light" :class="{ 'visible': hasCode }">
-          {{ $t('desktop.countdownPrefix') }}
-          <span>{{ $tc('desktop.countdownSeconds', countdown, { count: countdown }) }}</span>
-          {{ $t('desktop.countdownSuffix') }}
+          {{ $t('desktop.countdownPrefix') }}<span>{{ $tc('desktop.countdownSeconds', countdown, { count: countdown }) }}</span>{{ $t('desktop.countdownSuffix') }}
         </p>
       </div>
     </div>
