@@ -7,6 +7,9 @@ import Canvas from './Canvas'
 import { Catenary } from 'catenary-curve'
 
 import { THREAD_BRUSH, THREAD_POINT, THREAD_SLIDE, THREAD_SIZES } from '@/settings/drawthreads'
+import { RADIUS_MAX } from '@/settings'
+
+const BRUSH_PREVIEW_PADDING = 30
 
 export default {
   extends: Canvas,
@@ -41,7 +44,10 @@ export default {
         }
         context.arc(state.points.brush.x, state.points.brush.y, state.brush.canvasRadius, 0, Math.PI * 2, true)
         context.fill()
-        context.filter = 'none'
+
+        if (state.brush.useFilter) {
+          context.filter = 'none'
+        }
 
         // Draw catharina
         context.beginPath()
@@ -57,6 +63,31 @@ export default {
         context.fillStyle = 'rgba(50,50,50,1)'
         context.arc(state.points.brush.x, state.points.brush.y, 2, 0, Math.PI * 2, true)
         context.fill()
+
+        if (state.pointingAtToolbar) {
+          const brushX = state.sizes.canvasRect.width / 2
+          const brushY = state.sizes.canvasRect.height / 2
+          const backgroundRadius = (RADIUS_MAX * 2) + (2 * BRUSH_PREVIEW_PADDING)
+
+          context.beginPath()
+          context.fillStyle = 'white'
+          context.strokeStyle = '#dedede'
+          context.lineWidth = 1
+          context.setLineDash([])
+          context.arc(brushX, brushY, backgroundRadius, 0, Math.PI * 2, true)
+          context.fill()
+          context.stroke()
+
+          context.beginPath()
+          context.fillStyle = state.brush.canvasColor
+
+          if (state.brush.useFilter) {
+            context.filter = `blur(${state.brush.canvasBlur}px)`
+          }
+
+          context.arc(brushX, brushY, state.brush.canvasRadius, 0, Math.PI * 2, true)
+          context.fill()
+        }
 
         // Restore the saved context.
         context.restore()

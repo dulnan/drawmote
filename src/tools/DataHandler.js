@@ -63,7 +63,8 @@ export default class DataHandler {
       lazyRadius: this.lazyBrush.radius,
       sizes: {
         viewport: this.viewport,
-        canvasRect: this.canvasRect
+        canvasRect: this.canvasRect,
+        toolbarRect: this.toolbarRect
       },
       points: {
         brush: this.lazyBrush.brush.toObject(),
