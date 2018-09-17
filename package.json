@@ -19,8 +19,7 @@
     "lazy-brush": "github:dulnan/lazy-brush",
     "socketpeer": "github:dulnan/socketpeer#update-dependencies",
     "vue": "^2.5.17",
-    "vue-i18n": "^8.0.0",
-    "vue-matomo": "^0.1.10"
+    "vue-i18n": "^8.0.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.1",
