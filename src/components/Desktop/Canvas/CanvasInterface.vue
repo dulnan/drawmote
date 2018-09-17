@@ -36,7 +36,9 @@ export default {
         // Draw brush point
         context.beginPath()
         context.fillStyle = state.brush.canvasColor
-        context.filter = `blur(${state.brush.canvasBlur}px)`
+        if (state.brush.useFilter) {
+          context.filter = `blur(${state.brush.canvasBlur}px)`
+        }
         context.arc(state.points.brush.x, state.points.brush.y, state.brush.canvasRadius, 0, Math.PI * 2, true)
         context.fill()
         context.filter = 'none'

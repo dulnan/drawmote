@@ -95,10 +95,12 @@ export default {
   methods: {
     skipPairing () {
       EventBus.$emit('isConnected', true)
+      this.$track('Pairing', 'skip', 1)
     },
 
     toggleBrowserSupport () {
       this.browserSupportVisible = !this.browserSupportVisible
+      this.$track('BrowserSupport', 'show', 1)
     },
 
     handleBrowserSupportState (state) {

@@ -39,6 +39,7 @@ export default {
   methods: {
     handleClick () {
       this.$global.updateBrushColor(this.tool.color)
+      this.$track('Toolbar', 'setColor', this.tool.color.name)
     }
   }
 }

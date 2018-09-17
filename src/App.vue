@@ -10,17 +10,14 @@
 import debouncedResize from 'debounced-resize'
 
 import { getViewportSize } from '@/tools/helpers'
-
-import Desktop from '@/components/Desktop.vue'
-import Mobile from '@/components/Mobile.vue'
 import TheFooter from '@/components/Footer.vue'
 
 export default {
   name: 'app',
 
   components: {
-    Desktop,
-    Mobile,
+    'desktop': () => import('@/components/Desktop.vue'),
+    'mobile': () => import('@/components/Mobile.vue'),
     TheFooter
   },
 

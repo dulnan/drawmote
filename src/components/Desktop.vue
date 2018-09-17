@@ -13,7 +13,6 @@
 import { EventBus } from '@/events'
 
 import Pairing from '@/components/Desktop/Pairing.vue'
-import Drawing from '@/components/Desktop/Drawing.vue'
 
 let timeout = null
 
@@ -22,7 +21,7 @@ export default {
 
   components: {
     Pairing,
-    Drawing
+    'drawing': () => import('@/components/Desktop/Drawing.vue')
   },
 
   data () {

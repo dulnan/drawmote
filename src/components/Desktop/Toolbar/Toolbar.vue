@@ -114,7 +114,8 @@ export default {
       toolBeingHovered: '',
       lastItemClick: '',
       wasPressingBefore: false,
-      wheelDelta: 0
+      wheelDelta: 0,
+      canvasFilterSupported: false
     }
   },
 
@@ -143,7 +144,9 @@ export default {
           id: 'sliders',
           type: 'slider',
           action: 'brush',
-          items: TOOLBAR_SLIDERS
+          items: TOOLBAR_SLIDERS.filter(tool => {
+            return tool.id !== 'brushHardness' || this.canvasFilterSupported
+          })
         }
       ]
     }
@@ -159,6 +162,8 @@ export default {
       }
     },
     calculatePointerAreas () {
+      this.canvasFilterSupported = this.$global.canvasFilterSupported
+
       let items = []
       this.$refs.items.forEach(item => {
         items.push(item.getRectangle())

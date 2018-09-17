@@ -1,5 +1,5 @@
 <template>
-  <div class="overlay pairing absolute flex pdg++">
+  <div class="overlay pairing-desktop absolute flex pdg++">
     <div class="pairing__container">
       <div class="md-mrgr++">
         <logo />
@@ -8,7 +8,7 @@
         <h1 class="text-heavy sm-mrgt md-mrgt+ lg-mrgt++">drawmote</h1>
         <p class="h2 text-bold mrgb+ text-muted">{{ $t('subtitle') }}</p>
         <p class="text-muted text-light mrgt0 h2 pairing-lead">{{ $t('desktop.lead') }}</p>
-        <div class="code mrgt++">
+        <div class="code code--desktop mrgt++">
           <div class="code__content">
             <div v-for="(number, index) in pairingCodeNumbers" :key="index" class="code__item" :class="{ 'visible': hasCode }">
               <div class="code-circle contains" :class="'code-circle--' + number">
@@ -102,7 +102,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.pairing {
+.pairing-desktop {
   transform-style: preserve-3d;
   perspective: 700px;
   flex-direction: column;
@@ -134,43 +134,42 @@ export default {
   }
 }
 
-.code {
+.code--desktop {
   display: flex;
   justify-content: center;
   @include media('md') {
     justify-content: flex-start;
   }
-}
-
-.code__item {
-  opacity: 0;
-  transform: scale(1.3);
-  transition: 0.55s cubic-bezier(0.79, -1.26, 0.21, 1.99);
-  span {
+  .code__item {
     opacity: 0;
-    transition: 0.4s cubic-bezier(0.64, 0.1, 0.61, 1.18);
-    transform: scale(0.8);
-  }
-  .code-circle:before {
-    transition: 0.5s cubic-bezier(0.57,-0.26, 0.24, 1.08);
-    transform-origin: center;
-    transform: scaleX(0);
-  }
-  @for $i from 1 through 6 {
-    &:nth-child(#{$i}) {
-      transition-delay: ($i / 8) * 1s;
-      span {
-        transition-delay: (($i / 8) * 1s) + 0.32s;
-      }
-      .code-circle:before {
-        transition-delay: (($i / 8) * 1s) + 0.1s;
+    transform: scale(1.3);
+    transition: 0.55s cubic-bezier(0.79, -1.26, 0.21, 1.99);
+    span {
+      opacity: 0;
+      transition: 0.4s cubic-bezier(0.64, 0.1, 0.61, 1.18);
+      transform: scale(0.8);
+    }
+    .code-circle:before {
+      transition: 0.5s cubic-bezier(0.57,-0.26, 0.24, 1.08);
+      transform-origin: center;
+      transform: scaleX(0);
+    }
+    @for $i from 1 through 6 {
+      &:nth-child(#{$i}) {
+        transition-delay: ($i / 8) * 1s;
+        span {
+          transition-delay: (($i / 8) * 1s) + 0.32s;
+        }
+        .code-circle:before {
+          transition-delay: (($i / 8) * 1s) + 0.1s;
+        }
       }
     }
-  }
-  &.visible {
-    &, span, .code-circle:before {
-      opacity: 1;
-      transform: none;
+    &.visible {
+      &, span, .code-circle:before {
+        opacity: 1;
+        transform: none;
+      }
     }
   }
 }
