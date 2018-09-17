@@ -4,23 +4,24 @@
     <div class="drawing-area" ref="canvasContainer"></div>
     <canvas-drawing />
     <canvas-interface />
-
   </div>
 </template>
 
 <script>
-import { EventBus } from '@/events'
 import { THREAD_SIZES } from '@/settings/drawthreads'
 
 import Toolbar from '@/components/Desktop/Toolbar/Toolbar.vue'
 import CanvasDrawing from '@/components/Desktop/Canvas/CanvasDrawing.vue'
 import CanvasInterface from '@/components/Desktop/Canvas/CanvasInterface.vue'
 
-// Setting this to true allows movement with mouse and arrow keys
-const DEBUG = true
+import PointerEvents from '@/mixins/PointerEvents.js'
 
 export default {
   name: 'Drawing',
+
+  mixins: [
+    PointerEvents
+  ],
 
   components: {
     Toolbar,
@@ -53,40 +54,6 @@ export default {
 
   mounted () {
     this.getElementSizes()
-  },
-
-  created () {
-    // Allow usage with mouse and arrow keys for debugging
-    if (DEBUG) {
-      document.addEventListener('wheel', (event) => {
-        event.preventDefault()
-
-        if (event.deltaY > 0) {
-          EventBus.$emit('touchUp')
-        } else {
-          EventBus.$emit('touchDown')
-        }
-      })
-
-      document.addEventListener('mousemove', (e) => {
-        this.$global.updateFromMouse({
-          x: e.clientX,
-          y: e.clientY
-        })
-      })
-
-      document.addEventListener('mousedown', () => {
-        this.$global.updateIsPressing(true, {
-          fromMouse: true
-        })
-      })
-
-      document.addEventListener('mouseup', (e) => {
-        this.$global.updateIsPressing(false, {
-          fromMouse: true
-        })
-      })
-    }
   }
 }
 </script>
