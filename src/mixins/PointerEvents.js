@@ -36,7 +36,7 @@ export default {
     },
 
     handleTouchStart (e) {
-      e.preventDefault()
+      // e.preventDefault()
       const touch = e.changedTouches[0]
 
       this.$global.updateFromMouse({
@@ -59,7 +59,7 @@ export default {
     },
 
     handleTouchEnd (e) {
-      e.preventDefault()
+      // e.preventDefault()
       this.handleMouseUp()
     }
   },
