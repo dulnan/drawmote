@@ -17,7 +17,7 @@
             </div>
           </div>
         </div>
-        <p class="code-timeout text-muted text-light" :class="{ 'visible': hasCode }">
+        <p class="code-timeout text-muted text-light" :class="{ 'visible': hasCode && countdown < 60 }">
           {{ $t('desktop.countdownPrefix') }}<span>{{ $tc('desktop.countdownSeconds', countdown, { count: countdown }) }}</span>{{ $t('desktop.countdownSuffix') }}
         </p>
       </div>
@@ -28,7 +28,7 @@
 <script>
 import Logo from '@/components/Logo.vue'
 
-const PAIRING_TIMEOUT = 60
+const PAIRING_TIMEOUT = 120
 let interval = null
 
 export default {
