@@ -65,9 +65,9 @@ export default {
         context.fill()
 
         if (state.pointingAtToolbar) {
-          const brushX = state.sizes.canvasRect.width / 2
-          const brushY = state.sizes.canvasRect.height / 2
           const backgroundRadius = (RADIUS_MAX * 2) + (2 * BRUSH_PREVIEW_PADDING)
+          const brushX = state.points.brush.x
+          const brushY = state.sizes.toolbarRect.height + backgroundRadius + 24
 
           context.beginPath()
           context.fillStyle = 'white'
