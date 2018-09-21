@@ -1,7 +1,7 @@
 <template>
   <button :class="classes" class="btn btn--bare pointer-area flex" @click="handleClick">
     <div
-      class="btn btn--bare tool toolbar-button"
+      class="toolbar-button"
       :style="style"
     >
       <icon v-if="hasIcon" />
@@ -46,28 +46,33 @@ export default {
     justify-content: center;
     color: #ddd;
     overflow: visible;
-    width: $toolbar-button-width-sm;
+    font-size: $toolbar-button-width-sm;
+    width: 1em;
     height: 100%;
     margin: auto 0;
 
     @include media('md') {
-      width: $toolbar-button-width-md;
+      font-size: $toolbar-button-width-md;
     }
 
     @include media('lg') {
-      width: $toolbar-button-width-lg;
+      font-size: $toolbar-button-width-lg;
     }
 
     svg {
-      width: 70%;
+      width: 0.6em;
       max-height: 100%;
+      @include media('lg') {
+        width: 0.4em;
+      }
     }
   }
-  &.disabled .btn {
+  &.disabled {
     opacity: 0.2;
+    cursor: default;
   }
-  &.hover:not(.disabled):not(.toolbar-item--colors) .btn {
-    background: $alt-color-lighter;
+  &.hover:not(.disabled):not(.toolbar-item--colors) {
+    background: $alt-color-lighter !important;
   }
 }
 </style>

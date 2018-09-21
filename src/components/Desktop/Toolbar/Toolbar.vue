@@ -209,9 +209,15 @@ export default {
       margin-right: 0.5rem;
     }
     &:first-child {
-      margin-left: 0.25rem;
+      margin-left: 0.5rem;
       @include media('md') {
-        margin-left: 0.5rem;
+        margin-left: rem(13px);
+      }
+    }
+    &:last-child {
+      margin-right: 0.5rem;
+      @include media('md') {
+        margin-right: rem(13px);
       }
     }
   }

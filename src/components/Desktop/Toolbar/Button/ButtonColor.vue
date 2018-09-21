@@ -47,18 +47,15 @@ export default {
 
 <style lang="scss">
 .toolbar-item--colors {
-  .btn {
-    border: 2px solid white;
+  overflow: visible;
+  .toolbar-button {
+    border: 3px solid white;
     border-radius: 100%;
-    height: $toolbar-button-width-sm;
-
-    @include media('md') {
-      height: $toolbar-button-width-md;
-    }
-
+    width: 1em;
+    height: 1em;
     @include media('lg') {
-      height: $toolbar-button-width-lg;
-      border: 3px solid white;
+      width: 0.75em;
+      height: 0.75em;
     }
 
     &:hover, &.hover {
@@ -66,11 +63,11 @@ export default {
     }
   }
 
-  &.toolbar-item--color-white .btn {
+  &.toolbar-item--color-white .toolbar-button {
     box-shadow: 0 0 0 1px #eee;
   }
 
-  &.active .btn {
+  &.active .toolbar-button {
     box-shadow: 0 0px 0px 2px currentColor;
   }
 }
