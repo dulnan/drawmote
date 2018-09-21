@@ -4,7 +4,8 @@
     "lead": "Visit drawmote.app on your phone, enter the following code and start drawing!",
     "countdownPrefix": "New code will be generated in ",
     "countdownSeconds": "0 seconds | 1 second | {count} seconds",
-    "countdownSuffix": "."
+    "countdownSuffix": ".",
+    "tooManyAttempts": "There was an error generating a pairing code. This can happen if too many requests to generate a code were made. Please wait a bit and try again later."
   },
   "mobile": {
     "lead": "Visit drawmote.app on your computer or tablet to get a pairing code and start drawing.",

@@ -41,12 +41,20 @@ export default class Connection {
   }
 
   async getPeeringCode () {
-    const response = await axios.get(SERVER + '/code/get')
-    this.isDesktop = true
+    let response = false
+    try {
+      response = await axios.get(SERVER + '/code/get')
+    } catch (e) {
+      console.log(e)
+    }
 
-    return {
-      hash: response.data.hash,
-      code: response.data.code
+    if (response) {
+      this.isDesktop = true
+
+      return {
+        hash: response.data.hash,
+        code: response.data.code
+      }
     }
   }
 
