@@ -49,7 +49,7 @@ export default {
 
   data () {
     return {
-      connectionRestorable: true,
+      connectionRestorable: false,
       peering: {},
       isRestoring: false,
       isRestored: false,
