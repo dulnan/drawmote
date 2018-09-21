@@ -38,7 +38,6 @@
 
 <script>
 import { EventBus } from '@/events'
-
 import IconRestore from '@/assets/icons/icon-restore.svg'
 
 export default {
@@ -50,10 +49,12 @@ export default {
 
   data () {
     return {
-      connectionRestorable: false,
+      connectionRestorable: true,
       peering: {},
       isRestoring: false,
-      isRestored: false
+      isRestored: false,
+      connectionTimeout: false,
+      windowTimeout: null
     }
   },
 
@@ -64,6 +65,13 @@ export default {
       }
       this.isRestoring = true
       this.$connection.initPeering(this.peering.code, this.peering.hash)
+
+      window.clearTimeout(this.windowTimeout)
+
+      this.windowTimeout = window.setTimeout(() => {
+        this.connectionTimeout = true
+        this.isRestoring = false
+      }, 20000)
     },
 
     deleteConnection () {
@@ -76,6 +84,7 @@ export default {
     EventBus.$on('isConnected', (isConnected) => {
       this.isRestored = true
       this.connectionRestorable = false
+      this.connectionTimeout = false
     })
 
     EventBus.$on('connectionRestorable', (peering) => {
@@ -154,7 +163,23 @@ export default {
   span {
     transition: 0.3s;
   }
+  &:before {
+    content: "";
+    display: block;
+    background: rgba($brand-color-darker, 0.7);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transform-origin: left;
+    transform: scaleX(0);
+  }
   &.restoring {
+    &:before {
+      transform: none;
+      transition: 20s linear;
+    }
     span {
       opacity: 0;
     }
