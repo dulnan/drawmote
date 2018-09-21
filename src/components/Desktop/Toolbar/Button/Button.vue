@@ -1,13 +1,12 @@
 <template>
-  <div :class="classes" class="pointer-area flex ">
-    <button
+  <button :class="classes" class="btn btn--bare pointer-area flex" @click="handleClick">
+    <div
       class="btn btn--bare tool toolbar-button"
       :style="style"
-      @click="handleClick"
     >
       <icon v-if="hasIcon" />
-    </button>
-  </div>
+    </div>
+  </button>
 </template>
 
 <script>
@@ -67,7 +66,7 @@ export default {
   &.disabled .btn {
     opacity: 0.2;
   }
-  &.hover:not(.disabled):not(.toolbar-item--colors) {
+  &.hover:not(.disabled):not(.toolbar-item--colors) .btn {
     background: $alt-color-lighter;
   }
 }

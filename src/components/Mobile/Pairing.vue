@@ -124,7 +124,7 @@ export default {
     width: 100%;
     font-family: monospace;
     letter-spacing: 1.12em;
-    padding-left: 0.65em;
+    padding-left: 0.1em;
     margin-right: -1em;
   }
 
