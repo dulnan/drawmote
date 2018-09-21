@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import Canvas from './Canvas'
+import Canvas from '@/mixins/Canvas'
 
 import { EventBus } from '@/events'
 
@@ -15,15 +15,17 @@ import { isSamePoint } from '@/tools/helpers.js'
 import { THREAD_POINT, THREAD_SIZES } from '@/settings/drawthreads'
 
 export default {
-  extends: Canvas,
-
   name: 'CanvasDrawing',
+
+  mixins: [
+    Canvas
+  ],
 
   draw: [
     {
       threads: [THREAD_SIZES],
       handler: function (state) {
-        this.setupCanvases(state.sizes.viewport)
+        this.setCanvasSizes()
         this.canvasState.updateSizes(state.sizes.viewport)
       }
     },
@@ -76,6 +78,13 @@ export default {
     updateCanvasState () {
       const state = this.canvasState.state
       EventBus.$emit('canvasState', state)
+    },
+
+    setCanvasSizes () {
+      this.setupCanvases(this.$global.state.sizes.viewport, [
+        this.$refs.canvas_main,
+        this.$refs.canvas_temp
+      ])
     }
   },
 
@@ -87,7 +96,7 @@ export default {
 
   mounted () {
     this.wasPressingBefore = false
-    this.setupCanvases(this.$global.state.sizes.viewport)
+    this.setCanvasSizes()
 
     const canvasMain = this.$refs['canvas_main']
     const canvasTemp = this.$refs['canvas_temp']

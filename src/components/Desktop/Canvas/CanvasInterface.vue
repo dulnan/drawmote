@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Canvas from './Canvas'
+import Canvas from '@/mixins/Canvas'
 import { Catenary } from 'catenary-curve'
 
 import { THREAD_BRUSH, THREAD_POINT, THREAD_SLIDE, THREAD_SIZES } from '@/settings/drawthreads'
@@ -12,15 +12,17 @@ import { RADIUS_MAX } from '@/settings'
 const BRUSH_PREVIEW_PADDING = 30
 
 export default {
-  extends: Canvas,
-
   name: 'CanvasInterface',
+
+  mixins: [
+    Canvas
+  ],
 
   draw: [
     {
       threads: [THREAD_SIZES],
       handler: function (state) {
-        this.setupCanvases(state.sizes.viewport)
+        this.setCanvasSizes()
       }
     },
     {
@@ -109,8 +111,26 @@ export default {
     }
   ],
 
+  methods: {
+    clearOutside (context, rectangle) {
+      const x = rectangle.p1.x
+      const y = rectangle.p1.y
+
+      const width = rectangle.p2.x - x
+      const height = rectangle.p2.y - y
+
+      context.beginPath()
+      context.rect(x, y, width, height)
+      context.clip()
+    },
+
+    setCanvasSizes () {
+      this.setupCanvases(this.$global.state.sizes.viewport, [this.$refs.canvas_interface])
+    }
+  },
+
   mounted () {
-    this.setupCanvases(this.$global.state.sizes.viewport)
+    this.setCanvasSizes()
   },
 
   created () {
