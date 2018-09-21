@@ -1,5 +1,8 @@
 @import 'typography';
 
+$color-brown-dark:            #311808;
+$color-brown-light:           #82746c;
+
 $color-red:                   #ff653b;
 $color-yellow:                #ffde56;
 $color-orange:                #ff9f1e;
@@ -45,6 +48,10 @@ $index-modal:                1000;
 $toolbar-height:              5rem;
 
 
+$toolbar-button-width-sm:     2rem;
+$toolbar-button-width-md:     2.5rem;
+$toolbar-button-width-lg:     4rem;
+
 $shadow-s:                    0 3px 10px rgba($alt-color, 0.13),
                               0 2px 4px 1px rgba($alt-color, 0.1);
 
@@ -63,8 +70,8 @@ $rtl:                               false;
  * Colors
  */
 
-$brand-color:                       #279ce2;
-$brand-color-darker:                darken(#279ce2, 10%);
+$brand-color:                       #fb6131;
+$brand-color-darker:                darken($brand-color, 10%);
 
 $alt-color-lightest:                #fbfbfb;
 $alt-color-lighter:                 #f7f7f6;
@@ -89,9 +96,9 @@ $font-size-large:                   1.5rem;
 
 $line-height-default:               1.45;
 
-$text-color:                        $alt-color-darker;
+$text-color:                        $color-brown-dark;
 $link-color:                        $brand-color;
-$muted-color:                       transparentize($text-color, .4);
+$muted-color:                       $color-brown-light;
 
 
 /**

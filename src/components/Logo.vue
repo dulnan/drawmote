@@ -1,7 +1,7 @@
 <template>
   <div class="logo mrgt+" ref="logo">
     <div class="logo__app">
-      <logo-stroke />
+      <img src="drawmote-logo.png" />
     </div>
     <background-animation :center="center" />
   </div>
@@ -10,14 +10,12 @@
 <script>
 import { THREAD_SIZES } from '@/settings/drawthreads'
 
-import LogoStroke from '@/assets/images/logo.svg'
 import BackgroundAnimation from '@/components/BackgroundAnimation.vue'
 
 export default {
   name: 'Logo',
 
   components: {
-    LogoStroke,
     BackgroundAnimation
   },
 
@@ -107,11 +105,10 @@ $logo-base: 768;
   0 ((1 / $logo-base) * 1em) ((4 / $logo-base) * 1em) ((2 / $logo-base) * 1em) rgba(0,0,0,0.01);
   // animation: 0.7s pulse cubic-bezier(1, -0.04, 0.63, 1.01) infinite alternate;
 
-  svg {
-    height: auto;
-    width: 60%;
+  img {
     display: block;
-    margin-right: ((-11 / $logo-base) * 1em);
+    width: 100%;
+    height: 100%;
   }
 }
 </style>

@@ -10,14 +10,13 @@
           { 'flex-1': group.id === 'sliders' }
         ]" >
         <ul
-          class="list-inline toolbar-group-list"
+          class="list-inline list-inline--tight toolbar-group-list flex--align-stretch"
           :class="{
-            'list-inline--tight': group.id !== 'colors',
-            'list-inline--small pdgh': group.id === 'colors',
             'flex-1 list-inline--divided': group.id === 'sliders',
           }"
         >
           <li
+            class="flex flex--align-stretch"
             v-for="tool in group.items"
             :key="group.action + tool.id"
             :class="{ 'flex-1': group.id === 'sliders' }"
@@ -187,13 +186,40 @@ export default {
   left: 0;
   top: 0;
   right: 0;
-  height: $toolbar-height;
+  height: $toolbar-height - 1rem;
   overflow: hidden;
   user-select: none;
+  @include media('md') {
+    height: $toolbar-height;
+  }
+}
+
+.toolbar-list {
+  height: 100%;
 }
 
 .toolbar-group-list {
   position: relative;
 }
 
+.toolbar-group--colors {
+  li {
+    margin-right: 0.25rem;
+    @include media('md') {
+      margin-right: 0.5rem;
+    }
+    &:first-child {
+      margin-left: 0.5rem;
+      @include media('md') {
+        margin-left: rem(13px);
+      }
+    }
+    &:last-child {
+      margin-right: 0.5rem;
+      @include media('md') {
+        margin-right: rem(13px);
+      }
+    }
+  }
+}
 </style>

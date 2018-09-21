@@ -1,5 +1,6 @@
 body {
   background: $alt-color-lightest;
+  font-weight: 300;
 }
 
 .relative {
@@ -25,12 +26,15 @@ body {
 
 
 .label {
-  font-weight: bold;
-  font-size: 12px;
+  font-weight: 500;
+  font-size: rem(10px);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: $alt-color-dark;
   text-align: left;
+  @include media('md') {
+    font-size: rem(12px);
+  }
 }
 
 $code-size-xs: 4rem;
@@ -159,7 +163,7 @@ $code-numbers: (
 }
 
 .check__title {
-  font-weight: 700;
+  font-weight: 500;
   position: relative;
   &:before {
     content: "";

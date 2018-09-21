@@ -124,13 +124,13 @@ export default {
     width: 100%;
     font-family: monospace;
     letter-spacing: 1.12em;
-    padding-left: 0.65em;
+    padding-left: 0.1em;
     margin-right: -1em;
   }
 
   .code__error {
     margin-top: 1em;
-    font-weight: 700;
+    font-weight: 500;
     color: $brand-color;
     font-size: 0.875rem;
     letter-spacing: 0.5px;

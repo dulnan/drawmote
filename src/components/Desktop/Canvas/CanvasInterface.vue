@@ -3,21 +3,26 @@
 </template>
 
 <script>
-import Canvas from './Canvas'
+import Canvas from '@/mixins/Canvas'
 import { Catenary } from 'catenary-curve'
 
 import { THREAD_BRUSH, THREAD_POINT, THREAD_SLIDE, THREAD_SIZES } from '@/settings/drawthreads'
+import { RADIUS_MAX } from '@/settings'
+
+const BRUSH_PREVIEW_PADDING = 30
 
 export default {
-  extends: Canvas,
-
   name: 'CanvasInterface',
+
+  mixins: [
+    Canvas
+  ],
 
   draw: [
     {
       threads: [THREAD_SIZES],
       handler: function (state) {
-        this.setupCanvases(state.sizes.viewport)
+        this.setCanvasSizes()
       }
     },
     {
@@ -41,7 +46,10 @@ export default {
         }
         context.arc(state.points.brush.x, state.points.brush.y, state.brush.canvasRadius, 0, Math.PI * 2, true)
         context.fill()
-        context.filter = 'none'
+
+        if (state.brush.useFilter) {
+          context.filter = 'none'
+        }
 
         // Draw catharina
         context.beginPath()
@@ -57,6 +65,31 @@ export default {
         context.fillStyle = 'rgba(50,50,50,1)'
         context.arc(state.points.brush.x, state.points.brush.y, 2, 0, Math.PI * 2, true)
         context.fill()
+
+        if (state.pointingAtToolbar) {
+          const backgroundRadius = (RADIUS_MAX * 2) + (2 * BRUSH_PREVIEW_PADDING)
+          const brushX = state.points.brush.x
+          const brushY = state.sizes.toolbarRect.height + backgroundRadius + 24
+
+          context.beginPath()
+          context.fillStyle = 'white'
+          context.strokeStyle = '#dedede'
+          context.lineWidth = 1
+          context.setLineDash([])
+          context.arc(brushX, brushY, backgroundRadius, 0, Math.PI * 2, true)
+          context.fill()
+          context.stroke()
+
+          context.beginPath()
+          context.fillStyle = state.brush.canvasColor
+
+          if (state.brush.useFilter) {
+            context.filter = `blur(${state.brush.canvasBlur}px)`
+          }
+
+          context.arc(brushX, brushY, state.brush.canvasRadius, 0, Math.PI * 2, true)
+          context.fill()
+        }
 
         // Restore the saved context.
         context.restore()
@@ -78,8 +111,26 @@ export default {
     }
   ],
 
+  methods: {
+    clearOutside (context, rectangle) {
+      const x = rectangle.p1.x
+      const y = rectangle.p1.y
+
+      const width = rectangle.p2.x - x
+      const height = rectangle.p2.y - y
+
+      context.beginPath()
+      context.rect(x, y, width, height)
+      context.clip()
+    },
+
+    setCanvasSizes () {
+      this.setupCanvases(this.$global.state.sizes.viewport, [this.$refs.canvas_interface])
+    }
+  },
+
   mounted () {
-    this.setupCanvases(this.$global.state.sizes.viewport)
+    this.setCanvasSizes()
   },
 
   created () {

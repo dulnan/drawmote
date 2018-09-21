@@ -1,11 +1,11 @@
 <template>
-  <button
-    class="btn btn--bare tool pointer-area"
-    :class="classes"
-    :style="style"
-    @click="handleClick"
-  >
-    <icon v-if="hasIcon" />
+  <button :class="classes" class="btn btn--bare pointer-area flex" @click="handleClick">
+    <div
+      class="toolbar-button"
+      :style="style"
+    >
+      <icon v-if="hasIcon" />
+    </div>
   </button>
 </template>
 
@@ -38,5 +38,41 @@ export default {
 </script>
 
 <style lang="scss">
+.toolbar-item {
+  .toolbar-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ddd;
+    overflow: visible;
+    font-size: $toolbar-button-width-sm;
+    width: 1em;
+    height: 100%;
+    margin: auto 0;
 
+    @include media('md') {
+      font-size: $toolbar-button-width-md;
+    }
+
+    @include media('lg') {
+      font-size: $toolbar-button-width-lg;
+    }
+
+    svg {
+      width: 0.6em;
+      max-height: 100%;
+      @include media('lg') {
+        width: 0.4em;
+      }
+    }
+  }
+  &.disabled {
+    opacity: 0.2;
+    cursor: default;
+  }
+  &.hover:not(.disabled):not(.toolbar-item--colors) {
+    background: $alt-color-lighter !important;
+  }
+}
 </style>

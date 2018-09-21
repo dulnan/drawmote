@@ -17,10 +17,11 @@
             </div>
           </div>
         </div>
-        <p class="code-timeout text-muted text-light" :class="{ 'visible': hasCode }">
-          {{ $t('desktop.countdownPrefix') }}
-          <span>{{ $tc('desktop.countdownSeconds', countdown, { count: countdown }) }}</span>
-          {{ $t('desktop.countdownSuffix') }}
+        <p class="text-muted text-light pairing-lead mrgt text-brand" v-if="isBlocked">
+          {{ $t('desktop.tooManyAttempts') }}
+        </p>
+        <p class="code-timeout text-muted text-light" :class="{ 'visible': hasCode && countdown < 60 }">
+          {{ $t('desktop.countdownPrefix') }}<span>{{ $tc('desktop.countdownSeconds', countdown, { count: countdown }) }}</span>{{ $t('desktop.countdownSuffix') }}
         </p>
       </div>
     </div>
@@ -30,7 +31,7 @@
 <script>
 import Logo from '@/components/Logo.vue'
 
-const PAIRING_TIMEOUT = 60
+const PAIRING_TIMEOUT = 120
 let interval = null
 
 export default {
@@ -51,6 +52,10 @@ export default {
     code: {
       type: String,
       default: ''
+    },
+    isBlocked: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -176,7 +181,9 @@ export default {
 
 .pairing-lead {
   max-width: 34rem;
+  margin: 0 auto;
   @include media('lg') {
+    margin: 0;
     max-width: 40rem;
   }
 }

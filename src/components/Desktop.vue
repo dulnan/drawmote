@@ -2,7 +2,12 @@
   <div class="desktop relative">
     <div class="desktop-container relative overlay material">
       <transition name="appear">
-        <pairing v-if="!isPaired" :code="pairingCode" @pairingTimeout="handleTimeout"></pairing>
+        <pairing
+          v-if="!isPaired"
+          :code="pairingCode"
+          :is-blocked="isBlocked"
+          @pairingTimeout="handleTimeout"
+        />
       </transition>
       <drawing v-if="isPaired"></drawing>
     </div>
@@ -27,7 +32,8 @@ export default {
   data () {
     return {
       pairingCode: '',
-      isPaired: false
+      isPaired: false,
+      isBlocked: false
     }
   },
 
@@ -53,8 +59,14 @@ export default {
     async getPairingCode () {
       const peering = await this.$connection.getPeeringCode()
 
-      this.$connection.initPeering(peering.code, peering.hash)
-      this.pairingCode = peering.code
+      if (peering) {
+        this.isBlocked = false
+        this.$connection.initPeering(peering.code, peering.hash)
+        this.pairingCode = peering.code
+      } else {
+        this.isBlocked = true
+        this.pairingCode = '••••••'
+      }
     },
 
     handleTimeout () {

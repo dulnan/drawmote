@@ -2,9 +2,10 @@
   "subtitle": "Draw remotely with your phone",
   "desktop": {
     "lead": "Visit drawmote.app on your phone, enter the following code and start drawing!",
-    "countdownPrefix": "Code is valid for ",
+    "countdownPrefix": "New code will be generated in ",
     "countdownSeconds": "0 seconds | 1 second | {count} seconds",
-    "countdownSuffix": "."
+    "countdownSuffix": ".",
+    "tooManyAttempts": "There was an error generating a pairing code. This can happen if too many requests to generate a code were made. Please wait a bit and try again later."
   },
   "mobile": {
     "lead": "Visit drawmote.app on your computer or tablet to get a pairing code and start drawing.",
@@ -50,7 +51,7 @@
   },
   "connection": {
     "title": "Restore your last connection",
-    "text": "Click the big blue button on both devices to quickly reestablish a connection between them.",
+    "text": "Click the big red button on both devices to quickly reestablish a connection between them.",
     "delete": "Remove",
     "reconnect": "Reconnect devices"
   },

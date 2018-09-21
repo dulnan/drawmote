@@ -4,7 +4,8 @@
     "lead": "Benutze dein Smartphone als Fernbedienung um hier zu malen. Öffne drawmote.app auf deinem Smartphone und gib den folgenden Code ein:",
     "countdownPrefix": "Code ist noch ",
     "countdownSeconds": "0 Sekunden | 1 Sekunde | {count} Sekunden",
-    "countdownSuffix": "gültig."
+    "countdownSuffix": " gültig.",
+    "tooManyAttempts": "Es konnte kein Code generiert werden. Das kann passieren wenn zu viele Anfragen in kurzer Zeit ausgeführt werden. Bitte warte einen Moment und probiere es nochmal."
   },
   "mobile": {
     "lead": "Öffne drawmote.app auf deinem Desktop Browser um einen Verbindungscode zu generieren.",
@@ -50,7 +51,7 @@
   },
   "connection": {
     "title": "Letzte Verbindung wiederherstellen",
-    "text": "Klicke bei beiden Geräten den grossen blauen Button um die Verbindung wiederherzustellen.",
+    "text": "Klicke bei beiden Geräten den grossen roten Button um die Verbindung wiederherzustellen.",
     "delete": "Entfernen",
     "reconnect": "Geräte verbinden"
   },
