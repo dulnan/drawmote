@@ -28,7 +28,8 @@ export default {
     return {
       w: 0,
       h: 0,
-      dpi: 1
+      dpi: 1,
+      running: true
     }
   },
 
@@ -60,6 +61,10 @@ export default {
     },
 
     loop: function () {
+      if (!this.running) {
+        return
+      }
+
       const now = Date.now()
       const delta = (now - then) / 100
       then = now
@@ -113,6 +118,10 @@ export default {
     this.setSizes()
 
     this.loop()
+  },
+
+  beforeDestroy () {
+    this.running = false
   }
 }
 </script>
