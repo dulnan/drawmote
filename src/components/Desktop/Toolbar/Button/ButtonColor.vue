@@ -46,33 +46,32 @@ export default {
 </script>
 
 <style lang="scss">
-.btn.toolbar-item--colors {
-  width: 2rem;
-  height: 2rem;
-  border: 2px solid white;
-  border-radius: 100%;
+.toolbar-item--colors {
+  .btn {
+    border: 2px solid white;
+    border-radius: 100%;
+    height: $toolbar-button-width-sm;
 
-  @include media('md') {
-    width: 2.5rem;
-    height: 2.5rem;
+    @include media('md') {
+      height: $toolbar-button-width-md;
+    }
+
+    @include media('lg') {
+      height: $toolbar-button-width-lg;
+      border: 3px solid white;
+    }
+
+    &:hover, &.hover {
+      opacity: 0.75;
+    }
   }
 
-  @include media('lg') {
-    width: 3rem;
-    height: 3rem;
-    border: 3px solid white;
-  }
-
-  &.toolbar-item--color-white {
+  &.toolbar-item--color-white .btn {
     box-shadow: 0 0 0 1px #eee;
   }
 
-  &.active {
+  &.active .btn {
     box-shadow: 0 0px 0px 2px currentColor;
-  }
-
-  &:hover, &.hover {
-    opacity: 0.75;
   }
 }
 </style>

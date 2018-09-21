@@ -35,7 +35,7 @@
             <span class="hidden-md-down">– Contributions from <a href="https://github.com/thormeier">@thormeier</a> and <a href="https://github.com/munxar">@munxar</a>. Thanks!</span>
           </div>
         </li>
-        <li class="text-bold mrgla hidden-sm-down hover">
+        <li class="text-bold mrgla hidden-xs-down hover">
           <button class="btn btn--bare btn--link pdg lg-pdg+ h-100" @click="skipPairing">{{ $t('footer.nophone') }}</button>
         </li>
         <li class="text-bold mrgla hover">

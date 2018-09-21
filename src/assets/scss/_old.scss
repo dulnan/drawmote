@@ -27,11 +27,14 @@ body {
 
 .label {
   font-weight: 500;
-  font-size: 12px;
+  font-size: rem(10px);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: $alt-color-dark;
   text-align: left;
+  @include media('md') {
+    font-size: rem(12px);
+  }
 }
 
 $code-size-xs: 4rem;

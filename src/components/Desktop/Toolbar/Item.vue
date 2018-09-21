@@ -59,37 +59,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-.btn.toolbar-item {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ddd;
-  overflow: visible;
-  width: 3rem;
-  height: 5rem;
-
-  &.disabled {
-    opacity: 0.2;
-  }
-
-  @include media('md') {
-    width: 4rem;
-  }
-
-  @include media('lg') {
-    width: 5rem;
-  }
-
-  &.hover:not(.disabled) {
-    background: $alt-color-lighter;
-  }
-
-  svg {
-    width: 2rem;
-    height: 2rem;
-  }
-}
-</style>
