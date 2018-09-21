@@ -3,13 +3,18 @@ export default {
 
   methods: {
     setupCanvases (viewport, canvases) {
+      const dpi = Math.min(window.devicePixelRatio, 1.5)
+
       canvases.forEach(canvas => {
         let context = canvas.getContext('2d')
 
-        canvas.width = viewport.width
-        canvas.height = viewport.height
+        canvas.width = viewport.width * dpi
+        canvas.height = viewport.height * dpi
 
-        context.scale(viewport.ratio, viewport.ratio)
+        canvas.style.width = `${viewport.width}px`
+        canvas.style.height = `${viewport.height}px`
+
+        context.scale(dpi, dpi)
       })
     },
 
