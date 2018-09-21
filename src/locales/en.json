@@ -51,7 +51,7 @@
   },
   "connection": {
     "title": "Restore your last connection",
-    "text": "Click the big blue button on both devices to quickly reestablish a connection between them.",
+    "text": "Click the big red button on both devices to quickly reestablish a connection between them.",
     "delete": "Remove",
     "reconnect": "Reconnect devices"
   },
