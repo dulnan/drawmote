@@ -35,8 +35,10 @@
             <span class="hidden-md-down">– Contributions from <a href="https://github.com/thormeier">@thormeier</a> and <a href="https://github.com/munxar">@munxar</a>. Thanks!</span>
           </div>
         </li>
-        <li class="text-bold mrgla hidden-xs-down hover">
-          <button class="btn btn--bare btn--link pdg lg-pdg+ h-100" @click="skipPairing">{{ $t('footer.nophone') }}</button>
+        <li class="text-bold mrgla hidden-xs-down hover" v-show="!isConnected">
+          <button class="btn btn--bare btn--link pdg lg-pdg+ h-100" @click="togglePairing">
+            {{ $t('footer.nophone') }}
+          </button>
         </li>
         <li class="text-bold mrgla hover">
           <a class="pdg lg-pdg+ block" href="https://github.com/dulnan/drawmote-client">
@@ -82,7 +84,8 @@ export default {
           key: 'en',
           label: 'English'
         }
-      ]
+      ],
+      isConnected: false
     }
   },
 
@@ -93,7 +96,7 @@ export default {
   },
 
   methods: {
-    skipPairing () {
+    togglePairing () {
       EventBus.$emit('isConnected', true)
       this.$track('Pairing', 'skip', 1)
     },
@@ -114,6 +117,12 @@ export default {
     closeBrowserSupport () {
       this.browserSupportVisible = false
     }
+  },
+
+  mounted () {
+    EventBus.$on('isConnected', (isConnected) => {
+      this.isConnected = isConnected
+    })
   }
 }
 </script>
