@@ -79,7 +79,7 @@ export default class DataHandler {
     this.gyro = new GyroPlane({
       width: this.viewport.width,
       height: this.viewport.height,
-      distance: this.viewport.width / 1
+      distance: this.viewport.width * 1.1
     })
 
     const cookie = getCookie('brush')
