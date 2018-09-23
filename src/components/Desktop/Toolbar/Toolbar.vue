@@ -226,4 +226,10 @@ export default {
     }
   }
 }
+
+.toolbar-group--sliders {
+  li {
+    max-width: 18rem;
+  }
+}
 </style>

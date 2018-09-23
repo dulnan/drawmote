@@ -31,7 +31,6 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: $alt-color-dark;
-  text-align: left;
   @include media('md') {
     font-size: rem(12px);
   }
