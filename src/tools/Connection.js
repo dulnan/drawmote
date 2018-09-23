@@ -119,7 +119,6 @@ export default class Connection {
     })
 
     this.peer.on('error', (data) => {
-      this.peer.close()
       this.isConnected = false
       this.EventBus.$emit('connectionTimeout')
     })

@@ -18,7 +18,8 @@
     "brushOpacity": "opacity",
     "brushRadius": "radius",
     "brushHardness": "hardness",
-    "lazyRadius": "lazy radius"
+    "lazyRadius": "lazy radius",
+    "distance": "distance"
   },
   "browserSupport": {
     "title": "Browser support",

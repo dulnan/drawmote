@@ -17,7 +17,8 @@ import {
   THREAD_BRUSH_HARDNESS,
   THREAD_BRUSH_OPACITY,
   THREAD_BRUSH_COLOR,
-  THREAD_LAZYRADIUS
+  THREAD_LAZYRADIUS,
+  THREAD_DISTANCE
 } from '@/settings/drawthreads'
 
 export default class DataHandler {
@@ -45,6 +46,8 @@ export default class DataHandler {
       ratio: 1
     }
 
+    this.distance = this.viewport.width * 1.1
+
     this.canvasRect = new Rectangle(0, 0, 0, 0)
     this.toolbarRect = new Rectangle(0, 0, 0, 0)
 
@@ -70,6 +73,7 @@ export default class DataHandler {
         brush: this.lazyBrush.brush.toObject(),
         pointer: this.lazyBrush.pointer.toObject()
       },
+      distance: this.distance,
       slideY: this.slideY,
       pointingAtToolbar: this.pointingAtToolbar
     }
@@ -79,7 +83,7 @@ export default class DataHandler {
     this.gyro = new GyroPlane({
       width: this.viewport.width,
       height: this.viewport.height,
-      distance: this.viewport.width * 1.1
+      distance: this.distance
     })
 
     const cookie = getCookie('brush')
@@ -236,6 +240,12 @@ export default class DataHandler {
   updateCanvasFilterSupport (isSupported) {
     this.canvasFilterSupported = isSupported
     this.brush.setFilterSupport(isSupported)
+  }
+
+  updateDistance (distance) {
+    this.distance = distance
+    this.gyro.setDistance(distance)
+    this.threads.trigger(THREAD_DISTANCE)
   }
 
   storeBrushCookie () {

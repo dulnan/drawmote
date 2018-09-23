@@ -50,12 +50,18 @@ export default {
     }
   },
 
+  computed: {
+    rounding () {
+      return this.isPressingMain ? 100 : 25
+    }
+  },
+
   methods: {
     handleMainTouchStart (e) {
       e.preventDefault()
 
       this.touchDiffY = 0
-      this.touchStartY = e.changedTouches[0].pageY
+      this.touchStartY = 0
       this.touchStartTime = new Date().getTime()
 
       this.isPressingMain = true
@@ -68,6 +74,9 @@ export default {
       const touch = e.changedTouches[0]
 
       if (diffTime > 50) {
+        if (this.touchStartY === 0) {
+          this.touchStartY = touch.pageY
+        }
         this.touchDiffY = touch.pageY - this.touchStartY
       }
     },
@@ -94,13 +103,13 @@ export default {
 
       const options = {
         frequency: 5,
-        decimalCount: 2
+        decimalCount: 6
       }
 
       deviceOrientation.init(options).then(() => {
         deviceOrientation.start((data) => {
-          this.alpha = smoothAlpha.next((data.do.alpha + 180) % 360)
-          this.beta = smoothBeta.next(data.do.beta)
+          this.alpha = Math.round((smoothAlpha.next((data.do.alpha + 180) % 360, this.isPressingMain)) * this.rounding) / this.rounding
+          this.beta = Math.round((smoothBeta.next(data.do.beta, this.isPressingMain)) * this.rounding) / this.rounding
         })
 
         this.dataLoop()
@@ -117,7 +126,12 @@ export default {
     },
 
     dataLoop () {
-      const newData = buildDataString(this.alpha, this.beta, this.isPressingMain, this.touchDiffY)
+      const touchDiffY = this.touchDiffY
+
+      const alpha = this.alpha
+      const beta = this.beta
+
+      const newData = buildDataString(alpha, beta, this.isPressingMain, touchDiffY)
       if (newData !== this.lastOrientationString) {
         this.$connection.emit('Orientation', newData)
         this.lastOrientationString = newData

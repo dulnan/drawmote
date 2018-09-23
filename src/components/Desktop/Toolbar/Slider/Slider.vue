@@ -7,7 +7,13 @@
   >
     <div>
       <div class="label pdg0 lg-mrgb- tool-slider__label">{{ $t('tools.' + tool.id) }}</div>
-      <input type="range" :min="min" :max="max" :step="step" :value="value" @input="handleInput" />
+      <div class="tool-slider__value text-right">
+        <span class="h3">{{ roundedValue }}</span>
+        <span class="text-light text-muted"> / {{ this.max }}</span>
+      </div>
+      <div class="tool-slider__slider">
+        <input type="range" :min="min" :max="max" :step="step" :value="value" @input="handleInput" />
+      </div>
     </div>
   </div>
 </template>
@@ -27,14 +33,23 @@ export default {
       min: 0,
       max: 100,
       value: 0,
-      step: 0.1
+      step: 1,
+      multiplier: 0.5
+    }
+  },
+
+  computed: {
+    roundedValue () {
+      return Math.round(this.value)
     }
   },
 
   methods: {
     handleWheel (e) {
-      const delta = Math.max(Math.min(e.deltaY, 5), -5) * (this.max / 100)
-      const newValue = Math.max(Math.min(this.value - delta, this.max), this.min)
+      console.log(e)
+      const delta = e.deltaY
+      // const delta = Math.max(Math.min(e.deltaY * this.multiplier, 6), -6)
+      const newValue = Math.round((Math.max(Math.min(this.value - (delta * this.multiplier), this.max), this.min)) * 100) / 100
       this.handleValueChange(newValue)
 
       if (!timeout) {
@@ -55,8 +70,32 @@ export default {
 .btn.tool-slider {
   text-align: left;
   transition: 0.15s transform;
+  position: relative;
+  overflow: visible;
+  display: flex;
+  align-items: center;
   > div {
     flex: 1;
+  }
+}
+
+.tool-slider__slider {
+  position: absolute;
+  top: 100%;
+  left: -1px;
+  right: -1px;
+  height: 16rem;
+  border: 1px solid $alt-color-lighter;
+  opacity: 0;
+  .hover & {
+    opacity: 1;
+  }
+  input {
+    display: block;
+    width: 16rem;
+    margin: 0;
+    transform-origin: top left;
+    transform: rotate(90deg);
   }
 }
 </style>

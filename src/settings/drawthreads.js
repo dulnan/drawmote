@@ -10,6 +10,7 @@ export const THREAD_BRUSH_OPACITY = 'brushOpacity'
 export const THREAD_BRUSH_HARDNESS = 'brushHardness'
 export const THREAD_BRUSH_COLOR = 'brushColor'
 export const THREAD_LAZYRADIUS = 'lazyRadius'
+export const THREAD_DISTANCE = 'distance'
 
 export const THREADS = [
   THREAD_BRUSH,
@@ -21,5 +22,6 @@ export const THREADS = [
   THREAD_BRUSH_OPACITY,
   THREAD_BRUSH_HARDNESS,
   THREAD_BRUSH_COLOR,
-  THREAD_LAZYRADIUS
+  THREAD_LAZYRADIUS,
+  THREAD_DISTANCE
 ]

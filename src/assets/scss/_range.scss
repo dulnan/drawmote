@@ -1,5 +1,5 @@
-$track-color: $alt-color-lighter;
-$thumb-color: $alt-color;
+$track-color: $alt-color-light;
+$thumb-color: $alt-color-dark;
 
 $thumb-radius: 12px;
 $thumb-height: 12px;
@@ -11,15 +11,15 @@ $thumb-border-width: 0px;
 $thumb-border-color: #eceff1;
 
 $track-width: 100%;
-$track-height: 4px;
+$track-height: 12px;
 $track-shadow-size: 0px;
-$track-shadow-blur: 1px;
+$track-shadow-blur: 0px;
 $track-shadow-color: rgba(0, 0, 0, .2);
 $track-border-width: 0px;
 $track-border-color: $alt-color-light;
 
-$track-radius: 5px;
-$contrast: 5%;
+$track-radius: 0px;
+$contrast: 0%;
 
 $ie-bottom-track-color: darken($track-color, $contrast);
 

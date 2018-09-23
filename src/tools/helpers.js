@@ -63,9 +63,11 @@ function buildDataString (alpha, beta, isPressingMain, touchDiffY) {
 
 function parseDataString (data) {
   const arr = data.split(';')
+  const alpha = Math.round(((parseFloat(arr[0]) + 180) % 360) * 100) / 100
+  const beta = Math.round(parseFloat(arr[1]) * 100) / 100
   return {
-    alpha: (arr[0] + 180) % 360,
-    beta: arr[1],
+    alpha: alpha,
+    beta: beta,
     isPressingMain: arr[2] === '1',
     touchDiffY: parseInt(arr[3]) || 0
   }

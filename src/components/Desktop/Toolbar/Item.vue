@@ -23,10 +23,14 @@ export default {
       return `${this.action}${this.tool.id}`
     },
 
+    isHovered () {
+      return this.itemKey === this.hoveredKey
+    },
+
     classes () {
       return [
         {
-          'hover': this.itemKey === this.hoveredKey,
+          'hover': this.isHovered,
           'active': this.isActive
         },
         'toolbar-item',

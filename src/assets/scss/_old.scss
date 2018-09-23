@@ -35,6 +35,9 @@ body {
   @include media('md') {
     font-size: rem(12px);
   }
+  @include media('lg') {
+    font-size: rem(14px);
+  }
 }
 
 $code-size-xs: 4rem;
