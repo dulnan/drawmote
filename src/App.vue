@@ -10,6 +10,7 @@
 import debouncedResize from 'debounced-resize'
 
 import { getViewportSize } from '@/tools/helpers'
+import { BREAKPOINT_REMOTE } from '@/settings'
 import TheFooter from '@/components/Footer.vue'
 
 export default {
@@ -45,10 +46,7 @@ export default {
       const viewport = getViewportSize()
       this.$global.updateViewport(viewport)
 
-      if (viewport.width < 500) {
-        this.isRemote = true
-      }
-
+      this.isRemote = viewport.width < BREAKPOINT_REMOTE
       this.hasLoaded = true
     }
   }

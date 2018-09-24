@@ -107,6 +107,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/scss/components/_code.scss';
+
 .pairing-desktop {
   transform-style: preserve-3d;
   perspective: 700px;

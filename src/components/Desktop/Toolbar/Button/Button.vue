@@ -46,10 +46,14 @@ export default {
     justify-content: center;
     color: #ddd;
     overflow: visible;
-    font-size: $toolbar-button-width-sm;
+    font-size: $toolbar-button-width-xs;
     width: 1em;
     height: 100%;
     margin: auto 0;
+
+    @include media('sm') {
+      font-size: $toolbar-button-width-sm;
+    }
 
     @include media('md') {
       font-size: $toolbar-button-width-md;

@@ -54,6 +54,7 @@
 // @import '../../../node_modules/kanbasu/src/scss/helpers/align';
 // @import '../../../node_modules/kanbasu/src/scss/helpers/align-responsive';
 @import 'helpers/typography';
+@import 'helpers/helpers';
 @import 'helpers/flex';
 
 
@@ -75,5 +76,5 @@
 // @import '../../../node_modules/kanbasu/src/scss/components/container';
 // @import '../../../node_modules/kanbasu/src/scss/components/pusher';
 // @import '../../../node_modules/kanbasu/src/scss/components/table-responsive';
-@import '_old';
-@import '_range';
+@import 'components/_range';
+@import 'components/_icon';

@@ -1,7 +1,7 @@
 {
   "subtitle": "Draw remotely with your phone",
   "desktop": {
-    "lead": "Visit drawmote.app on your phone, enter the following code and start drawing!",
+    "lead": "Visit drawmote.app on your phone, enter the following code and start drawing! For the best experience both devices should be in the same network.",
     "countdownPrefix": "New code will be generated in ",
     "countdownSeconds": "0 seconds | 1 second | {count} seconds",
     "countdownSuffix": ".",
@@ -18,7 +18,8 @@
     "brushOpacity": "opacity",
     "brushRadius": "radius",
     "brushHardness": "hardness",
-    "lazyRadius": "lazy radius"
+    "lazyRadius": "lazy radius",
+    "distance": "distance"
   },
   "browserSupport": {
     "title": "Browser support",

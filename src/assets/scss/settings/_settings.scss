@@ -48,8 +48,9 @@ $index-modal:                1000;
 $toolbar-height:              5rem;
 
 
-$toolbar-button-width-sm:     2rem;
-$toolbar-button-width-md:     2.5rem;
+$toolbar-button-width-xs:     1.75rem;
+$toolbar-button-width-sm:     1.75rem;
+$toolbar-button-width-md:     2.25rem;
 $toolbar-button-width-lg:     4rem;
 
 $shadow-s:                    0 3px 10px rgba($alt-color, 0.13),
@@ -128,8 +129,8 @@ $spacings:                          (
 
 // Use EM media-queries for better browser consistency
 // See http://zellwk.com/blog/media-query-units
-$screen-xs-max:                     640px  / 16px * 1em;
-$screen-sm-min:                     641px  / 16px * 1em;
+$screen-xs-max:                      699px / 16px * 1em;
+$screen-sm-min:                      700px / 16px * 1em;
 $screen-sm-max:                     1024px / 16px * 1em;
 $screen-md-min:                     1025px / 16px * 1em;
 $screen-md-max:                     1440px / 16px * 1em;
@@ -230,7 +231,7 @@ $form-group-spacing:                $spacing-unit-small;
  * Lists
  */
 
-$list-separator-style:              1px solid $alt-color-light;
+$list-separator-style:              1px solid $alt-color-lighter;
 
 
 /**

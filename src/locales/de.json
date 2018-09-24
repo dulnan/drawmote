@@ -18,7 +18,8 @@
     "brushOpacity": "Deckkraft",
     "brushRadius": "Radius",
     "brushHardness": "Härte",
-    "lazyRadius": "Trägheit"
+    "lazyRadius": "Trägheit",
+    "distance": "Distanz"
   },
   "browserSupport": {
     "title": "Kompatibilität",

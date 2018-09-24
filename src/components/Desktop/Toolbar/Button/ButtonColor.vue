@@ -26,7 +26,7 @@ export default {
       }
 
       return {
-        background: getRgbaString(this.tool.color.rgb, 1),
+        background: this.tool.color.getRgbaString(100),
         color: getRgbaString(shadeRgbColor(this.tool.color.rgb, -0.2), 0.5)
       }
     },
@@ -58,7 +58,7 @@ export default {
       height: 0.75em;
     }
 
-    &:hover, &.hover {
+    &:hover, .hover & {
       opacity: 0.75;
     }
   }

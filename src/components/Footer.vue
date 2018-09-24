@@ -7,7 +7,7 @@
           <button
             class="btn btn--bare text-bold check pdg lg-pdg+ h-100 hover"
             @click="toggleBrowserSupport"
-            :class="supportState"
+            :class="[supportState, { 'is-open': browserSupportVisible }]"
           >
             <div class="check__title">
               <span class="arrow-after">{{ $t(`browserSupport.footer.${supportState}`) }}</span>
@@ -128,6 +128,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import '@/assets/scss/components/_check.scss';
+
 .footer {
   position: absolute;
   right: 0;
@@ -139,8 +141,9 @@ export default {
 .footer__content {
   position: relative;
   z-index: $index-footer;
-  background: white;
-  border-top: $list-separator-style;
+  background: $alt-color-lighter;
+  // box-shadow: inset 0 2px 7px $alt-color-light;
+  border-top: 1px solid $alt-color-light;
 }
 
 .footer__list {
@@ -148,7 +151,7 @@ export default {
   @include media('sm') {
     .hover {
       &:hover {
-        background: $alt-color-lighter;
+        background: white;
       }
     }
   }
@@ -160,7 +163,11 @@ export default {
   > .btn {
     width: 100%;
     text-align: left;
-    background: white;
+    transition: 0.4s;
+    background: $alt-color-lighter;
+    &.is-open {
+      background: white;
+    }
   }
   @include media('sm') {
     flex: 0 0 auto;

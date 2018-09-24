@@ -113,5 +113,12 @@ export const TOOLBAR_SLIDERS = [
     id: 'lazyRadius',
     component: 'SliderLazyRadius',
     icon: ''
+  },
+  {
+    id: 'distance',
+    component: 'SliderDistance',
+    icon: ''
   }
 ]
+
+export const BREAKPOINT_REMOTE = 700

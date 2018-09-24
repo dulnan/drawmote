@@ -7,22 +7,6 @@ function getViewportSize () {
   }
 }
 
-function pointIsInRectangle (p, r) {
-  return r.x1 <= p.x && p.x <= r.x2 && r.y1 <= p.y && p.y <= r.y2
-}
-
-function lineDistance (x1, y1, x2, y2) {
-  // calculate euclidean distance between (x1, y1) and (x2, y2)
-  const xs = Math.pow(x2 - x1, 2)
-  const ys = Math.pow(y2 - y1, 2)
-  return Math.sqrt(xs + ys)
-}
-
-function scaleBetween (number, numberRange, outputRange) {
-  const scaled = (number - numberRange[0]) * (outputRange[1] - outputRange[0]) / (numberRange[1] - numberRange[0]) + outputRange[0]
-  return Math.min(Math.max(scaled, outputRange[0]), outputRange[1])
-}
-
 function midPointBetween (p1, p2) {
   return {
     x: p1.x + (p2.x - p1.x) / 2,
@@ -49,8 +33,6 @@ function shadeRgbColor (rgb, percent) {
   ]
 }
 
-const randomInt = (min, max = min + (min = 0)) => (Math.random() * (max - min) + min) | 0
-
 function buildDataString (alpha, beta, isPressingMain, touchDiffY) {
   const values = [
     alpha,
@@ -63,20 +45,13 @@ function buildDataString (alpha, beta, isPressingMain, touchDiffY) {
 
 function parseDataString (data) {
   const arr = data.split(';')
+  const alpha = Math.round(((parseFloat(arr[0]) + 180) % 360) * 100) / 100
+  const beta = Math.round(parseFloat(arr[1]) * 100) / 100
   return {
-    alpha: (arr[0] + 180) % 360,
-    beta: arr[1],
+    alpha: alpha,
+    beta: beta,
     isPressingMain: arr[2] === '1',
     touchDiffY: parseInt(arr[3]) || 0
-  }
-}
-
-function getAreaFromDomRect (rect) {
-  return {
-    x1: Math.round(rect.left),
-    y1: Math.round(rect.top),
-    x2: Math.round(rect.left + rect.width),
-    y2: Math.round(rect.top + rect.height)
   }
 }
 
@@ -120,16 +95,11 @@ export {
   getCookie,
   eraseCookie,
   getViewportSize,
-  pointIsInRectangle,
-  scaleBetween,
-  lineDistance,
   getRgbaString,
   shadeRgbColor,
   midPointBetween,
-  randomInt,
   buildDataString,
   parseDataString,
-  getAreaFromDomRect,
   isSamePoint,
   buildDevServerUrl
 }

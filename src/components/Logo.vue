@@ -81,11 +81,10 @@ $logo-base: 768;
     font-size: 14rem;
   }
   @include media('md') {
-    font-size: 10rem;
+    font-size: 9rem;
   }
   @include media('lg') {
     margin-left: -1em;
-    font-size: 12rem;
   }
 }
 
@@ -95,15 +94,13 @@ $logo-base: 768;
   width: 1em;
   height: 1em;
   background: white;
-  border-radius: 0.23em;
+  border-radius: 0.22em;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: radial-gradient(46% -46%, #FFFFFF 52%, #EAEAEA 100%);
-  background-image: linear-gradient(21deg, #FFFFFF 14%, rgba(255,255,255,0.00) 89%);
-  box-shadow: 0 ((20 / $logo-base) * 1em) ((100 / $logo-base) * 1em) ((1 / $logo-base) * 1em) rgba(0,0,0,0.07),
+  box-shadow: 0 ((30 / $logo-base) * 1em) ((100 / $logo-base) * 1em) ((7 / $logo-base) * 1em) rgba(0,0,0,0.04),
   0 ((1 / $logo-base) * 1em) ((4 / $logo-base) * 1em) ((2 / $logo-base) * 1em) rgba(0,0,0,0.01);
-  // animation: 0.7s pulse cubic-bezier(1, -0.04, 0.63, 1.01) infinite alternate;
+  // animation: 5s pulse cubic-bezier(1, -0.04, 0.63, 1.01) infinite alternate;
 
   img {
     display: block;

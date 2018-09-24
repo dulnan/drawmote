@@ -36,14 +36,17 @@
 </template>
 
 <script>
-import ButtonColor from '@/components/Desktop/Toolbar/Button/ButtonColor.vue'
 import ButtonClear from '@/components/Desktop/Toolbar/Button/ButtonClear.vue'
 import ButtonUndo from '@/components/Desktop/Toolbar/Button/ButtonUndo.vue'
 import ButtonRedo from '@/components/Desktop/Toolbar/Button/ButtonRedo.vue'
+
+import ButtonColor from '@/components/Desktop/Toolbar/Button/ButtonColor.vue'
+
 import SliderBrushRadius from '@/components/Desktop/Toolbar/Slider/SliderBrushRadius.vue'
 import SliderBrushOpacity from '@/components/Desktop/Toolbar/Slider/SliderBrushOpacity.vue'
 import SliderBrushHardness from '@/components/Desktop/Toolbar/Slider/SliderBrushHardness.vue'
 import SliderLazyRadius from '@/components/Desktop/Toolbar/Slider/SliderLazyRadius.vue'
+import SliderDistance from '@/components/Desktop/Toolbar/Slider/SliderDistance.vue'
 
 import { COLORS, TOOLBAR_TOOLS, TOOLBAR_SLIDERS } from '@/settings'
 import { THREAD_TOOLS, THREAD_SIZES } from '@/settings/drawthreads'
@@ -61,7 +64,8 @@ export default {
     SliderBrushRadius,
     SliderBrushOpacity,
     SliderBrushHardness,
-    SliderLazyRadius
+    SliderLazyRadius,
+    SliderDistance
   },
 
   draw: [
@@ -187,7 +191,7 @@ export default {
   top: 0;
   right: 0;
   height: $toolbar-height - 1rem;
-  overflow: hidden;
+  // overflow: hidden;
   user-select: none;
   @include media('md') {
     height: $toolbar-height;
@@ -204,22 +208,43 @@ export default {
 
 .toolbar-group--colors {
   li {
-    margin-right: 0.25rem;
+    @include media('sm') {
+      margin-right: 0.125rem;
+    }
     @include media('md') {
+      margin-right: 0.25rem;
+    }
+    @include media('lg') {
       margin-right: 0.5rem;
     }
     &:first-child {
-      margin-left: 0.5rem;
+      @include media('sm') {
+        margin-left: rem(7px);
+      }
       @include media('md') {
+        margin-left: rem(10px);
+      }
+      @include media('lg') {
         margin-left: rem(13px);
       }
     }
     &:last-child {
-      margin-right: 0.5rem;
+      @include media('sm') {
+        margin-right: rem(7px);
+      }
       @include media('md') {
+        margin-right: rem(10px);
+      }
+      @include media('lg') {
         margin-right: rem(13px);
       }
     }
+  }
+}
+
+.toolbar-group--sliders {
+  li {
+    max-width: 18rem;
   }
 }
 </style>
