@@ -1,17 +1,16 @@
 <template>
   <div
-    class="btn btn--bare tool-slider pointer-area pdgh- pdgv- md-pdg w-100"
+    class="btn btn--bare tool-slider pointer-area sm-pdg-- md-pdg- lg-pdg w-100"
     :class="classes"
     :style="style"
     @wheel="handleWheel"
   >
     <div class="">
-      <div class="tool-slider__value mrgb-">
-        <div class="label pdg0 tool-slider__label">{{ $t('tools.' + tool.id) }}</div>
-        <span class="label flex-1 text-right text-muted text-light">{{ roundedValue }}</span>
+      <div class="tool-slider__text mrgb-- md-mrgb- lg-mrgb+">
+        <div class="tool-slider__label label pdg0 tool-slider__label">{{ $t('tools.' + tool.id) }}</div>
+        <span class="tool-slider__value label flex-1 text-muted text-light pdg0">{{ roundedValue }}</span>
       </div>
       <input type="range" :min="min" :max="max" :step="step" :value="value" @input="handleInput" />
-      
     </div>
   </div>
 </template>
@@ -79,10 +78,15 @@ export default {
   }
 }
 
-.tool-slider__value {
+.tool-slider__text {
   @include media('lg') {
     display: flex;
   }
 }
 
+.tool-slider__value {
+  @include media('lg') {
+    text-align: right;
+  }
+}
 </style>

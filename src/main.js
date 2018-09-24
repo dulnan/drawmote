@@ -27,4 +27,4 @@ Vue.prototype.$track = function (category, action, value) {
 new Vue({
   i18n,
   render: h => h(App)
-}).$mount('#app')
+}).$mount('#drawmote')

@@ -15,7 +15,7 @@ export default {
     },
 
     handleMouseMove (e) {
-      e.preventDefault()
+      this.preventEventIfRequired(e)
 
       this.$global.updateFromMouse({
         x: e.clientX,
@@ -36,7 +36,7 @@ export default {
     },
 
     handleTouchStart (e) {
-      // e.preventDefault()
+      this.preventEventIfRequired(e)
       const touch = e.changedTouches[0]
 
       this.$global.updateFromMouse({
@@ -48,7 +48,7 @@ export default {
     },
 
     handleTouchMove (e) {
-      e.preventDefault()
+      this.preventEventIfRequired(e)
 
       const touch = e.changedTouches[0]
 
@@ -59,8 +59,14 @@ export default {
     },
 
     handleTouchEnd (e) {
-      // e.preventDefault()
+      this.preventEventIfRequired(e)
       this.handleMouseUp()
+    },
+
+    preventEventIfRequired (e) {
+      if (!this.$global.state.pointingAtToolbar) {
+        e.preventDefault()
+      }
     }
   },
 
