@@ -1,0 +1,29 @@
+.check--small {
+  font-size: .8125rem;
+  line-height: 1.230769231;
+}
+
+.check__title {
+  font-weight: 500;
+  position: relative;
+  &:before {
+    content: "";
+    display: block;
+    width: 10px;
+    height: 10px;
+    margin-right: 3px;
+    margin-top: 0.25em;
+    border-radius: 100%;
+    float: left;
+    background: $alt-color;
+    .unsupported & {
+      background: $color-red;
+    }
+    .supported & {
+      background: $color-green;
+    }
+    .partial & {
+      background: $color-yellow;
+    }
+  }
+}

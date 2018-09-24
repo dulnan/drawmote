@@ -128,6 +128,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import '@/assets/scss/components/_check.scss';
+
 .footer {
   position: absolute;
   right: 0;

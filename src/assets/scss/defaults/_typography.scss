@@ -10,9 +10,12 @@ html {
   line-height: 1.5;
   color: $text-color;
 
+  font-weight: 300;
+
   // Cleaner font rendering
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: $alt-color-lightest;
 }
 
 
@@ -22,9 +25,11 @@ html {
 
 a {
   color: $link-color;
+  text-decoration: none;
 
   &:hover,
   &:focus {
+    color: $brand-color-darker;
     text-decoration: none;
   }
 }

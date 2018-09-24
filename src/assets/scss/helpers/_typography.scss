@@ -21,3 +21,24 @@
 .bg-white {
   background: white;
 }
+
+.label {
+  font-weight: 500;
+  font-size: rem(10px);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: $alt-color-dark;
+  @include media('sm') {
+    font-size: rem(10px);
+  }
+  @include media('md') {
+    font-size: rem(13px);
+  }
+  @include media('lg') {
+    font-size: rem(14px);
+  }
+}
+
+.mobile-font-size {
+  font-size: calc((100vw - 4rem) / 7);
+}

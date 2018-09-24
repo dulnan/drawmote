@@ -86,7 +86,9 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+@import '@/assets/scss/components/_code.scss';
+
 .mobile-pairing {
   display: flex;
   flex-direction: column;
