@@ -58,7 +58,7 @@ export default {
       height: 0.75em;
     }
 
-    &:hover, &.hover {
+    &:hover, .hover & {
       opacity: 0.75;
     }
   }
