@@ -5,6 +5,7 @@
     "countdownPrefix": "Code ist noch ",
     "countdownSeconds": "0 Sekunden | 1 Sekunde | {count} Sekunden",
     "countdownSuffix": " gültig.",
+    "nophone": "Ohne Smartphone verwenden",
     "tooManyAttempts": "Es konnte kein Code generiert werden. Das kann passieren wenn zu viele Anfragen in kurzer Zeit ausgeführt werden. Bitte warte einen Moment und probiere es nochmal."
   },
   "mobile": {
@@ -57,7 +58,6 @@
     "reconnect": "Geräte verbinden"
   },
   "footer": {
-    "nophone": "Ohne Smartphone verwenden",
     "copyright": "Entwickelt von"
   }
 }

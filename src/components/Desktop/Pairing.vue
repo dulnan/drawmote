@@ -17,6 +17,9 @@
             </div>
           </div>
         </div>
+        <p class="text-muted text-light">
+          <button class="btn btn--bare" @click="togglePairing">{{ $t('desktop.nophone') }}</button>
+        </p>
         <p class="text-muted text-light pairing-lead mrgt text-brand" v-if="isBlocked">
           {{ $t('desktop.tooManyAttempts') }}
         </p>
@@ -30,6 +33,8 @@
 
 <script>
 import Logo from '@/components/Logo.vue'
+
+import { EventBus } from '@/events'
 
 const PAIRING_TIMEOUT = 120
 let interval = null
@@ -80,6 +85,11 @@ export default {
   },
 
   methods: {
+    togglePairing () {
+      EventBus.$emit('isConnected', true)
+      this.$track('Pairing', 'skip', 1)
+    },
+
     startTimer () {
       this.stopTimer()
       this.countdown = PAIRING_TIMEOUT

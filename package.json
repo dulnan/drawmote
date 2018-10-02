@@ -11,12 +11,12 @@
   "dependencies": {
     "@hughsk/fulltilt": "^0.7.1",
     "axios": "^0.18.0",
-    "catenary-curve": "github:dulnan/catenary-curve",
+    "catenary-curve": "^1.0.0",
     "debounced-resize": "^1.1.1",
-    "gyro-plane": "github:dulnan/gyro-plane",
+    "gyro-plane": "^1.0.0",
     "gyronorm": "^2.0.6",
     "input-range-scss": "^1.5.1",
-    "lazy-brush": "github:dulnan/lazy-brush",
+    "lazy-brush": "^1.0.0",
     "socketpeer": "github:dulnan/socketpeer#update-dependencies",
     "vue": "^2.5.17",
     "vue-i18n": "^8.0.0"

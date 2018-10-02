@@ -24,12 +24,12 @@ html {
  */
 
 a {
-  color: $link-color;
+  color: $text-color;
   text-decoration: none;
 
   &:hover,
   &:focus {
-    color: $brand-color-darker;
+    color: $brand-color;
     text-decoration: none;
   }
 }
