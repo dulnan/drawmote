@@ -18,7 +18,7 @@
           </div>
         </div>
         <p class="text-muted text-light">
-          <button class="btn btn--bare" @click="togglePairing">{{ $t('desktop.nophone') }}</button>
+          <button class="btn btn--bare pairing-skip" @click="togglePairing">{{ $t('desktop.nophone') }}</button>
         </p>
         <p class="text-muted text-light pairing-lead mrgt text-brand" v-if="isBlocked">
           {{ $t('desktop.tooManyAttempts') }}
@@ -206,6 +206,12 @@ export default {
   transition-delay: 0.3s;
   &.visible {
     opacity: 1;
+  }
+}
+
+.pairing-skip {
+  &:hover {
+    color: $brand-color;
   }
 }
 </style>

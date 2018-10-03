@@ -86,11 +86,18 @@ export default class DataHandler {
       distance: this.distance
     })
 
-    const cookie = getCookie('brush')
+    const cookie = getCookie('state')
+
     let brush = {}
 
     if (cookie) {
-      brush = JSON.parse(cookie)
+      try {
+        const cookieObject = JSON.parse(cookie)
+
+        brush = cookieObject.brush
+      } catch (e) {
+        console.log('Invalid cookie data.')
+      }
     }
 
     this.brush = new Brush(brush)
@@ -206,35 +213,35 @@ export default class DataHandler {
     this.lazyBrush.setRadius(radius)
     this.threads.trigger(THREAD_BRUSH)
     this.threads.trigger(THREAD_LAZYRADIUS)
-    this.storeBrushCookie()
+    this.storeStateCookie()
   }
 
   updateBrushColor (color) {
     this.brush.setColor(color)
     this.threads.trigger(THREAD_BRUSH)
     this.threads.trigger(THREAD_BRUSH_COLOR)
-    this.storeBrushCookie()
+    this.storeStateCookie()
   }
 
   updateBrushOpacity (opacity) {
     this.brush.setOpacity(opacity)
     this.threads.trigger(THREAD_BRUSH)
     this.threads.trigger(THREAD_BRUSH_OPACITY)
-    this.storeBrushCookie()
+    this.storeStateCookie()
   }
 
   updateBrushRadius (radius) {
     this.brush.setRadius(radius)
     this.threads.trigger(THREAD_BRUSH)
     this.threads.trigger(THREAD_BRUSH_RADIUS)
-    this.storeBrushCookie()
+    this.storeStateCookie()
   }
 
   updateBrushHardness (hardness) {
     this.brush.setHardness(hardness)
     this.threads.trigger(THREAD_BRUSH)
     this.threads.trigger(THREAD_BRUSH_HARDNESS)
-    this.storeBrushCookie()
+    this.storeStateCookie()
   }
 
   updateCanvasFilterSupport (isSupported) {
@@ -248,10 +255,14 @@ export default class DataHandler {
     this.threads.trigger(THREAD_DISTANCE)
   }
 
-  storeBrushCookie () {
+  storeStateCookie ({ noTimeout }) {
+    const timeout = noTimeout ? 0 : 5000
+
     window.clearTimeout(this.cookieTimout)
     this.cookieTimout = window.setTimeout(() => {
-      setCookie('brush', JSON.stringify(this.brush.state))
-    }, 5000)
+      setCookie('state', JSON.stringify({
+        brush: this.brush.state
+      }))
+    }, timeout)
   }
 }

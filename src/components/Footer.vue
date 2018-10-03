@@ -21,7 +21,11 @@
           />
         </li>
         <li class="text-bold mrgla hover relative language">
-          <select v-model="$i18n.locale" class="language__select">
+          <select
+            v-model="$i18n.locale"
+            class="language__select"
+            @change="handleLanguageChange"
+          >
             <option v-for="(lang, i) in languages" :key="`Lang${i}`" :value="lang.key">{{ lang.label }}</option>
           </select>
           <div class="text-bold pdg lg-pdg+ h-100 language__button">
@@ -35,10 +39,10 @@
             <span class="hidden-sm-down">GitHub</span>
           </a>
         </li>
-        <li class="flex-1 text-right hidden-xs-down">
+        <li class="flex-1 text-right hidden-xs-down footer__about">
           <div class="pdg lg-pdg+">
-            Made by <a href="http://www.janhug.info" class="text-bold">Jan Hug</a>
-            <span class="hidden-md-down">– Contributions from <a href="https://github.com/thormeier">@thormeier</a> and <a href="https://github.com/munxar">@munxar</a>. Thanks!</span>
+            Made by <a href="http://www.janhug.info" class="text-bold">Jan Hug</a> at
+            <a href="https://www.liip.ch"><liip-logo /></a>
           </div>
         </li>
       </ul>
@@ -48,10 +52,12 @@
 
 <script>
 import { EventBus } from '@/events'
+import { setCookie } from '@/tools/helpers'
 import BrowserSupport from '@/components/BrowserSupport.vue'
 import Connection from '@/components/Connection.vue'
 
 import IconGithub from '@/assets/icons/icon-github.svg'
+import LiipLogo from '@/assets/icons/liip-logo.svg'
 
 export default {
   name: 'Footer',
@@ -59,7 +65,8 @@ export default {
   components: {
     BrowserSupport,
     IconGithub,
-    Connection
+    Connection,
+    LiipLogo
   },
 
   props: {
@@ -106,6 +113,10 @@ export default {
 
     closeBrowserSupport () {
       this.browserSupportVisible = false
+    },
+
+    handleLanguageChange (e) {
+      setCookie('locale', e.target.value)
     }
   },
 
@@ -174,6 +185,13 @@ export default {
   opacity: 0;
   &:focus {
     outline: none;
+  }
+}
+
+.footer__about {
+  svg {
+    height: 0.7em;
+    margin-left: 0.5rem;
   }
 }
 </style>
