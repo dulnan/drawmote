@@ -1,7 +1,7 @@
 <template>
   <div class="drawing">
     <toolbar ref="toolbar" />
-    <div class="drawing-area" ref="canvasContainer"></div>
+    <div class="drawing-area" ref="canvasContainer" :style="drawingAreaStyle"></div>
     <canvas-drawing />
     <canvas-interface />
   </div>
@@ -29,6 +29,20 @@ export default {
     CanvasInterface
   },
 
+  data () {
+    return {
+      toolbarHeight: 0
+    }
+  },
+
+  computed: {
+    drawingAreaStyle () {
+      return {
+        top: `${this.toolbarHeight}px`
+      }
+    }
+  },
+
   draw: [
     {
       threads: [THREAD_SIZES],
@@ -48,6 +62,7 @@ export default {
       if (this.$refs.toolbar) {
         const toolbarRect = this.$refs.toolbar.$el.getBoundingClientRect()
         this.$global.updateToolbarRect(toolbarRect)
+        this.toolbarHeight = toolbarRect.height
       }
     }
   },
@@ -71,7 +86,6 @@ export default {
 
 .drawing-area {
   position: absolute;
-  top: $toolbar-height;
   left: 0;
   right: 0;
   bottom: 0;

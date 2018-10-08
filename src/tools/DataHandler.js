@@ -255,7 +255,7 @@ export default class DataHandler {
     this.threads.trigger(THREAD_DISTANCE)
   }
 
-  storeStateCookie ({ noTimeout }) {
+  storeStateCookie ({ noTimeout } = {}) {
     const timeout = noTimeout ? 0 : 5000
 
     window.clearTimeout(this.cookieTimout)
