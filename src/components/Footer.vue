@@ -1,6 +1,5 @@
 <template>
   <div class="footer">
-    <connection />
     <div class="footer__content">
       <ul class="list-inline list-inline--divided list-inline--tight text-small footer__list">
         <li class="relative footer__browser-support">
@@ -54,7 +53,6 @@
 import { EventBus } from '@/events'
 import { setCookie } from '@/tools/helpers'
 import BrowserSupport from '@/components/BrowserSupport.vue'
-import Connection from '@/components/Connection.vue'
 
 import IconGithub from '@/assets/icons/icon-github.svg'
 import LiipLogo from '@/assets/icons/liip-logo.svg'
@@ -65,7 +63,6 @@ export default {
   components: {
     BrowserSupport,
     IconGithub,
-    Connection,
     LiipLogo
   },
 
@@ -132,11 +129,12 @@ export default {
 @import '@/assets/scss/components/_check.scss';
 
 .footer {
-  position: absolute;
+  position: fixed;
   right: 0;
   left: 0;
   bottom: 0;
   user-select: none;
+  z-index: $index-footer;
 }
 
 .footer__content {

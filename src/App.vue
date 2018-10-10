@@ -46,8 +46,10 @@ export default {
       const viewport = getViewportSize()
       this.$global.updateViewport(viewport)
 
-      this.isRemote = viewport.width < BREAKPOINT_REMOTE
-      this.hasLoaded = true
+      if (!this.$connection.isConnected()) {
+        this.isRemote = viewport.width < BREAKPOINT_REMOTE
+        this.hasLoaded = true
+      }
     }
   }
 }
@@ -56,12 +58,14 @@ export default {
 <style lang="scss">
 #app {
   background: $alt-color-lightest;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 100;
-  overflow: hidden;
+  @include media('sm') {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    overflow: auto;
+  }
 }
 </style>

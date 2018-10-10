@@ -1,7 +1,7 @@
 <template>
-  <div class="mobile-pairing pdg+">
+  <div class="mobile-pairing">
     <logo />
-    <div class="mobile-pairing__content relative">
+    <div class="mobile-pairing__content relative pdgh">
       <h1 class="text-heavy mrgt">drawmote</h1>
       <p class="h2 text-muted text-light text-hyphens mrgb+ mrgt">{{ $t('mobile.lead') }}</p>
       <div class="code code--mobile relative">
@@ -31,19 +31,23 @@
         <transition name="appear">
           <div v-if="codeInvalid" class="code__error">{{ $t('mobile.codeInvalid') }}</div>
         </transition>
+
       </div>
     </div>
+    <connection />
   </div>
 </template>
 
 <script>
 import Logo from '@/components/Logo.vue'
+import Connection from '@/components/Connection.vue'
 
 export default {
   name: 'Pairing',
 
   components: {
-    Logo
+    Logo,
+    Connection
   },
 
   data () {
@@ -96,7 +100,8 @@ export default {
   align-items: center;
   text-align: center;
   color: $color-black;
-  margin-bottom: 3rem;
+  margin-bottom: $footer-height-xs;
+  min-height: calc(100vh - #{$footer-height-xs});
 }
 
 .mobile-pairing__content {
@@ -105,7 +110,7 @@ export default {
 }
 
 .code--mobile {
-  font-size: calc((100vw - 3rem) / 7);
+  font-size: calc((100vw - 2rem) / 7);
 
   .code__circles {
     div {

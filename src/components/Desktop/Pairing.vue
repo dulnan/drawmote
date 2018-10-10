@@ -1,5 +1,5 @@
 <template>
-  <div class="overlay pairing-desktop absolute flex pdg++">
+  <div class="overlay pairing-desktop absolute flex">
     <div class="pairing__container">
       <div class="md-mrgr++">
         <logo />
@@ -8,7 +8,7 @@
         <h1 class="text-heavy sm-mrgt md-mrgt+ lg-mrgt++">drawmote</h1>
         <p class="h2 text-bold mrgb+ text-muted">{{ $t('subtitle') }}</p>
         <p class="text-muted text-light mrgt0 h2 pairing-lead">{{ $t('desktop.lead') }}</p>
-        <div class="code code--desktop mrgt++">
+        <div class="code code--desktop sm-mrgt md-mrgt+ lg-mrgt++">
           <div class="code__content">
             <div v-for="(number, index) in pairingCodeNumbers" :key="index" class="code__item" :class="{ 'visible': hasCode }">
               <div class="code-circle contains" :class="'code-circle--' + number">
@@ -28,11 +28,13 @@
         </p>
       </div>
     </div>
+    <connection />
   </div>
 </template>
 
 <script>
 import Logo from '@/components/Logo.vue'
+import Connection from '@/components/Connection.vue'
 
 import { EventBus } from '@/events'
 
@@ -43,7 +45,8 @@ export default {
   name: 'Pairing',
 
   components: {
-    Logo
+    Logo,
+    Connection
   },
 
   data () {
@@ -125,6 +128,11 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  padding-bottom: calc(#{$footer-height-xs} + 2rem);
+  @include media('md') {
+    padding-bottom: $footer-height-xs;
+  }
   &.appear-enter-active, &.appear-leave-active {
     transition: .5s;
     .pairing__content {

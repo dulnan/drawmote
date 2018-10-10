@@ -22,7 +22,11 @@ export default class Connection {
     this.EventBus = EventBus
     this.DataHandler = DataHandler
 
-    this.isConnected = false
+    this._isConnected = false
+  }
+
+  isConnected () {
+    return this._isConnected === true
   }
 
   async getStoredPeerings () {
@@ -102,12 +106,12 @@ export default class Connection {
 
     this.peer.on('connect', () => {
       this.EventBus.$emit('isConnected', true)
-      this.isConnected = true
+      this._isConnected = true
       this.saveSession(code, hash)
     })
 
     this.peer.on('close', () => {
-      this.isConnected = false
+      this._isConnected = false
     })
 
     this.peer.on('connect_timeout', () => {
@@ -119,7 +123,7 @@ export default class Connection {
     })
 
     this.peer.on('error', (data) => {
-      this.isConnected = false
+      this._isConnected = false
       this.EventBus.$emit('connectionTimeout')
     })
 
@@ -140,7 +144,7 @@ export default class Connection {
   }
 
   emit (name, data) {
-    if (!this.isConnected) {
+    if (!this._isConnected) {
       return
     }
 
