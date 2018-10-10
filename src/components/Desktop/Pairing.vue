@@ -25,11 +25,13 @@
         </p>
       </div>
     </div>
+        <connection />
   </div>
 </template>
 
 <script>
 import Logo from '@/components/Logo.vue'
+import Connection from '@/components/Connection.vue'
 
 const PAIRING_TIMEOUT = 120
 let interval = null
@@ -38,7 +40,8 @@ export default {
   name: 'Pairing',
 
   components: {
-    Logo
+    Logo,
+    Connection
   },
 
   data () {
@@ -115,6 +118,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
   &.appear-enter-active, &.appear-leave-active {
     transition: .5s;
     .pairing__content {

@@ -1,6 +1,5 @@
 <template>
   <div class="footer">
-    <connection />
     <div class="footer__content">
       <ul class="list-inline list-inline--divided list-inline--tight text-small footer__list">
         <li class="relative footer__browser-support">
@@ -54,7 +53,6 @@
 <script>
 import { EventBus } from '@/events'
 import BrowserSupport from '@/components/BrowserSupport.vue'
-import Connection from '@/components/Connection.vue'
 
 import IconGithub from '@/assets/icons/icon-github.svg'
 
@@ -63,8 +61,7 @@ export default {
 
   components: {
     BrowserSupport,
-    IconGithub,
-    Connection
+    IconGithub
   },
 
   props: {
@@ -131,7 +128,7 @@ export default {
 @import '@/assets/scss/components/_check.scss';
 
 .footer {
-  position: absolute;
+  position: fixed;
   right: 0;
   left: 0;
   bottom: 0;
