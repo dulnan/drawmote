@@ -50,6 +50,7 @@ export default class DataHandler {
 
     this.canvasRect = new Rectangle(0, 0, 0, 0)
     this.toolbarRect = new Rectangle(0, 0, 0, 0)
+    this.footerRect = new Rectangle(0, 0, 0, 0)
 
     this.pointingAtToolbar = false
     this.hasCalibrated = false
@@ -67,7 +68,8 @@ export default class DataHandler {
       sizes: {
         viewport: this.viewport,
         canvasRect: this.canvasRect,
-        toolbarRect: this.toolbarRect
+        toolbarRect: this.toolbarRect,
+        footerRect: this.footerRect
       },
       points: {
         brush: this.lazyBrush.brush.toObject(),
@@ -191,6 +193,11 @@ export default class DataHandler {
 
   updateToolbarRect (rect) {
     this.toolbarRect.setFromDOMRect(rect)
+    this.threads.trigger(THREAD_STATE)
+  }
+
+  updateFooterRect (rect) {
+    this.footerRect.setFromDOMRect(rect)
     this.threads.trigger(THREAD_STATE)
   }
 

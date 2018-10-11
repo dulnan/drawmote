@@ -1,5 +1,5 @@
 <template>
-  <div class="footer">
+  <div class="footer" ref="footer">
     <div class="footer__content">
       <ul class="list-inline list-inline--divided list-inline--tight text-small footer__list">
         <li class="relative footer__browser-support">
@@ -50,6 +50,8 @@
 </template>
 
 <script>
+import debouncedResize from 'debounced-resize'
+
 import { EventBus } from '@/events'
 import { setCookie } from '@/tools/helpers'
 import BrowserSupport from '@/components/BrowserSupport.vue'
@@ -114,12 +116,20 @@ export default {
 
     handleLanguageChange (e) {
       setCookie('locale', e.target.value)
+    },
+
+    updateSizes () {
+      this.$global.updateFooterRect(this.$refs.footer.getBoundingClientRect())
     }
   },
 
   mounted () {
     EventBus.$on('isConnected', (isConnected) => {
       this.isConnected = isConnected
+    })
+    this.updateSizes()
+    debouncedResize((e) => {
+      this.updateSizes()
     })
   }
 }
