@@ -58,7 +58,7 @@ export default {
 <style lang="scss">
 #app {
   background: $alt-color-lightest;
-  @include media('md') {
+  @include media('sm') {
     position: absolute;
     top: 0;
     left: 0;

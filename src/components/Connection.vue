@@ -7,7 +7,7 @@
         </div>
         <div>
           <h3 class="text-bold">{{ $t('connection.title') }}</h3>
-          <p class="mrg0 h4 text-light text-hyphens mrgb sm-mrgb0">{{ $t('connection.text') }}</p>
+          <p class="mrg0 h4 text-light text-hyphens mrgb sm-mrgb0 sm-pdgr-">{{ $t('connection.text') }}</p>
         </div>
       </div>
       <div class="connection__buttons flex md-mrgl">
@@ -101,8 +101,7 @@ export default {
 .connection {
   position: relative;
   position: sticky;
-  bottom: 0;
-  z-index: 0;
+  bottom: $footer-height-xs;
   z-index: $index-footer - 1;
   /* margin-bottom: 1px; */
   background: white;

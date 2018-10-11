@@ -78,12 +78,13 @@ $logo-base: 768;
   font-size: 9rem;
 
   @include media('sm') {
-    font-size: 14rem;
+    font-size: 11rem;
   }
   @include media('md') {
-    font-size: 9rem;
+    font-size: 12rem;
   }
   @include media('lg') {
+    font-size: 16rem;
     margin-left: -1em;
   }
 }
@@ -100,7 +101,7 @@ $logo-base: 768;
   justify-content: center;
   box-shadow: 0 ((30 / $logo-base) * 1em) ((100 / $logo-base) * 1em) ((7 / $logo-base) * 1em) rgba(0,0,0,0.04),
   0 ((1 / $logo-base) * 1em) ((4 / $logo-base) * 1em) ((2 / $logo-base) * 1em) rgba(0,0,0,0.01);
-  // animation: 5s pulse cubic-bezier(1, -0.04, 0.63, 1.01) infinite alternate;
+  /* animation: 2s pulse cubic-bezier(1, -0.04, 0.63, 1.01) infinite alternate; */
 
   img {
     display: block;

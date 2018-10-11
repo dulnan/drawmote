@@ -100,7 +100,8 @@ export default {
   align-items: center;
   text-align: center;
   color: $color-black;
-  margin-bottom: rem(54px);
+  margin-bottom: $footer-height-xs;
+  min-height: calc(100vh - #{$footer-height-xs});
 }
 
 .mobile-pairing__content {
