@@ -3,21 +3,16 @@ import Button from '@/components/Desktop/Toolbar/Button/Button.vue'
 
 import { getRgbaString, shadeRgbColor } from '@/tools/helpers.js'
 
-import { THREAD_BRUSH_COLOR } from '@/settings/drawthreads'
+import { threads } from '@/plugins/state'
 
 export default {
   extends: Button,
 
   name: 'ToolbarButtonColor',
 
-  draw: [
-    {
-      threads: [THREAD_BRUSH_COLOR],
-      handler: function (state) {
-        this.isActive = this.tool.color.name === state.brush.color.name
-      }
-    }
-  ],
+  loop: {
+    handleColorChange: [threads.BRUSH_COLOR]
+  },
 
   computed: {
     style () {
@@ -37,8 +32,12 @@ export default {
   },
 
   methods: {
+    handleColorChange (state) {
+      this.isActive = this.tool.color.name === state.brush.color.name
+    },
+
     handleClick () {
-      this.$global.updateBrushColor(this.tool.color)
+      this.$loop.mutate('updateBrushColor', this.tool.color)
       this.$track('Toolbar', 'setColor', this.tool.color.name)
     }
   }

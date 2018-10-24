@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { THREAD_SIZES } from '@/settings/drawthreads'
+import { threads } from '@/plugins/state'
 
 import Toolbar from '@/components/Desktop/Toolbar/Toolbar.vue'
 import CanvasDrawing from '@/components/Desktop/Canvas/CanvasDrawing.vue'
@@ -43,25 +43,20 @@ export default {
     }
   },
 
-  draw: [
-    {
-      threads: [THREAD_SIZES],
-      handler: function (state) {
-        this.getElementSizes()
-      }
-    }
-  ],
+  loop: {
+    getElementSizes: [threads.SIZES]
+  },
 
   methods: {
     getElementSizes () {
       if (this.$refs.canvasContainer) {
         const canvasRect = this.$refs.canvasContainer.getBoundingClientRect()
-        this.$global.updateCanvasRect(canvasRect)
+        this.$loop.mutate('updateCanvasRect', canvasRect)
       }
 
       if (this.$refs.toolbar) {
         const toolbarRect = this.$refs.toolbar.$el.getBoundingClientRect()
-        this.$global.updateToolbarRect(toolbarRect)
+        this.$loop.mutate('updateToolbarRect', toolbarRect)
         this.toolbarHeight = toolbarRect.height
       }
     }

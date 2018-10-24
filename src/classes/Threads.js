@@ -1,5 +1,5 @@
-const buildKey = (uid, watching) => {
-  return `vue_${uid}_${watching.join('_')}`
+const buildKey = (uid, name) => {
+  return `vue_${uid}_${name}`
 }
 
 /**
@@ -7,23 +7,24 @@ const buildKey = (uid, watching) => {
  * a way to add, remove and run them.
  */
 class Thread {
-  constructor () {
+  constructor (name) {
+    this.name = name
     this.handlers = []
   }
 
   /**
    * Add a handler.
    *
-   * @param {Handler} handler The handler to be added.
-   * @param {String} uid The uid of the Vue component
-   * @param {Object} context The context of the Vue component
+   * @param {Function} method The method to be added.
+   * @param {String} uid The uid of the Vue component.
+   * @param {Object} context The context of the Vue component.
    */
-  add (handler, uid, context) {
-    const key = buildKey(uid, handler.threads)
+  add (method, uid, context) {
+    const key = buildKey(uid, this.name)
 
     this.handlers.push({
       key: key,
-      method: handler.handler,
+      method: method,
       context: context
     })
   }
@@ -34,8 +35,8 @@ class Thread {
    * @param {Handler} handler The handler to be removed.
    * @param {String} uid The uid of the Vue component.
    */
-  remove (handler, uid) {
-    const key = buildKey(uid, handler.threads)
+  remove (uid) {
+    const key = buildKey(uid, this.name)
 
     for (let i = 0; i < this.handlers.length; i++) {
       if (this.handlers[i] !== null && this.handlers[i].key === key) {
@@ -73,23 +74,17 @@ export default class Threads {
     this.queue = {}
   }
 
-  addHandler (event, uid, context) {
-    event.threads.forEach(thread => {
-      if (!this.threads[thread]) {
-        this.threads[thread] = new Thread()
-      }
+  addHandler (method, threadName, uid, context) {
+    if (!this.threads[threadName]) {
+      this.threads[threadName] = new Thread(threadName)
+    }
 
-      this.threads[thread].add(event, uid, context)
-      this.trigger(thread)
-    })
+    this.threads[threadName].add(method, uid, context)
+    this.trigger(threadName)
   }
 
-  removeHandler (event, uid) {
-    event.threads.forEach(thread => {
-      if (this.threads[thread]) {
-        this.threads[thread].remove(event, uid)
-      }
-    })
+  removeHandler (method, threadName, uid) {
+    this.threads[threadName].remove(uid)
   }
 
   trigger (thread) {

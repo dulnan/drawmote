@@ -119,7 +119,7 @@ export default {
     },
 
     updateSizes () {
-      this.$global.updateFooterRect(this.$refs.footer.getBoundingClientRect())
+      this.$loop.mutate('updateFooterRect', this.$refs.footer.getBoundingClientRect())
     }
   },
 

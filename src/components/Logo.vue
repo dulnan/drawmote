@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { THREAD_SIZES } from '@/settings/drawthreads'
+import { threads } from '@/plugins/state'
 
 import BackgroundAnimation from '@/components/BackgroundAnimation.vue'
 
@@ -19,14 +19,9 @@ export default {
     BackgroundAnimation
   },
 
-  draw: [
-    {
-      threads: [THREAD_SIZES],
-      handler: function (state) {
-        this.setCenter()
-      }
-    }
-  ],
+  loop: {
+    setCenter: [threads.SIZES]
+  },
 
   data () {
     return {
@@ -42,11 +37,13 @@ export default {
 
   methods: {
     setCenter () {
-      const rect = this.$refs.logo.getBoundingClientRect()
+      if (this.$refs.logo) {
+        const rect = this.$refs.logo.getBoundingClientRect()
 
-      this.center = {
-        x: rect.left + (rect.width / 2),
-        y: rect.top + (rect.height / 2)
+        this.center = {
+          x: rect.left + (rect.width / 2),
+          y: rect.top + (rect.height / 2)
+        }
       }
     }
   },

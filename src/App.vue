@@ -30,7 +30,7 @@ export default {
   },
 
   created () {
-    this.$global.init()
+    // this.$global.init()
   },
 
   mounted () {
@@ -44,7 +44,7 @@ export default {
   methods: {
     updateViewport () {
       const viewport = getViewportSize()
-      this.$global.updateViewport(viewport)
+      this.$loop.mutate('updateViewport', viewport)
 
       if (!this.$connection.isConnected()) {
         this.isRemote = viewport.width < BREAKPOINT_REMOTE

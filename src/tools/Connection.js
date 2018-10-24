@@ -3,6 +3,8 @@ import axios from 'axios'
 
 import { getCookie, setCookie, eraseCookie, parseDataString, buildDevServerUrl } from '@/tools/helpers'
 
+import { EventBus } from '@/events'
+
 function getServerUrl () {
   if (process.env.VUE_APP_API_URL) {
     return process.env.VUE_APP_API_URL
@@ -13,14 +15,14 @@ function getServerUrl () {
 
 const SERVER = getServerUrl()
 
-export default class Connection {
-  constructor (EventBus, DataHandler) {
+class Connection {
+  constructor (Loop) {
     this.peer = null
     this.isDesktop = false
     this.hash = ''
     this.code = ''
     this.EventBus = EventBus
-    this.DataHandler = DataHandler
+    this.Loop = Loop
 
     this._isConnected = false
   }
@@ -132,10 +134,10 @@ export default class Connection {
 
       switch (data.name) {
         case 'Orientation':
-          this.DataHandler.updateFromRemote(parseDataString(data.myData))
+          this.Loop.mutate('updateFromRemote', parseDataString(data.myData))
           break
         case 'OrientationOffset':
-          this.DataHandler.updateCalibrationOffset(data.myData)
+          this.Loop.mutate('updateCalibrationOffset', data.myData)
           break
         default:
           this.EventBus.$emit(data.name, data.myData)
@@ -152,5 +154,12 @@ export default class Connection {
       name: name,
       myData: data
     }))
+  }
+}
+
+export default {
+  install (Vue, options) {
+    console.log(Vue.prototype)
+    Vue.prototype.$connection = new Connection(Vue.prototype.$loop)
   }
 }
