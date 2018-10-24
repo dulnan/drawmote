@@ -1,6 +1,6 @@
 <script>
 import { OPACITY_MIN, OPACITY_MAX } from '@/settings'
-import { threads } from '@/plugins/state'
+import { threads } from '@/store'
 
 import Slider from '@/components/Desktop/Toolbar/Slider/Slider.vue'
 

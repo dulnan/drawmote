@@ -159,7 +159,6 @@ class Connection {
 
 export default {
   install (Vue, options) {
-    console.log(Vue.prototype)
     Vue.prototype.$connection = new Connection(Vue.prototype.$loop)
   }
 }

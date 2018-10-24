@@ -3,7 +3,7 @@ import Button from '@/components/Desktop/Toolbar/Button/Button.vue'
 
 import { getRgbaString, shadeRgbColor } from '@/tools/helpers.js'
 
-import { threads } from '@/plugins/state'
+import { threads } from '@/store'
 
 export default {
   extends: Button,

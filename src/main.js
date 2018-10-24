@@ -4,10 +4,10 @@ import { getCookie } from '@/tools/helpers'
 
 import './assets/scss/main.scss'
 
-import VueLoop from './plugins/VueLoop'
+import VueLoop from 'vue-tamin'
 import Connection from './tools/Connection'
 
-import { store } from './plugins/state'
+import { store } from './store'
 import i18n from './i18n'
 
 Vue.use(VueLoop, store)

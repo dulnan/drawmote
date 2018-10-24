@@ -9,7 +9,7 @@
 import Canvas from '@/mixins/Canvas'
 import { Catenary } from 'catenary-curve'
 
-import { threads } from '@/plugins/state'
+import { threads } from '@/store'
 import { RADIUS_MAX } from '@/settings'
 
 const BRUSH_PREVIEW_PADDING = 30

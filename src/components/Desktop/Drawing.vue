@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { threads } from '@/plugins/state'
+import { threads } from '@/store'
 
 import Toolbar from '@/components/Desktop/Toolbar/Toolbar.vue'
 import CanvasDrawing from '@/components/Desktop/Canvas/CanvasDrawing.vue'

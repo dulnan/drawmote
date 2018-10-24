@@ -1,6 +1,6 @@
 <script>
 import { RADIUS_MIN, RADIUS_MAX } from '@/settings'
-import { threads } from '@/plugins/state'
+import { threads } from '@/store'
 
 import Slider from '@/components/Desktop/Toolbar/Slider/Slider.vue'
 

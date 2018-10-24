@@ -12,7 +12,7 @@ import { EventBus } from '@/events'
 
 import CanvasState from '@/classes/CanvasState.js'
 import { isSamePoint } from '@/tools/helpers.js'
-import { threads } from '@/plugins/state'
+import { threads } from '@/store'
 
 export default {
   name: 'CanvasDrawing',
