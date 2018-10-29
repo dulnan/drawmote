@@ -9,7 +9,7 @@ export default {
 
   name: 'SliderLazyRadius',
 
-  loop: {
+  vuetamin: {
     handleLazyRadiusChange: [threads.LAZYRADIUS]
   },
 
@@ -28,7 +28,7 @@ export default {
     },
 
     handleValueChange (value) {
-      this.$loop.mutate('updateLazyRadius', value)
+      this.$vuetamin.store.mutate('updateLazyRadius', value)
     }
   }
 }

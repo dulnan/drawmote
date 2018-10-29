@@ -21,7 +21,7 @@ export const threads = {
 }
 
 export const store = {
-  state: data => {
+  state: function (data) {
     return {
       brush: data.brush,
       isPressing: data.isPressing,
@@ -42,7 +42,7 @@ export const store = {
     }
   },
 
-  data: () => {
+  data: function () {
     const viewport = {
       width: 1280,
       height: 900,
@@ -101,6 +101,7 @@ export const store = {
       canvasFilterSupported: false
     }
   },
+
   mutations: {
     updatePointer: function ({ data, trigger }, { coordinates, both = false } = {}) {
       const updateBoth = both || data.hasCalibrated

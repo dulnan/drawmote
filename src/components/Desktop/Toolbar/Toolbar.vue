@@ -68,7 +68,7 @@ export default {
     SliderDistance
   },
 
-  loop: {
+  vuetamin: {
     calculatePointerAreas: [threads.SIZES],
     handleToolsChange: [threads.TOOLS]
   },
@@ -159,7 +159,7 @@ export default {
       }
     },
     calculatePointerAreas () {
-      this.canvasFilterSupported = this.$loop.data.canvasFilterSupported
+      this.canvasFilterSupported = this.$vuetamin.store.data.canvasFilterSupported
 
       let items = []
       this.$refs.items.forEach(item => {

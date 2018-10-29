@@ -10,7 +10,7 @@ export default {
 
   name: 'ToolbarButtonColor',
 
-  loop: {
+  vuetamin: {
     handleColorChange: [threads.BRUSH_COLOR]
   },
 
@@ -37,7 +37,7 @@ export default {
     },
 
     handleClick () {
-      this.$loop.mutate('updateBrushColor', this.tool.color)
+      this.$vuetamin.store.mutate('updateBrushColor', this.tool.color)
       this.$track('Toolbar', 'setColor', this.tool.color.name)
     }
   }

@@ -4,13 +4,13 @@ import { getCookie } from '@/tools/helpers'
 
 import './assets/scss/main.scss'
 
-import VueLoop from 'vue-tamin'
+import Vuetamin from 'vue-tamin'
 import Connection from './tools/Connection'
 
 import { store } from './store'
 import i18n from './i18n'
 
-Vue.use(VueLoop, store)
+Vue.use(Vuetamin, { store })
 Vue.use(Connection)
 
 Vue.config.productionTip = false

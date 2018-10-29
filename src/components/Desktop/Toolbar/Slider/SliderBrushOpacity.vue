@@ -9,8 +9,8 @@ export default {
 
   name: 'SliderBrushOpacity',
 
-  loop: {
-    handleOpacityChange: [threads.BRUSH_OPACITY]
+  vuetamin: {
+    handleOpacityChange: [threads.BRUSH_OPACITY, threads.BRUSH]
   },
 
   data () {
@@ -34,7 +34,7 @@ export default {
     },
 
     handleValueChange (value) {
-      this.$loop.mutate('updateBrushOpacity', value)
+      this.$vuetamin.store.mutate('updateBrushOpacity', value)
     }
   }
 }

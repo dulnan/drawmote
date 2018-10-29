@@ -8,7 +8,7 @@ export default {
 
   name: 'SliderDistance',
 
-  loop: {
+  vuetamin: {
     handleSizesChange: [threads.SIZES],
     handleDistanceChange: [threads.DISTANCE]
   },
@@ -34,7 +34,7 @@ export default {
     },
 
     handleValueChange (value) {
-      this.$loop.mutate('updateDistance', value)
+      this.$vuetamin.store.mutate('updateDistance', value)
     }
   }
 }

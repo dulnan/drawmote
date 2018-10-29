@@ -43,7 +43,7 @@ export default {
     }
   },
 
-  loop: {
+  vuetamin: {
     getElementSizes: [threads.SIZES]
   },
 
@@ -51,12 +51,12 @@ export default {
     getElementSizes () {
       if (this.$refs.canvasContainer) {
         const canvasRect = this.$refs.canvasContainer.getBoundingClientRect()
-        this.$loop.mutate('updateCanvasRect', canvasRect)
+        this.$vuetamin.store.mutate('updateCanvasRect', canvasRect)
       }
 
       if (this.$refs.toolbar) {
         const toolbarRect = this.$refs.toolbar.$el.getBoundingClientRect()
-        this.$loop.mutate('updateToolbarRect', toolbarRect)
+        this.$vuetamin.store.mutate('updateToolbarRect', toolbarRect)
         this.toolbarHeight = toolbarRect.height
       }
     }

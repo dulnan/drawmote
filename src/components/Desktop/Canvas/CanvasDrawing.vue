@@ -21,9 +21,9 @@ export default {
     Canvas
   ],
 
-  loop: {
+  vuetamin: {
     handleSizes: [threads.SIZES],
-    handlePoint: [threads.POINT]
+    handlePoint: threads.POINT
   },
 
   data () {
@@ -79,7 +79,7 @@ export default {
     },
 
     setCanvasSizes () {
-      this.setupCanvases(this.$loop.getState().sizes.viewport, [
+      this.setupCanvases(this.$vuetamin.store.getState().sizes.viewport, [
         this.$refs.canvas_main,
         this.$refs.canvas_temp
       ])

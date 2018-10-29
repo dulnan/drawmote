@@ -44,7 +44,7 @@ export default {
   methods: {
     updateViewport () {
       const viewport = getViewportSize()
-      this.$loop.mutate('updateViewport', viewport)
+      this.$vuetamin.store.mutate('updateViewport', viewport)
 
       if (!this.$connection.isConnected()) {
         this.isRemote = viewport.width < BREAKPOINT_REMOTE

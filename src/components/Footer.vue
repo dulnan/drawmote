@@ -119,7 +119,7 @@ export default {
     },
 
     updateSizes () {
-      this.$loop.mutate('updateFooterRect', this.$refs.footer.getBoundingClientRect())
+      this.$vuetamin.store.mutate('updateFooterRect', this.$refs.footer.getBoundingClientRect())
     }
   },
 

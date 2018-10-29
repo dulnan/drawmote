@@ -17,7 +17,7 @@ export default {
     handleMouseMove (e) {
       this.preventEventIfRequired(e)
 
-      this.$loop.mutate('updatePointer', {
+      this.$vuetamin.store.mutate('updatePointer', {
         coordinates: {
           x: e.clientX,
           y: e.clientY
@@ -26,14 +26,14 @@ export default {
     },
 
     handleMouseDown () {
-      this.$loop.mutate('updateIsPressing', {
+      this.$vuetamin.store.mutate('updateIsPressing', {
         isPressing: true,
         fromMouse: true
       })
     },
 
     handleMouseUp () {
-      this.$loop.mutate('updateIsPressing', {
+      this.$vuetamin.store.mutate('updateIsPressing', {
         isPressing: false,
         fromMouse: true
       })
@@ -43,7 +43,7 @@ export default {
       this.preventEventIfRequired(e)
       const touch = e.changedTouches[0]
 
-      this.$loop.mutate('updatePointer', {
+      this.$vuetamin.store.mutate('updatePointer', {
         both: true,
         coordinates: {
           x: touch.pageX,
@@ -59,7 +59,7 @@ export default {
 
       const touch = e.changedTouches[0]
 
-      this.$loop.mutate('updatePointer', {
+      this.$vuetamin.store.mutate('updatePointer', {
         coordinates: {
           x: touch.pageX,
           y: touch.pageY
@@ -73,7 +73,7 @@ export default {
     },
 
     preventEventIfRequired (e) {
-      if (!this.$loop.getState().pointingAtToolbar) {
+      if (!this.$vuetamin.store.getState().pointingAtToolbar) {
         e.preventDefault()
       }
     }

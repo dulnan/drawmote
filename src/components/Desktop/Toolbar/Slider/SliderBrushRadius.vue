@@ -9,7 +9,7 @@ export default {
 
   name: 'SliderBrushRadius',
 
-  loop: {
+  vuetamin: {
     handleRadiusChange: [threads.BRUSH_RADIUS]
   },
 
@@ -28,7 +28,7 @@ export default {
     },
 
     handleValueChange (value) {
-      this.$loop.mutate('updateBrushRadius', value)
+      this.$vuetamin.store.mutate('updateBrushRadius', value)
     }
   }
 }

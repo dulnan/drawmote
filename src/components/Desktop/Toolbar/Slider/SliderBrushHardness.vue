@@ -9,7 +9,7 @@ export default {
 
   name: 'SliderBrushHardness',
 
-  loop: {
+  vuetamin: {
     handleHardnessChange: [threads.BRUSH_HARDNESS]
   },
 
@@ -28,7 +28,7 @@ export default {
     },
 
     handleValueChange (value) {
-      this.$loop.mutate('updateBrushHardness', value)
+      this.$vuetamin.store.mutate('updateBrushHardness', value)
     }
   }
 }

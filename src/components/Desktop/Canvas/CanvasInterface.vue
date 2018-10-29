@@ -21,7 +21,7 @@ export default {
     Canvas
   ],
 
-  loop: {
+  vuetamin: {
     setCanvasSizes: [threads.SIZES],
     drawToCanvas: [threads.BRUSH, threads.POINT, threads.SLIDE]
   },
@@ -49,7 +49,7 @@ export default {
      * Call the function to set the width and height of the canvas elements.
      */
     setCanvasSizes () {
-      this.setupCanvases(this.$loop.getState().sizes.viewport, [this.$refs.canvas_interface])
+      this.setupCanvases(this.$vuetamin.store.getState().sizes.viewport, [this.$refs.canvas_interface])
     },
 
     drawToCanvas (state) {

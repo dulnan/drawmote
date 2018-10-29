@@ -19,7 +19,7 @@ export default {
     BackgroundAnimation
   },
 
-  loop: {
+  vuetamin: {
     setCenter: [threads.SIZES]
   },
 
