@@ -4,7 +4,7 @@ import { getCookie } from '@/tools/helpers'
 
 import './assets/scss/main.scss'
 
-import Vuetamin from 'vue-tamin'
+import Vuetamin from 'vuetamin'
 import Connection from './tools/Connection'
 
 import { store } from './store'

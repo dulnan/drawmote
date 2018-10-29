@@ -16,13 +16,13 @@ function getServerUrl () {
 const SERVER = getServerUrl()
 
 class Connection {
-  constructor (Loop) {
+  constructor (Vuetamin) {
     this.peer = null
     this.isDesktop = false
     this.hash = ''
     this.code = ''
     this.EventBus = EventBus
-    this.Loop = Loop
+    this.Vuetamin = Vuetamin
 
     this._isConnected = false
   }
@@ -134,10 +134,10 @@ class Connection {
 
       switch (data.name) {
         case 'Orientation':
-          this.Loop.mutate('updateFromRemote', parseDataString(data.myData))
+          this.Vuetamin.store.mutate('updateFromRemote', parseDataString(data.myData))
           break
         case 'OrientationOffset':
-          this.Loop.mutate('updateCalibrationOffset', data.myData)
+          this.Vuetamin.store.mutate('updateCalibrationOffset', data.myData)
           break
         default:
           this.EventBus.$emit(data.name, data.myData)
@@ -159,6 +159,6 @@ class Connection {
 
 export default {
   install (Vue, options) {
-    Vue.prototype.$connection = new Connection(Vue.prototype.$loop)
+    Vue.prototype.$connection = new Connection(Vue.prototype.$vuetamin)
   }
 }
