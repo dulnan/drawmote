@@ -1,27 +1,27 @@
 import Vue from 'vue'
-
 import App from './App.vue'
-
-import { EventBus } from './events'
-import Connection from './tools/Connection'
-import DataHandler from './tools/DataHandler'
+import { getCookie } from '@/tools/helpers'
 
 import './assets/scss/main.scss'
 
-import VueLoop from './plugins/VueLoop'
+import Vuetamin from 'vuetamin'
+import Connection from './tools/Connection'
+
+import { store } from './store'
 import i18n from './i18n'
 
-Vue.use(VueLoop)
+Vue.use(Vuetamin, { store })
+Vue.use(Connection)
 
 Vue.config.productionTip = false
 
-const global = new DataHandler()
-window.global = global
-Vue.prototype.$global = global
-Vue.prototype.$connection = new Connection(EventBus, global)
-
 Vue.prototype.$track = function (category, action, value) {
   window._paq.push(['trackEvent', category, action, value])
+}
+
+const locale = getCookie('locale')
+if (locale) {
+  i18n.locale = locale
 }
 
 new Vue({

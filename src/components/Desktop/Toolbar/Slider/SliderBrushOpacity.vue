@@ -1,6 +1,6 @@
 <script>
 import { OPACITY_MIN, OPACITY_MAX } from '@/settings'
-import { THREAD_BRUSH_OPACITY } from '@/settings/drawthreads'
+import { threads } from '@/store'
 
 import Slider from '@/components/Desktop/Toolbar/Slider/Slider.vue'
 
@@ -9,16 +9,9 @@ export default {
 
   name: 'SliderBrushOpacity',
 
-  draw: [
-    {
-      threads: [THREAD_BRUSH_OPACITY],
-      handler: function (state) {
-        if (this.value !== state.brush.opacity) {
-          this.value = state.brush.opacity
-        }
-      }
-    }
-  ],
+  vuetamin: {
+    handleOpacityChange: [threads.BRUSH_OPACITY, threads.BRUSH]
+  },
 
   data () {
     return {
@@ -28,6 +21,12 @@ export default {
   },
 
   methods: {
+    handleOpacityChange (state) {
+      if (this.value !== state.brush.opacity) {
+        this.value = state.brush.opacity
+      }
+    },
+
     handleStateChange (state) {
       if (this.value !== state.brush.opacity) {
         this.value = state.brush.opacity
@@ -35,7 +34,7 @@ export default {
     },
 
     handleValueChange (value) {
-      this.$global.updateBrushOpacity(value)
+      this.$vuetamin.store.mutate('updateBrushOpacity', value)
     }
   }
 }

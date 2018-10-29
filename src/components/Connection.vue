@@ -7,7 +7,7 @@
         </div>
         <div>
           <h3 class="text-bold">{{ $t('connection.title') }}</h3>
-          <p class="mrg0 h4 text-light text-hyphens mrgb sm-mrgb0">{{ $t('connection.text') }}</p>
+          <p class="mrg0 h4 text-light text-hyphens mrgb sm-mrgb0 sm-pdgr-">{{ $t('connection.text') }}</p>
         </div>
       </div>
       <div class="connection__buttons flex md-mrgl">
@@ -99,15 +99,15 @@ export default {
 
 <style lang="scss">
 .connection {
-  position: absolute;
-  z-index: 0;
-  left: 0;
-  right: 0;
-  bottom: 100%;
+  position: relative;
+  position: sticky;
+  bottom: $footer-height-xs;
   z-index: $index-footer - 1;
-  margin-bottom: 1px;
+  /* margin-bottom: 1px; */
   background: white;
   border-top: 1px solid $alt-color-light;
+  /* margin: 2rem -1.5rem; */
+  margin-top: 4rem;
 
   opacity: 1;
 
@@ -115,8 +115,17 @@ export default {
   flex-direction: column;
   justify-content: space-between;
 
+  text-align: left;
+
   @include media('sm') {
+    position: absolute;
+    left: 0;
+    bottom: rem(54px);
+    width: 100%;
     flex-direction: row;
+  }
+  @include media('lg') {
+    bottom: rem(69px);
   }
 
   &.appear-enter-active, &.appear-leave-active {

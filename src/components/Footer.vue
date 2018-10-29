@@ -1,6 +1,5 @@
 <template>
-  <div class="footer">
-    <connection />
+  <div class="footer" ref="footer">
     <div class="footer__content">
       <ul class="list-inline list-inline--divided list-inline--tight text-small footer__list">
         <li class="relative footer__browser-support">
@@ -21,7 +20,11 @@
           />
         </li>
         <li class="text-bold mrgla hover relative language">
-          <select v-model="$i18n.locale" class="language__select">
+          <select
+            v-model="$i18n.locale"
+            class="language__select"
+            @change="handleLanguageChange"
+          >
             <option v-for="(lang, i) in languages" :key="`Lang${i}`" :value="lang.key">{{ lang.label }}</option>
           </select>
           <div class="text-bold pdg lg-pdg+ h-100 language__button">
@@ -29,22 +32,17 @@
             <span class="arrow-after hidden-md-up text-uppercase">{{ currentLanguage.key }}</span>
           </div>
         </li>
-        <li class="flex-1 text-center hidden-xs-down">
-          <div class="pdg lg-pdg+">
-            Made by <a href="http://www.janhug.info" class="text-bold">Jan Hug</a>
-            <span class="hidden-md-down">– Contributions from <a href="https://github.com/thormeier">@thormeier</a> and <a href="https://github.com/munxar">@munxar</a>. Thanks!</span>
-          </div>
-        </li>
-        <li class="text-bold mrgla hidden-xs-down hover" v-show="!isConnected">
-          <button class="btn btn--bare btn--link pdg lg-pdg+ h-100" @click="togglePairing">
-            {{ $t('footer.nophone') }}
-          </button>
-        </li>
         <li class="text-bold mrgla hover">
           <a class="pdg lg-pdg+ block" href="https://github.com/dulnan/drawmote-client">
             <icon-github class="icon icon--large" />
             <span class="hidden-sm-down">GitHub</span>
           </a>
+        </li>
+        <li class="flex-1 text-right hidden-xs-down footer__about">
+          <div class="pdg lg-pdg+">
+            Made by <a href="http://www.janhug.info" class="text-bold">Jan Hug</a> at
+            <a href="https://www.liip.ch"><liip-logo /></a>
+          </div>
         </li>
       </ul>
     </div>
@@ -52,11 +50,14 @@
 </template>
 
 <script>
+import debouncedResize from 'debounced-resize'
+
 import { EventBus } from '@/events'
+import { setCookie } from '@/tools/helpers'
 import BrowserSupport from '@/components/BrowserSupport.vue'
-import Connection from '@/components/Connection.vue'
 
 import IconGithub from '@/assets/icons/icon-github.svg'
+import LiipLogo from '@/assets/icons/liip-logo.svg'
 
 export default {
   name: 'Footer',
@@ -64,7 +65,7 @@ export default {
   components: {
     BrowserSupport,
     IconGithub,
-    Connection
+    LiipLogo
   },
 
   props: {
@@ -96,11 +97,6 @@ export default {
   },
 
   methods: {
-    togglePairing () {
-      EventBus.$emit('isConnected', true)
-      this.$track('Pairing', 'skip', 1)
-    },
-
     toggleBrowserSupport () {
       this.browserSupportVisible = !this.browserSupportVisible
       this.$track('BrowserSupport', 'show', 1)
@@ -116,12 +112,24 @@ export default {
 
     closeBrowserSupport () {
       this.browserSupportVisible = false
+    },
+
+    handleLanguageChange (e) {
+      setCookie('locale', e.target.value)
+    },
+
+    updateSizes () {
+      this.$vuetamin.store.mutate('updateFooterRect', this.$refs.footer.getBoundingClientRect())
     }
   },
 
   mounted () {
     EventBus.$on('isConnected', (isConnected) => {
       this.isConnected = isConnected
+    })
+    this.updateSizes()
+    debouncedResize((e) => {
+      this.updateSizes()
     })
   }
 }
@@ -131,11 +139,12 @@ export default {
 @import '@/assets/scss/components/_check.scss';
 
 .footer {
-  position: absolute;
+  position: fixed;
   right: 0;
   left: 0;
   bottom: 0;
   user-select: none;
+  z-index: $index-footer;
 }
 
 .footer__content {
@@ -184,6 +193,13 @@ export default {
   opacity: 0;
   &:focus {
     outline: none;
+  }
+}
+
+.footer__about {
+  svg {
+    height: 0.7em;
+    margin-left: 0.5rem;
   }
 }
 </style>

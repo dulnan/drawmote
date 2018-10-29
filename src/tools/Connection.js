@@ -3,6 +3,8 @@ import axios from 'axios'
 
 import { getCookie, setCookie, eraseCookie, parseDataString, buildDevServerUrl } from '@/tools/helpers'
 
+import { EventBus } from '@/events'
+
 function getServerUrl () {
   if (process.env.VUE_APP_API_URL) {
     return process.env.VUE_APP_API_URL
@@ -13,16 +15,20 @@ function getServerUrl () {
 
 const SERVER = getServerUrl()
 
-export default class Connection {
-  constructor (EventBus, DataHandler) {
+class Connection {
+  constructor (Vuetamin) {
     this.peer = null
     this.isDesktop = false
     this.hash = ''
     this.code = ''
     this.EventBus = EventBus
-    this.DataHandler = DataHandler
+    this.Vuetamin = Vuetamin
 
-    this.isConnected = false
+    this._isConnected = false
+  }
+
+  isConnected () {
+    return this._isConnected === true
   }
 
   async getStoredPeerings () {
@@ -102,12 +108,12 @@ export default class Connection {
 
     this.peer.on('connect', () => {
       this.EventBus.$emit('isConnected', true)
-      this.isConnected = true
+      this._isConnected = true
       this.saveSession(code, hash)
     })
 
     this.peer.on('close', () => {
-      this.isConnected = false
+      this._isConnected = false
     })
 
     this.peer.on('connect_timeout', () => {
@@ -119,7 +125,7 @@ export default class Connection {
     })
 
     this.peer.on('error', (data) => {
-      this.isConnected = false
+      this._isConnected = false
       this.EventBus.$emit('connectionTimeout')
     })
 
@@ -128,10 +134,10 @@ export default class Connection {
 
       switch (data.name) {
         case 'Orientation':
-          this.DataHandler.updateFromRemote(parseDataString(data.myData))
+          this.Vuetamin.store.mutate('updateFromRemote', parseDataString(data.myData))
           break
         case 'OrientationOffset':
-          this.DataHandler.updateCalibrationOffset(data.myData)
+          this.Vuetamin.store.mutate('updateCalibrationOffset', data.myData)
           break
         default:
           this.EventBus.$emit(data.name, data.myData)
@@ -140,7 +146,7 @@ export default class Connection {
   }
 
   emit (name, data) {
-    if (!this.isConnected) {
+    if (!this._isConnected) {
       return
     }
 
@@ -148,5 +154,11 @@ export default class Connection {
       name: name,
       myData: data
     }))
+  }
+}
+
+export default {
+  install (Vue, options) {
+    Vue.prototype.$connection = new Connection(Vue.prototype.$vuetamin)
   }
 }

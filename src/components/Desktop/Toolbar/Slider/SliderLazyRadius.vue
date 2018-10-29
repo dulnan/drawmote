@@ -1,6 +1,6 @@
 <script>
 import { LAZY_RADIUS_MIN, LAZY_RADIUS_MAX } from '@/settings'
-import { THREAD_LAZYRADIUS } from '@/settings/drawthreads'
+import { threads } from '@/store'
 
 import Slider from '@/components/Desktop/Toolbar/Slider/Slider.vue'
 
@@ -9,16 +9,9 @@ export default {
 
   name: 'SliderLazyRadius',
 
-  draw: [
-    {
-      threads: [THREAD_LAZYRADIUS],
-      handler: function (state) {
-        if (this.value !== state.lazyRadius) {
-          this.value = state.lazyRadius
-        }
-      }
-    }
-  ],
+  vuetamin: {
+    handleLazyRadiusChange: [threads.LAZYRADIUS]
+  },
 
   data () {
     return {
@@ -28,8 +21,14 @@ export default {
   },
 
   methods: {
+    handleLazyRadiusChange (state) {
+      if (this.value !== state.lazyRadius) {
+        this.value = state.lazyRadius
+      }
+    },
+
     handleValueChange (value) {
-      this.$global.updateLazyRadius(value)
+      this.$vuetamin.store.mutate('updateLazyRadius', value)
     }
   }
 }

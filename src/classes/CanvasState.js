@@ -31,16 +31,33 @@ export default class CanvasState {
     this.setSizes({ width: window.innerWidth, height: window.innerHeight })
   }
 
+  /**
+   * Set the sizes of the canvas.
+   *
+   * @param {Object} size
+   * @param {Number} size.width
+   * @param {Number} size.height
+   */
   setSizes ({ width, height }) {
     this._size.width = width
     this._size.height = height
   }
 
+  /**
+   * Update the sizes of the canvas and redraw the current state.
+   *
+   * @param {Object} viewport
+   */
   updateSizes (viewport) {
     this.setSizes(viewport)
     this.redraw()
   }
 
+  /**
+   * Start a new drawing action.
+   *
+   * @param {Object} canvasProperties
+   */
   start (canvasProperties) {
     this.currentAction = new DrawAction(canvasProperties)
   }

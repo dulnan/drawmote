@@ -5,6 +5,7 @@
     "countdownPrefix": "New code will be generated in ",
     "countdownSeconds": "0 seconds | 1 second | {count} seconds",
     "countdownSuffix": ".",
+    "nophone": "Use without phone",
     "tooManyAttempts": "There was an error generating a pairing code. This can happen if too many requests to generate a code were made. Please wait a bit and try again later."
   },
   "mobile": {
@@ -57,7 +58,6 @@
     "reconnect": "Reconnect devices"
   },
   "footer": {
-    "nophone": "Use without phone",
     "copyright": "Made by"
   }
 }

@@ -1,14 +1,14 @@
 <template>
   <div class="drawing">
     <toolbar ref="toolbar" />
-    <div class="drawing-area" ref="canvasContainer"></div>
+    <div class="drawing-area" ref="canvasContainer" :style="drawingAreaStyle"></div>
     <canvas-drawing />
     <canvas-interface />
   </div>
 </template>
 
 <script>
-import { THREAD_SIZES } from '@/settings/drawthreads'
+import { threads } from '@/store'
 
 import Toolbar from '@/components/Desktop/Toolbar/Toolbar.vue'
 import CanvasDrawing from '@/components/Desktop/Canvas/CanvasDrawing.vue'
@@ -29,25 +29,35 @@ export default {
     CanvasInterface
   },
 
-  draw: [
-    {
-      threads: [THREAD_SIZES],
-      handler: function (state) {
-        this.getElementSizes()
+  data () {
+    return {
+      toolbarHeight: 0
+    }
+  },
+
+  computed: {
+    drawingAreaStyle () {
+      return {
+        top: `${this.toolbarHeight}px`
       }
     }
-  ],
+  },
+
+  vuetamin: {
+    getElementSizes: [threads.SIZES]
+  },
 
   methods: {
     getElementSizes () {
       if (this.$refs.canvasContainer) {
         const canvasRect = this.$refs.canvasContainer.getBoundingClientRect()
-        this.$global.updateCanvasRect(canvasRect)
+        this.$vuetamin.store.mutate('updateCanvasRect', canvasRect)
       }
 
       if (this.$refs.toolbar) {
         const toolbarRect = this.$refs.toolbar.$el.getBoundingClientRect()
-        this.$global.updateToolbarRect(toolbarRect)
+        this.$vuetamin.store.mutate('updateToolbarRect', toolbarRect)
+        this.toolbarHeight = toolbarRect.height
       }
     }
   },
@@ -71,7 +81,6 @@ export default {
 
 .drawing-area {
   position: absolute;
-  top: $toolbar-height;
   left: 0;
   right: 0;
   bottom: 0;

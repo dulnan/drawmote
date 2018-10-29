@@ -49,7 +49,7 @@ import SliderLazyRadius from '@/components/Desktop/Toolbar/Slider/SliderLazyRadi
 import SliderDistance from '@/components/Desktop/Toolbar/Slider/SliderDistance.vue'
 
 import { COLORS, TOOLBAR_TOOLS, TOOLBAR_SLIDERS } from '@/settings'
-import { THREAD_TOOLS, THREAD_SIZES } from '@/settings/drawthreads'
+import { threads } from '@/store'
 
 import Color from '@/classes/Color'
 
@@ -68,48 +68,10 @@ export default {
     SliderDistance
   },
 
-  draw: [
-    {
-      threads: [THREAD_SIZES],
-      handler: function (state) {
-        this.calculatePointerAreas()
-      }
-    },
-    {
-      threads: [THREAD_TOOLS],
-      handler: function (state) {
-        let tool = this.getToolAtPoint(state.points.pointer)
-
-        this.toolBeingHovered = tool ? tool.key : ''
-
-        if (tool && state.isPressing) {
-          if (this.lastItemClick !== this.toolBeingHovered && !this.wasPressingBefore) {
-            tool.el.click()
-            this.lastItemClick = tool.key
-          }
-
-          const wheel = state.slideY - this.wheelDelta
-
-          if (wheel !== 0) {
-            let event = new WheelEvent('wheel', {
-              bubbles: false,
-              cancelable: true,
-              deltaX: 0,
-              deltaY: wheel / 2
-            })
-            tool.el.dispatchEvent(event)
-          }
-
-          this.wheelDelta = state.slideY
-        } else {
-          this.wheelDelta = 0
-          this.lastItemClick = ''
-        }
-
-        this.wasPressingBefore = state.isPressing
-      }
-    }
-  ],
+  vuetamin: {
+    calculatePointerAreas: [threads.SIZES],
+    handleToolsChange: [threads.TOOLS]
+  },
 
   data () {
     return {
@@ -156,6 +118,38 @@ export default {
   },
 
   methods: {
+    handleToolsChange (state) {
+      let tool = this.getToolAtPoint(state.points.pointer)
+
+      this.toolBeingHovered = tool ? tool.key : ''
+
+      if (tool && state.isPressing) {
+        if (this.lastItemClick !== this.toolBeingHovered && !this.wasPressingBefore) {
+          tool.el.click()
+          this.lastItemClick = tool.key
+        }
+
+        const wheel = state.slideY - this.wheelDelta
+
+        if (wheel !== 0) {
+          let event = new WheelEvent('wheel', {
+            bubbles: false,
+            cancelable: true,
+            deltaX: 0,
+            deltaY: wheel / 2
+          })
+          tool.el.dispatchEvent(event)
+        }
+
+        this.wheelDelta = state.slideY
+      } else {
+        this.wheelDelta = 0
+        this.lastItemClick = ''
+      }
+
+      this.wasPressingBefore = state.isPressing
+    },
+
     getToolAtPoint (point) {
       for (let i = 0; i < this.pointerAreas.length; i++) {
         const area = this.pointerAreas[i]
@@ -165,7 +159,7 @@ export default {
       }
     },
     calculatePointerAreas () {
-      this.canvasFilterSupported = this.$global.canvasFilterSupported
+      this.canvasFilterSupported = this.$vuetamin.store.data.canvasFilterSupported
 
       let items = []
       this.$refs.items.forEach(item => {

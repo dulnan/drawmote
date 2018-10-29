@@ -12,7 +12,7 @@ import { EventBus } from '@/events'
 
 import CanvasState from '@/classes/CanvasState.js'
 import { isSamePoint } from '@/tools/helpers.js'
-import { THREAD_POINT, THREAD_SIZES } from '@/settings/drawthreads'
+import { threads } from '@/store'
 
 export default {
   name: 'CanvasDrawing',
@@ -21,36 +21,10 @@ export default {
     Canvas
   ],
 
-  draw: [
-    {
-      threads: [THREAD_SIZES],
-      handler: function (state) {
-        this.setCanvasSizes()
-        this.canvasState.updateSizes(state.sizes.viewport)
-      }
-    },
-    {
-      threads: [THREAD_POINT],
-      handler: function (state) {
-        if (!state.isPressing && this.wasPressingBefore) {
-          this.canvasState.release()
-          this.wasPressingBefore = false
-          this.updateCanvasState()
-        }
-
-        if (state.isPressing && !isSamePoint(state.points.brush, this.previousPoint) && !state.pointingAtToolbar) {
-          if (!this.wasPressingBefore) {
-            this.canvasState.start(state.brush.canvasProperties)
-            this.wasPressingBefore = true
-          }
-
-          this.canvasState.move(state.points.brush)
-        }
-
-        this.previousPoint = state.points.brush
-      }
-    }
-  ],
+  vuetamin: {
+    handleSizes: [threads.SIZES],
+    handlePoint: threads.POINT
+  },
 
   data () {
     return {
@@ -60,6 +34,30 @@ export default {
   },
 
   methods: {
+    handleSizes (state) {
+      this.setCanvasSizes()
+      this.canvasState.updateSizes(state.sizes.viewport)
+    },
+
+    handlePoint (state) {
+      if (!state.isPressing && this.wasPressingBefore) {
+        this.canvasState.release()
+        this.wasPressingBefore = false
+        this.updateCanvasState()
+      }
+
+      if (state.isPressing && !isSamePoint(state.points.brush, this.previousPoint) && !state.pointingAtToolbar) {
+        if (!this.wasPressingBefore) {
+          this.canvasState.start(state.brush.canvasProperties)
+          this.wasPressingBefore = true
+        }
+
+        this.canvasState.move(state.points.brush)
+      }
+
+      this.previousPoint = state.points.brush
+    },
+
     handleErase () {
       this.canvasState.erase()
       this.updateCanvasState()
@@ -81,7 +79,7 @@ export default {
     },
 
     setCanvasSizes () {
-      this.setupCanvases(this.$global.state.sizes.viewport, [
+      this.setupCanvases(this.$vuetamin.store.getState().sizes.viewport, [
         this.$refs.canvas_main,
         this.$refs.canvas_temp
       ])

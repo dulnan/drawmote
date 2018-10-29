@@ -125,7 +125,7 @@ export default {
 
       this.done = true
 
-      this.$global.updateCanvasFilterSupport(this.canvasFilter)
+      this.$vuetamin.store.mutate('updateCanvasFilterSupport', this.canvasFilter)
     }
   },
 

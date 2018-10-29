@@ -17,20 +17,24 @@ export default {
     handleMouseMove (e) {
       this.preventEventIfRequired(e)
 
-      this.$global.updateFromMouse({
-        x: e.clientX,
-        y: e.clientY
+      this.$vuetamin.store.mutate('updatePointer', {
+        coordinates: {
+          x: e.clientX,
+          y: e.clientY
+        }
       })
     },
 
     handleMouseDown () {
-      this.$global.updateIsPressing(true, {
+      this.$vuetamin.store.mutate('updateIsPressing', {
+        isPressing: true,
         fromMouse: true
       })
     },
 
     handleMouseUp () {
-      this.$global.updateIsPressing(false, {
+      this.$vuetamin.store.mutate('updateIsPressing', {
+        isPressing: false,
         fromMouse: true
       })
     },
@@ -39,10 +43,13 @@ export default {
       this.preventEventIfRequired(e)
       const touch = e.changedTouches[0]
 
-      this.$global.updateFromMouse({
-        x: touch.pageX,
-        y: touch.pageY
-      }, true)
+      this.$vuetamin.store.mutate('updatePointer', {
+        both: true,
+        coordinates: {
+          x: touch.pageX,
+          y: touch.pageY
+        }
+      })
 
       this.handleMouseDown()
     },
@@ -52,9 +59,11 @@ export default {
 
       const touch = e.changedTouches[0]
 
-      this.$global.updateFromMouse({
-        x: touch.pageX,
-        y: touch.pageY
+      this.$vuetamin.store.mutate('updatePointer', {
+        coordinates: {
+          x: touch.pageX,
+          y: touch.pageY
+        }
       })
     },
 
@@ -64,7 +73,7 @@ export default {
     },
 
     preventEventIfRequired (e) {
-      if (!this.$global.state.pointingAtToolbar) {
+      if (!this.$vuetamin.store.getState().pointingAtToolbar) {
         e.preventDefault()
       }
     }
