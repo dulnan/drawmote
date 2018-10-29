@@ -1,11 +1,12 @@
-# drawmote client
+# drawmote
+*Draw remotely with your phone*
 
-https://drawmote.app
+### **[Try it out on drawmote.app](https://drawmote.app)**
 
 ## What is drawmote?
 drawmote is a browser app that allows you to use your phone as an input device
 to point at and draw on your computer screen. It works by establishing a WebRTC
-connection between phone and computer, using the phone's gyroscope to calculate
+connection between a phone and computer, using the phone's gyroscope to calculate
 where the phone is pointing at on the screen and simulating mouse movement to
 draw on a canvas.
 
@@ -13,27 +14,29 @@ draw on a canvas.
 Some of the things used to build drawmote:
 
 ### Frameworks and libraries
-- [Vue.js](https://github.com) as the JavaScript framework
-- [socketpeer](https://github.com) to establish a WebRTC connection or fallback
-  to Websockets
-- [gyronorm](https://github.com) for cross-browser reading of a gyroscope
+- **[Vue.js](https://github.com/vuejs/vue)**
+  as the JavaScript framework
+- **[socketpeer](https://github.com/dulnan/socketpeer)**
+  to establish a WebRTC connection or fallback to Websockets (Note: I had to fork this since some of its dependencies were outdated)
+- **[gyronorm](https://github.com/dorukeker/gyronorm.js)**
+  for cross-browser reading of a gyroscope
 
 ### Custom libraries
-During the development of drawmote some important functionality has been
-extracted to separate repositories and modules:
+During the development of drawmote some functionality has been extracted to
+separate repositories and libraries:
 
 | Name | Description | Demo |
 | ------------- | ------------- | ------------- |
-| [drawmote-server](https://github.com/dulnan/drawmote-server) | The server used to generate pairing codes and hashes for establishing a WebRTC connection. Acts as a Websockets server as a fallback. | |
-| [lazy-brush](https://github.com/dulnan/lazy-brush) | Smooth drawing by pulling the brush with a rope connected to the brush and pointer | [Demo](https://dulnan.net/var/lazy-brush) |
-| [catenary-curve](https://github.com/dulnan/catenary-curve) | Calculate and draw a cantary curve on a canvas | [Demo](https://dulnan.net/var/catenary-curve) |
-| [gyro-plane](https://github.com/dulnan/gyro-plane) | Using alpha and beta angles from a gyroscope, calculate where its pointing at on a screen | [Demo](https://dulnan.net/var/gyro-plane) |
-| TODO: vue-animation-threads | Combine animation loops from multiple components into a single requestAnimationFrame loop and provide a consistent state. | TODO |
+| **[drawmote-server](https://github.com/dulnan/drawmote-server)** | The server used to generate pairing codes and hashes for establishing a WebRTC connection. Uses Websockets server as a fallback. | |
+| **[Vuetamin](https://github.com/dulnan/vuetamin)** | Combine animation loops from multiple components into a single requestAnimationFrame loop and provide a consistent state. | |
+| **[lazy-brush](https://github.com/dulnan/lazy-brush)** | Smooth drawing by pulling the brush with a rope connected to the brush and pointer | [Demo](https://lazybrush.dulnan.net) |
+| **[catenary-curve](https://github.com/dulnan/catenary-curve)** | Calculate and draw a cantary curve on a canvas | [Demo](https://lazybrush.dulnan.net) |
+| **[gyro-plane](https://github.com/dulnan/gyro-plane)** | Using alpha and beta angles from a gyroscope, calculate where its pointing at on a screen | [Demo](https://dulnan.net/var/gyro-plane) |
 
 ### History
 The app has been fundamentally changed and refactored several times during
-development. It started out as a hacky VanillaJS proof-of-concept, then got
-refactored into a OOP-style codebase. After that, a complete rewrite using
+development. It started out as a [hacky VanillaJS proof-of-concept](https://github.com/dulnan/drawmote-server/tree/f7fa7327cec66f5647fbd948d3e31eeb5cf8cf02), then got
+refactored into an [OOP-style codebase (horrible!)](https://github.com/dulnan/drawmote-server/tree/07334b0e5c2909eb67ef5476e4ac19c4727ec514). After that, a complete rewrite using
 Vue.js happened. At first Vuex was used as a way to store and share data.
 Pretty soon it was clear that this increases the latency from gyroscope to
 canvas draw. So I switched to an event-based approach, with an event bus
@@ -46,14 +49,9 @@ using requestAnimationFrame. In total there were 7 loops running at the same
 time. The problem was that these loops ran at different speeds, had different
 states and sometimes were interfering with each other. The solution was to
 completely remove Vuex and manage state manually. A Vue plugin was created that
-allows for every component to define an animation function. The plugin takes all
-these functions and runs them in a single requestAnimationFrame loop. In
-addition it's possible for every component to specify in what case the function
-should be called. These are called threads. For example a thread can be named
-THREAD_POINT, which then is only run if the pointer coordinates change. Or
-THREAD_BRUSH, when the settings of the brush change. This is all done manually;
-so when changing the brush opacity the corresponding thread(s) have to be
-triggered.
+allows for every component to define an animation function. The plugin (called
+[Vuetamin](https://github.com/dulnan/vuetamin)) takes all these functions and
+runs them in a single requestAnimationFrame loop.
 
 With this approach, the time passing from when new orientation data is received
 and when the last draw function has been done, is on average just 8ms, which is
@@ -87,6 +85,7 @@ npm run lint
 ```
 
 ### Run your unit tests
+If there would be tests, this is how you could run them:
 ```
 npm run test:unit
 `
