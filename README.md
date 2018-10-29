@@ -14,11 +14,11 @@ draw on a canvas.
 Some of the things used to build drawmote:
 
 ### Frameworks and libraries
-- **[Vue.js](https://github.com/vuejs/vue)**
+- **[Vue.js](https://github.com/vuejs/vue)**\
   as the JavaScript framework
-- **[socketpeer](https://github.com/dulnan/socketpeer)**
+- **[socketpeer](https://github.com/dulnan/socketpeer)**\
   to establish a WebRTC connection or fallback to Websockets (Note: I had to fork this since some of its dependencies were outdated)
-- **[gyronorm](https://github.com/dorukeker/gyronorm.js)**
+- **[gyronorm](https://github.com/dorukeker/gyronorm.js)**\
   for cross-browser reading of a gyroscope
 
 ### Custom libraries
@@ -88,4 +88,4 @@ npm run lint
 If there would be tests, this is how you could run them:
 ```
 npm run test:unit
-`
+```
