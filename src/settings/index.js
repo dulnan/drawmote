@@ -69,16 +69,6 @@ export const BRUSH_DEFAULT = {
 }
 
 export const TOOLBAR_TOOLS = [
-  // {
-  //   id: 'freeform',
-  //   component: 'ToolbarButton',
-  //   icon: 'icon-freeform'
-  // },
-  // {
-  //   id: 'polygon',
-  //   component: 'ToolbarButton',
-  //   icon: 'icon-polygon'
-  // },
   {
     id: 'canvasClear',
     component: 'ButtonClear'

@@ -5,7 +5,7 @@ import { getCookie } from '@/tools/helpers'
 import './assets/scss/main.scss'
 
 import Vuetamin from 'vuetamin'
-import Connection from './tools/Connection'
+import Connection from './plugins/Connection'
 
 import { store } from './store'
 import i18n from './i18n'
