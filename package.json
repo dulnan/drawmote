@@ -13,6 +13,7 @@
     "axios": "^0.18.0",
     "catenary-curve": "^1.0.0",
     "debounced-resize": "^1.1.1",
+    "es6-promise": "^4.2.5",
     "gyro-plane": "^1.0.0",
     "gyronorm": "^2.0.6",
     "input-range-scss": "^1.5.1",
