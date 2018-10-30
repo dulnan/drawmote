@@ -1,8 +1,8 @@
 <template>
   <div id="app" class="relative" v-if="hasLoaded">
-    <mobile v-if="isRemote" />
+    <mobile v-if="isMobile" />
     <desktop v-else />
-    <the-footer :is-mobile="isRemote" />
+    <the-footer :is-mobile="isMobile" />
   </div>
 </template>
 
@@ -24,13 +24,9 @@ export default {
 
   data () {
     return {
-      isRemote: false,
+      isMobile: false,
       hasLoaded: false
     }
-  },
-
-  created () {
-    // this.$global.init()
   },
 
   mounted () {
@@ -47,7 +43,7 @@ export default {
       this.$vuetamin.store.mutate('updateViewport', viewport)
 
       if (!this.$connection.isConnected()) {
-        this.isRemote = viewport.width < BREAKPOINT_REMOTE
+        this.isMobile = viewport.width < BREAKPOINT_REMOTE
         this.hasLoaded = true
       }
     }
