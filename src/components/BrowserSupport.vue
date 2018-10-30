@@ -24,10 +24,7 @@
 <script>
 import IconClose from '@/assets/icons/icon-close.svg'
 
-import GyroNorm from 'gyronorm'
-require('@hughsk/fulltilt/dist/fulltilt.min.js')
-
-const simplePeer = require('simple-peer')
+import simplePeer from 'simple-peer'
 
 export default {
   name: 'BrowserSupport',
@@ -81,13 +78,16 @@ export default {
 
     supportsGyroscope () {
       return new Promise(async (resolve, reject) => {
-        const gn = new GyroNorm()
+        import('gyronorm').then(async ({ default: GyroNorm }) => {
+          await import('@hughsk/fulltilt/dist/fulltilt.min.js')
+          const gn = new GyroNorm()
 
-        gn.init().then(() => {
-          const isAvailable = gn.isAvailable()
-          resolve(isAvailable.deviceOrientationAvailable)
-        }).catch((e) => {
-          resolve(false)
+          gn.init().then(() => {
+            const isAvailable = gn.isAvailable()
+            resolve(isAvailable.deviceOrientationAvailable)
+          }).catch((e) => {
+            resolve(false)
+          })
         })
       })
     },
@@ -172,9 +172,6 @@ export default {
   position: absolute;
   top: 0;
   right: 0;
-  svg {
-
-  }
 }
 
 .browser-support__content {
