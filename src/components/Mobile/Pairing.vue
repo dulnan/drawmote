@@ -39,8 +39,8 @@
 </template>
 
 <script>
-import Logo from '@/components/Logo.vue'
-import Connection from '@/components/Connection.vue'
+import Logo from '@/components/Common/Logo.vue'
+import Connection from '@/components/Common/Connection.vue'
 
 export default {
   name: 'Pairing',

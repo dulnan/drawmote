@@ -54,7 +54,7 @@ import debouncedResize from 'debounced-resize'
 
 import { EventBus } from '@/events'
 import { setCookie } from '@/tools/helpers'
-import BrowserSupport from '@/components/BrowserSupport.vue'
+import BrowserSupport from '@/components/Common/BrowserSupport.vue'
 
 import IconGithub from '@/assets/icons/icon-github.svg'
 import LiipLogo from '@/assets/icons/liip-logo.svg'

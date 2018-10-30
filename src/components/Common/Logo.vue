@@ -10,7 +10,7 @@
 <script>
 import { threads } from '@/store'
 
-import BackgroundAnimation from '@/components/BackgroundAnimation.vue'
+import BackgroundAnimation from '@/components/Common/BackgroundAnimation.vue'
 
 export default {
   name: 'Logo',
