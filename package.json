@@ -18,6 +18,7 @@
     "gyronorm": "^2.0.6",
     "input-range-scss": "^1.5.1",
     "lazy-brush": "^1.0.0",
+    "prerender-spa-plugin": "^3.4.0",
     "socketpeer": "github:dulnan/socketpeer#update-dependencies",
     "vue": "^2.5.17",
     "vue-i18n": "^8.0.0",

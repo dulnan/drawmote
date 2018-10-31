@@ -35,6 +35,8 @@ export default {
     debouncedResize((e) => {
       this.updateViewport()
     })
+
+    document.dispatchEvent(new Event('render-event'))
   },
 
   methods: {
