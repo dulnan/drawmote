@@ -28,13 +28,13 @@
         </p>
       </div>
     </div>
-    <connection />
+    <restore-connection />
   </div>
 </template>
 
 <script>
 import Logo from '@/components/Common/Logo.vue'
-import Connection from '@/components/Common/Connection.vue'
+import RestoreConnection from '@/components/Common/RestoreConnection.vue'
 
 import { EventBus } from '@/events'
 
@@ -46,7 +46,7 @@ export default {
 
   components: {
     Logo,
-    Connection
+    RestoreConnection
   },
 
   data () {

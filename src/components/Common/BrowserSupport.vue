@@ -51,6 +51,9 @@ export default {
   },
 
   computed: {
+    /**
+     * @returns {Array} Return the checks with their support status.
+     */
     doneChecks () {
       const checks = ['webRTC', 'webSocket', 'gyroscope', 'canvasFilter']
       return checks.filter(c => this[c] !== null).map(c => {
@@ -63,19 +66,32 @@ export default {
   },
 
   methods: {
+    /**
+     * Checks if canvas filters are supported. This is needed for the hardness
+     * property of the brush.
+     */
     supportsCanvasFilter () {
       const ctx = document.createElement('canvas').getContext('2d')
       return typeof ctx.filter !== 'undefined'
     },
 
+    /**
+     * Checks if WebRTC is supported.
+     */
     supportsWebRTC () {
       return simplePeer.WEBRTC_SUPPORT
     },
 
+    /**
+     * Checks if WebSockets are supported.
+     */
     supportsWebSocket () {
       return 'WebSocket' in window || 'MozWebSocket' in window
     },
 
+    /**
+     * Checks if the device has a gyroscope.
+     */
     supportsGyroscope () {
       return new Promise(async (resolve, reject) => {
         import('gyronorm').then(async ({ default: GyroNorm }) => {
@@ -92,6 +108,10 @@ export default {
       })
     },
 
+    /**
+     * Asynchronously run the checks. Issue tracking events, supportState event
+     * and modify the Vuetamin store if canvas filters are supported.
+     */
     async check () {
       this.webRTC = this.supportsWebRTC()
       this.webSocket = this.webRTC ? null : this.supportsWebSocket()

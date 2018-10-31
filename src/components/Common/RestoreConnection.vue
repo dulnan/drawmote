@@ -40,8 +40,11 @@
 import { EventBus } from '@/events'
 import IconRestore from '@/assets/icons/icon-restore.svg'
 
+/**
+ * Provides a way to restore a previously made connection.
+ */
 export default {
-  name: 'Connection',
+  name: 'RestoreConnection',
 
   components: {
     IconRestore
@@ -59,6 +62,9 @@ export default {
   },
 
   methods: {
+    /**
+     * Initialize a peering connection given the stored code and hash.
+     */
     restoreConnection () {
       if (this.isRestoring) {
         return
@@ -74,6 +80,9 @@ export default {
       }, 20000)
     },
 
+    /**
+     * Delete the stored connection from the history.
+     */
     deleteConnection () {
       this.$connection.deleteSession()
       this.connectionRestorable = false
@@ -103,10 +112,8 @@ export default {
   position: sticky;
   bottom: $footer-height-xs;
   z-index: $index-footer - 1;
-  /* margin-bottom: 1px; */
   background: white;
   border-top: 1px solid $alt-color-light;
-  /* margin: 2rem -1.5rem; */
   margin-top: 4rem;
 
   opacity: 1;

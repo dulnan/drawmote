@@ -32,10 +32,10 @@ export default {
     }
   },
 
-  computed: {
-  },
-
   methods: {
+    /**
+     * Set the logo's center in relation to the screen.
+     */
     setCenter () {
       if (this.$refs.logo) {
         const rect = this.$refs.logo.getBoundingClientRect()

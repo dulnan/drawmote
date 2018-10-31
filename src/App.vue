@@ -11,7 +11,7 @@ import debouncedResize from 'debounced-resize'
 
 import { getViewportSize } from '@/tools/helpers'
 import { BREAKPOINT_REMOTE } from '@/settings'
-import TheFooter from '@/components/Common/Footer.vue'
+import TheFooter from '@/components/Common/Footer/Footer.vue'
 
 export default {
   name: 'app',
