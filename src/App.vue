@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="relative" v-if="hasLoaded">
+  <div id="drawmote" class="relative">
     <mobile v-if="isMobile" />
     <desktop v-else />
     <the-footer :is-mobile="isMobile" />
@@ -46,7 +46,6 @@ export default {
 
       if (!this.$connection.isConnected()) {
         this.isMobile = viewport.width < BREAKPOINT_REMOTE
-        this.hasLoaded = true
       }
     }
   }
@@ -54,7 +53,7 @@ export default {
 </script>
 
 <style lang="scss">
-#app {
+#drawmote {
   background: $alt-color-lightest;
   @include media('sm') {
     position: absolute;
