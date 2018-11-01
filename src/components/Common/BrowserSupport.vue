@@ -150,7 +150,9 @@ export default {
   },
 
   mounted () {
-    this.check()
+    if (!this.$settings.isPrerendering) {
+      this.check()
+    }
   }
 }
 </script>

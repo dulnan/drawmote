@@ -13,6 +13,8 @@ import { getViewportSize } from '@/tools/helpers'
 import { BREAKPOINT_REMOTE } from '@/settings'
 import TheFooter from '@/components/Common/Footer/Footer.vue'
 
+const IS_MOBILE = window.innerWidth < BREAKPOINT_REMOTE
+
 export default {
   name: 'app',
 
@@ -24,7 +26,7 @@ export default {
 
   data () {
     return {
-      isMobile: false,
+      isMobile: IS_MOBILE,
       hasLoaded: false
     }
   },

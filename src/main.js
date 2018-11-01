@@ -21,6 +21,10 @@ Vue.prototype.$track = function (category, action, value) {
   window._paq.push(['trackEvent', category, action, value])
 }
 
+Vue.prototype.$settings = {
+  isPrerendering: window.__PRERENDERING === true
+}
+
 const locale = getCookie('locale')
 if (locale) {
   i18n.locale = locale
