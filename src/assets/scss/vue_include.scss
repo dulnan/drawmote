@@ -1,21 +1,5 @@
-/*!
- *  カンバス KANBASU
- *  Distributed under the MIT License
- *  Copyright (c) 2015 Liip AG
- */
-
-/**
- * Settings
- */
-
 @import '../../../node_modules/kanbasu/src/scss/settings/settings';
 @import 'settings/settings';
-
-
-/**
- * Tools
- */
-
 @import '../../../node_modules/kanbasu/src/scss/tools/functions';
 @import '../../../node_modules/kanbasu/src/scss/tools/mixins';
 @import '../../../node_modules/kanbasu/src/scss/tools/rtl';

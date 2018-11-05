@@ -1,0 +1,6 @@
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+[context.deployment-test]
+  command = "npm run build-staging"
