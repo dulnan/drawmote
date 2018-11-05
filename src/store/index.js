@@ -1,11 +1,11 @@
 import data from './data'
 import state from './state'
-import mutations from './mutations'
-import actions from './actions'
+import * as actions from './actions'
+import * as mutations from './mutations'
 
 export default {
   data,
   state,
-  mutations,
-  actions
+  actions,
+  mutations
 }
