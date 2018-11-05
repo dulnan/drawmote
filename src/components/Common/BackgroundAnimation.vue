@@ -134,7 +134,6 @@ export default {
   width: 100vw;
   height: 100vh;
   z-index: 0;
-  // background: #f9f9f8;
   pointer-events: none;
   overflow: hidden;
   @include media('sm') {

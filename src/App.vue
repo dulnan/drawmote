@@ -1,8 +1,8 @@
 <template>
-  <div id="app" class="relative" v-if="hasLoaded">
-    <mobile v-if="isRemote" />
+  <div id="drawmote" class="relative">
+    <mobile v-if="isMobile" />
     <desktop v-else />
-    <the-footer :is-mobile="isRemote" />
+    <the-footer :is-mobile="isMobile" />
   </div>
 </template>
 
@@ -11,7 +11,9 @@ import debouncedResize from 'debounced-resize'
 
 import { getViewportSize } from '@/tools/helpers'
 import { BREAKPOINT_REMOTE } from '@/settings'
-import TheFooter from '@/components/Footer.vue'
+import TheFooter from '@/components/Common/Footer/Footer.vue'
+
+const IS_MOBILE = window.innerWidth < BREAKPOINT_REMOTE
 
 export default {
   name: 'app',
@@ -24,13 +26,9 @@ export default {
 
   data () {
     return {
-      isRemote: false,
+      isMobile: IS_MOBILE,
       hasLoaded: false
     }
-  },
-
-  created () {
-    // this.$global.init()
   },
 
   mounted () {
@@ -39,6 +37,8 @@ export default {
     debouncedResize((e) => {
       this.updateViewport()
     })
+
+    document.dispatchEvent(new Event('render-event'))
   },
 
   methods: {
@@ -47,8 +47,7 @@ export default {
       this.$vuetamin.store.mutate('updateViewport', viewport)
 
       if (!this.$connection.isConnected()) {
-        this.isRemote = viewport.width < BREAKPOINT_REMOTE
-        this.hasLoaded = true
+        this.isMobile = viewport.width < BREAKPOINT_REMOTE
       }
     }
   }
@@ -56,7 +55,7 @@ export default {
 </script>
 
 <style lang="scss">
-#app {
+#drawmote {
   background: $alt-color-lightest;
   @include media('sm') {
     position: absolute;

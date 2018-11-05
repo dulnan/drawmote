@@ -7,6 +7,16 @@
 
     <title>drawmote - draw remotely with your phone</title>
 
+    <meta name="keywords" content="draw remote drawing phone webrtc websockets"/>
+    <meta name="description" content="Use your phone as a pointing device to remotely draw on your computer screen.">
+    <meta name="robots" content="all"/>
+
+    <meta property="og:url" content="https://drawmote.app" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="drawmote.app" />
+    <meta property="og:description" content="Use your phone to draw on your computer screen. Visit drawmote.app on your phone and computer (or tablet) to start drawing." />
+    <meta property="og:image" content="<%= BASE_URL %>drawmote-teaser.png" />
+
     <link rel="apple-touch-icon" sizes="57x57" href="<%= BASE_URL %>apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="<%= BASE_URL %>apple-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="<%= BASE_URL %>apple-icon-72x72.png">
@@ -39,29 +49,43 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="format-detection" content="telephone=no">
 
-    <!-- Typekit -->
-    <link rel="stylesheet" href="https://use.typekit.net/lgn1yuz.css">
-
-    <!-- Matomo -->
-    <script type="text/javascript">
-      var _paq = _paq || [];
-      /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-      _paq.push(['trackPageView']);
-      _paq.push(['enableLinkTracking']);
-      (function() {
-        var u="https://stats.dulnan.net/";
-        _paq.push(['setTrackerUrl', u+'piwik.php']);
-        _paq.push(['setSiteId', '6']);
-        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
-      })();
-    </script>
-    <!-- End Matomo Code -->
+    <meta name="google-site-verification" content="-AxJ50z0QWh73ORnbEm_v-jRTTZxn5JrgLOaKt40NxQ">
   </head>
   <body>
-    <noscript>
-      <strong>Sorry, but drawmote doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
     <div id="drawmote"></div>
+    <noscript>
+      <div class="no-js-overlay">
+        <h1>Unfortunately, drawmote doesn't work without JavaScript. :(</h1>
+      </div>
+    </noscript>
+    <script>
+      if (!window.__PRERENDERING) {
+        (function(d) {
+          var config = {
+            kitId: 'lgn1yuz',
+            scriptTimeout: 3000,
+            async: true
+          },
+          h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+        })(document);
+      }
+    </script>
+    <!-- Matomo -->
+    <script type="text/javascript">
+      if (!window.__PRERENDERING) {
+        var _paq = _paq || [];
+        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function() {
+          var u="https://stats.dulnan.net/";
+          _paq.push(['setTrackerUrl', u+'piwik.php']);
+          _paq.push(['setSiteId', '6']);
+          var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+          g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+        })();
+      }
+    </script>
+    <!-- End Matomo Code -->
   </body>
 </html>

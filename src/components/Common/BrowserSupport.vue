@@ -24,10 +24,7 @@
 <script>
 import IconClose from '@/assets/icons/icon-close.svg'
 
-import GyroNorm from 'gyronorm'
-require('@hughsk/fulltilt/dist/fulltilt.min.js')
-
-const simplePeer = require('simple-peer')
+import simplePeer from 'simple-peer'
 
 export default {
   name: 'BrowserSupport',
@@ -54,6 +51,9 @@ export default {
   },
 
   computed: {
+    /**
+     * @returns {Array} Return the checks with their support status.
+     */
     doneChecks () {
       const checks = ['webRTC', 'webSocket', 'gyroscope', 'canvasFilter']
       return checks.filter(c => this[c] !== null).map(c => {
@@ -66,32 +66,52 @@ export default {
   },
 
   methods: {
+    /**
+     * Checks if canvas filters are supported. This is needed for the hardness
+     * property of the brush.
+     */
     supportsCanvasFilter () {
       const ctx = document.createElement('canvas').getContext('2d')
       return typeof ctx.filter !== 'undefined'
     },
 
+    /**
+     * Checks if WebRTC is supported.
+     */
     supportsWebRTC () {
       return simplePeer.WEBRTC_SUPPORT
     },
 
+    /**
+     * Checks if WebSockets are supported.
+     */
     supportsWebSocket () {
       return 'WebSocket' in window || 'MozWebSocket' in window
     },
 
+    /**
+     * Checks if the device has a gyroscope.
+     */
     supportsGyroscope () {
       return new Promise(async (resolve, reject) => {
-        const gn = new GyroNorm()
+        import('gyronorm').then(async ({ default: GyroNorm }) => {
+          await import('@hughsk/fulltilt/dist/fulltilt.min.js')
+          const gn = new GyroNorm()
 
-        gn.init().then(() => {
-          const isAvailable = gn.isAvailable()
-          resolve(isAvailable.deviceOrientationAvailable)
-        }).catch((e) => {
-          resolve(false)
+          gn.init().then(() => {
+            const isAvailable = gn.isAvailable()
+            resolve(isAvailable.deviceOrientationAvailable)
+          }).catch((e) => {
+            resolve(false)
+          })
         })
       })
     },
 
+    /**
+     * Asynchronously run the checks. Issue tracking events, supportState event
+     * and modify the Vuetamin store if canvas filters are supported.
+     */
     async check () {
       this.webRTC = this.supportsWebRTC()
       this.webSocket = this.webRTC ? null : this.supportsWebSocket()
@@ -130,7 +150,9 @@ export default {
   },
 
   mounted () {
-    this.check()
+    if (!this.$settings.isPrerendering) {
+      this.check()
+    }
   }
 }
 </script>
@@ -172,9 +194,6 @@ export default {
   position: absolute;
   top: 0;
   right: 0;
-  svg {
-
-  }
 }
 
 .browser-support__content {

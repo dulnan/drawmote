@@ -34,20 +34,20 @@
 
       </div>
     </div>
-    <connection />
+    <restore-connection />
   </div>
 </template>
 
 <script>
-import Logo from '@/components/Logo.vue'
-import Connection from '@/components/Connection.vue'
+import Logo from '@/components/Common/Logo.vue'
+import RestoreConnection from '@/components/Common/RestoreConnection.vue'
 
 export default {
   name: 'Pairing',
 
   components: {
     Logo,
-    Connection
+    RestoreConnection
   },
 
   data () {

@@ -10,7 +10,7 @@
 <script>
 import { threads } from '@/store'
 
-import BackgroundAnimation from '@/components/BackgroundAnimation.vue'
+import BackgroundAnimation from '@/components/Common/BackgroundAnimation.vue'
 
 export default {
   name: 'Logo',
@@ -32,10 +32,10 @@ export default {
     }
   },
 
-  computed: {
-  },
-
   methods: {
+    /**
+     * Set the logo's center in relation to the screen.
+     */
     setCenter () {
       if (this.$refs.logo) {
         const rect = this.$refs.logo.getBoundingClientRect()

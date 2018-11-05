@@ -1,3 +1,5 @@
+import 'es6-promise/auto'
+
 import Vue from 'vue'
 import App from './App.vue'
 import { getCookie } from '@/tools/helpers'
@@ -17,6 +19,10 @@ Vue.config.productionTip = false
 
 Vue.prototype.$track = function (category, action, value) {
   window._paq.push(['trackEvent', category, action, value])
+}
+
+Vue.prototype.$settings = {
+  isPrerendering: window.__PRERENDERING === true
 }
 
 const locale = getCookie('locale')
