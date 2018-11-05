@@ -6,7 +6,7 @@
 /**
  * Draws the moving interface parts of the app on a 2D canvas.
  */
-import Canvas from '@/mixins/Canvas'
+import { setupCanvases, clearCanvas } from '@/tools/canvas'
 import { Catenary } from 'catenary-curve'
 
 import { threads } from '@/store'
@@ -16,10 +16,6 @@ const BRUSH_PREVIEW_PADDING = 30
 
 export default {
   name: 'CanvasInterface',
-
-  mixins: [
-    Canvas
-  ],
 
   vuetamin: {
     setCanvasSizes: [threads.SIZES],
@@ -49,13 +45,14 @@ export default {
      * Call the function to set the width and height of the canvas elements.
      */
     setCanvasSizes () {
-      this.setupCanvases(this.$vuetamin.store.getState().sizes.viewport, [this.$refs.canvas_interface])
+      setupCanvases(this.$vuetamin.store.getState().sizes.viewport, [this.$refs.canvas_interface])
     },
 
     drawToCanvas (state) {
-      const context = this.$refs.canvas_interface.getContext('2d')
+      const canvas = this.$refs.canvas_interface
+      const context = canvas.getContext('2d')
 
-      this.clear(context, state.sizes.viewport)
+      clearCanvas(canvas, state.sizes.viewport)
 
       // Save current context before clipping.
       context.save()

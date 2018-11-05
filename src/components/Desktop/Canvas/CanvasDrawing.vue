@@ -6,20 +6,16 @@
 </template>
 
 <script>
-import Canvas from '@/mixins/Canvas'
+import { setupCanvases } from '@/tools/canvas'
 
 import { EventBus } from '@/events'
 
-import CanvasState from '@/classes/CanvasState.js'
+import CanvasState from '@/classes/Canvas/CanvasState.js'
 import { isSamePoint } from '@/tools/helpers.js'
 import { threads } from '@/store'
 
 export default {
   name: 'CanvasDrawing',
-
-  mixins: [
-    Canvas
-  ],
 
   vuetamin: {
     handleSizes: [threads.SIZES],
@@ -79,7 +75,7 @@ export default {
     },
 
     setCanvasSizes () {
-      this.setupCanvases(this.$vuetamin.store.getState().sizes.viewport, [
+      setupCanvases(this.$vuetamin.store.getState().sizes.viewport, [
         this.$refs.canvas_main,
         this.$refs.canvas_temp
       ])

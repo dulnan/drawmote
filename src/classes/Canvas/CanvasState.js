@@ -1,21 +1,6 @@
-import { midPointBetween } from '@/tools/helpers.js'
-
-/**
- * A draw action.
- */
-class DrawAction {
-  constructor (canvasProperties) {
-    this.type = 'stroke'
-    this.canvasProperties = canvasProperties
-    this.points = []
-  }
-}
-
-class Action {
-  constructor (type) {
-    this.type = type
-  }
-}
+import Action from './Action'
+import DrawAction from './DrawAction'
+import { clearCanvas } from '@/tools/canvas'
 
 export default class CanvasState {
   /**
@@ -124,7 +109,7 @@ export default class CanvasState {
    */
   release () {
     this.copy(this._canvasTemp, this._canvasMain)
-    this.clear(this._canvasTemp)
+    clearCanvas(this._canvasTemp, this._size)
 
     this.pushAction(this.currentAction)
   }
@@ -138,50 +123,9 @@ export default class CanvasState {
   move (point) {
     this.currentAction.points.push(point)
 
-    this.clear(this._canvasTemp)
+    clearCanvas(this._canvasTemp, this._size)
 
-    this.drawActionToCanvas(this.currentAction, this._canvasTemp)
-  }
-
-  /**
-   * Draws the given action to the canvas.
-   *
-   * @param {DrawAction} action The action to draw.
-   * @param {HTMLCanvasElement} canvas The canvas to draw on to.
-   */
-  drawActionToCanvas (action, canvas) {
-    // First prepare the canvas with the properties from the action.
-    this.setCanvasProperties(canvas, action.canvasProperties)
-
-    const c = canvas.getContext('2d')
-    let p1 = action.points[0]
-    let p2 = action.points[1]
-
-    c.beginPath()
-    c.moveTo(p1.x, p1.y)
-
-    for (let i = 1; i < action.points.length; i++) {
-      // we pick the point between pi+1 & pi+2 as the
-      // end point and p1 as our control point
-      const midPoint = midPointBetween(p1, p2)
-      c.quadraticCurveTo(p1.x, p1.y, midPoint.x, midPoint.y)
-      p1 = action.points[i]
-      p2 = action.points[i + 1]
-    }
-    // Draw last line as a straight line while
-    // we wait for the next point to be able to calculate
-    // the bezier control point
-    c.lineTo(p1.x, p1.y)
-    c.stroke()
-  }
-
-  /**
-   * Clears the given canvas.
-   *
-   * @param {HTMLCanvasElement} canvas The canvas to clear.
-   */
-  clear (canvas) {
-    canvas.getContext('2d').clearRect(0, 0, this._size.width, this._size.height)
+    this.currentAction.do(this._canvasTemp)
   }
 
   /**
@@ -198,7 +142,7 @@ export default class CanvasState {
    * Undo the last action.
    */
   undo () {
-    this.clear(this._canvasMain)
+    clearCanvas(this._canvasMain, this._size)
     this._historyIndex = Math.max(this._historyIndex - 1, 0)
 
     if (this._historyIndex >= 0) {
@@ -213,7 +157,7 @@ export default class CanvasState {
     this._historyIndex = Math.min(this._historyIndex + 1, this.actions.length)
 
     if (this._historyIndex <= this.actions.length) {
-      this.clear(this._canvasMain)
+      clearCanvas(this._canvasMain, this._size)
       this.drawActions()
     }
   }
@@ -222,7 +166,7 @@ export default class CanvasState {
    * Clear the main canvas and draw all current actions.
    */
   redraw () {
-    this.clear(this._canvasMain)
+    clearCanvas(this._canvasMain, this._size)
     this.drawActions()
   }
 
@@ -232,16 +176,7 @@ export default class CanvasState {
   drawActions () {
     for (let i = 0; i < this._historyIndex; i++) {
       const action = this.actions[i]
-
-      switch (action.type) {
-        case 'stroke':
-          this.drawActionToCanvas(action, this._canvasMain)
-          break
-        case 'erase':
-          this.clear(this._canvasMain)
-          break
-      }
-
+      action.do(this._canvasMain, this._size)
       this.lastActionType = action.type
     }
   }
@@ -255,20 +190,6 @@ export default class CanvasState {
     }
 
     this.pushAction(new Action('erase'))
-    this.clear(this._canvasMain)
-  }
-
-  /**
-   * Set the given properties on the canvas.
-   *
-   * @param {HTMLCanvasElement} canvas The canvas to set the properties on.
-   * @param {Object} props An object with canvas properties and the desired values.
-   */
-  setCanvasProperties (canvas, props) {
-    const context = canvas.getContext('2d')
-
-    Object.keys(props).forEach(p => {
-      context[p] = props[p]
-    })
+    clearCanvas(this._canvasMain, this._size)
   }
 }
