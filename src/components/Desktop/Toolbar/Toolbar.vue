@@ -49,7 +49,7 @@ import SliderLazyRadius from '@/components/Desktop/Toolbar/Slider/SliderLazyRadi
 import SliderDistance from '@/components/Desktop/Toolbar/Slider/SliderDistance.vue'
 
 import { COLORS, TOOLBAR_TOOLS, TOOLBAR_SLIDERS } from '@/settings'
-import { threads } from '@/store'
+import threads from '@/store/threads'
 
 import Color from '@/classes/Color'
 

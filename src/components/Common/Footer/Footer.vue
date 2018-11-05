@@ -73,7 +73,6 @@ export default {
   position: relative;
   z-index: $index-footer;
   background: $alt-color-lighter;
-  // box-shadow: inset 0 2px 7px $alt-color-light;
   border-top: 1px solid $alt-color-light;
 }
 

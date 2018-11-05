@@ -9,7 +9,7 @@ import './assets/scss/main.scss'
 import Vuetamin from 'vuetamin'
 import Connection from './plugins/Connection'
 
-import { store } from './store'
+import store from './store'
 import i18n from './i18n'
 
 Vue.use(Vuetamin, { store })

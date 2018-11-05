@@ -1,6 +1,6 @@
 <script>
 import { LAZY_RADIUS_MIN, LAZY_RADIUS_MAX } from '@/settings'
-import { threads } from '@/store'
+import threads from '@/store/threads'
 
 import Slider from '@/components/Desktop/Toolbar/Slider/Slider.vue'
 

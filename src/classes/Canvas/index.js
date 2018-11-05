@@ -2,7 +2,7 @@ import Action from './Action'
 import DrawAction from './DrawAction'
 import { clearCanvas } from '@/tools/canvas'
 
-export default class CanvasState {
+export default class {
   /**
    * Handle drawing using { x, y } coordinates. Supports various brush
    * settings and offers undo and redo functionality.

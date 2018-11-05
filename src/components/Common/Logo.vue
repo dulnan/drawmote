@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { threads } from '@/store'
+import threads from '@/store/threads'
 
 import BackgroundAnimation from '@/components/Common/BackgroundAnimation.vue'
 

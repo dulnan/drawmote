@@ -1,19 +1,4 @@
-import { getRgbaString } from '@/tools/helpers.js'
-
-/**
- * Convert a hex color string to rgb values.
- *
- * @param {String} hex The hex string to convert.
- * @returns {Array} The converted rgb values as an array.
- */
-function hexToRgb (hex) {
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
-  return result ? [
-    parseInt(result[1], 16),
-    parseInt(result[2], 16),
-    parseInt(result[3], 16)
-  ] : null
-}
+import { getRgbaString, hexToRgb } from '@/tools/helpers.js'
 
 /**
  * Manages a color.

@@ -10,9 +10,9 @@ import { setupCanvases } from '@/tools/canvas'
 
 import { EventBus } from '@/events'
 
-import CanvasState from '@/classes/Canvas/CanvasState.js'
+import Canvas from '@/classes/Canvas'
 import { isSamePoint } from '@/tools/helpers.js'
-import { threads } from '@/store'
+import threads from '@/store/threads'
 
 export default {
   name: 'CanvasDrawing',
@@ -95,7 +95,7 @@ export default {
     const canvasMain = this.$refs['canvas_main']
     const canvasTemp = this.$refs['canvas_temp']
 
-    this.canvasState = new CanvasState(canvasMain, canvasTemp)
+    this.canvasState = new Canvas(canvasMain, canvasTemp)
 
     EventBus.$on('clearCanvas', this.handleErase)
     EventBus.$on('undoCanvas', this.handleUndo)

@@ -1,4 +1,4 @@
-function getViewportSize () {
+export function getViewportSize () {
   return {
     width: Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
     height: Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
@@ -7,18 +7,33 @@ function getViewportSize () {
   }
 }
 
-function midPointBetween (p1, p2) {
+export function midPointBetween (p1, p2) {
   return {
     x: p1.x + (p2.x - p1.x) / 2,
     y: p1.y + (p2.y - p1.y) / 2
   }
 }
 
-function getRgbaString (rgb, alpha) {
+export function getRgbaString (rgb, alpha) {
   return `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${alpha})`
 }
 
-function shadeRgbColor (rgb, percent) {
+/**
+ * Convert a hex color string to rgb values.
+ *
+ * @param {String} hex The hex string to convert.
+ * @returns {Array} The converted rgb values as an array.
+ */
+export function hexToRgb (hex) {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+  return result ? [
+    parseInt(result[1], 16),
+    parseInt(result[2], 16),
+    parseInt(result[3], 16)
+  ] : null
+}
+
+export function shadeRgbColor (rgb, percent) {
   let f = rgb
   let t = percent < 0 ? 0 : 255
   let p = percent < 0 ? percent * -1 : percent
@@ -33,7 +48,7 @@ function shadeRgbColor (rgb, percent) {
   ]
 }
 
-function buildDataString (alpha, beta, isPressingMain, touchDiffY) {
+export function buildDataString (alpha, beta, isPressingMain, touchDiffY) {
   const values = [
     alpha,
     beta,
@@ -43,7 +58,7 @@ function buildDataString (alpha, beta, isPressingMain, touchDiffY) {
   return values.join(';')
 }
 
-function parseDataString (data) {
+export function parseDataString (data) {
   const arr = data.split(';')
   const alpha = Math.round(((parseFloat(arr[0]) + 180) % 360) * 100) / 100
   const beta = Math.round(parseFloat(arr[1]) * 100) / 100
@@ -55,7 +70,7 @@ function parseDataString (data) {
   }
 }
 
-function setCookie (name, value, days) {
+export function setCookie (name, value, days) {
   var expires = ''
 
   if (days) {
@@ -66,7 +81,7 @@ function setCookie (name, value, days) {
   document.cookie = name + '=' + (value || '') + expires + '; path=/'
 }
 
-function getCookie (name) {
+export function getCookie (name) {
   var nameEQ = name + '='
   var ca = document.cookie.split(';')
 
@@ -78,28 +93,14 @@ function getCookie (name) {
   return null
 }
 
-function eraseCookie (name) {
+export function eraseCookie (name) {
   document.cookie = name + '=; Max-Age=-99999999;'
 }
 
-function isSamePoint (p1, p2) {
+export function isSamePoint (p1, p2) {
   return p1.x === p2.x && p1.y === p2.y
 }
 
-function buildDevServerUrl (hostname, port) {
+export function buildDevServerUrl (hostname, port) {
   return `http://${hostname}:${port}`
-}
-
-export {
-  setCookie,
-  getCookie,
-  eraseCookie,
-  getViewportSize,
-  getRgbaString,
-  shadeRgbColor,
-  midPointBetween,
-  buildDataString,
-  parseDataString,
-  isSamePoint,
-  buildDevServerUrl
 }
