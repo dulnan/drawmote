@@ -5,7 +5,7 @@ import Vue from 'vue'
 import App from './App.vue'
 
 import Vuetamin from 'vuetamin'
-import Connection from './plugins/Connection'
+import Mote from './plugins/Mote'
 import Track from './plugins/Track'
 import Settings from './plugins/Settings'
 
@@ -13,7 +13,7 @@ import store from './store'
 import i18n from './i18n'
 
 Vue.use(Vuetamin, { store })
-Vue.use(Connection)
+Vue.use(Mote)
 Vue.use(Track)
 Vue.use(Settings)
 

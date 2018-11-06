@@ -76,7 +76,7 @@ export default {
         return
       }
       this.isRestoring = true
-      this.$connection.initPeering(this.peering.code, this.peering.hash)
+      this.$mote.initPeering(this.peering.code, this.peering.hash)
 
       window.clearTimeout(this.windowTimeout)
 
@@ -90,7 +90,7 @@ export default {
      * Delete the stored connection from the history.
      */
     deleteConnection () {
-      this.$connection.deleteSession()
+      this.$mote.deleteSession()
       this.connectionRestorable = false
     },
 

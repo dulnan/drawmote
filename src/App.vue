@@ -46,7 +46,7 @@ export default {
       const viewport = getViewportSize()
       this.$vuetamin.store.mutate('updateViewport', viewport)
 
-      if (!this.$connection.isConnected()) {
+      if (!this.$mote.isConnected()) {
         this.isMobile = viewport.width < BREAKPOINT_REMOTE
       }
     }

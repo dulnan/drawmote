@@ -15,7 +15,7 @@ function getServerUrl () {
 
 const SERVER = getServerUrl()
 
-class Connection {
+class Mote {
   constructor (Vuetamin) {
     this.peer = null
     this.isDesktop = false
@@ -159,6 +159,6 @@ class Connection {
 
 export default {
   install (Vue, options) {
-    Vue.prototype.$connection = new Connection(Vue.prototype.$vuetamin)
+    Vue.prototype.$mote = new Mote(Vue.prototype.$vuetamin)
   }
 }

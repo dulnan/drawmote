@@ -119,7 +119,7 @@ export default {
     },
 
     updateOrientationOffset (newOrientationOffset) {
-      this.$connection.emit('OrientationOffset', {
+      this.$mote.emit('OrientationOffset', {
         alpha: this.alpha,
         beta: this.beta
       })
@@ -133,7 +133,7 @@ export default {
 
       const newData = buildDataString(alpha, beta, this.isPressingMain, touchDiffY)
       if (newData !== this.lastOrientationString) {
-        this.$connection.emit('Orientation', newData)
+        this.$mote.emit('Orientation', newData)
         this.lastOrientationString = newData
       }
       window.requestAnimationFrame(this.dataLoop)

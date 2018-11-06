@@ -48,7 +48,7 @@ export default {
     }
     timeout = window.setTimeout(() => {
       this.getPairingCode()
-      this.$connection.getStoredPeerings()
+      this.$mote.getStoredPeerings()
     }, 500)
 
     EventBus.$on('connectionClosed', () => {
@@ -58,11 +58,11 @@ export default {
 
   methods: {
     async getPairingCode () {
-      const peering = await this.$connection.getPeeringCode()
+      const peering = await this.$mote.getPeeringCode()
 
       if (peering) {
         this.isBlocked = false
-        this.$connection.initPeering(peering.code, peering.hash)
+        this.$mote.initPeering(peering.code, peering.hash)
         this.pairingCode = peering.code
       } else {
         this.isBlocked = true

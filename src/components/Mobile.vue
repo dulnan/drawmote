@@ -40,7 +40,7 @@ export default {
   },
 
   mounted () {
-    this.$connection.getStoredPeerings()
+    this.$mote.getStoredPeerings()
   }
 }
 </script>

@@ -76,10 +76,10 @@ export default {
     },
 
     async validateCode (code) {
-      const pairing = await this.$connection.getPeeringHash(code)
+      const pairing = await this.$mote.getPeeringHash(code)
 
       if (pairing.code && pairing.hash) {
-        this.$connection.initPeering(pairing.code, pairing.hash)
+        this.$mote.initPeering(pairing.code, pairing.hash)
         this.$track('Pairing', 'valid', '1')
       } else {
         this.codeInvalid = true
