@@ -6,6 +6,7 @@ export function updatePointer ({ data, trigger }, { coordinates, both = false } 
 
   data.hasCalibrated = false
 
+  // TODO VERY HARD
   if (hasChanged) {
     trigger(threads.POINT)
     if (data.toolbarRect.containsPoint(data.lazyBrush.pointer) && (!data.isPressing || data.pointingAtToolbar)) {

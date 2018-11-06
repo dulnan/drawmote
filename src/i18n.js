@@ -1,3 +1,5 @@
+import { getCookie } from '@/tools/helpers'
+
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 
@@ -17,6 +19,11 @@ function loadLocaleMessages () {
 }
 
 function detectLanguage () {
+  const locale = getCookie('locale')
+  if (locale) {
+    return locale
+  }
+
   return window.navigator.language.split('-')[0] || 'en'
 }
 
