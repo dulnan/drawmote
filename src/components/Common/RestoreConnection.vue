@@ -40,6 +40,8 @@
 import { EventBus } from '@/events'
 import IconRestore from '@/assets/icons/icon-restore.svg'
 
+import threads from '@/store/threads'
+
 /**
  * Provides a way to restore a previously made connection.
  */
@@ -48,6 +50,10 @@ export default {
 
   components: {
     IconRestore
+  },
+
+  vuetamin: {
+    handleConnection: threads.CONNECTION
   },
 
   data () {
@@ -86,16 +92,18 @@ export default {
     deleteConnection () {
       this.$connection.deleteSession()
       this.connectionRestorable = false
+    },
+
+    handleConnection (state) {
+      if (state.connection.connected) {
+        this.isRestored = true
+        this.connectionRestorable = false
+        this.connectionTimeout = false
+      }
     }
   },
 
   mounted () {
-    EventBus.$on('isConnected', (isConnected) => {
-      this.isRestored = true
-      this.connectionRestorable = false
-      this.connectionTimeout = false
-    })
-
     EventBus.$on('connectionRestorable', (peering) => {
       this.isRestoring = false
       this.isRestored = false

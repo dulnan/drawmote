@@ -70,7 +70,8 @@ export default {
 
   vuetamin: {
     calculatePointerAreas: [threads.SIZES],
-    handleToolsChange: [threads.TOOLS]
+    handleToolsChange: [threads.TOOLS],
+    handleConnection: threads.CONNECTION
   },
 
   data () {
@@ -80,7 +81,8 @@ export default {
       lastItemClick: '',
       wasPressingBefore: false,
       wheelDelta: 0,
-      canvasFilterSupported: false
+      canvasFilterSupported: false,
+      connectionDevice: ''
     }
   },
 
@@ -110,7 +112,15 @@ export default {
           type: 'slider',
           action: 'brush',
           items: TOOLBAR_SLIDERS.filter(tool => {
-            return tool.id !== 'brushHardness' || this.canvasFilterSupported
+            if (tool.id === 'brushHardness' && !this.canvasFilterSupported) {
+              return false
+            }
+
+            if (tool.id === 'distance' && this.connectionDevice !== 'phone') {
+              return false
+            }
+
+            return true
           })
         }
       ]
@@ -118,6 +128,10 @@ export default {
   },
 
   methods: {
+    handleConnection ({ connection }) {
+      this.connectionDevice = connection.device
+    },
+
     handleToolsChange (state) {
       let tool = this.getToolAtPoint(state.points.pointer)
 

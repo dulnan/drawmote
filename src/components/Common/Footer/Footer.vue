@@ -14,7 +14,7 @@
 <script>
 import debouncedResize from 'debounced-resize'
 
-import { EventBus } from '@/events'
+import threads from '@/store/threads'
 
 import FooterBrowserSupport from '@/components/Common/Footer/FooterBrowserSupport.vue'
 import FooterCopyright from '@/components/Common/Footer/FooterCopyright.vue'
@@ -31,6 +31,10 @@ export default {
     FooterLanguage
   },
 
+  vuetamin: {
+    handleConnection: threads.CONNECTION
+  },
+
   props: {
     isMobile: false
   },
@@ -42,15 +46,16 @@ export default {
   },
 
   methods: {
+    handleConnection ({ connection }) {
+      this.isConnected = connection.connected
+    },
+
     updateSizes () {
       this.$vuetamin.store.mutate('updateFooterRect', this.$refs.footer.getBoundingClientRect())
     }
   },
 
   mounted () {
-    EventBus.$on('isConnected', (isConnected) => {
-      this.isConnected = isConnected
-    })
     this.updateSizes()
     debouncedResize((e) => {
       this.updateSizes()

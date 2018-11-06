@@ -136,3 +136,9 @@ export function updateDistance ({ trigger, data }, distance) {
   data.gyro.setDistance(distance)
   trigger(threads.DISTANCE)
 }
+
+export function updateConnection ({ trigger, data }, { connected = false, device = '' } = {}) {
+  data.connection.connected = connected
+  data.connection.device = device
+  trigger(threads.CONNECTION)
+}

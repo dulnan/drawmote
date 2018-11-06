@@ -21,6 +21,7 @@ export default function (data) {
     },
     distance: data.distance,
     slideY: data.slideY,
-    pointingAtToolbar: data.pointingAtToolbar
+    pointingAtToolbar: data.pointingAtToolbar,
+    connection: data.connection
   }
 }

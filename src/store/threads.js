@@ -13,5 +13,6 @@ export default {
   BRUSH_HARDNESS: 'brushHardness',
   BRUSH_COLOR: 'brushColor',
   LAZYRADIUS: 'lazyRadius',
-  DISTANCE: 'distance'
+  DISTANCE: 'distance',
+  CONNECTION: 'connection'
 }

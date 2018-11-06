@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { EventBus } from '@/events'
+import threads from '@/store/threads'
 
 import Pairing from '@/components/Mobile/Pairing.vue'
 import Controlling from '@/components/Mobile/Controlling.vue'
@@ -23,17 +23,23 @@ export default {
     Controlling
   },
 
+  vuetamin: {
+    handleConnection: threads.CONNECTION
+  },
+
   data () {
     return {
       isConnected: false
     }
   },
 
-  mounted () {
-    EventBus.$on('isConnected', () => {
-      this.isConnected = true
-    })
+  methods: {
+    handleConnection (state) {
+      this.isConnected = state.connection.connected
+    }
+  },
 
+  mounted () {
     this.$connection.getStoredPeerings()
   }
 }

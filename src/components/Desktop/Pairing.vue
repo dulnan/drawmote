@@ -36,8 +36,6 @@
 import Logo from '@/components/Common/Logo.vue'
 import RestoreConnection from '@/components/Common/RestoreConnection.vue'
 
-import { EventBus } from '@/events'
-
 const PAIRING_TIMEOUT = 120
 let interval = null
 
@@ -89,7 +87,7 @@ export default {
 
   methods: {
     togglePairing () {
-      EventBus.$emit('isConnected', true)
+      this.$vuetamin.store.mutate('updateConnection', { connected: true, device: 'mouse' })
       this.$track('Pairing', 'skip', 1)
     },
 

@@ -17,6 +17,7 @@
 <script>
 import { EventBus } from '@/events'
 
+import threads from '@/store/threads'
 import Pairing from '@/components/Desktop/Pairing.vue'
 
 let timeout = null
@@ -27,6 +28,10 @@ export default {
   components: {
     Pairing,
     'drawing': () => import('@/components/Desktop/Drawing.vue')
+  },
+
+  vuetamin: {
+    handleConnection: threads.CONNECTION
   },
 
   data () {
@@ -45,10 +50,6 @@ export default {
       this.getPairingCode()
       this.$connection.getStoredPeerings()
     }, 500)
-
-    EventBus.$on('isConnected', (isConnected) => {
-      this.isPaired = isConnected
-    })
 
     EventBus.$on('connectionClosed', () => {
       this.isPaired = true
@@ -72,6 +73,10 @@ export default {
     handleTimeout () {
       this.pairingCode = ''
       this.getPairingCode()
+    },
+
+    handleConnection (state) {
+      this.isPaired = state.connection.connected
     }
   }
 }

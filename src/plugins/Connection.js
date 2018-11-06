@@ -107,7 +107,7 @@ class Connection {
     })
 
     this.peer.on('connect', () => {
-      this.EventBus.$emit('isConnected', true)
+      this.Vuetamin.store.mutate('updateConnection', { connected: true, device: 'phone' })
       this._isConnected = true
       this.saveSession(code, hash)
     })

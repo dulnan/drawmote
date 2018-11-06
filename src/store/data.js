@@ -65,6 +65,11 @@ export default function () {
 
     cookieTimout: null,
 
-    canvasFilterSupported: false
+    canvasFilterSupported: false,
+
+    connection: {
+      connected: false,
+      device: ''
+    }
   }
 }
