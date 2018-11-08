@@ -189,6 +189,7 @@ export default {
 
   mounted () {
     this.calculatePointerAreas()
+    this.isConnected = this.$mote.isConnected()
     this.$mote.on('connected', this.handleConnected)
   },
 
@@ -207,7 +208,6 @@ export default {
   top: 0;
   right: 0;
   height: $toolbar-height - 1rem;
-  // overflow: hidden;
   user-select: none;
   @include media('md') {
     height: $toolbar-height;
