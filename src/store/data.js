@@ -1,4 +1,3 @@
-import { GyroPlane } from 'gyro-plane'
 import { LazyBrush } from 'lazy-brush'
 import { getCookie } from '@/tools/helpers'
 import Rectangle from '@/classes/Rectangle'
@@ -32,19 +31,8 @@ export default function () {
   }
 
   return {
-    gyro: new GyroPlane({
-      width: viewport.width,
-      height: viewport.height,
-      distance: distance
-    }),
-
     lazyBrush: new LazyBrush({
       radius: 80
-    }),
-
-    lazyPointer: new LazyBrush({
-      radius: 5,
-      enabled: false
     }),
 
     brush: new Brush(brushOptions),
@@ -65,11 +53,6 @@ export default function () {
 
     cookieTimout: null,
 
-    canvasFilterSupported: false,
-
-    connection: {
-      connected: false,
-      device: ''
-    }
+    canvasFilterSupported: false
   }
 }

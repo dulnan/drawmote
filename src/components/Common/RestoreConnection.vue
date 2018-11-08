@@ -1,6 +1,6 @@
 <template>
   <transition name="appear">
-    <div class="connection pdg lg-pdg+" v-if="connectionRestorable">
+    <div class="connection pdg lg-pdg+" v-show="isVisible">
       <div class="flex-1 flex">
         <div class="connection__icon hidden-md-down mrgr lg-mrgr+">
           <icon-restore />
@@ -37,10 +37,7 @@
 </template>
 
 <script>
-import { EventBus } from '@/events'
 import IconRestore from '@/assets/icons/icon-restore.svg'
-
-import threads from '@/store/threads'
 
 /**
  * Provides a way to restore a previously made connection.
@@ -52,18 +49,21 @@ export default {
     IconRestore
   },
 
-  vuetamin: {
-    handleConnection: threads.CONNECTION
-  },
-
   data () {
     return {
       connectionRestorable: false,
-      peering: {},
+      pairing: {},
       isRestoring: false,
       isRestored: false,
+      isConnected: false,
       connectionTimeout: false,
       windowTimeout: null
+    }
+  },
+
+  computed: {
+    isVisible () {
+      return this.connectionRestorable && !this.isConnected
     }
   },
 
@@ -75,8 +75,9 @@ export default {
       if (this.isRestoring) {
         return
       }
+
       this.isRestoring = true
-      this.$mote.initPeering(this.peering.code, this.peering.hash)
+      this.$mote.initPairing(this.pairing)
 
       window.clearTimeout(this.windowTimeout)
 
@@ -90,26 +91,37 @@ export default {
      * Delete the stored connection from the history.
      */
     deleteConnection () {
-      this.$mote.deleteSession()
       this.connectionRestorable = false
+      this.$mote.deleteStoredPairing(this.pairing)
     },
 
-    handleConnection (state) {
-      if (state.connection.connected) {
-        this.isRestored = true
-        this.connectionRestorable = false
-        this.connectionTimeout = false
-      }
+    handleConnected () {
+      this.isConnected = true
+      this.isRestored = true
+      this.connectionRestorable = false
+      this.connectionTimeout = false
+    },
+
+    handleRestorable (pairing) {
+      this.pairing = pairing
+      this.isRestoring = false
+      this.isRestored = false
+      this.connectionRestorable = true
     }
   },
 
   mounted () {
-    EventBus.$on('connectionRestorable', (peering) => {
-      this.isRestoring = false
-      this.isRestored = false
-      this.connectionRestorable = true
-      this.peering = peering
+    this.$mote.on('connected', this.handleConnected)
+    this.$mote.on('restorable', (pairing) => {
+      this.handleRestorable(pairing)
     })
+
+    this.$mote.loadStoredPairings()
+  },
+
+  beforeDestroy () {
+    this.$mote.off('connected', this.handleConnected)
+    this.$mote.off('restorable', this.handleRestorable)
   }
 }
 </script>

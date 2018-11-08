@@ -1,164 +1,146 @@
 import SocketPeer from 'socketpeer'
-import axios from 'axios'
+import EventEmitter from 'eventemitter3'
 
-import { getCookie, setCookie, eraseCookie, parseDataString, buildDevServerUrl } from '@/tools/helpers'
+import { parseDataString } from '@/tools/helpers'
 
-import { EventBus } from '@/events'
+import { GyroPlane } from 'gyro-plane'
+import { LazyBrush } from 'lazy-brush'
 
-function getServerUrl () {
-  if (process.env.VUE_APP_API_URL) {
-    return process.env.VUE_APP_API_URL
-  } else {
-    return buildDevServerUrl(window.location.hostname, '3000')
-  }
-}
+import PairingManager from './PairingManager'
 
-const SERVER = getServerUrl()
+class Mote extends EventEmitter {
+  constructor (serverUrl) {
+    super()
 
-class Mote {
-  constructor (Vuetamin) {
-    this.peer = null
-    this.isDesktop = false
-    this.hash = ''
-    this.code = ''
-    this.EventBus = EventBus
-    this.Vuetamin = Vuetamin
+    this.serverUrl = serverUrl
 
-    this._isConnected = false
-  }
+    this.pairingManager = new PairingManager(serverUrl)
 
-  isConnected () {
-    return this._isConnected === true
-  }
-
-  async getStoredPeerings () {
-    const cookie = getCookie('pairing')
-
-    if (cookie) {
-      const connection = JSON.parse(cookie)
-      const isValid = await this.pairingIsValid(connection.pairing)
-
-      if (isValid) {
-        this.EventBus.$emit('connectionRestorable', connection.pairing)
-      } else {
-        this.deleteSession()
-      }
-    }
-  }
-
-  async getPeeringCode () {
-    let response = false
-    try {
-      response = await axios.get(SERVER + '/code/get')
-    } catch (e) {
-      console.log(e)
-    }
-
-    if (response) {
-      this.isDesktop = true
-
-      return {
-        hash: response.data.hash,
-        code: response.data.code
-      }
-    }
-  }
-
-  async getPeeringHash (code) {
-    const response = await axios.post(SERVER + '/code/validate', {
-      code: code
-    })
-
-    if (response.data.code && response.data.hash) {
-      return {
-        hash: response.data.hash,
-        code: response.data.code
-      }
-    }
-
-    return {}
-  }
-
-  async pairingIsValid (pairing) {
-    const response = await axios.post(SERVER + '/pairing/validate', pairing)
-
-    return response.data.isValid
-  }
-
-  saveSession (code, hash) {
-    setCookie('pairing', JSON.stringify({
-      pairing: {
-        hash: hash,
-        code: code
-      },
-      isDesktop: this.isDesktop
-    }), 1)
-  }
-
-  deleteSession () {
-    eraseCookie('pairing')
-  }
-
-  initPeering (code, hash) {
     this.peer = new SocketPeer({
-      pairCode: hash,
-      url: SERVER + '/socketpeer/',
+      autoconnect: false,
+      url: this.serverUrl + '/socketpeer/',
       serveLibrary: false
     })
 
+    this.gyro = new GyroPlane()
+    this.lazy = new LazyBrush({
+      radius: 5,
+      enabled: false
+    })
+
+    this.isPressing = false
+
+    this.pairing = null
+
+    this._isConnected = false
+
+    this.initSocketPeer()
+  }
+
+  initSocketPeer () {
     this.peer.on('connect', () => {
-      this.Vuetamin.store.mutate('updateConnection', { connected: true, device: 'phone' })
+      this.emit('connected', this.pairing)
       this._isConnected = true
-      this.saveSession(code, hash)
+      this.pairingManager.savePairing(this.pairing)
     })
 
     this.peer.on('close', () => {
       this._isConnected = false
     })
 
-    this.peer.on('connect_timeout', () => {
-      this.EventBus.$emit('connectionTimeout')
-    })
+    this.peer.on('connect_timeout', () => this.emit('connectionTimeout'))
 
-    this.peer.on('connect_error', () => {
-      console.log('connect_error')
-    })
+    // this.peer.on('connect_error', () => {
+    //   console.log('connect_error')
+    // })
 
     this.peer.on('error', (data) => {
       this._isConnected = false
-      this.EventBus.$emit('connectionTimeout')
+      this.emit('connectionTimeout')
     })
 
-    this.peer.on('data', (dataString) => {
-      const data = JSON.parse(dataString)
+    this.peer.on('data', (messageString) => {
+      const message = JSON.parse(messageString)
 
-      switch (data.name) {
+      switch (message.name) {
         case 'Orientation':
-          this.Vuetamin.store.mutate('updateFromRemote', parseDataString(data.myData))
+          const data = parseDataString(message.data)
+
+          this.gyro.updateOrientation(data)
+          const coordinates = this.gyro.getScreenCoordinates()
+          const hasChanged = this.lazy.update(coordinates)
+          if (hasChanged) {
+            this.emit('pointermove', coordinates)
+          }
+
+          if (data.isPressingMain !== this.isPressing) {
+            this.isPressing = data.isPressingMain
+
+            if (data.isPressingMain) {
+              this.emit('pointerdown')
+            } else {
+              this.emit('pointerup')
+            }
+          }
+
+          this.emit('slide', data.touchDiffY)
           break
         case 'OrientationOffset':
-          this.Vuetamin.store.mutate('updateCalibrationOffset', data.myData)
+          this.gyro.updateOffset(message.data)
+          this.emit('calibrated', message.data)
           break
-        default:
-          this.EventBus.$emit(data.name, data.myData)
       }
     })
   }
 
-  emit (name, data) {
-    if (!this._isConnected) {
+  async getPairing () {
+    const pairing = await this.pairingManager.requestPairing()
+    return pairing
+  }
+
+  async getPairingByCode (code) {
+    const pairing = await this.pairingManager.getHash(code)
+    return pairing
+  }
+
+  loadStoredPairings () {
+    this.pairingManager.getStoredPairing((pairing) => {
+      if (pairing) {
+        this.emit('restorable', pairing)
+      }
+    })
+  }
+
+  deleteStoredPairing (pairing) {
+    this.pairingManager.deletePairing(pairing)
+  }
+
+  isConnected () {
+    return this._isConnected
+  }
+
+  initPairing (pairing) {
+    this.pairing = pairing
+
+    this.peer.pairCode = pairing.hash
+
+    this.peer.connect()
+  }
+
+  send (name, data) {
+    if (!this.isConnected()) {
       return
     }
 
     this.peer.send(JSON.stringify({
       name: name,
-      myData: data
+      data: data
     }))
   }
 }
 
 export default {
-  install (Vue, options) {
-    Vue.prototype.$mote = new Mote(Vue.prototype.$vuetamin)
+  install (Vue, { serverUrl }) {
+    Vue.prototype.$mote = new Mote(serverUrl)
   }
 }

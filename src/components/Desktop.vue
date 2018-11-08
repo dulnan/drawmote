@@ -7,6 +7,7 @@
           :code="pairingCode"
           :is-blocked="isBlocked"
           @pairingTimeout="handleTimeout"
+          @skipPairing="isPaired = true"
         />
       </transition>
       <drawing v-if="isPaired"></drawing>
@@ -15,12 +16,7 @@
 </template>
 
 <script>
-import { EventBus } from '@/events'
-
-import threads from '@/store/threads'
 import Pairing from '@/components/Desktop/Pairing.vue'
-
-let timeout = null
 
 export default {
   name: 'Desktop',
@@ -28,10 +24,6 @@ export default {
   components: {
     Pairing,
     'drawing': () => import('@/components/Desktop/Drawing.vue')
-  },
-
-  vuetamin: {
-    handleConnection: threads.CONNECTION
   },
 
   data () {
@@ -42,28 +34,14 @@ export default {
     }
   },
 
-  mounted () {
-    if (timeout) {
-      window.clearTimeout(timeout)
-    }
-    timeout = window.setTimeout(() => {
-      this.getPairingCode()
-      this.$mote.getStoredPeerings()
-    }, 500)
-
-    EventBus.$on('connectionClosed', () => {
-      this.isPaired = true
-    })
-  },
-
   methods: {
     async getPairingCode () {
-      const peering = await this.$mote.getPeeringCode()
+      const pairing = await this.$mote.getPairing()
 
-      if (peering) {
+      if (pairing) {
         this.isBlocked = false
-        this.$mote.initPeering(peering.code, peering.hash)
-        this.pairingCode = peering.code
+        this.$mote.initPairing(pairing)
+        this.pairingCode = pairing.code
       } else {
         this.isBlocked = true
         this.pairingCode = '••••••'
@@ -75,9 +53,19 @@ export default {
       this.getPairingCode()
     },
 
-    handleConnection (state) {
-      this.isPaired = state.connection.connected
+    handleConnected () {
+      this.isPaired = true
     }
+  },
+
+  mounted () {
+    this.getPairingCode()
+
+    this.$mote.on('connected', this.handleConnected)
+  },
+
+  beforeDestroy () {
+    this.$mote.off('connected', this.handleConnected)
   }
 }
 </script>

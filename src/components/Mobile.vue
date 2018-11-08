@@ -10,8 +10,6 @@
 </template>
 
 <script>
-import threads from '@/store/threads'
-
 import Pairing from '@/components/Mobile/Pairing.vue'
 import Controlling from '@/components/Mobile/Controlling.vue'
 
@@ -23,10 +21,6 @@ export default {
     Controlling
   },
 
-  vuetamin: {
-    handleConnection: threads.CONNECTION
-  },
-
   data () {
     return {
       isConnected: false
@@ -34,13 +28,17 @@ export default {
   },
 
   methods: {
-    handleConnection (state) {
-      this.isConnected = state.connection.connected
+    handleConnected () {
+      this.isConnected = true
     }
   },
 
   mounted () {
-    this.$mote.getStoredPeerings()
+    this.$mote.on('connected', this.handleConnected)
+  },
+
+  beforeDestroy () {
+    this.$mote.off('connected', this.handleConnected)
   }
 }
 </script>

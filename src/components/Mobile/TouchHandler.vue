@@ -133,7 +133,7 @@ export default {
 
       const newData = buildDataString(alpha, beta, this.isPressingMain, touchDiffY)
       if (newData !== this.lastOrientationString) {
-        this.$mote.emit('Orientation', newData)
+        this.$mote.send('Orientation', newData)
         this.lastOrientationString = newData
       }
       window.requestAnimationFrame(this.dataLoop)

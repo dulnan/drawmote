@@ -23,21 +23,6 @@ export function updatePointer ({ data, trigger }, { coordinates, both = false } 
   }
 }
 
-export function updateFromRemote ({ data, mutate }, remoteData) {
-  data.gyro.updateOrientation(remoteData)
-
-  const coordinates = data.gyro.getScreenCoordinates()
-
-  const hasChanged = data.lazyPointer.update(coordinates)
-
-  if (hasChanged) {
-    mutate('updatePointer', { coordinates: data.lazyPointer.brush })
-    mutate('updateIsPressing', { isPressing: remoteData.isPressingMain })
-  }
-
-  mutate('updateSlideY', remoteData.touchDiffY)
-}
-
 export function updateIsPressing ({ data, trigger }, { isPressing = false, fromMouse = false } = {}) {
   if (data.isPressing !== isPressing) {
     data.isPressing = isPressing
@@ -56,8 +41,7 @@ export function updateSlideY ({ data, trigger }, slideY) {
   }
 }
 
-export function updateCalibrationOffset ({ data }, angle) {
-  data.gyro.updateOffset(angle)
+export function updateCalibration ({ data }) {
   data.hasCalibrated = true
 }
 
@@ -78,7 +62,6 @@ export function updateFooterRect ({ data, trigger }, rect) {
 
 export function updateViewport ({ data, trigger }, viewport) {
   data.viewport = viewport
-  data.gyro.setScreenDimensions(viewport)
   trigger(threads.STATE)
   trigger(threads.SIZES)
 }
@@ -133,12 +116,5 @@ export function updateCanvasFilterSupport ({ data }, isSupported) {
 
 export function updateDistance ({ trigger, data }, distance) {
   data.distance = distance
-  data.gyro.setDistance(distance)
   trigger(threads.DISTANCE)
-}
-
-export function updateConnection ({ trigger, data }, { connected = false, device = '' } = {}) {
-  data.connection.connected = connected
-  data.connection.device = device
-  trigger(threads.CONNECTION)
 }

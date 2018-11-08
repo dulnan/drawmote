@@ -87,7 +87,7 @@ export default {
 
   methods: {
     togglePairing () {
-      this.$vuetamin.store.mutate('updateConnection', { connected: true, device: 'mouse' })
+      this.$emit('skipPairing')
       this.$track('Pairing', 'skip', 1)
     },
 

@@ -45,6 +45,7 @@ export default {
     updateViewport () {
       const viewport = getViewportSize()
       this.$vuetamin.store.mutate('updateViewport', viewport)
+      this.$mote.gyro.setScreenDimensions(viewport)
 
       if (!this.$mote.isConnected()) {
         this.isMobile = viewport.width < BREAKPOINT_REMOTE

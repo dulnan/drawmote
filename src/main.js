@@ -12,8 +12,10 @@ import Settings from './plugins/Settings'
 import store from './store'
 import i18n from './i18n'
 
+import { getServerUrl } from '@/tools/helpers.js'
+
 Vue.use(Vuetamin, { store })
-Vue.use(Mote)
+Vue.use(Mote, { serverUrl: getServerUrl() })
 Vue.use(Track)
 Vue.use(Settings)
 

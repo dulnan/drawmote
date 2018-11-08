@@ -70,8 +70,7 @@ export default {
 
   vuetamin: {
     calculatePointerAreas: [threads.SIZES],
-    handleToolsChange: [threads.TOOLS],
-    handleConnection: threads.CONNECTION
+    handleToolsChange: [threads.TOOLS]
   },
 
   data () {
@@ -82,7 +81,7 @@ export default {
       wasPressingBefore: false,
       wheelDelta: 0,
       canvasFilterSupported: false,
-      connectionDevice: ''
+      isConnected: false
     }
   },
 
@@ -116,7 +115,7 @@ export default {
               return false
             }
 
-            if (tool.id === 'distance' && this.connectionDevice !== 'phone') {
+            if (tool.id === 'distance' && !this.isConnected) {
               return false
             }
 
@@ -181,11 +180,20 @@ export default {
       })
 
       this.pointerAreas = items
+    },
+
+    handleConnected () {
+      this.isConnected = true
     }
   },
 
   mounted () {
     this.calculatePointerAreas()
+    this.$mote.on('connected', this.handleConnected)
+  },
+
+  beforeDestroy () {
+    this.$mote.off('connected', this.handleConnected)
   }
 }
 </script>

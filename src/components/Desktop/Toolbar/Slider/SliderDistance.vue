@@ -35,6 +35,7 @@ export default {
 
     handleValueChange (value) {
       this.$vuetamin.store.mutate('updateDistance', value)
+      this.$mote.gyro.setDistance(value)
     }
   }
 }
