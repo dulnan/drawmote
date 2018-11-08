@@ -59,7 +59,9 @@ export default {
   },
 
   mounted () {
-    this.getPairingCode()
+    if (!this.$settings.isPrerendering) {
+      this.getPairingCode()
+    }
 
     this.$mote.on('connected', this.handleConnected)
   },
