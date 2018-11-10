@@ -24,8 +24,6 @@
 <script>
 import IconClose from '@/assets/icons/icon-close.svg'
 
-import simplePeer from 'simple-peer'
-
 export default {
   name: 'BrowserSupport',
 
@@ -76,13 +74,6 @@ export default {
     },
 
     /**
-     * Checks if WebRTC is supported.
-     */
-    supportsWebRTC () {
-      return simplePeer.WEBRTC_SUPPORT
-    },
-
-    /**
      * Checks if WebSockets are supported.
      */
     supportsWebSocket () {
@@ -90,22 +81,17 @@ export default {
     },
 
     /**
+     * Checks if WebRTC is supported.
+     */
+    supportsWebRTC () {
+      return 'RTCPeerConnection' in window
+    },
+
+    /**
      * Checks if the device has a gyroscope.
      */
     supportsGyroscope () {
-      return new Promise(async (resolve, reject) => {
-        import('gyronorm').then(async ({ default: GyroNorm }) => {
-          await import('@hughsk/fulltilt/dist/fulltilt.min.js')
-          const gn = new GyroNorm()
-
-          gn.init().then(() => {
-            const isAvailable = gn.isAvailable()
-            resolve(isAvailable.deviceOrientationAvailable)
-          }).catch((e) => {
-            resolve(false)
-          })
-        })
-      })
+      return this.$mote.hasGyroscope
     },
 
     /**
@@ -152,6 +138,10 @@ export default {
   mounted () {
     if (!this.$settings.isPrerendering) {
       this.check()
+
+      this.$mote.on('usingFallback', () => {
+        this.supportsWebRTC = false
+      })
     }
   }
 }

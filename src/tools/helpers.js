@@ -48,28 +48,6 @@ export function shadeRgbColor (rgb, percent) {
   ]
 }
 
-export function buildDataString (alpha, beta, isPressingMain, touchDiffY) {
-  const values = [
-    alpha,
-    beta,
-    isPressingMain ? 1 : 0,
-    touchDiffY
-  ]
-  return values.join(';')
-}
-
-export function parseDataString (data) {
-  const arr = data.split(';')
-  const alpha = Math.round(((parseFloat(arr[0]) + 180) % 360) * 100) / 100
-  const beta = Math.round(parseFloat(arr[1]) * 100) / 100
-  return {
-    alpha: alpha,
-    beta: beta,
-    isPressingMain: arr[2] === '1',
-    touchDiffY: parseInt(arr[3]) || 0
-  }
-}
-
 export function setCookie (name, value, days) {
   var expires = ''
 

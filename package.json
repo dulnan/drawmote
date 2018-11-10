@@ -10,19 +10,15 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
-    "@hughsk/fulltilt": "^0.7.1",
     "axios": "^0.18.0",
     "catenary-curve": "^1.0.0",
     "debounced-resize": "^1.1.1",
     "es6-promise": "^4.2.5",
-    "eventemitter3": "^3.1.0",
-    "gyro-plane": "^1.0.0",
-    "gyronorm": "^2.0.6",
+    "gymote": "github:dulnan/gymote#master",
     "html-webpack-inline-source-plugin": "0.0.10",
     "input-range-scss": "^1.5.1",
     "lazy-brush": "^1.0.0",
     "prerender-spa-plugin": "^3.4.0",
-    "socketpeer": "github:dulnan/socketpeer#update-dependencies",
     "vue": "^2.5.17",
     "vue-i18n": "^8.0.0",
     "vuetamin": "0.0.3"

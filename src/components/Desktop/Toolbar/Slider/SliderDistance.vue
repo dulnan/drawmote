@@ -9,8 +9,7 @@ export default {
   name: 'SliderDistance',
 
   vuetamin: {
-    handleSizesChange: [threads.SIZES],
-    handleDistanceChange: [threads.DISTANCE]
+    handleSizesChange: [threads.SIZES]
   },
 
   data () {
@@ -23,20 +22,18 @@ export default {
 
   methods: {
     handleSizesChange (state) {
-      this.min = state.sizes.viewport.width / 2
+      this.min = state.sizes.viewport.width / 4
       this.max = state.sizes.viewport.width * 2
     },
 
-    handleDistanceChange (state) {
-      if (this.value !== state.distance) {
-        this.value = state.distance
-      }
-    },
-
     handleValueChange (value) {
-      this.$vuetamin.store.mutate('updateDistance', value)
-      this.$mote.gyro.setDistance(value)
+      this.value = value
+      this.$mote.updateDistance(value)
     }
+  },
+
+  mounted () {
+    this.handleValueChange(window.innerWidth)
   }
 }
 </script>

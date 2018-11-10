@@ -142,7 +142,7 @@ export default {
           this.lastItemClick = tool.key
         }
 
-        const wheel = state.slideY - this.wheelDelta
+        const wheel = state.touch.y - this.wheelDelta
 
         if (wheel !== 0) {
           let event = new WheelEvent('wheel', {
@@ -154,7 +154,7 @@ export default {
           tool.el.dispatchEvent(event)
         }
 
-        this.wheelDelta = state.slideY
+        this.wheelDelta = state.touch.y
       } else {
         this.wheelDelta = 0
         this.lastItemClick = ''

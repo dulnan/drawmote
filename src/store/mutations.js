@@ -34,9 +34,9 @@ export function updateIsPressing ({ data, trigger }, { isPressing = false, fromM
   }
 }
 
-export function updateSlideY ({ data, trigger }, slideY) {
-  if (data.slideY !== slideY && data.pointingAtToolbar) {
-    data.slideY = slideY
+export function updateTouch ({ data, trigger }, touch) {
+  if (data.touch.y !== touch.y && data.pointingAtToolbar) {
+    data.touch = touch
     trigger(threads.TOOLS)
   }
 }
@@ -112,9 +112,4 @@ export function updateBrushHardness ({ data, trigger, action }, hardness) {
 export function updateCanvasFilterSupport ({ data }, isSupported) {
   data.canvasFilterSupported = isSupported
   data.brush.setFilterSupport(isSupported)
-}
-
-export function updateDistance ({ trigger, data }, distance) {
-  data.distance = distance
-  trigger(threads.DISTANCE)
 }

@@ -19,8 +19,7 @@ export default function (data) {
       brush: data.lazyBrush.brush.toObject(),
       pointer: data.lazyBrush.pointer.toObject()
     },
-    distance: data.distance,
-    slideY: data.slideY,
+    touch: data.touch,
     pointingAtToolbar: data.pointingAtToolbar
   }
 }

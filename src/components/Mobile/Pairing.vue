@@ -79,7 +79,7 @@ export default {
       const pairing = await this.$mote.getPairingByCode(code)
 
       if (pairing.code && pairing.hash) {
-        this.$mote.initPairing(pairing)
+        this.$mote.connect(pairing)
         this.$track('Pairing', 'valid', '1')
       } else {
         this.codeInvalid = true

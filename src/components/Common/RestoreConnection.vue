@@ -77,7 +77,7 @@ export default {
       }
 
       this.isRestoring = true
-      this.$mote.initPairing(this.pairing)
+      this.$mote.connect(this.pairing)
 
       window.clearTimeout(this.windowTimeout)
 

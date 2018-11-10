@@ -16,7 +16,12 @@
 </template>
 
 <script>
+import debouncedResize from 'debounced-resize'
+
+import { BREAKPOINT_REMOTE } from '@/settings'
+
 import Pairing from '@/components/Desktop/Pairing.vue'
+import { getViewportSize } from '@/tools/helpers'
 
 export default {
   name: 'Desktop',
@@ -35,16 +40,26 @@ export default {
   },
 
   methods: {
-    async getPairingCode () {
-      const pairing = await this.$mote.getPairing()
+    getPairingCode () {
+      this.$mote.getPairing().then(pairing => {
+        if (pairing) {
+          this.isBlocked = false
+          this.$mote.connect(pairing)
+          this.pairingCode = pairing.code
+        } else {
+          this.isBlocked = true
+          this.pairingCode = '••••••'
+        }
+      })
+    },
 
-      if (pairing) {
-        this.isBlocked = false
-        this.$mote.initPairing(pairing)
-        this.pairingCode = pairing.code
-      } else {
-        this.isBlocked = true
-        this.pairingCode = '••••••'
+    updateViewport () {
+      const viewport = getViewportSize()
+      this.$vuetamin.store.mutate('updateViewport', viewport)
+      this.$mote.updateViewport(viewport)
+
+      if (!this.$mote.isConnected()) {
+        this.isMobile = viewport.width < BREAKPOINT_REMOTE
       }
     },
 
@@ -55,10 +70,19 @@ export default {
 
     handleConnected () {
       this.isPaired = true
+
+      const viewport = getViewportSize()
+      this.$mote.updateViewport(viewport)
     }
   },
 
   mounted () {
+    this.updateViewport()
+
+    debouncedResize((e) => {
+      this.updateViewport()
+    })
+
     if (!this.$settings.isPrerendering) {
       this.getPairingCode()
     }

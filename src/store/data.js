@@ -15,8 +15,6 @@ export default function () {
     ratio: 1
   }
 
-  const distance = viewport.width * 1.1
-
   const cookie = getCookie('state')
   let brushOptions = {}
 
@@ -38,11 +36,12 @@ export default function () {
     brush: new Brush(brushOptions),
 
     isPressing: false,
-    slideY: 0,
+    touch: {
+      x: 0,
+      y: 0
+    },
 
     viewport: viewport,
-
-    distance: distance,
 
     canvasRect: new Rectangle(0, 0, 0, 0),
     toolbarRect: new Rectangle(0, 0, 0, 0),

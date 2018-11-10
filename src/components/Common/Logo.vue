@@ -82,7 +82,7 @@ $logo-base: 768;
   }
   @include media('lg') {
     font-size: 16rem;
-    margin-left: -1em;
+    margin-left: -0.3em;
   }
 }
 
