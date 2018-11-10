@@ -56,7 +56,7 @@ export default {
     updateViewport () {
       const viewport = getViewportSize()
       this.$vuetamin.store.mutate('updateViewport', viewport)
-      this.$mote.updateViewport(viewport)
+      this.$mote.sendViewport(viewport)
 
       if (!this.$mote.isConnected()) {
         this.isMobile = viewport.width < BREAKPOINT_REMOTE
@@ -72,7 +72,7 @@ export default {
       this.isPaired = true
 
       const viewport = getViewportSize()
-      this.$mote.updateViewport(viewport)
+      this.$mote.sendViewport(viewport)
     }
   },
 

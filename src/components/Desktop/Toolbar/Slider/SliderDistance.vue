@@ -28,7 +28,7 @@ export default {
 
     handleValueChange (value) {
       this.value = value
-      this.$mote.updateDistance(value)
+      this.$mote.sendDistance(value)
     }
   },
 
