@@ -3,12 +3,14 @@
     <mobile v-if="isMobile" />
     <desktop v-else />
     <the-footer :is-mobile="isMobile" />
+    <connection-timeout />
   </div>
 </template>
 
 <script>
 import { BREAKPOINT_REMOTE } from '@/settings'
 import TheFooter from '@/components/Common/Footer/Footer.vue'
+import ConnectionTimeout from '@/components/Common/ConnectionTimeout.vue'
 
 const IS_MOBILE = window.innerWidth < BREAKPOINT_REMOTE
 
@@ -18,7 +20,8 @@ export default {
   components: {
     'desktop': () => import('@/components/Desktop.vue'),
     'mobile': () => import('@/components/Mobile.vue'),
-    TheFooter
+    TheFooter,
+    ConnectionTimeout
   },
 
   data () {
