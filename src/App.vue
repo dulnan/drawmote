@@ -3,7 +3,7 @@
     <mobile v-if="isMobile" />
     <desktop v-else />
     <the-footer :is-mobile="isMobile" />
-    <connection-timeout />
+    <connection-timeout :is-mobile="isMobile" />
   </div>
 </template>
 

@@ -7,7 +7,7 @@
           :code="pairingCode"
           :is-blocked="isBlocked"
           @pairingTimeout="handleTimeout"
-          @skipPairing="isPaired = true"
+          @skipPairing="skipPairing"
         />
       </transition>
       <drawing v-if="isPaired"></drawing>
@@ -53,6 +53,10 @@ export default {
       })
     },
 
+    skipPairing () {
+      this.isPaired = true
+    },
+
     updateViewport () {
       const viewport = getViewportSize()
       this.$vuetamin.store.mutate('updateViewport', viewport)
@@ -73,6 +77,10 @@ export default {
 
       const viewport = getViewportSize()
       this.$mote.sendViewport(viewport)
+    },
+
+    handleDisconnected () {
+      this.isPaired = false
     }
   },
 
@@ -88,10 +96,12 @@ export default {
     }
 
     this.$mote.on('connected', this.handleConnected)
+    this.$mote.on('disconnected', this.handleDisconnected)
   },
 
   beforeDestroy () {
     this.$mote.off('connected', this.handleConnected)
+    this.$mote.off('disconnected', this.handleDisconnected)
   }
 }
 </script>

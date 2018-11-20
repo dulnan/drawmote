@@ -184,6 +184,10 @@ export default {
 
     handleConnected () {
       this.isConnected = true
+    },
+
+    handleDisconnected () {
+      this.isConnected = false
     }
   },
 
@@ -191,10 +195,12 @@ export default {
     this.calculatePointerAreas()
     this.isConnected = this.$mote.isConnected()
     this.$mote.on('connected', this.handleConnected)
+    this.$mote.on('disconnected', this.handleDisconnected)
   },
 
   beforeDestroy () {
     this.$mote.off('connected', this.handleConnected)
+    this.$mote.off('disconnected', this.handleDisconnected)
   }
 }
 </script>
