@@ -14,7 +14,7 @@
     "catenary-curve": "^1.0.1",
     "debounced-resize": "^1.1.1",
     "es6-promise": "^4.2.5",
-    "gymote": "github:dulnan/gymote#master",
+    "gymote": "0.0.1",
     "html-webpack-inline-source-plugin": "0.0.10",
     "input-range-scss": "^1.5.1",
     "lazy-brush": "^1.0.1",
