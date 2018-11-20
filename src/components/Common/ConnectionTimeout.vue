@@ -1,6 +1,6 @@
 <template>
   <transition name="fade">
-    <div class="connection-timeout" v-show="isVisible">
+    <div class="connection-timeout" v-if="isVisible">
       <div>
         <h3 class="h2 text-bold">
           {{ $t('connectionTimeout.title') }}
@@ -89,7 +89,7 @@ export default {
 
 <style lang="scss">
 .connection-timeout {
-  position: absolute;
+  position: fixed;
   z-index: 1000;
   top: 0;
   left: 0;

@@ -4,7 +4,7 @@
       <li
         v-for="group in toolGroups"
         :key="group.id"
-        class="toolbar-group flex"
+        class="toolbar-group flex h-100"
         :class="[
           'toolbar-group--' + group.id,
           { 'flex-1': group.id === 'sliders' }
@@ -16,7 +16,7 @@
           }"
         >
           <li
-            class="flex flex--align-stretch"
+            class="flex flex--align-stretch h-100"
             v-for="tool in group.items"
             :key="group.action + tool.id"
             :class="{ 'flex-1': group.id === 'sliders' }"
