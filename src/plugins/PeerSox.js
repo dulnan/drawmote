@@ -1,4 +1,4 @@
-import PeerSox from 'peersox/lib/peersox.client'
+import PeerSox from 'peersox'
 
 export default {
   install (Vue, { serverUrl }) {

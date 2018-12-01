@@ -1,6 +1,6 @@
 {
   "name": "drawmote-client",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -10,15 +10,14 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
-    "axios": "^0.18.0",
     "catenary-curve": "^1.0.1",
     "debounced-resize": "^1.1.1",
     "es6-promise": "^4.2.5",
-    "gymote": "0.0.1",
+    "gymote": "0.0.2",
     "html-webpack-inline-source-plugin": "0.0.10",
     "input-range-scss": "^1.5.1",
     "lazy-brush": "^1.0.1",
-    "peersox": "0.0.1",
+    "peersox": "0.0.2",
     "prerender-spa-plugin": "^3.4.0",
     "vue": "^2.5.17",
     "vue-i18n": "^8.3.2",
