@@ -1,7 +1,9 @@
 <script>
-import { threads } from '@/store'
+import threads from '@/store/threads'
 
 import Slider from '@/components/Desktop/Toolbar/Slider/Slider.vue'
+
+import { encodeEventMessage } from '@/tools/helpers'
 
 export default {
   extends: Slider,
@@ -9,8 +11,7 @@ export default {
   name: 'SliderDistance',
 
   vuetamin: {
-    handleSizesChange: [threads.SIZES],
-    handleDistanceChange: [threads.DISTANCE]
+    handleSizesChange: [threads.SIZES]
   },
 
   data () {
@@ -23,19 +24,18 @@ export default {
 
   methods: {
     handleSizesChange (state) {
-      this.min = state.sizes.viewport.width / 2
+      this.min = state.sizes.viewport.width / 4
       this.max = state.sizes.viewport.width * 2
     },
 
-    handleDistanceChange (state) {
-      if (this.value !== state.distance) {
-        this.value = state.distance
-      }
-    },
-
     handleValueChange (value) {
-      this.$vuetamin.store.mutate('updateDistance', value)
+      this.value = value
+      this.$peersox.send(encodeEventMessage('distance', value))
     }
+  },
+
+  mounted () {
+    this.handleValueChange(window.innerWidth)
   }
 }
 </script>

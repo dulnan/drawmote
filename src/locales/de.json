@@ -57,6 +57,12 @@
     "delete": "Entfernen",
     "reconnect": "Geräte verbinden"
   },
+  "connectionTimeout": {
+    "title": "Zeitüberschreitung bei der Verbindung",
+    "text": "Smartphone und Computer scheinen nicht mehr verbunden zu sein.",
+    "toPairing": "Neue Verbindung",
+    "continueDrawing": "Ohne Smartphone fortfahren"
+  },
   "footer": {
     "copyright": "Entwickelt von"
   }

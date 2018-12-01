@@ -1,36 +1,40 @@
 import 'es6-promise/auto'
+import './assets/scss/main.scss'
 
 import Vue from 'vue'
 import App from './App.vue'
-import { getCookie } from '@/tools/helpers'
-
-import './assets/scss/main.scss'
 
 import Vuetamin from 'vuetamin'
-import Connection from './plugins/Connection'
+import Track from './plugins/Track'
+import Settings from './plugins/Settings'
+import PeerSox from './plugins/PeerSox'
 
-import { store } from './store'
+import store from './store'
 import i18n from './i18n'
 
-Vue.use(Vuetamin, { store })
-Vue.use(Connection)
+import { getServerUrl } from '@/tools/helpers.js'
+import { BREAKPOINT_REMOTE } from '@/settings'
 
-Vue.config.productionTip = false
-
-Vue.prototype.$track = function (category, action, value) {
-  window._paq.push(['trackEvent', category, action, value])
+function getGymote () {
+  if (window.innerWidth > BREAKPOINT_REMOTE) {
+    return import('./plugins/GymoteScreen')
+  } else {
+    return import('./plugins/GymoteRemote')
+  }
 }
 
-Vue.prototype.$settings = {
-  isPrerendering: window.__PRERENDERING === true
-}
+getGymote().then(({ default: Gymote }) => {
+  const serverUrl = getServerUrl()
+  Vue.use(Vuetamin, { store })
+  Vue.use(Gymote)
+  Vue.use(PeerSox, { serverUrl })
+  Vue.use(Track)
+  Vue.use(Settings)
 
-const locale = getCookie('locale')
-if (locale) {
-  i18n.locale = locale
-}
+  Vue.config.productionTip = false
 
-new Vue({
-  i18n,
-  render: h => h(App)
-}).$mount('#drawmote')
+  new Vue({
+    i18n,
+    render: h => h(App)
+  }).$mount('#drawmote')
+})

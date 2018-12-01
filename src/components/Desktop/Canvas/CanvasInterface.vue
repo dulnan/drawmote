@@ -9,7 +9,7 @@
 import { setupCanvases, clearCanvas } from '@/tools/canvas'
 import { Catenary } from 'catenary-curve'
 
-import { threads } from '@/store'
+import threads from '@/store/threads'
 import { RADIUS_MAX } from '@/settings'
 
 const BRUSH_PREVIEW_PADDING = 30

@@ -1,6 +1,6 @@
 <template>
   <transition name="appear">
-    <div class="connection pdg lg-pdg+" v-if="connectionRestorable">
+    <div class="connection pdg lg-pdg+" v-show="isVisible">
       <div class="flex-1 flex">
         <div class="connection__icon hidden-md-down mrgr lg-mrgr+">
           <icon-restore />
@@ -37,7 +37,6 @@
 </template>
 
 <script>
-import { EventBus } from '@/events'
 import IconRestore from '@/assets/icons/icon-restore.svg'
 
 /**
@@ -53,11 +52,18 @@ export default {
   data () {
     return {
       connectionRestorable: false,
-      peering: {},
+      pairing: {},
       isRestoring: false,
       isRestored: false,
+      isConnected: false,
       connectionTimeout: false,
       windowTimeout: null
+    }
+  },
+
+  computed: {
+    isVisible () {
+      return this.connectionRestorable && !this.isConnected
     }
   },
 
@@ -69,8 +75,15 @@ export default {
       if (this.isRestoring) {
         return
       }
+
       this.isRestoring = true
-      this.$connection.initPeering(this.peering.code, this.peering.hash)
+
+      this.$peersox
+        .close()
+        .then(this.$peersox.connect(this.pairing))
+        .catch(err => {
+          console.log(err)
+        })
 
       window.clearTimeout(this.windowTimeout)
 
@@ -84,24 +97,35 @@ export default {
      * Delete the stored connection from the history.
      */
     deleteConnection () {
-      this.$connection.deleteSession()
       this.connectionRestorable = false
+      this.$peersox.deletePairing()
+    },
+
+    handleConnected () {
+      this.isConnected = true
+      this.isRestored = true
+      this.connectionRestorable = false
+      this.connectionTimeout = false
     }
   },
 
   mounted () {
-    EventBus.$on('isConnected', (isConnected) => {
-      this.isRestored = true
-      this.connectionRestorable = false
-      this.connectionTimeout = false
-    })
+    this.$peersox.on('connected', this.handleConnected)
 
-    EventBus.$on('connectionRestorable', (peering) => {
-      this.isRestoring = false
-      this.isRestored = false
-      this.connectionRestorable = true
-      this.peering = peering
+    this.$peersox.restorePairing().then(pairing => {
+      if (pairing) {
+        this.pairing = pairing
+        this.isRestoring = false
+        this.isRestored = false
+        this.connectionRestorable = true
+      }
+    }).catch(err => {
+      console.log(err)
     })
+  },
+
+  beforeDestroy () {
+    this.$peersox.off('connected', this.handleConnected)
   }
 }
 </script>

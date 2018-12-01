@@ -4,7 +4,7 @@
       <li
         v-for="group in toolGroups"
         :key="group.id"
-        class="toolbar-group flex"
+        class="toolbar-group flex h-100"
         :class="[
           'toolbar-group--' + group.id,
           { 'flex-1': group.id === 'sliders' }
@@ -16,7 +16,7 @@
           }"
         >
           <li
-            class="flex flex--align-stretch"
+            class="flex flex--align-stretch h-100"
             v-for="tool in group.items"
             :key="group.action + tool.id"
             :class="{ 'flex-1': group.id === 'sliders' }"
@@ -49,7 +49,7 @@ import SliderLazyRadius from '@/components/Desktop/Toolbar/Slider/SliderLazyRadi
 import SliderDistance from '@/components/Desktop/Toolbar/Slider/SliderDistance.vue'
 
 import { COLORS, TOOLBAR_TOOLS, TOOLBAR_SLIDERS } from '@/settings'
-import { threads } from '@/store'
+import threads from '@/store/threads'
 
 import Color from '@/classes/Color'
 
@@ -80,7 +80,8 @@ export default {
       lastItemClick: '',
       wasPressingBefore: false,
       wheelDelta: 0,
-      canvasFilterSupported: false
+      canvasFilterSupported: false,
+      isConnected: false
     }
   },
 
@@ -110,7 +111,15 @@ export default {
           type: 'slider',
           action: 'brush',
           items: TOOLBAR_SLIDERS.filter(tool => {
-            return tool.id !== 'brushHardness' || this.canvasFilterSupported
+            if (tool.id === 'brushHardness' && !this.canvasFilterSupported) {
+              return false
+            }
+
+            if (tool.id === 'distance' && !this.isConnected) {
+              return false
+            }
+
+            return true
           })
         }
       ]
@@ -118,6 +127,10 @@ export default {
   },
 
   methods: {
+    handleConnection ({ connection }) {
+      this.connectionDevice = connection.device
+    },
+
     handleToolsChange (state) {
       let tool = this.getToolAtPoint(state.points.pointer)
 
@@ -129,7 +142,7 @@ export default {
           this.lastItemClick = tool.key
         }
 
-        const wheel = state.slideY - this.wheelDelta
+        const wheel = state.touch.y - this.wheelDelta
 
         if (wheel !== 0) {
           let event = new WheelEvent('wheel', {
@@ -141,7 +154,7 @@ export default {
           tool.el.dispatchEvent(event)
         }
 
-        this.wheelDelta = state.slideY
+        this.wheelDelta = state.touch.y
       } else {
         this.wheelDelta = 0
         this.lastItemClick = ''
@@ -167,11 +180,27 @@ export default {
       })
 
       this.pointerAreas = items
+    },
+
+    handleConnected () {
+      this.isConnected = true
+    },
+
+    handleDisconnected () {
+      this.isConnected = false
     }
   },
 
   mounted () {
     this.calculatePointerAreas()
+    this.isConnected = this.$peersox.isConnected()
+    this.$mote.on('connected', this.handleConnected)
+    this.$mote.on('disconnected', this.handleDisconnected)
+  },
+
+  beforeDestroy () {
+    this.$mote.off('connected', this.handleConnected)
+    this.$mote.off('disconnected', this.handleDisconnected)
   }
 }
 </script>
@@ -185,7 +214,6 @@ export default {
   top: 0;
   right: 0;
   height: $toolbar-height - 1rem;
-  // overflow: hidden;
   user-select: none;
   @include media('md') {
     height: $toolbar-height;

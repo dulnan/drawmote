@@ -57,6 +57,12 @@
     "delete": "Remove",
     "reconnect": "Reconnect devices"
   },
+  "connectionTimeout": {
+    "title": "Connection Timeout",
+    "text": "Looks like the connection between your phone and computer has timed out.",
+    "toPairing": "Back to pairing",
+    "continueDrawing": "Continue drawing"
+  },
   "footer": {
     "copyright": "Made by"
   }

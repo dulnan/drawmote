@@ -7,7 +7,7 @@
  * @param {HTMLCanvasElement[]} canvases Array of canvases to set the sizes.
  */
 export function setupCanvases ({ width, height }, canvases) {
-  const dpi = Math.min(window.devicePixelRatio, 1.5)
+  const dpi = Math.min(window.devicePixelRatio, 1.25)
 
   canvases.forEach(canvas => {
     let context = canvas.getContext('2d')

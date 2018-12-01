@@ -8,7 +8,7 @@
       @touchcancel="handleMainTouchCancel"
     >
       <div class="h3 text-muted">{{ $t('mobile.controllingInfo') }}</div>
-      <div class="click-area" :class="{ 'is-pressing': isPressingMain }">
+      <div class="click-area" :class="{ 'is-clicking': isClicking }">
         <div class="click-area__circle"></div>
       </div>
     </div>
@@ -16,7 +16,7 @@
     <div class="calibration pdg">
       <button
         class="btn btn--primary btn--block"
-        @click="handleCalibrateClick"
+        @click="calibrate"
       >
         <span>{{ $t('mobile.calibrationButton') }}</span>
       </button>
@@ -25,34 +25,25 @@
 </template>
 
 <script>
-import Smoothing from '@/classes/Smoothing'
-import { buildDataString } from '@/tools/helpers.js'
-import GyroNorm from 'gyronorm'
-
-require('@hughsk/fulltilt/dist/fulltilt.min.js')
-let deviceOrientation
-
-let smoothAlpha = new Smoothing()
-let smoothBeta = new Smoothing()
-
 export default {
   name: 'TouchHandler',
 
   data () {
     return {
-      isPressingMain: false,
+      isClicking: false,
       touchStartY: 0,
       touchStartTime: {},
-      touchDiffY: 0,
-      alpha: 0,
-      beta: 0,
-      lastOrientationString: ''
+      touchDiffY: 0
     }
   },
 
-  computed: {
-    rounding () {
-      return this.isPressingMain ? 100 : 25
+  watch: {
+    isClicking (isClicking) {
+      this.$mote.updateClick(isClicking)
+    },
+
+    touchDiffY (diffY) {
+      this.$mote.updateTouch({ x: 0, y: diffY })
     }
   },
 
@@ -64,7 +55,7 @@ export default {
       this.touchStartY = 0
       this.touchStartTime = new Date().getTime()
 
-      this.isPressingMain = true
+      this.isClicking = true
     },
 
     handleMainTouchMove (e) {
@@ -84,64 +75,19 @@ export default {
     handleMainTouchEnd (e) {
       e.preventDefault()
 
-      this.isPressingMain = false
+      this.isClicking = false
     },
 
     handleMainTouchCancel (e) {
       e.preventDefault()
 
-      this.isPressingMain = false
+      this.isClicking = false
       this.touchDiffY = 0
     },
 
-    handleCalibrateClick () {
-      this.updateOrientationOffset()
-    },
-
-    initDataLoop () {
-      deviceOrientation = new GyroNorm()
-
-      const options = {
-        frequency: 5,
-        decimalCount: 6
-      }
-
-      deviceOrientation.init(options).then(() => {
-        deviceOrientation.start((data) => {
-          this.alpha = Math.round((smoothAlpha.next((data.do.alpha + 180) % 360, this.isPressingMain)) * this.rounding) / this.rounding
-          this.beta = Math.round((smoothBeta.next(data.do.beta, this.isPressingMain)) * this.rounding) / this.rounding
-        })
-
-        this.dataLoop()
-      }).catch((e) => {
-        alert(e)
-      })
-    },
-
-    updateOrientationOffset (newOrientationOffset) {
-      this.$connection.emit('OrientationOffset', {
-        alpha: this.alpha,
-        beta: this.beta
-      })
-    },
-
-    dataLoop () {
-      const touchDiffY = this.touchDiffY
-
-      const alpha = this.alpha
-      const beta = this.beta
-
-      const newData = buildDataString(alpha, beta, this.isPressingMain, touchDiffY)
-      if (newData !== this.lastOrientationString) {
-        this.$connection.emit('Orientation', newData)
-        this.lastOrientationString = newData
-      }
-      window.requestAnimationFrame(this.dataLoop)
+    calibrate () {
+      this.$mote.calibrate()
     }
-  },
-
-  created () {
-    this.initDataLoop()
   }
 }
 </script>
@@ -198,7 +144,7 @@ export default {
               0 4px 3px rgba($alt-color, 0.3),
               inset 0 4px 3px rgba(white, 0.5);
   }
-  .is-pressing & {
+  .is-clicking & {
     &:before {
     background: linear-gradient(0deg, lighten($alt-color-lighter, 2%), lighten($alt-color-light, 4%));
     box-shadow: inset 0 3px 10px rgba($alt-color, 0.15),

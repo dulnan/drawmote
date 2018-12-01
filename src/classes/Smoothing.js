@@ -4,9 +4,7 @@
 export default class Smoothing {
   constructor () {
     this.prev = 0
-
     this.prevRaw = 0
-
     this.smoothing = 0.08
   }
 

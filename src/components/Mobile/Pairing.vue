@@ -76,15 +76,17 @@ export default {
     },
 
     async validateCode (code) {
-      const pairing = await this.$connection.getPeeringHash(code)
-
-      if (pairing.code && pairing.hash) {
-        this.$connection.initPeering(pairing.code, pairing.hash)
-        this.$track('Pairing', 'valid', '1')
-      } else {
-        this.codeInvalid = true
-        this.$track('Pairing', 'valid', '0')
-      }
+      this.$peersox.join(code).then(pairing => {
+        if (pairing.code && pairing.hash) {
+          this.$track('Pairing', 'valid', '1')
+          this.$peersox.storePairing(pairing)
+        } else {
+          this.codeInvalid = true
+          this.$track('Pairing', 'valid', '0')
+        }
+      }).catch((err) => {
+        console.log(err)
+      })
     }
   }
 }

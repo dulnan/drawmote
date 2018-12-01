@@ -8,6 +8,12 @@ export default class Action {
     this.type = type
   }
 
+  /**
+   * Run the action on a canvas.
+   *
+   * @param {HTMLCanvasElement} canvas
+   * @param {Object} size
+   */
   do (canvas, size) {
     switch (this.type) {
       case 'erase':

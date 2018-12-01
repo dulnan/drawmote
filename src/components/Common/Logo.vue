@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { threads } from '@/store'
+import threads from '@/store/threads'
 
 import BackgroundAnimation from '@/components/Common/BackgroundAnimation.vue'
 
@@ -82,7 +82,7 @@ $logo-base: 768;
   }
   @include media('lg') {
     font-size: 16rem;
-    margin-left: -1em;
+    margin-left: -0.3em;
   }
 }
 

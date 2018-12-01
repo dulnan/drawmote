@@ -14,8 +14,6 @@
 <script>
 import debouncedResize from 'debounced-resize'
 
-import { EventBus } from '@/events'
-
 import FooterBrowserSupport from '@/components/Common/Footer/FooterBrowserSupport.vue'
 import FooterCopyright from '@/components/Common/Footer/FooterCopyright.vue'
 import FooterGithub from '@/components/Common/Footer/FooterGithub.vue'
@@ -35,12 +33,6 @@ export default {
     isMobile: false
   },
 
-  data () {
-    return {
-      isConnected: false
-    }
-  },
-
   methods: {
     updateSizes () {
       this.$vuetamin.store.mutate('updateFooterRect', this.$refs.footer.getBoundingClientRect())
@@ -48,9 +40,6 @@ export default {
   },
 
   mounted () {
-    EventBus.$on('isConnected', (isConnected) => {
-      this.isConnected = isConnected
-    })
     this.updateSizes()
     debouncedResize((e) => {
       this.updateSizes()
@@ -73,7 +62,6 @@ export default {
   position: relative;
   z-index: $index-footer;
   background: $alt-color-lighter;
-  // box-shadow: inset 0 2px 7px $alt-color-light;
   border-top: 1px solid $alt-color-light;
 }
 

@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { threads } from '@/store'
+import threads from '@/store/threads'
 
 import Toolbar from '@/components/Desktop/Toolbar/Toolbar.vue'
 import CanvasDrawing from '@/components/Desktop/Canvas/CanvasDrawing.vue'
@@ -59,11 +59,45 @@ export default {
         this.$vuetamin.store.mutate('updateToolbarRect', toolbarRect)
         this.toolbarHeight = toolbarRect.height
       }
+    },
+
+    handlePointerMove (coordinates) {
+      this.$vuetamin.store.mutate('updatePointer', { coordinates })
+    },
+
+    handlePointerDown () {
+      this.$vuetamin.store.mutate('updateIsPressing', { isPressing: true })
+    },
+
+    handlePointerUp () {
+      this.$vuetamin.store.mutate('updateIsPressing', { isPressing: false })
+    },
+
+    handleTouch (touch) {
+      this.$vuetamin.store.mutate('updateTouch', touch)
+    },
+
+    handleCalibrated () {
+      this.$vuetamin.store.mutate('updateCalibration')
     }
   },
 
   mounted () {
     this.getElementSizes()
+
+    this.$mote.on('pointermove', this.handlePointerMove)
+    this.$mote.on('pointerdown', this.handlePointerDown)
+    this.$mote.on('pointerup', this.handlePointerUp)
+    this.$mote.on('touch', this.handleTouch)
+    this.$mote.on('calibrated', this.handleCalibrated)
+  },
+
+  beforeDestroy () {
+    this.$mote.off('pointermove', this.handlePointerMove)
+    this.$mote.off('pointerdown', this.handlePointerDown)
+    this.$mote.off('pointerup', this.handlePointerUp)
+    this.$mote.off('touch', this.handleTouch)
+    this.$mote.off('calibrated', this.handleCalibrated)
   }
 }
 </script>
