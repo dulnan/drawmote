@@ -21,7 +21,7 @@ import debouncedResize from 'debounced-resize'
 import { BREAKPOINT_REMOTE } from '@/settings'
 
 import Pairing from '@/components/Desktop/Pairing.vue'
-import { getViewportSize, encodeEventMessage, decodeEventMessage } from '@/tools/helpers'
+import { getViewportSize, encodeEventMessage } from '@/tools/helpers'
 
 export default {
   name: 'Desktop',
@@ -94,13 +94,6 @@ export default {
       this.isPaired = false
     },
 
-    handleMessage (rawMessage) {
-      const { event, data } = decodeEventMessage(rawMessage)
-
-      if (event === 'data') {
-      }
-    },
-
     handleBinary (intArray) {
       this.$mote.handleRemoteData(intArray)
     }
@@ -120,7 +113,6 @@ export default {
     this.$peersox.on('peerConnected', this.handleConnected)
     this.$peersox.on('connectionClosed', this.handleDisconnected)
 
-    this.$peersox.onString = this.handleMessage.bind(this)
     this.$peersox.onBinary = this.$mote.handleRemoteData.bind(this.$mote)
   },
 
@@ -128,8 +120,9 @@ export default {
     this.$peersox.off('peerConnected', this.handleConnected)
     this.$peersox.off('connectionClosed', this.handleDisconnected)
 
-    this.$peersox.onString = () => {}
     this.$peersox.onBinary = () => {}
+
+    this.$peersox.close()
   }
 }
 </script>

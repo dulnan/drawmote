@@ -13,7 +13,7 @@
 import Pairing from '@/components/Mobile/Pairing.vue'
 import Controlling from '@/components/Mobile/Controlling.vue'
 
-import { encodeEventMessage, decodeEventMessage } from '@/tools/helpers'
+import { decodeEventMessage } from '@/tools/helpers'
 
 export default {
   name: 'Mobile',
@@ -36,7 +36,6 @@ export default {
     },
 
     handleConnectionClosed () {
-      console.log('handddd')
       this.isConnected = false
       this.$mote.stop()
     },
@@ -46,12 +45,10 @@ export default {
 
       if (event === 'viewport') {
         this.$mote.updateScreenViewport(data)
-        return
       }
 
       if (event === 'distance') {
         this.$mote.updateScreenDistance(data)
-        return
       }
     },
 

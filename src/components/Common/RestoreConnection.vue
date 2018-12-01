@@ -112,7 +112,6 @@ export default {
   mounted () {
     this.$peersox.on('connected', this.handleConnected)
 
-
     this.$peersox.restorePairing().then(pairing => {
       if (pairing) {
         this.pairing = pairing
