@@ -139,7 +139,8 @@ export default {
     if (!this.$settings.isPrerendering) {
       this.check()
 
-      this.$mote.on('usingFallback', () => {
+      this.$peersox.on('usingFallback', () => {
+
         this.supportsWebRTC = false
       })
     }

@@ -76,13 +76,13 @@ export default {
   },
 
   mounted () {
-    this.$mote.on('connected', this.handleConnected)
-    this.$mote.on('connectionTimeout', this.handleConnectionTimeout)
+    this.$peersox.on('connected', this.handleConnected)
+    this.$peersox.on('connectionTimeout', this.handleConnectionTimeout)
   },
 
   beforeDestroy () {
-    this.$mote.off('connected', this.handleConnected)
-    this.$mote.off('connectionTimeout', this.handleConnectionTimeout)
+    this.$peersox.off('connected', this.handleConnected)
+    this.$peersox.off('connectionTimeout', this.handleConnectionTimeout)
   }
 }
 </script>

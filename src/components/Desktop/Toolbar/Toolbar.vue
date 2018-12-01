@@ -193,7 +193,7 @@ export default {
 
   mounted () {
     this.calculatePointerAreas()
-    this.isConnected = this.$mote.isConnected()
+    this.isConnected = this.$peersox.isConnected()
     this.$mote.on('connected', this.handleConnected)
     this.$mote.on('disconnected', this.handleDisconnected)
   },

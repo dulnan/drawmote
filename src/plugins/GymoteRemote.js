@@ -1,8 +1,7 @@
-import { GymoteRemote } from 'gymote'
-import axios from 'axios'
+import { GymoteRemote } from 'gymote/lib/gymote.js'
 
 export default {
-  install (Vue, { serverUrl }) {
-    Vue.prototype.$mote = new GymoteRemote(serverUrl, axios)
+  install (Vue) {
+    Vue.prototype.$mote = new GymoteRemote()
   }
 }

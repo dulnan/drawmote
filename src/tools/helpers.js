@@ -90,3 +90,11 @@ export function getServerUrl () {
     return buildDevServerUrl(window.location.hostname, '3000')
   }
 }
+
+export function encodeEventMessage (event, data) {
+  return JSON.stringify({ event, data })
+}
+
+export function decodeEventMessage (message) {
+  return JSON.parse(message)
+}

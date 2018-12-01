@@ -1,8 +1,7 @@
-import { GymoteScreen } from 'gymote'
-import axios from 'axios'
+import { GymoteScreen } from 'gymote/lib/gymote.js'
 
 export default {
-  install (Vue, { serverUrl }) {
-    Vue.prototype.$mote = new GymoteScreen(serverUrl, axios)
+  install (Vue) {
+    Vue.prototype.$mote = new GymoteScreen()
   }
 }

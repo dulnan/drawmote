@@ -40,6 +40,9 @@ module.exports = {
     }
   },
   configureWebpack: {
+    resolve: {
+      symlinks: false
+    },
     plugins: webpackPlugins
   },
   chainWebpack: (config) => {

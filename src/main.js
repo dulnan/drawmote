@@ -7,6 +7,7 @@ import App from './App.vue'
 import Vuetamin from 'vuetamin'
 import Track from './plugins/Track'
 import Settings from './plugins/Settings'
+import PeerSox from './plugins/PeerSox'
 
 import store from './store'
 import i18n from './i18n'
@@ -23,8 +24,10 @@ function getGymote () {
 }
 
 getGymote().then(({ default: Gymote }) => {
+  const serverUrl = getServerUrl()
   Vue.use(Vuetamin, { store })
-  Vue.use(Gymote, { serverUrl: getServerUrl() })
+  Vue.use(Gymote)
+  Vue.use(PeerSox, { serverUrl })
   Vue.use(Track)
   Vue.use(Settings)
 

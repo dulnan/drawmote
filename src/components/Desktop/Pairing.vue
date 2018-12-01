@@ -55,9 +55,9 @@ export default {
   },
 
   props: {
-    code: {
-      type: String,
-      default: ''
+    pairing: {
+      type: Object,
+      required: true
     },
     isBlocked: {
       type: Boolean,
@@ -67,11 +67,19 @@ export default {
 
   computed: {
     pairingCodeNumbers: function () {
-      return this.hasCode ? this.code.split('') : new Array(6).fill(' ')
+      if (this.isBlocked) {
+        return new Array(6).fill('•')
+      }
+
+      if (this.hasCode) {
+        return this.pairing.code.split('')
+      }
+
+      return new Array(6).fill(' ')
     },
 
     hasCode: function () {
-      return this.code.length > 0
+      return this.pairing && this.pairing.code && this.pairing.code.length > 0
     }
   },
 

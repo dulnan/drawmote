@@ -13,6 +13,8 @@
 import Pairing from '@/components/Mobile/Pairing.vue'
 import Controlling from '@/components/Mobile/Controlling.vue'
 
+import { encodeEventMessage, decodeEventMessage } from '@/tools/helpers'
+
 export default {
   name: 'Mobile',
 
@@ -30,15 +32,48 @@ export default {
   methods: {
     handleConnected () {
       this.isConnected = true
+      this.$mote.start()
+    },
+
+    handleConnectionClosed () {
+      console.log('handddd')
+      this.isConnected = false
+      this.$mote.stop()
+    },
+
+    handleMessage (rawMessage) {
+      const { event, data } = decodeEventMessage(rawMessage)
+
+      if (event === 'viewport') {
+        this.$mote.updateScreenViewport(data)
+        return
+      }
+
+      if (event === 'distance') {
+        this.$mote.updateScreenDistance(data)
+        return
+      }
+    },
+
+    handleDataChange (data) {
+      this.$peersox.send(data)
     }
   },
 
   mounted () {
-    this.$mote.on('connected', this.handleConnected)
+    this.$peersox.on('peerConnected', this.handleConnected)
+    this.$peersox.on('connectionClosed', this.handleConnectionClosed)
+
+    this.$peersox.onString = this.handleMessage.bind(this)
+    this.$mote._onDataChange = this.handleDataChange.bind(this)
   },
 
   beforeDestroy () {
-    this.$mote.off('connected', this.handleConnected)
+    this.$peersox.off('peerConnected', this.handleConnected)
+    this.$peersox.off('connectionClosed', this.handleConnectionClosed)
+
+    this.$peersox.onString = () => {}
+    this.$mote._onDataChange = () => {}
   }
 }
 </script>

@@ -77,7 +77,13 @@ export default {
       }
 
       this.isRestoring = true
-      this.$mote.connect(this.pairing)
+
+      this.$peersox
+        .close()
+        .then(this.$peersox.connect(this.pairing))
+        .catch(err => {
+          console.log(err)
+        })
 
       window.clearTimeout(this.windowTimeout)
 
@@ -92,7 +98,7 @@ export default {
      */
     deleteConnection () {
       this.connectionRestorable = false
-      this.$mote.deleteStoredPairing(this.pairing)
+      this.$peersox.deletePairing()
     },
 
     handleConnected () {
@@ -100,28 +106,27 @@ export default {
       this.isRestored = true
       this.connectionRestorable = false
       this.connectionTimeout = false
-    },
-
-    handleRestorable (pairing) {
-      this.pairing = pairing
-      this.isRestoring = false
-      this.isRestored = false
-      this.connectionRestorable = true
     }
   },
 
   mounted () {
-    this.$mote.on('connected', this.handleConnected)
-    this.$mote.on('restorable', (pairing) => {
-      this.handleRestorable(pairing)
-    })
+    this.$peersox.on('connected', this.handleConnected)
 
-    this.$mote.loadStoredPairings()
+
+    this.$peersox.restorePairing().then(pairing => {
+      if (pairing) {
+        this.pairing = pairing
+        this.isRestoring = false
+        this.isRestored = false
+        this.connectionRestorable = true
+      }
+    }).catch(err => {
+      console.log(err)
+    })
   },
 
   beforeDestroy () {
-    this.$mote.off('connected', this.handleConnected)
-    this.$mote.off('restorable', this.handleRestorable)
+    this.$peersox.off('connected', this.handleConnected)
   }
 }
 </script>

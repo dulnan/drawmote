@@ -4,7 +4,7 @@
       <transition name="appear">
         <pairing
           v-if="!isPaired"
-          :code="pairingCode"
+          :pairing="pairing"
           :is-blocked="isBlocked"
           @pairingTimeout="handleTimeout"
           @skipPairing="skipPairing"
@@ -21,7 +21,7 @@ import debouncedResize from 'debounced-resize'
 import { BREAKPOINT_REMOTE } from '@/settings'
 
 import Pairing from '@/components/Desktop/Pairing.vue'
-import { getViewportSize } from '@/tools/helpers'
+import { getViewportSize, encodeEventMessage, decodeEventMessage } from '@/tools/helpers'
 
 export default {
   name: 'Desktop',
@@ -33,22 +33,31 @@ export default {
 
   data () {
     return {
-      pairingCode: '',
+      pairing: {},
       isPaired: false,
       isBlocked: false
     }
   },
 
+  computed: {
+    hasPairing () {
+      return this.pairing && this.pairing.code && this.pairing.hash
+    }
+  },
+
   methods: {
     getPairingCode () {
-      this.$mote.getPairing().then(pairing => {
+      if (this.hasPairing) {
+        return
+      }
+
+      this.$peersox.initiate().then(pairing => {
         if (pairing) {
           this.isBlocked = false
-          this.$mote.connect(pairing)
-          this.pairingCode = pairing.code
+          this.pairing = pairing
         } else {
           this.isBlocked = true
-          this.pairingCode = '••••••'
+          this.pairing = {}
         }
       })
     },
@@ -59,28 +68,41 @@ export default {
 
     updateViewport () {
       const viewport = getViewportSize()
-      this.$vuetamin.store.mutate('updateViewport', viewport)
-      this.$mote.sendViewport(viewport)
 
-      if (!this.$mote.isConnected()) {
+      this.$vuetamin.store.mutate('updateViewport', viewport)
+      this.$peersox.send(encodeEventMessage('viewport', viewport))
+
+      if (!this.$peersox.isConnected()) {
         this.isMobile = viewport.width < BREAKPOINT_REMOTE
       }
     },
 
     handleTimeout () {
-      this.pairingCode = ''
+      this.pairing = {}
       this.getPairingCode()
     },
 
-    handleConnected () {
+    handleConnected ({ pairing }) {
       this.isPaired = true
 
-      const viewport = getViewportSize()
-      this.$mote.sendViewport(viewport)
+      this.updateViewport()
+      this.$mote.init()
+      this.$peersox.storePairing(pairing)
     },
 
     handleDisconnected () {
       this.isPaired = false
+    },
+
+    handleMessage (rawMessage) {
+      const { event, data } = decodeEventMessage(rawMessage)
+
+      if (event === 'data') {
+      }
+    },
+
+    handleBinary (intArray) {
+      this.$mote.handleRemoteData(intArray)
     }
   },
 
@@ -95,13 +117,19 @@ export default {
       this.getPairingCode()
     }
 
-    this.$mote.on('connected', this.handleConnected)
-    this.$mote.on('disconnected', this.handleDisconnected)
+    this.$peersox.on('peerConnected', this.handleConnected)
+    this.$peersox.on('connectionClosed', this.handleDisconnected)
+
+    this.$peersox.onString = this.handleMessage.bind(this)
+    this.$peersox.onBinary = this.$mote.handleRemoteData.bind(this.$mote)
   },
 
   beforeDestroy () {
-    this.$mote.off('connected', this.handleConnected)
-    this.$mote.off('disconnected', this.handleDisconnected)
+    this.$peersox.off('peerConnected', this.handleConnected)
+    this.$peersox.off('connectionClosed', this.handleDisconnected)
+
+    this.$peersox.onString = () => {}
+    this.$peersox.onBinary = () => {}
   }
 }
 </script>

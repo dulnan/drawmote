@@ -3,6 +3,8 @@ import threads from '@/store/threads'
 
 import Slider from '@/components/Desktop/Toolbar/Slider/Slider.vue'
 
+import { encodeEventMessage } from '@/tools/helpers'
+
 export default {
   extends: Slider,
 
@@ -28,7 +30,7 @@ export default {
 
     handleValueChange (value) {
       this.value = value
-      this.$mote.sendDistance(value)
+      this.$peersox.send(encodeEventMessage('distance', value))
     }
   },
 
