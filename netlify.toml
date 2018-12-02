@@ -1,6 +1,6 @@
-[build]
-  publish = "dist"
-  command = "npm run build"
+[Settings]
+  ID = "f278814b-e1d8-4982-b6b7-8f8235c7e97a"
 
-[context.develop]
-  command = "npm run build-develop"
+[build]
+  Publish = "dist/"
+  Functions = ""
