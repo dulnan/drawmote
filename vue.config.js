@@ -25,6 +25,7 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   productionSourceMap: false,
+  filenameHashing: true,
   pluginOptions: {
     'style-resources-loader': {
       preProcessor: 'scss',

@@ -140,7 +140,6 @@ export default {
       this.check()
 
       this.$peersox.on('usingFallback', () => {
-
         this.supportsWebRTC = false
       })
     }
