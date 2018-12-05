@@ -76,14 +76,14 @@ export default {
     },
 
     async validateCode (code) {
-      this.$peersox.join(code).then(pairing => {
-        if (pairing.code && pairing.hash) {
+      this.$peersox.joinPairing(code).then(pairing => {
+        this.$peersox.connect(pairing).then(() => {
           this.$track('Pairing', 'valid', '1')
           this.$peersox.storePairing(pairing)
-        } else {
+        }).catch((e) => {
           this.codeInvalid = true
           this.$track('Pairing', 'valid', '0')
-        }
+        })
       }).catch((err) => {
         console.log(err)
       })

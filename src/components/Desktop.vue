@@ -51,10 +51,11 @@ export default {
         return
       }
 
-      this.$peersox.initiate().then(pairing => {
+      this.$peersox.createPairing().then(pairing => {
         if (pairing) {
           this.isBlocked = false
           this.pairing = pairing
+          this.$peersox.connect(pairing)
         } else {
           this.isBlocked = true
           this.pairing = {}
@@ -83,6 +84,7 @@ export default {
     },
 
     handleConnected ({ pairing }) {
+      console.log('hjaaaaaaa')
       this.isPaired = true
 
       this.updateViewport()

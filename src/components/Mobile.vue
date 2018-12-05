@@ -58,8 +58,8 @@ export default {
   },
 
   mounted () {
-    this.$peersox.on('peerConnected', this.handleConnected)
-    this.$peersox.on('connectionClosed', this.handleConnectionClosed)
+    this.$peersox.on('peerConnected', this.handleConnected.bind(this))
+    this.$peersox.on('connectionClosed', this.handleConnectionClosed.bind(this))
 
     this.$peersox.onString = this.handleMessage.bind(this)
     this.$mote._onDataChange = this.handleDataChange.bind(this)

@@ -17,7 +17,7 @@
     "html-webpack-inline-source-plugin": "0.0.10",
     "input-range-scss": "^1.5.1",
     "lazy-brush": "^1.0.1",
-    "peersox": "0.0.5",
+    "peersox": "0.0.8",
     "prerender-spa-plugin": "^3.4.0",
     "vue": "^2.5.17",
     "vue-i18n": "^8.3.2",
