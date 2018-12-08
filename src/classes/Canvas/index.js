@@ -174,7 +174,18 @@ export default class {
    * Draw all current actions to the main canvas.
    */
   drawActions () {
+    // First, figure out the range of actions to draw.
+    // This loop will find the last occurence of an erase action.
+    let startIndex = 0
     for (let i = 0; i < this._historyIndex; i++) {
+      const action = this.actions[i]
+      if (action.type === 'erase') {
+        startIndex = i
+      }
+    }
+
+    // Draw all actions from the last erase up to the most recent action.
+    for (let i = startIndex; i < this._historyIndex; i++) {
       const action = this.actions[i]
       action.do(this._canvasMain, this._size)
       this.lastActionType = action.type
