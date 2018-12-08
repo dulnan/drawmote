@@ -9,6 +9,8 @@
 
 <script>
 import { BREAKPOINT_REMOTE } from '@/settings'
+import Desktop from '@/components/Desktop.vue'
+import Mobile from '@/components/Mobile.vue'
 import TheFooter from '@/components/Common/Footer/Footer.vue'
 import ConnectionTimeout from '@/components/Common/ConnectionTimeout.vue'
 
@@ -18,8 +20,8 @@ export default {
   name: 'app',
 
   components: {
-    'desktop': () => import('@/components/Desktop.vue'),
-    'mobile': () => import('@/components/Mobile.vue'),
+    Desktop,
+    Mobile,
     TheFooter,
     ConnectionTimeout
   },
