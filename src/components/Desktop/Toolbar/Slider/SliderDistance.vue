@@ -18,7 +18,7 @@ export default {
     return {
       min: 0,
       max: 100,
-      multiplier: 6
+      multiplier: 7
     }
   },
 

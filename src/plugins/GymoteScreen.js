@@ -1,4 +1,4 @@
-import { GymoteScreen } from 'gymote/lib/gymote.js'
+import { GymoteScreen } from 'gymote'
 
 export default {
   install (Vue) {
