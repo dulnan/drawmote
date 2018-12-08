@@ -84,8 +84,8 @@ export default {
   },
 
   watch: {
-    code (code) {
-      if (code) {
+    pairing (pairing) {
+      if (pairing) {
         this.startTimer()
       } else {
         this.stopTimer()

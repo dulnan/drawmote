@@ -75,17 +75,19 @@ export default {
       this.validateCode(code)
     },
 
-    async validateCode (code) {
+    validateCode (code) {
       this.$peersox.joinPairing(code).then(pairing => {
         this.$peersox.connect(pairing).then(() => {
+          this.codeInvalid = false
           this.$track('Pairing', 'valid', '1')
           this.$peersox.storePairing(pairing)
-        }).catch((e) => {
-          this.codeInvalid = true
-          this.$track('Pairing', 'valid', '0')
+        }).catch((error) => {
+          console.log('Error connecting to the WebSocket server: ', error)
         })
-      }).catch((err) => {
-        console.log(err)
+      }).catch((error) => {
+        console.log(error)
+        this.codeInvalid = true
+        this.$track('Pairing', 'valid', '0')
       })
     }
   }
