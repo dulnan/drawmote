@@ -83,11 +83,17 @@ export function buildDevServerUrl (hostname, port) {
   return `http://${hostname}:${port}`
 }
 
-export function getServerUrl () {
-  if (process.env.VUE_APP_API_URL) {
-    return process.env.VUE_APP_API_URL
+export function getServerUrls () {
+  if (process.env.VUE_APP_API_URL && process.env.VUE_APP_WSS_URL) {
+    return {
+      api: process.env.VUE_APP_API_URL,
+      wss: process.env.VUE_APP_WSS_URL
+    }
   } else {
-    return buildDevServerUrl(window.location.hostname, '3000')
+    return {
+      api: `http://${window.location.hostname}:3000`,
+      wss: `ws://${window.location.hostname}:3000/ws`
+    }
   }
 }
 

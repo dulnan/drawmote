@@ -75,6 +75,8 @@ export default {
           this.isBlocked = true
           this.pairing = {}
         }
+      }).catch(error => {
+        console.log('Too many requests', error)
       })
     },
 
