@@ -186,6 +186,9 @@ export default {
   position: absolute;
   top: 0;
   right: 0;
+  .icon {
+    margin-top: rem(9px);
+  }
 }
 
 .browser-support__content {

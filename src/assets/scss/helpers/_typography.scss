@@ -3,15 +3,15 @@
 }
 
 .text-light {
-  font-weight: 300 !important;
+  font-weight: 400 !important;
 }
 
 .text-bold {
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .text-heavy {
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .text-hyphens {
@@ -23,16 +23,16 @@
 }
 
 .label {
-  font-weight: 500;
-  font-size: rem(10px);
+  font-weight: 700;
+  font-size: rem(12px);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: $alt-color-dark;
   @include media('sm') {
-    font-size: rem(10px);
+    font-size: rem(12px);
   }
   @include media('md') {
-    font-size: rem(13px);
+    font-size: rem(14px);
   }
   @include media('lg') {
     font-size: rem(14px);
