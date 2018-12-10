@@ -35,7 +35,8 @@ export default {
     return {
       pairing: {},
       isPaired: false,
-      isBlocked: false
+      isBlocked: false,
+      skipped: false
     }
   },
 
@@ -47,7 +48,7 @@ export default {
 
   watch: {
     isPaired (isPaired) {
-      if (!isPaired) {
+      if (!isPaired && !this.skipped) {
         this.pairing = {}
         this.getPairingCode()
       }
@@ -81,7 +82,13 @@ export default {
     },
 
     skipPairing () {
+      this.skipped = true
       this.isPaired = true
+      this.pairing = {}
+
+      if (this.$peersox.isConnected()) {
+        this.$peersox.close()
+      }
     },
 
     updateViewport () {
@@ -113,7 +120,9 @@ export default {
     },
 
     handleDisconnected () {
-      this.isPaired = false
+      if (!this.skipped) {
+        this.isPaired = false
+      }
     },
 
     handleBinary (intArray) {

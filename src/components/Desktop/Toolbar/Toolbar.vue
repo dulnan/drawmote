@@ -180,27 +180,16 @@ export default {
       })
 
       this.pointerAreas = items
-    },
-
-    handleConnected () {
-      this.isConnected = true
-    },
-
-    handleDisconnected () {
-      this.isConnected = false
     }
   },
 
   mounted () {
     this.calculatePointerAreas()
     this.isConnected = this.$peersox.isConnected()
-    this.$mote.on('connected', this.handleConnected)
-    this.$mote.on('disconnected', this.handleDisconnected)
+    console.log(this.isConnected)
   },
 
   beforeDestroy () {
-    this.$mote.off('connected', this.handleConnected)
-    this.$mote.off('disconnected', this.handleDisconnected)
   }
 }
 </script>
