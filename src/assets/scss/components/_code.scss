@@ -95,7 +95,7 @@ $code-numbers: (
   @include media('lg') {
     font-size: $code-size-lg;
     &:before {
-      height: rem(5px);
+      height: rem(7px);
     }
   }
 }

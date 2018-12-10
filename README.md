@@ -16,8 +16,8 @@ Some of the things used to build drawmote:
 ### Frameworks and libraries
 - **[Vue.js](https://github.com/vuejs/vue)**\
   as the JavaScript framework
-- **[socketpeer](https://github.com/dulnan/socketpeer)**\
-  to establish a WebRTC connection or fallback to Websockets (Note: I had to fork this since some of its dependencies were outdated)
+- **[simple-peer](https://github.com/feross/simple-peer)**\
+  to establish a WebRTC connection
 - **[gyronorm](https://github.com/dorukeker/gyronorm.js)**\
   for cross-browser reading of a gyroscope
 
@@ -27,11 +27,12 @@ separate repositories and libraries:
 
 | Name | Description | Demo |
 | ------------- | ------------- | ------------- |
-| **[drawmote-server](https://github.com/dulnan/drawmote-server)** | The server used to generate pairing codes and hashes for establishing a WebRTC connection. Uses Websockets server as a fallback. | |
+| **[peersox](https://github.com/dulnan/peersox)** | Client and server to generate pairing codes and hashes, establish WebRTC data connection and WebSocket server as a fallback. | |
 | **[Vuetamin](https://github.com/dulnan/vuetamin)** | Combine animation loops from multiple components into a single requestAnimationFrame loop and provide a consistent state. | |
 | **[lazy-brush](https://github.com/dulnan/lazy-brush)** | Smooth drawing by pulling the brush with a rope connected to the brush and pointer | [Demo](https://lazybrush.dulnan.net) |
 | **[catenary-curve](https://github.com/dulnan/catenary-curve)** | Calculate and draw a cantary curve on a canvas | [Demo](https://lazybrush.dulnan.net) |
-| **[gyro-plane](https://github.com/dulnan/gyro-plane)** | Using alpha and beta angles from a gyroscope, calculate where its pointing at on a screen | [Demo](https://dulnan.net/var/gyro-plane) |
+| **[gymote](https://github.com/dulnan/gymote)** | Easy way to use a phone as a remote pointing device for a desktop screen. | |
+| **[gyro-plane](https://github.com/thormeier/gyro-plane)** | Using alpha and beta angles from a gyroscope, calculate where its pointing at on a screen |  |
 
 ### History
 The app has been fundamentally changed and refactored several times during
@@ -73,19 +74,8 @@ Install dependencies for the client:
 npm install
 ```
 
-Start drawmote-server and  set the IP address of the server in `.env.development`.
+Start drawmote-server and set the IP address of the server in `.env.development`.
 Then you can start running development mode for the client:
 ```
 npm run serve
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Run your unit tests
-If there would be tests, this is how you could run them:
-```
-npm run test:unit
 ```

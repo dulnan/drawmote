@@ -136,6 +136,8 @@ $screen-sm-max:                     1024px / 16px * 1em;
 $screen-md-min:                     1025px / 16px * 1em;
 $screen-md-max:                     1440px / 16px * 1em;
 $screen-lg-min:                     1441px / 16px * 1em;
+$screen-lg-max:                     1679px / 16px * 1em;
+$screen-xl-min:                     1680px / 16px * 1em;
 
 $breakpoints-default:               (
                                       'sm' '(min-width: #{$screen-sm-min})',
@@ -147,7 +149,9 @@ $breakpoints-desc:                  (
                                       'sm' '(max-width: #{$screen-sm-max})',
                                       'md' '(max-width: #{$screen-md-max})'
                                     );
-
+$breakpoints-extra:               (
+                                      'xl' '(min-width: #{$screen-xl-min})',
+                                    );
 
 /**
  * Miscellaneous

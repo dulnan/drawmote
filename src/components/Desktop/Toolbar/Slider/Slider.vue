@@ -91,9 +91,11 @@ export default {
   @include media('md') {
   }
   @include media('lg') {
+    text-align: right;
+  }
+  @include media('xl', $breakpoints-extra) {
     font-size: 1.5rem;
     line-height: 1.15;
-    text-align: right;
   }
 }
 </style>

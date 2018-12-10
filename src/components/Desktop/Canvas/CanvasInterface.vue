@@ -154,8 +154,8 @@ export default {
       const pointerDotY = Math.max(Math.min(state.points.pointer.y, maxY), 0)
 
       // Calculate how much outside the pointer is from the max and min amount.
-      const offsetX = Math.max(Math.max(Math.abs(state.points.pointer.x - maxXHalf) - maxXHalf, 0) - 30, 0) / 7
-      const offsetY = Math.max(Math.max(Math.abs(state.points.pointer.y - maxYHalf) - maxYHalf, 0) - 30, 0) / 7
+      const offsetX = Math.max(Math.max(Math.abs(state.points.pointer.x - maxXHalf) - maxXHalf, 0) - 10, 0) / 7
+      const offsetY = Math.max(Math.max(Math.abs(state.points.pointer.y - maxYHalf) - maxYHalf, 0) - 10, 0) / 7
 
       // The radius increases the more the pointer is outside the view.
       const radius = Math.min(Math.max(offsetX, offsetY), 30)

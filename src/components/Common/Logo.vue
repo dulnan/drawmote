@@ -45,6 +45,8 @@ export default {
           y: rect.top + (rect.height / 2)
         }
       }
+
+      this.$emit('center', this.center)
     }
   },
 

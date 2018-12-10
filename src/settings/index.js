@@ -43,7 +43,7 @@ export const RADIUS_DEFAULT = 16
 export const RADIUS_MIN = 1
 export const RADIUS_MAX = 36
 
-export const LAZY_RADIUS_MIN = 3
+export const LAZY_RADIUS_MIN = 0
 export const LAZY_RADIUS_MAX = 6 * RADIUS_MAX
 export const LAZY_RADIUS_DEFAULT = 20
 
