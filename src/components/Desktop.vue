@@ -35,7 +35,8 @@ export default {
     return {
       pairing: {},
       isPaired: false,
-      isBlocked: false
+      isBlocked: false,
+      skipped: false
     }
   },
 
@@ -45,25 +46,49 @@ export default {
     }
   },
 
+  watch: {
+    isPaired (isPaired) {
+      if (!isPaired && !this.skipped) {
+        this.pairing = {}
+        this.getPairingCode()
+      }
+    }
+  },
+
   methods: {
     getPairingCode () {
       if (this.hasPairing) {
         return
       }
 
-      this.$peersox.initiate().then(pairing => {
+      if (this.$peersox.isConnected()) {
+        this.$peersox.close()
+      }
+
+      this.$peersox.createPairing().then(pairing => {
         if (pairing) {
           this.isBlocked = false
           this.pairing = pairing
+          this.$peersox.connect(pairing).catch(error => {
+            console.log(error)
+          })
         } else {
           this.isBlocked = true
           this.pairing = {}
         }
+      }).catch(error => {
+        console.log('Too many requests', error)
       })
     },
 
     skipPairing () {
+      this.skipped = true
       this.isPaired = true
+      this.pairing = {}
+
+      if (this.$peersox.isConnected()) {
+        this.$peersox.close()
+      }
     },
 
     updateViewport () {
@@ -82,6 +107,10 @@ export default {
       this.getPairingCode()
     },
 
+    handlePeerTimeout () {
+      this.pairing = {}
+    },
+
     handleConnected ({ pairing }) {
       this.isPaired = true
 
@@ -91,7 +120,9 @@ export default {
     },
 
     handleDisconnected () {
-      this.isPaired = false
+      if (!this.skipped) {
+        this.isPaired = false
+      }
     },
 
     handleBinary (intArray) {
@@ -111,6 +142,7 @@ export default {
     }
 
     this.$peersox.on('peerConnected', this.handleConnected)
+    this.$peersox.on('peerTimeout', this.handlePeerTimeout)
     this.$peersox.on('connectionClosed', this.handleDisconnected)
 
     this.$peersox.onBinary = this.$mote.handleRemoteData.bind(this.$mote)
@@ -118,6 +150,7 @@ export default {
 
   beforeDestroy () {
     this.$peersox.off('peerConnected', this.handleConnected)
+    this.$peersox.off('peerTimeout', this.handlePeerTimeout)
     this.$peersox.off('connectionClosed', this.handleDisconnected)
 
     this.$peersox.onBinary = () => {}

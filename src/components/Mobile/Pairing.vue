@@ -75,17 +75,19 @@ export default {
       this.validateCode(code)
     },
 
-    async validateCode (code) {
-      this.$peersox.join(code).then(pairing => {
-        if (pairing.code && pairing.hash) {
+    validateCode (code) {
+      this.$peersox.joinPairing(code).then(pairing => {
+        this.$peersox.connect(pairing).then(() => {
+          this.codeInvalid = false
           this.$track('Pairing', 'valid', '1')
           this.$peersox.storePairing(pairing)
-        } else {
-          this.codeInvalid = true
-          this.$track('Pairing', 'valid', '0')
-        }
-      }).catch((err) => {
-        console.log(err)
+        }).catch((error) => {
+          console.log('Error connecting to the WebSocket server: ', error)
+        })
+      }).catch((error) => {
+        console.log(error)
+        this.codeInvalid = true
+        this.$track('Pairing', 'valid', '0')
       })
     }
   }
@@ -139,7 +141,7 @@ export default {
 
   .code__error {
     margin-top: 1em;
-    font-weight: 500;
+    font-weight: 600;
     color: $brand-color;
     font-size: 0.875rem;
     letter-spacing: 0.5px;

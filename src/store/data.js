@@ -17,12 +17,14 @@ export default function () {
 
   const cookie = getCookie('state')
   let brushOptions = {}
+  let lazyRadius = 80
 
   if (cookie) {
     try {
       const cookieObject = JSON.parse(cookie)
 
       brushOptions = cookieObject.brush
+      lazyRadius = cookieObject.lazyRadius || 80
     } catch (e) {
       console.log('Invalid cookie data.')
     }
@@ -30,7 +32,7 @@ export default function () {
 
   return {
     lazyBrush: new LazyBrush({
-      radius: 80
+      radius: lazyRadius
     }),
 
     brush: new Brush(brushOptions),

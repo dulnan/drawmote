@@ -1,8 +1,8 @@
 <template>
-  <div class="overlay pairing-desktop absolute flex">
+  <div class="overlay pairing-desktop absolute flex" :style="transformOriginStyle">
     <div class="pairing__container">
       <div class="md-mrgr++">
-        <logo />
+        <logo @center="updateCenter" />
       </div>
       <div>
         <h1 class="text-heavy sm-mrgt md-mrgt+ lg-mrgt++">drawmote</h1>
@@ -50,7 +50,8 @@ export default {
   data () {
     return {
       showModal: false,
-      countdown: PAIRING_TIMEOUT
+      countdown: PAIRING_TIMEOUT,
+      center: { x: 0, y: 0 }
     }
   },
 
@@ -80,12 +81,18 @@ export default {
 
     hasCode: function () {
       return this.pairing && this.pairing.code && this.pairing.code.length > 0
+    },
+
+    transformOriginStyle () {
+      return {
+        transformOrigin: `${this.center.x}px ${this.center.y}px`
+      }
     }
   },
 
   watch: {
-    code (code) {
-      if (code) {
+    pairing (pairing) {
+      if (pairing) {
         this.startTimer()
       } else {
         this.stopTimer()
@@ -94,6 +101,10 @@ export default {
   },
 
   methods: {
+    updateCenter (center) {
+      this.center = center
+    },
+
     togglePairing () {
       this.$emit('skipPairing')
       this.$track('Pairing', 'skip', 1)

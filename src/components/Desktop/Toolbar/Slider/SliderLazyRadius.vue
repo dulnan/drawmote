@@ -16,7 +16,8 @@ export default {
   data () {
     return {
       min: LAZY_RADIUS_MIN,
-      max: LAZY_RADIUS_MAX
+      max: LAZY_RADIUS_MAX,
+      multiplier: 1
     }
   },
 

@@ -1,4 +1,4 @@
-import { GymoteRemote } from 'gymote/lib/gymote.js'
+import { GymoteRemote } from 'gymote'
 
 export default {
   install (Vue) {

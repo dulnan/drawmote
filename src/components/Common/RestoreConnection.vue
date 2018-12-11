@@ -151,12 +151,8 @@ export default {
   @include media('sm') {
     position: absolute;
     left: 0;
-    bottom: rem(54px);
     width: 100%;
     flex-direction: row;
-  }
-  @include media('lg') {
-    bottom: rem(69px);
   }
 
   &.appear-enter-active, &.appear-leave-active {

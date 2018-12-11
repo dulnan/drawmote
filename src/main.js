@@ -12,7 +12,7 @@ import PeerSox from './plugins/PeerSox'
 import store from './store'
 import i18n from './i18n'
 
-import { getServerUrl } from '@/tools/helpers.js'
+import { getServerUrls } from '@/tools/helpers.js'
 import { BREAKPOINT_REMOTE } from '@/settings'
 
 function getGymote () {
@@ -24,10 +24,10 @@ function getGymote () {
 }
 
 getGymote().then(({ default: Gymote }) => {
-  const serverUrl = getServerUrl()
+  const serverUrls = getServerUrls()
   Vue.use(Vuetamin, { store })
   Vue.use(Gymote)
-  Vue.use(PeerSox, { serverUrl })
+  Vue.use(PeerSox, serverUrls)
   Vue.use(Track)
   Vue.use(Settings)
 

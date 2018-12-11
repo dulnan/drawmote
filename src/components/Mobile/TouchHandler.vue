@@ -127,7 +127,7 @@ export default {
   padding: 1rem;
   margin: 0 auto;
   border-radius: 100%;
-  border: 1px solid $alt-color-lighter;
+  border: 1px solid rgba($alt-color-light, 0.5);
   background: linear-gradient(lighten($alt-color-lighter, 0%), lighten($alt-color-lighter, 2%));
   position: relative;
 
@@ -140,8 +140,8 @@ export default {
     right: 1rem;
     border-radius: inherit;
     background: linear-gradient(lighten($alt-color-lighter, 1%), lighten($alt-color-light, 9%));
-    box-shadow: 0 3px 10px rgba($alt-color, 0.15),
-              0 4px 3px rgba($alt-color, 0.3),
+    box-shadow: 0 3px 10px rgba($alt-color, 0.35),
+              0 4px 3px rgba($alt-color, 0.5),
               inset 0 4px 3px rgba(white, 0.5);
   }
   .is-clicking & {

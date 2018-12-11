@@ -4,14 +4,14 @@
 }
 
 .check__title {
-  font-weight: 500;
+  font-weight: 700;
   position: relative;
   &:before {
     content: "";
     display: block;
     width: 10px;
     height: 10px;
-    margin-right: 3px;
+    margin-right: 6px;
     margin-top: 0.25em;
     border-radius: 100%;
     float: left;

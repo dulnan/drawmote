@@ -6,7 +6,7 @@
     @wheel="handleWheel"
   >
     <div class="">
-      <div class="tool-slider__text mrgb-- md-mrgb- lg-mrgb+">
+      <div class="tool-slider__text">
         <div class="tool-slider__label label pdg0 tool-slider__label">{{ $t('tools.' + tool.id) }}</div>
         <span class="tool-slider__value label flex-1 text-muted text-light pdg0">{{ roundedValue }}</span>
       </div>
@@ -68,25 +68,34 @@ export default {
   position: relative;
   overflow: visible;
   display: flex;
-  align-items: center;
   > div {
     flex: 1;
+    display: flex;
+    flex-direction: column;
   }
   input {
     display: block;
     margin: 0;
+    height: 4px;
   }
 }
 
 .tool-slider__text {
+  margin-bottom: auto;
   @include media('lg') {
     display: flex;
   }
 }
 
 .tool-slider__value {
+  @include media('md') {
+  }
   @include media('lg') {
     text-align: right;
+  }
+  @include media('xl', $breakpoints-extra) {
+    font-size: 1.5rem;
+    line-height: 1.15;
   }
 }
 </style>

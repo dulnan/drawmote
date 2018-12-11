@@ -77,28 +77,28 @@ export default {
      * Checks if WebSockets are supported.
      */
     supportsWebSocket () {
-      return 'WebSocket' in window || 'MozWebSocket' in window
+      return this.$peersox.getDeviceSupport().WEBSOCKET
     },
 
     /**
      * Checks if WebRTC is supported.
      */
     supportsWebRTC () {
-      return 'RTCPeerConnection' in window
+      return this.$peersox.getDeviceSupport().WEBRTC
     },
 
     /**
      * Checks if the device has a gyroscope.
      */
     supportsGyroscope () {
-      return this.$mote.hasGyroscope
+      return this.$mote.deviceHasGyroscope()
     },
 
     /**
      * Asynchronously run the checks. Issue tracking events, supportState event
      * and modify the Vuetamin store if canvas filters are supported.
      */
-    async check () {
+    check () {
       this.webRTC = this.supportsWebRTC()
       this.webSocket = this.webRTC ? null : this.supportsWebSocket()
 
@@ -106,8 +106,10 @@ export default {
       this.$track('BrowserSupport', 'websocket', this.webSocket)
 
       if (this.isMobile) {
-        this.gyroscope = await this.supportsGyroscope()
-        this.$track('BrowserSupport', 'gyroscope', this.gyroscope)
+        this.supportsGyroscope().then(hasGyroscope => {
+          this.gyroscope = hasGyroscope
+          this.$track('BrowserSupport', 'gyroscope', this.gyroscope)
+        })
       }
 
       if (!this.isMobile) {
@@ -140,7 +142,6 @@ export default {
       this.check()
 
       this.$peersox.on('usingFallback', () => {
-
         this.supportsWebRTC = false
       })
     }
@@ -185,6 +186,9 @@ export default {
   position: absolute;
   top: 0;
   right: 0;
+  .icon {
+    margin-top: rem(9px);
+  }
 }
 
 .browser-support__content {
