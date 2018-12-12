@@ -109,6 +109,11 @@ export function updateBrushHardness ({ data, trigger, action }, hardness) {
   action('storeStateCookie')
 }
 
+export function updateGymoteDistance ({ data, trigger, action }, distance) {
+  data.gymoteDistance = distance
+  action('storeStateCookie')
+}
+
 export function updateCanvasFilterSupport ({ data }, isSupported) {
   data.canvasFilterSupported = isSupported
   data.brush.setFilterSupport(isSupported)

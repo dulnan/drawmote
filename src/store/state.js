@@ -20,6 +20,7 @@ export default function (data) {
       pointer: data.lazyBrush.pointer.toObject()
     },
     touch: data.touch,
-    pointingAtToolbar: data.pointingAtToolbar
+    pointingAtToolbar: data.pointingAtToolbar,
+    gymoteDistance: data.gymoteDistance
   }
 }

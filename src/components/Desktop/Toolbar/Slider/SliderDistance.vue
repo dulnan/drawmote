@@ -11,7 +11,7 @@ export default {
   name: 'SliderDistance',
 
   vuetamin: {
-    handleSizesChange: [threads.SIZES]
+    handleSizesChange: [threads.SIZES, threads.DISTANCE]
   },
 
   data () {
@@ -26,16 +26,21 @@ export default {
     handleSizesChange (state) {
       this.min = state.sizes.viewport.width / 4
       this.max = state.sizes.viewport.width * 2
+
+      if (this.value !== state.gymoteDistance) {
+        this.value = state.gymoteDistance
+      }
     },
 
     handleValueChange (value) {
       this.value = value
       this.$peersox.send(encodeEventMessage('distance', value))
+      this.$vuetamin.store.mutate('updateGymoteDistance', value)
     }
   },
 
   mounted () {
-    this.handleValueChange(window.innerWidth)
+    this.$peersox.send(encodeEventMessage('distance', this.$vuetamin.store.data.gymoteDistance))
   }
 }
 </script>

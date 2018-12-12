@@ -18,13 +18,15 @@ export default function () {
   const cookie = getCookie('state')
   let brushOptions = {}
   let lazyRadius = 80
+  let gymoteDistance = window.innerWidth
 
   if (cookie) {
     try {
       const cookieObject = JSON.parse(cookie)
 
       brushOptions = cookieObject.brush
-      lazyRadius = cookieObject.lazyRadius || 80
+      lazyRadius = cookieObject.lazyRadius || lazyRadius
+      gymoteDistance = cookieObject.gymoteDistance || gymoteDistance
     } catch (e) {
       console.log('Invalid cookie data.')
     }
@@ -54,6 +56,8 @@ export default function () {
 
     cookieTimout: null,
 
-    canvasFilterSupported: false
+    canvasFilterSupported: false,
+
+    gymoteDistance: gymoteDistance
   }
 }
