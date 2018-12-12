@@ -1,6 +1,6 @@
 {
   "name": "drawmote-client",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -10,6 +10,7 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "@sentry/browser": "^4.4.1",
     "catenary-curve": "^1.0.1",
     "debounced-resize": "^1.1.1",
     "es6-promise": "^4.2.5",

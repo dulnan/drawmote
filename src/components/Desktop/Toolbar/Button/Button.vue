@@ -27,6 +27,7 @@ export default {
 
   methods: {
     handleClick (state) {
+      console.log('No click handler implemented!')
     }
   },
 

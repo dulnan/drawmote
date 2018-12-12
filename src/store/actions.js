@@ -7,7 +7,8 @@ export function storeStateCookie ({ data }, { noTimeout } = {}) {
   data.cookieTimout = window.setTimeout(() => {
     setCookie('state', JSON.stringify({
       brush: data.brush.state,
-      lazyRadius: data.lazyBrush.getRadius()
+      lazyRadius: data.lazyBrush.getRadius(),
+      gymoteDistance: data.gymoteDistance
     }))
   }, timeout)
 }
