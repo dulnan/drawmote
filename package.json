@@ -10,6 +10,7 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "@sentry/browser": "^4.4.1",
     "catenary-curve": "^1.0.1",
     "debounced-resize": "^1.1.1",
     "es6-promise": "^4.2.5",

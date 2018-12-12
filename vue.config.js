@@ -47,6 +47,13 @@ module.exports = {
     plugins: webpackPlugins
   },
   chainWebpack: (config) => {
+    config
+      .plugin('define')
+      .tap(args => {
+        let v = JSON.stringify(require('./package.json').version)
+        args[0]['process.env']['PKG_VERSION'] = v
+        return args
+      })
     if (process.env.NODE_ENV === 'production') {
       config
         .plugin('html')
