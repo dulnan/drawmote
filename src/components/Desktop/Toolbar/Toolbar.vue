@@ -186,7 +186,6 @@ export default {
   mounted () {
     this.calculatePointerAreas()
     this.isConnected = this.$peersox.isConnected()
-    console.log(this.isConnected)
   },
 
   beforeDestroy () {
