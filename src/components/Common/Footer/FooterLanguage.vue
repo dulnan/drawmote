@@ -41,7 +41,11 @@ export default {
 
   computed: {
     currentLanguage () {
-      return this.languages.find(l => l.key === this.$i18n.locale)
+      const currentLanguage = this.languages.find(l => l.key === this.$i18n.locale)
+
+      // Return English as a fallback if for some reason i18n doesn't return
+      // anything.
+      return currentLanguage || this.languages[1]
     }
   },
 
