@@ -1,5 +1,14 @@
 module.exports = {
   presets: [
-    '@vue/app'
+    [
+      '@vue/app', {
+        polyfills: [
+          'es6.symbol'
+        ]
+      }
+    ]
+  ],
+  plugins: [
+    '@babel/plugin-proposal-object-rest-spread'
   ]
 }

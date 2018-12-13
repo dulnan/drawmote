@@ -1,4 +1,4 @@
-import { getCookie } from '@/tools/helpers'
+import { getLocale } from '@/tools/cookies'
 
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
@@ -19,7 +19,7 @@ function loadLocaleMessages () {
 }
 
 function detectLanguage () {
-  const locale = getCookie('locale')
+  const locale = getLocale()
   if (locale) {
     return locale
   }
@@ -29,6 +29,6 @@ function detectLanguage () {
 
 export default new VueI18n({
   locale: detectLanguage(),
-  fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || 'en',
+  fallbackLocale: 'en',
   messages: loadLocaleMessages()
 })

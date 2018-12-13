@@ -1,3 +1,4 @@
+import 'whatwg-fetch'
 import PeerSox from 'peersox'
 
 export default {

@@ -1,5 +1,5 @@
 import { LazyBrush } from 'lazy-brush'
-import { getCookie } from '@/tools/helpers'
+import { getState } from '@/tools/cookies'
 import Rectangle from '@/classes/Rectangle'
 import Brush from '@/classes/Brush'
 
@@ -15,21 +15,15 @@ export default function () {
     ratio: 1
   }
 
-  const cookie = getCookie('state')
+  const cookieState = getState()
   let brushOptions = {}
   let lazyRadius = 80
   let gymoteDistance = window.innerWidth
 
-  if (cookie) {
-    try {
-      const cookieObject = JSON.parse(cookie)
-
-      brushOptions = cookieObject.brush
-      lazyRadius = cookieObject.lazyRadius || lazyRadius
-      gymoteDistance = cookieObject.gymoteDistance || gymoteDistance
-    } catch (e) {
-      console.log('Invalid cookie data.')
-    }
+  if (cookieState) {
+    brushOptions = cookieState.brush || {}
+    lazyRadius = cookieState.lazyRadius || lazyRadius
+    gymoteDistance = cookieState.gymoteDistance || gymoteDistance
   }
 
   return {
