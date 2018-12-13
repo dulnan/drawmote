@@ -4,3 +4,6 @@
 [build]
   Publish = "dist/"
   Functions = ""
+
+[context.develop]
+  command = "npm run build-develop"
