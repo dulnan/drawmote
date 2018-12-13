@@ -115,7 +115,6 @@ export default {
       this.isPaired = true
 
       this.updateViewport()
-      this.$mote.init()
       this.$peersox.storePairing(pairing)
     },
 
