@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { setCookie } from '@/tools/helpers'
+import { setLocale } from '@/tools/cookies'
 
 export default {
   name: 'FooterLanguage',
@@ -51,7 +51,7 @@ export default {
 
   methods: {
     handleLanguageChange (e) {
-      setCookie('locale', e.target.value)
+      setLocale(e.target.value)
     }
   }
 }
