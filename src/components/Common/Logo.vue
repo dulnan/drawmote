@@ -1,62 +1,14 @@
 <template>
-  <div class="logo mrgt+" ref="logo">
+  <div class="logo mrgt+">
     <div class="logo__app">
       <img src="drawmote-logo.png" />
     </div>
-    <background-animation :center="center" />
   </div>
 </template>
 
 <script>
-import threads from '@/store/threads'
-
-import BackgroundAnimation from '@/components/Common/BackgroundAnimation.vue'
-
 export default {
-  name: 'Logo',
-
-  components: {
-    BackgroundAnimation
-  },
-
-  vuetamin: {
-    setCenter: [threads.SIZES]
-  },
-
-  data () {
-    return {
-      center: {
-        x: 0,
-        y: 0
-      }
-    }
-  },
-
-  methods: {
-    /**
-     * Set the logo's center in relation to the screen.
-     */
-    setCenter () {
-      if (this.$refs.logo) {
-        const rect = this.$refs.logo.getBoundingClientRect()
-
-        this.center = {
-          x: rect.left + (rect.width / 2),
-          y: rect.top + (rect.height / 2)
-        }
-      }
-
-      this.$emit('center', this.center)
-    }
-  },
-
-  mounted () {
-    this.setCenter()
-
-    window.setTimeout(() => {
-      this.setCenter()
-    }, 500)
-  }
+  name: 'Logo'
 }
 </script>
 
@@ -80,11 +32,11 @@ $logo-base: 768;
     font-size: 11rem;
   }
   @include media('md') {
-    font-size: 12rem;
+    font-size: 8rem;
+    margin-left: -6rem;
   }
   @include media('lg') {
-    font-size: 16rem;
-    margin-left: -0.3em;
+    // font-size: 16rem;
   }
 }
 

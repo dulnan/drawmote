@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@sentry/browser": "^4.4.1",
+    "animejs": "^2.2.0",
     "catenary-curve": "^1.0.1",
     "debounced-resize": "^1.1.1",
     "es6-promise": "^4.2.5",

@@ -161,7 +161,6 @@ export default {
 
 <style lang="scss">
 .desktop {
-  perspective: 700px;
   height: 100%;
 }
 </style>

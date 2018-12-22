@@ -41,7 +41,7 @@ export default {
 
 <style lang="scss">
 #drawmote {
-  background: $alt-color-lightest;
+  background: white;
   @include media('sm') {
     position: absolute;
     top: 0;

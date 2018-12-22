@@ -12,18 +12,6 @@ let then = Date.now()
 export default {
   name: 'BackgroundAnimation',
 
-  props: {
-    center: {
-      type: Object,
-      default: () => {
-        return {
-          x: 0,
-          y: 0
-        }
-      }
-    }
-  },
-
   data () {
     return {
       w: 0,
@@ -40,11 +28,18 @@ export default {
     },
 
     circleDistance () {
-      return this.w >= 640 ? 65 : 35
+      return this.w >= 640 ? 35 : 35
     },
 
     speed () {
       return this.w >= 640 ? 5 : 5
+    },
+
+    center () {
+      return {
+        x: this.w / 2,
+        y: this.h / 2
+      }
     }
   },
 
@@ -77,10 +72,14 @@ export default {
 
       ctx.lineWidth = 1
       ctx.lineCap = 'round'
-      ctx.strokeStyle = '#ecebe7'
 
       for (let i = 0; i < this.circlesNeeded; i++) {
         const radius = (i * (this.circleDistance)) + (count % (this.circleDistance))
+        const opacity = 1 - (radius / (this.w / 2))
+
+        // const end = 1 - ((i * count) % this.circleDistance) / this.circleDistance
+        ctx.strokeStyle = `rgba(200,200,200,${opacity})`
+
         ctx.beginPath()
         ctx.arc(this.center.x, this.center.y, radius, 0, Math.PI * 2, true)
         ctx.stroke()
@@ -93,9 +92,8 @@ export default {
       this.clear()
 
       const canvas = this.$refs.canvas
-      const rect = canvas.getBoundingClientRect()
-      const width = rect.width
-      const height = rect.height
+      const width = canvas.offsetWidth
+      const height = canvas.offsetHeight
 
       let dpi = 1
 
@@ -129,15 +127,18 @@ export default {
 <style lang="scss">
 .background-animation {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  top: auto;
+  bottom: 0;
+  left: -0.7em;
+  width: 2em;
+  height: 2em;
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
+  transform: rotateX(90deg) translateY(1.25em);
+  transform-origin: bottom;
   @include media('sm') {
-    z-index: -1;
+    z-index: 0;
   }
 
   canvas {
