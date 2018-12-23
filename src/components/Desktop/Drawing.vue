@@ -106,17 +106,12 @@ export default {
 .drawing {
   overflow: hidden;
   position: absolute;
+  user-select: none;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background: white;
-  &.appear-enter-active, &.appear-leave-active {
-    transition: 1s;
-  }
-  &.appear-enter, &.appear-leave-to {
-    opacity: 0;
-  }
 }
 
 .drawing-area {

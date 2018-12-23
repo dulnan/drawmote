@@ -170,17 +170,25 @@ export default {
     .animation__scene {
       transition: 3s;
     }
+    .canvas--main {
+      transition: 1s;
+      transition-delay: 2s;
+    }
   }
   &.appear-enter, &.appear-leave-to {
     visibility: hidden;
     .animation__scene {
-      transform: rotateX(-2deg) translateZ(1.6em) !important;
+      transform: none !important;
+    }
+    .canvas--main {
+      opacity: 0;
     }
   }
 }
 
 .pairing-container {
   position: relative;
+  z-index: 1000;
   transition: 3s;
   transform: translateX(-100%);
   opacity: 0;

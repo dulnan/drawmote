@@ -24,6 +24,7 @@
     <div class="animation" :style="animationStyle">
       <div class="animation__world" ref="world">
         <div class="animation__scene" ref="scene" :style="sceneStyle">
+          <div class="stand"></div>
           <div class="floor"></div>
           <!-- <background-animation :center="center" /> -->
           <div class="screen" :style="screenStyle">
@@ -31,8 +32,8 @@
             <div class="screen__side"></div>
             <div class="screen__side"></div>
             <div class="screen__side"></div>
-            <div class="screen__display">
-              <div class="brush" :style="brushStyle" ref="brush"></div>
+            <div class="screen__display" :style="displayStyle">
+              <drawing />
             </div>
           </div>
           <div class="phone" :style="phoneStyle">
@@ -58,14 +59,18 @@ import { GyroPlane } from 'gyro-plane'
 import anime from 'animejs'
 
 import BackgroundAnimation from '@/components/Common/BackgroundAnimation.vue'
+import Drawing from '@/components/Desktop/Drawing.vue'
 
 import debouncedResize from 'debounced-resize'
+
+const record = require('./record.json')
 
 export default {
   name: 'Animation',
 
   components: {
-    BackgroundAnimation
+    BackgroundAnimation,
+    Drawing
   },
 
   vuetamin: {
@@ -96,32 +101,42 @@ export default {
 
       sceneX: -90,
       sceneY: -0,
-      sceneZ: 0
+      sceneZ: 0,
+
+      vuetaminState: {}
     }
   },
 
   computed: {
-    base () {
-      return this.windowWidth * 0.7
-    },
-    width () {
-      return this.base
-    },
-    height () {
-      return this.windowHeight * 0.7
-    },
-    distance () {
-      return this.width * 1.2
-    },
     brush () {
       this.gyro.updateOrientation({ alpha: this.alpha, beta: this.beta })
 
       // To get the calculated coordinates, you have to call this function.
       return this.gyro.getScreenCoordinates()
     },
+    base () {
+      return this.windowWidth
+    },
+    width () {
+      return this.base + 2 * this.bezelWidth
+    },
+    height () {
+      return (this.windowHeight) + 2 * this.bezelWidth
+    },
+    bezelWidth () {
+      return this.base * 0.03
+    },
+    distance () {
+      return this.base
+    },
     animationStyle () {
       return {
-        fontSize: this.width + 'px'
+        fontSize: this.base + 'px'
+      }
+    },
+    displayStyle () {
+      return {
+        borderWidth: `${this.bezelWidth}px`
       }
     },
     laserStyle () {
@@ -134,11 +149,6 @@ export default {
       return {
         width: `${this.width}px`,
         height: `${this.height}px`
-      }
-    },
-    brushStyle () {
-      return {
-        transform: `translate3d(${this.brush.x}px,${this.brush.y}px, 1px)`
       }
     },
     phoneStyle () {
@@ -179,11 +189,16 @@ export default {
 
     height (height) {
       this.updateScreenSize()
+    },
+
+    brush (coordinates) {
+      this.$vuetamin.store.mutate('updatePointer', { coordinates })
     }
   },
 
   methods: {
     updateScreenSize () {
+      this.gyro.setDistance(this.distance)
       this.gyro.setDistance(this.distance)
       this.gyro.setScreenDimensions({ width: this.width, height: this.height })
     },
@@ -199,16 +214,17 @@ export default {
 
     animate () {
       const easing = 'easeInOutQuad'
+
       let moveScreen = anime({
         targets: this.$refs.scene,
         translateZ: [
           { value: '1.1em', duration: 0, delay: 0, elasticity: 0 },
-          { value: '-1.2em', duration: 6000, delay: 1000, elasticity: 2, easing: easing }
+          { value: '-1.9em', duration: 6000, delay: 1000, elasticity: 2, easing: easing }
         ],
 
         rotateX: [
           { value: -90, duration: 0, delay: 0, elasticity: 0 },
-          { value: -18, duration: 7000, delay: 0, elasticity: 50, easing: easing }
+          { value: -16, duration: 7000, delay: 0, elasticity: 50, easing: easing }
         ],
 
         translateX: [
@@ -245,13 +261,63 @@ export default {
       })
     },
 
+    setOrientation (x, y) {
+      this.alpha = (27) * -(x - (800 / 2)) / (800 / 2) + 180
+      this.beta = (27) * -(y - (800 / 2)) / (800 / 2)
+    },
+
     onMouseMove (e) {
-      this.alpha = 24 * -(e.pageX - (window.innerWidth / 2)) / (window.innerWidth / 2) + 180
-      this.beta = 14 * -(e.pageY - (window.innerHeight / 2)) / (window.innerHeight / 2)
+      e.preventDefault()
+      this.setOrientation(e.pageX, e.pageY)
+    },
+
+    onMouseDown (e) {
+      e.preventDefault()
+      this.$vuetamin.store.mutate('updateIsPressing', { isPressing: true })
+    },
+
+    onMouseUp (e) {
+      e.preventDefault()
+      this.$vuetamin.store.mutate('updateIsPressing', { isPressing: false })
     },
 
     updateSizes () {
       this.windowWidth = window.innerWidth
+      this.windowHeight = window.innerHeight
+    },
+
+    loop () {
+      return
+      if ((this.count / 3) > record.length) {
+
+      }
+
+      const type = record[this.count]
+      const x = record[this.count + 1] / 10
+      const y = record[this.count + 2] / 10
+
+      this.alpha = x
+      this.beta = y
+
+      if (type === 1 || type === 2) {
+        const isPressing = type === 1
+        this.$vuetamin.store.mutate('updateIsPressing', { isPressing })
+      }
+
+      this.count = this.count + 3
+
+      if ((this.count / 3) <= record.length) {
+        window.requestAnimationFrame(this.loop.bind(this))
+      } else {
+        this.$vuetamin.store.mutate('updateBrushRadius', this.vuetaminState.brush.radius)
+        this.$vuetamin.store.mutate('updateLazyRadius', this.vuetaminState.lazyRadius)
+      }
+    },
+
+    pushRecord (type) {
+      const alpha = Math.round(this.alpha * 10)
+      const beta = Math.round(this.beta * 10)
+      this.record.push(type, alpha, beta)
     }
   },
 
@@ -275,11 +341,18 @@ export default {
       this.$emit('appeared')
     }, 4500)
 
-    window.addEventListener('mousemove', this.onMouseMove)
-  },
+    window.setTimeout(() => {
+      this.vuetaminState = this.$vuetamin.store.getState()
 
-  beforeDestroy () {
-    window.removeEventListener('mousemove', this.onMouseMove)
+      this.$vuetamin.store.mutate('updateLazyRadius', 40 * (this.windowWidth / 800))
+      this.$vuetamin.store.mutate('updateBrushRadius', 4 * (this.windowWidth / 800))
+
+      this.loop()
+    }, 200)
+
+    window.addEventListener('mousemove', this.onMouseMove)
+    window.addEventListener('mousedown', this.onMouseDown)
+    window.addEventListener('mouseup', this.onMouseUp)
   }
 }
 </script>
@@ -364,7 +437,6 @@ $screen-border-width: 0.03;
   pointer-events: none;
   width: b(1);
   height: b(1);
-  z-index: 90000;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -409,15 +481,15 @@ $screen-border-width: 0.03;
 }
 
 .floor {
-  width: b(2.5);
+  width: b(2.8);
   height: b(2);
   background: white;
   position: absolute;
   z-index: 0;
   bottom: 0;
-  left: b(-0.75);
+  left: b(-1);
   border: 4px solid #ddd;
-  transform: rotateX(90deg) translateZ(b(0.084)) translateY(b(1.5));
+  transform: rotateX(90deg) translateZ(-2px) translateY(b(1.5));
   transform-origin: bottom;
 }
 
@@ -477,9 +549,10 @@ $screen-border-width: 0.03;
 .screen {
   background: white;
   position: absolute;
+  pointer-events: none;
   top: 50%;
   left: 50%;
-  border: $wireframe-border;
+  // border: $wireframe-border;
   border-radius: 7px;
   transform: translate(-50%, -50%);
   transform-style: preserve-3d;
@@ -487,20 +560,32 @@ $screen-border-width: 0.03;
   align-items: center;
   justify-content: center;
   box-shadow: inset 0 -2px 8px black;
+}
 
+.stand {
+  position: absolute;
+  background: white;
+  border: $wireframe-border;
+  bottom: 0;
+  width: b(0.4);
+  left: 50%;
+  height: b(0.44);
+  border-radius: b(0.1) b(0.1) 0 0;
+  transform: translateX(-50%) rotateX(-90deg) translateY(b(0.3));
+  transform-origin: bottom center;
+  box-shadow: 3px -3px 8px 1px rgba(#ccc, 0.2);
+  transform-style: preserve-3d;
   &:after {
     content: "";
     position: absolute;
-    background: white;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     border: $wireframe-border;
-    bottom: 0;
-    width: b(0.4);
-    left: 50%;
-    height: b(0.37);
-    border-radius: b(0.1) b(0.1) 0 0;
-    transform: translateX(-50%) rotateX(-90deg) translateY(b(0.22)) translateZ(b(0.1));
-    transform-origin: bottom center;
-    box-shadow: 3px -3px 8px 1px rgba(#ccc, 0.2);
+    background: white;
+    transform: rotateX(60deg);
+    transform-origin: bottom;
   }
 }
 
@@ -528,19 +613,6 @@ $screen-border-width: 0.03;
     // #a1a5ab,
     // #c2c5cb)
   }
-}
-
-.brush {
-  width: b(0.05);
-  height: b(0.05);
-  border-radius: 100%;
-  background: $color-red;
-  // transition: $movement-transition;
-  // transition-delay: 0.03s;
-  position: absolute;
-  top: b(-0.025 - $screen-border-width);
-  left: b(-0.025 - $screen-border-width);
-  z-index: 100;
 }
 
 .phone__brush {
