@@ -287,9 +287,8 @@ export default {
     },
 
     loop () {
-      return
       if ((this.count / 3) > record.length) {
-
+        return
       }
 
       const type = record[this.count]
