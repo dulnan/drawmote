@@ -10,7 +10,9 @@
           @skipPairing="skipPairing"
         />
       </transition>
-      <drawing v-if="isPaired"></drawing>
+      <transition name="appear">
+        <drawing v-if="isPaired"></drawing>
+      </transition>
     </div>
   </div>
 </template>

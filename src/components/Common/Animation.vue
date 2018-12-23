@@ -32,7 +32,7 @@
             <div class="screen__side"></div>
             <div class="screen__side"></div>
             <div class="screen__display">
-              <div class="brush" :style="brushStyle"></div>
+              <div class="brush" :style="brushStyle" ref="brush"></div>
             </div>
           </div>
           <div class="phone" :style="phoneStyle">
@@ -41,6 +41,7 @@
             <div class="phone__side"></div>
             <div class="phone__side"></div>
             <div class="phone__button"></div>
+            <div class="phone__laser" ref="laser" :style="laserStyle"></div>
             <div class="phone__display">
               <img src="drawmote-logo.png" />
             </div>
@@ -84,6 +85,7 @@ export default {
       beta: 0,
 
       windowWidth: 1200,
+      windowHeight: 900,
 
       gyro: new GyroPlane({
         width: 500,
@@ -106,7 +108,7 @@ export default {
       return this.base
     },
     height () {
-      return this.width * 0.625
+      return this.windowHeight * 0.7
     },
     distance () {
       return this.width * 1.2
@@ -120,6 +122,12 @@ export default {
     animationStyle () {
       return {
         fontSize: this.width + 'px'
+      }
+    },
+    laserStyle () {
+      return {
+        height: `${this.distance}px`,
+        top: `-${this.distance}px`
       }
     },
     screenStyle () {
@@ -217,11 +225,29 @@ export default {
           { value: -52, duration: 5000, delay: 2000, elasticity: 7, easing: easing }
         ]
       })
+      let moveLaser = anime({
+        targets: this.$refs.laser,
+        scaleY: [
+          { value: 0, duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: 1, duration: 300, delay: 2400, elasticity: 7, easing: easing }
+        ]
+      })
+
+      let moveBrush = anime({
+        targets: this.$refs.brush,
+        translateX: this.brush.x + 'px',
+        translateY: this.brush.y + 'px',
+        translateZ: '1px',
+        scale: [
+          { value: 0, duration: 0, delay: 0, elasticity: 70, easing: easing },
+          { value: 1, duration: 400, delay: 2400, elasticity: 100, easing: 'easeInOutBack' }
+        ]
+      })
     },
 
     onMouseMove (e) {
-      this.alpha = 44 * -(e.pageX - (window.innerWidth / 2)) / (window.innerWidth / 2) + 180
-      this.beta = 24 * -(e.pageY - (window.innerHeight / 2)) / (window.innerHeight / 2)
+      this.alpha = 24 * -(e.pageX - (window.innerWidth / 2)) / (window.innerWidth / 2) + 180
+      this.beta = 14 * -(e.pageY - (window.innerHeight / 2)) / (window.innerHeight / 2)
     },
 
     updateSizes () {
@@ -247,7 +273,7 @@ export default {
 
     window.setTimeout(() => {
       this.$emit('appeared')
-    }, 5000)
+    }, 4500)
 
     window.addEventListener('mousemove', this.onMouseMove)
   },
@@ -357,7 +383,7 @@ $screen-border-width: 0.03;
   align-items: center;
   justify-content: center;
   position: relative;
-  transform: translateZ(0.5em) rotateX(-80deg) translateY(-0.9em);
+  transform: translateZ(1.1em) rotateX(-90deg) translateY(-1.7em);
   transform-style: preserve-3d;
 }
 
@@ -368,19 +394,18 @@ $screen-border-width: 0.03;
   border: $wireframe-border;
   transform-style: preserve-3d;
   position: relative;
+}
 
-  &:after {
-    content: "";
-    position: absolute;
-    top: b(-1.5);
-    left: calc(50% - 1px);
-    width: 3px;
-    height: b(1.5);
-    background: $color-red;
-    box-shadow: 0 0 1px 2px $color-red;
-    opacity: 0.3;
-    transform: translateZ(b(-0.005));
-  }
+.phone__laser {
+  position: absolute;
+  top: b(-1.15);
+  left: calc(50% - 1px);
+  width: 3px;
+  background: $color-red;
+  box-shadow: 0 0 1px 2px $color-red;
+  opacity: 0.3;
+  transform: translateZ(b(-0.005));
+  transform-origin: bottom;
 }
 
 .floor {

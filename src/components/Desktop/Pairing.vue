@@ -37,6 +37,7 @@ import RestoreConnection from '@/components/Common/RestoreConnection.vue'
 
 const PAIRING_TIMEOUT = 120
 let interval = null
+let transitionTimeout = null
 
 export default {
   name: 'Pairing',
@@ -51,6 +52,7 @@ export default {
     return {
       showModal: false,
       hasAppeared: false,
+      showCode: false,
       countdown: PAIRING_TIMEOUT,
       center: { x: 0, y: 0 }
     }
@@ -81,7 +83,7 @@ export default {
     },
 
     hasCode: function () {
-      return this.pairing && this.pairing.code && this.pairing.code.length > 0
+      return this.pairing && this.pairing.code && this.pairing.code.length > 0 && this.showCode
     },
 
     transformOriginStyle () {
@@ -97,6 +99,14 @@ export default {
         this.startTimer()
       } else {
         this.stopTimer()
+      }
+    },
+    hasAppeared (hasAppeared) {
+      if (hasAppeared) {
+        window.clearTimeout(transitionTimeout)
+        this.transitionTimeout = window.setTimeout(() => {
+          this.showCode = true
+        }, 500)
       }
     }
   },
@@ -146,7 +156,7 @@ export default {
   padding-bottom: calc(#{$footer-height-xs} + 2rem);
   position: relative;
   background: white;
-  z-index: 200;
+  z-index: 900;
   @include media('md') {
     padding: 3rem;
     padding-bottom: calc(#{$footer-height-xs} + 3rem);
@@ -156,23 +166,23 @@ export default {
     padding-bottom: calc(4rem + #{$footer-height-xs});
   }
   &.appear-enter-active, &.appear-leave-active {
-    transition: .5s;
-    .pairing__content {
-      transition: .5s;
+    transition: 3s;
+    .animation__scene {
+      transition: 3s;
     }
   }
   &.appear-enter, &.appear-leave-to {
-    opacity: 0;
-    .pairing__content {
-      transform: translateZ(5rem);
+    visibility: hidden;
+    .animation__scene {
+      transform: rotateX(-2deg) translateZ(1.6em) !important;
     }
   }
 }
 
 .pairing-container {
   position: relative;
-  transition: 2.5s;
-  transform: translateX(-60%);
+  transition: 3s;
+  transform: translateX(-100%);
   opacity: 0;
   &.appear {
     transform: none;

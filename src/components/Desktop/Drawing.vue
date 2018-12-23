@@ -111,6 +111,12 @@ export default {
   width: 100%;
   height: 100%;
   background: white;
+  &.appear-enter-active, &.appear-leave-active {
+    transition: 1s;
+  }
+  &.appear-enter, &.appear-leave-to {
+    opacity: 0;
+  }
 }
 
 .drawing-area {
