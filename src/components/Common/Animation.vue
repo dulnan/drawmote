@@ -26,7 +26,6 @@
         <div class="animation__scene" ref="scene" :style="sceneStyle">
           <div class="stand"></div>
           <div class="floor"></div>
-          <!-- <background-animation :center="center" /> -->
           <div class="screen" :style="screenStyle">
             <div class="screen__side"></div>
             <div class="screen__side"></div>
@@ -54,7 +53,6 @@
 </template>
 
 <script>
-import threads from '@/store/threads'
 import { GyroPlane } from 'gyro-plane'
 import anime from 'animejs'
 
@@ -65,6 +63,9 @@ import debouncedResize from 'debounced-resize'
 
 const record = require('./record.json')
 
+let timeouts = []
+let animationFrame = null
+
 export default {
   name: 'Animation',
 
@@ -73,18 +74,9 @@ export default {
     Drawing
   },
 
-  vuetamin: {
-    setCenter: [threads.SIZES]
-  },
-
   data () {
     return {
       showDebug: false,
-
-      center: {
-        x: 0,
-        y: 0
-      },
 
       alpha: 180,
       beta: 0,
@@ -97,6 +89,7 @@ export default {
         height: 500,
         distance: 700
       }),
+
       count: 0,
 
       sceneX: -90,
@@ -114,43 +107,53 @@ export default {
       // To get the calculated coordinates, you have to call this function.
       return this.gyro.getScreenCoordinates()
     },
+
     base () {
       return this.windowWidth
     },
+
     width () {
       return this.base + 2 * this.bezelWidth
     },
+
     height () {
       return (this.windowHeight) + 2 * this.bezelWidth
     },
+
     bezelWidth () {
       return this.base * 0.03
     },
+
     distance () {
       return this.base
     },
+
     animationStyle () {
       return {
         fontSize: this.base + 'px'
       }
     },
+
     displayStyle () {
       return {
         borderWidth: `${this.bezelWidth}px`
       }
     },
+
     laserStyle () {
       return {
         height: `${this.distance}px`,
         top: `-${this.distance}px`
       }
     },
+
     screenStyle () {
       return {
         width: `${this.width}px`,
         height: `${this.height}px`
       }
     },
+
     phoneStyle () {
       return {
         transform: `
@@ -164,16 +167,6 @@ export default {
     sceneStyle () {
       return {
         transformOrigin: `50% 50% ${this.distance * 0.1}px`
-      }
-    },
-
-    shadowStyle () {
-      return {
-        transform: `
-          translateZ(${this.distance}px)
-          rotateX(${-this.beta + 90}deg)
-          rotateZ(${180 - this.alpha}deg)
-        `
       }
     }
   },
@@ -201,15 +194,6 @@ export default {
       this.gyro.setDistance(this.distance)
       this.gyro.setDistance(this.distance)
       this.gyro.setScreenDimensions({ width: this.width, height: this.height })
-    },
-
-    setCenter () {
-      const rect = this.$refs.world.getBoundingClientRect()
-
-      this.center = {
-        x: rect.left + (rect.width / 2),
-        y: rect.top + rect.height
-      }
     },
 
     animate () {
@@ -241,22 +225,12 @@ export default {
           { value: -52, duration: 5000, delay: 2000, elasticity: 7, easing: easing }
         ]
       })
+
       let moveLaser = anime({
         targets: this.$refs.laser,
         scaleY: [
           { value: 0, duration: 0, delay: 0, elasticity: 7, easing: easing },
           { value: 1, duration: 300, delay: 2400, elasticity: 7, easing: easing }
-        ]
-      })
-
-      let moveBrush = anime({
-        targets: this.$refs.brush,
-        translateX: this.brush.x + 'px',
-        translateY: this.brush.y + 'px',
-        translateZ: '1px',
-        scale: [
-          { value: 0, duration: 0, delay: 0, elasticity: 70, easing: easing },
-          { value: 1, duration: 400, delay: 2400, elasticity: 100, easing: 'easeInOutBack' }
         ]
       })
     },
@@ -306,7 +280,7 @@ export default {
       this.count = this.count + 3
 
       if ((this.count / 3) <= record.length) {
-        window.requestAnimationFrame(this.loop.bind(this))
+        animationFrame = window.requestAnimationFrame(this.loop.bind(this))
       } else {
         this.$vuetamin.store.mutate('updateBrushRadius', this.vuetaminState.brush.radius)
         this.$vuetamin.store.mutate('updateLazyRadius', this.vuetaminState.lazyRadius)
@@ -326,32 +300,41 @@ export default {
       this.updateSizes()
     })
 
-    this.setCenter()
-
     this.gyro.updateOffset({ alpha: this.alpha, beta: this.beta })
     this.updateScreenSize()
 
-    window.setTimeout(() => {
-      this.setCenter()
+    timeouts.push(window.setTimeout(() => {
       this.animate()
-    }, 500)
+    }, 500))
 
-    window.setTimeout(() => {
+    timeouts.push(window.setTimeout(() => {
       this.$emit('appeared')
-    }, 4500)
+    }, 4500))
 
-    window.setTimeout(() => {
+    timeouts.push(window.setTimeout(() => {
       this.vuetaminState = this.$vuetamin.store.getState()
 
       this.$vuetamin.store.mutate('updateLazyRadius', 40 * (this.windowWidth / 800))
       this.$vuetamin.store.mutate('updateBrushRadius', 4 * (this.windowWidth / 800))
 
       this.loop()
-    }, 200)
+    }, 200))
 
     window.addEventListener('mousemove', this.onMouseMove)
     window.addEventListener('mousedown', this.onMouseDown)
     window.addEventListener('mouseup', this.onMouseUp)
+  },
+
+  beforeDestroy () {
+    window.removeEventListener('mousemove', this.onMouseMove)
+    window.removeEventListener('mousedown', this.onMouseDown)
+    window.removeEventListener('mouseup', this.onMouseUp)
+
+    timeouts.forEach(timeout => {
+      window.clearTimeout(timeout)
+    })
+
+    window.cancelAnimationFrame(animationFrame)
   }
 }
 </script>
@@ -381,7 +364,7 @@ $timing-function: cubic-bezier(0.72,-0.04, 0.32, 1.06);
 $wireframe-border: 2px solid rgb(175, 175, 175);
 
 $animation-base: 900;
-$perspective: 2.7;
+$perspective: 1.7;
 $animation-phone-distance: 1;
 
 $phone-translate-z: var(--animation-phone-distance);
@@ -597,9 +580,11 @@ $screen-border-width: 0.03;
   height: 100%;
   border: b($screen-border-width) solid #fafafa;
   border-radius: 4px;
-  box-shadow: inset 0 0 0px 2px rgba(#bbb, 1);
   z-index: 9999999;
   overflow: hidden;
+  .drawing {
+    border: 3px solid rgba(black, 0.2);
+  }
 }
 
 .screen__side {

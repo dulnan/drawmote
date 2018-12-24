@@ -45,18 +45,18 @@ export function updateCalibration ({ data }) {
   data.hasCalibrated = true
 }
 
-export function updateCanvasRect ({ data, trigger }, rect) {
-  data.canvasRect.setFromDOMRect(rect)
+export function updateCanvasRect ({ data, trigger }, element) {
+  data.canvasRect.setFromElement(element)
   trigger(threads.STATE)
 }
 
-export function updateToolbarRect ({ data, trigger }, rect) {
-  data.toolbarRect.setFromDOMRect(rect)
+export function updateToolbarRect ({ data, trigger }, element) {
+  data.toolbarRect.setFromElement(element)
   trigger(threads.STATE)
 }
 
-export function updateFooterRect ({ data, trigger }, rect) {
-  data.footerRect.setFromDOMRect(rect)
+export function updateFooterRect ({ data, trigger }, element) {
+  data.footerRect.setFromElement(element)
   trigger(threads.STATE)
 }
 

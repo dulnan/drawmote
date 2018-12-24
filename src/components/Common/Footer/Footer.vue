@@ -35,7 +35,8 @@ export default {
 
   methods: {
     updateSizes () {
-      this.$vuetamin.store.mutate('updateFooterRect', this.$refs.footer.getBoundingClientRect())
+      const footer = this.$refs.footer
+      this.$vuetamin.store.mutate('updateFooterRect', footer)
     }
   },
 

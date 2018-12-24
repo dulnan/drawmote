@@ -27,7 +27,8 @@
               :tool="tool"
               :group-id="group.id"
               :action="group.action"
-              :hovered-key="toolBeingHovered" />
+              :hovered-key="toolBeingHovered"
+              />
           </li>
         </ul>
       </li>

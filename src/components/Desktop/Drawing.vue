@@ -50,14 +50,14 @@ export default {
   methods: {
     getElementSizes () {
       if (this.$refs.canvasContainer) {
-        const canvasRect = this.$refs.canvasContainer.getBoundingClientRect()
-        this.$vuetamin.store.mutate('updateCanvasRect', canvasRect)
+        const canvasContainer = this.$refs.canvasContainer
+        this.$vuetamin.store.mutate('updateCanvasRect', canvasContainer)
       }
 
       if (this.$refs.toolbar) {
-        const toolbarRect = this.$refs.toolbar.$el.getBoundingClientRect()
-        this.$vuetamin.store.mutate('updateToolbarRect', toolbarRect)
-        this.toolbarHeight = toolbarRect.height
+        const toolbar = this.$refs.toolbar.$el
+        this.$vuetamin.store.mutate('updateToolbarRect', toolbar)
+        this.toolbarHeight = toolbar.offsetHeight
       }
     },
 
