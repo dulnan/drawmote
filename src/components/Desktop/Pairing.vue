@@ -1,33 +1,34 @@
 <template>
-  <div class="overlay pairing-desktop absolute flex" :style="transformOriginStyle">
-    <animation @appeared="hasAppeared = true" />
-    <div class="pairing-container" :class="{ 'appear': hasAppeared }">
-      <h1 class="text-heavy">drawmote</h1>
-      <p class="h2 text-bold mrgb+ text-muted">{{ $t('subtitle') }}</p>
-      <p class="text-muted text-light mrgt0 h2 pairing-lead">{{ $t('desktop.lead') }}</p>
-      <div class="code code--desktop sm-mrgt md-mrgt+">
-        <div class="code__content">
-          <div v-for="(number, index) in pairingCodeNumbers" :key="index" class="code__item" :class="{ 'visible': hasCode }">
-            <div class="code-circle contains" :class="'code-circle--' + number">
-              <span>{{ number }}</span>
+  <transition name="appear" appear>
+    <div class="overlay pairing-desktop absolute flex" :style="transformOriginStyle">
+      <div class="pairing-container">
+        <h1 class="text-heavy">drawmote</h1>
+        <p class="h2 text-bold mrgb+ text-muted">{{ $t('subtitle') }}</p>
+        <p class="text-muted text-light mrgt0 h2 pairing-lead">{{ $t('desktop.lead') }}</p>
+        <div class="code code--desktop sm-mrgt md-mrgt+">
+          <div class="code__content">
+            <div v-for="(number, index) in pairingCodeNumbers" :key="index" class="code__item" :class="{ 'visible': hasCode }">
+              <div class="code-circle contains" :class="'code-circle--' + number">
+                <span>{{ number }}</span>
+              </div>
             </div>
           </div>
         </div>
+        <div class="pairing__actions mrgt">
+          <p class="text-muted text-light mrgv0 pairing-skip">
+            <button class="btn btn--bare" @click="togglePairing">{{ $t('desktop.nophone') }}</button>
+          </p>
+          <p class="text-muted text-light pairing-lead mrg0 text-brand" v-if="isBlocked">
+            {{ $t('desktop.tooManyAttempts') }}
+          </p>
+          <p class="code-timeout text-muted text-light mrg0" :class="{ 'visible': hasCode && countdown < 60 }">
+            <span>{{ $t('desktop.countdownPrefix') }} {{ $tc('desktop.countdownSeconds', countdown, { count: countdown }) }} {{ $t('desktop.countdownSuffix') }}</span>
+          </p>
+        </div>
       </div>
-      <div class="pairing__actions mrgt">
-        <p class="text-muted text-light mrgv0 pairing-skip">
-          <button class="btn btn--bare" @click="togglePairing">{{ $t('desktop.nophone') }}</button>
-        </p>
-        <p class="text-muted text-light pairing-lead mrg0 text-brand" v-if="isBlocked">
-          {{ $t('desktop.tooManyAttempts') }}
-        </p>
-        <p class="code-timeout text-muted text-light mrg0" :class="{ 'visible': hasCode && countdown < 60 }">
-          <span>{{ $t('desktop.countdownPrefix') }} {{ $tc('desktop.countdownSeconds', countdown, { count: countdown }) }} {{ $t('desktop.countdownSuffix') }}</span>
-        </p>
-      </div>
+      <restore-connection />
     </div>
-    <restore-connection />
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -100,14 +101,6 @@ export default {
       } else {
         this.stopTimer()
       }
-    },
-    hasAppeared (hasAppeared) {
-      if (hasAppeared) {
-        window.clearTimeout(transitionTimeout)
-        this.transitionTimeout = window.setTimeout(() => {
-          this.showCode = true
-        }, 500)
-      }
     }
   },
 
@@ -140,6 +133,17 @@ export default {
         window.clearInterval(interval)
       }
     }
+  },
+
+  mounted () {
+    window.clearTimeout(transitionTimeout)
+    transitionTimeout = window.setTimeout(() => {
+      this.showCode = true
+    }, 1500)
+  },
+
+  beforeDestroy () {
+    window.clearTimeout(transitionTimeout)
   }
 }
 </script>
@@ -155,8 +159,7 @@ export default {
   padding: 1rem;
   padding-bottom: calc(#{$footer-height-xs} + 2rem);
   position: relative;
-  background: white;
-  z-index: 900;
+  z-index: 800;
   @include media('md') {
     padding: 3rem;
     padding-bottom: calc(#{$footer-height-xs} + 3rem);
@@ -167,35 +170,18 @@ export default {
   }
   &.appear-enter-active, &.appear-leave-active {
     transition: 3s;
-    .animation__scene {
-      transition: 3s;
-    }
-    .canvas--main {
-      transition: 1s;
-      transition-delay: 2s;
-    }
+  }
+  &.appear-enter-active {
+    transition-delay: 4s;
   }
   &.appear-enter, &.appear-leave-to {
-    visibility: hidden;
-    .animation__scene {
-      transform: none !important;
-    }
-    .canvas--main {
-      opacity: 0;
-    }
+    transform: translateX(-60%);
+    opacity: 0;
   }
 }
 
 .pairing-container {
   position: relative;
-  z-index: 1000;
-  transition: 3s;
-  transform: translateX(-100%);
-  opacity: 0;
-  &.appear {
-    transform: none;
-    opacity: 1;
-  }
 }
 
 .pairing__actions {

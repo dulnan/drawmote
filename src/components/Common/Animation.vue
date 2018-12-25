@@ -1,50 +1,27 @@
 <template>
-  <div>
-    <div class="debug" v-if="showDebug">
-      <label>Base</label>
-      <input type="range" min="400" max="2000" step="1" v-model.number="base">
-      <input type="number" v-model="base"/>
-
-      <label>Distance</label>
-      <input type="range" min="0" max="2000" step="1" v-model.number="distance">
-      <input type="number" v-model="distance"/>
-
-      <label>X</label>
-      <input type="range" min="-180" max="180" step="1" v-model.number="sceneX">
-      <input type="number" v-model="sceneX"/>
-
-      <label>Y</label>
-      <input type="range" min="-180" max="180" step="1" v-model.number="sceneY">
-      <input type="number" v-model="sceneY"/>
-
-      <label>Z</label>
-      <input type="range" min="-180" max="180" step="1" v-model.number="sceneZ">
-      <input type="number" v-model="sceneZ"/>
-    </div>
-    <div class="animation" :style="animationStyle">
-      <div class="animation__world" ref="world">
-        <div class="animation__scene" ref="scene" :style="sceneStyle">
-          <div class="stand"></div>
-          <div class="floor"></div>
-          <div class="screen" :style="screenStyle">
-            <div class="screen__side"></div>
-            <div class="screen__side"></div>
-            <div class="screen__side"></div>
-            <div class="screen__side"></div>
-            <div class="screen__display" :style="displayStyle">
-              <drawing />
-            </div>
+  <div class="animation" :style="animationStyle">
+    <div class="animation__world" ref="world">
+      <div class="animation__scene" ref="scene" :style="sceneStyle">
+        <div class="stand"></div>
+        <div class="floor"></div>
+        <div class="screen" :style="screenStyle">
+          <div class="screen__side"></div>
+          <div class="screen__side"></div>
+          <div class="screen__side"></div>
+          <div class="screen__side"></div>
+          <div class="screen__display" :style="displayStyle">
+            <drawing />
           </div>
-          <div class="phone" :style="phoneStyle">
-            <div class="phone__side"></div>
-            <div class="phone__side"></div>
-            <div class="phone__side"></div>
-            <div class="phone__side"></div>
-            <div class="phone__button"></div>
-            <div class="phone__laser" ref="laser" :style="laserStyle"></div>
-            <div class="phone__display">
-              <img src="drawmote-logo.png" />
-            </div>
+        </div>
+        <div class="phone" :style="phoneStyle" ref="phone">
+          <div class="phone__side"></div>
+          <div class="phone__side"></div>
+          <div class="phone__side"></div>
+          <div class="phone__side"></div>
+          <div class="phone__button"></div>
+          <div class="phone__laser" ref="laser" :style="laserStyle"></div>
+          <div class="phone__display">
+            <img src="drawmote-logo.png" />
           </div>
         </div>
       </div>
@@ -66,6 +43,36 @@ const record = require('./record.json')
 let timeouts = []
 let animationFrame = null
 
+let frames = {
+  screen: {
+    translateZ: {
+      initial: '1.1em',
+      side: '-2.3em',
+      full: '0em'
+    },
+    rotateX: {
+      initial: -90,
+      side: -20,
+      full: 0
+    },
+    translateX: {
+      initial: '0em',
+      side: '0.45em',
+      full: '0em'
+    },
+    translateY: {
+      initial: '-1.7em',
+      side: '-0.05em',
+      full: '0em'
+    },
+    rotateY: {
+      initial: 0,
+      side: -58,
+      full: 0
+    }
+  }
+}
+
 export default {
   name: 'Animation',
 
@@ -76,8 +83,6 @@ export default {
 
   data () {
     return {
-      showDebug: false,
-
       alpha: 180,
       beta: 0,
 
@@ -95,6 +100,8 @@ export default {
       sceneX: -90,
       sceneY: -0,
       sceneZ: 0,
+
+      mouseEnabled: false,
 
       vuetaminState: {}
     }
@@ -136,7 +143,10 @@ export default {
 
     displayStyle () {
       return {
-        borderWidth: `${this.bezelWidth}px`
+        top: `${this.bezelWidth}px`,
+        right: `${this.bezelWidth}px`,
+        left: `${this.bezelWidth}px`,
+        bottom: `${this.bezelWidth}px`
       }
     },
 
@@ -190,6 +200,7 @@ export default {
   },
 
   methods: {
+
     updateScreenSize () {
       this.gyro.setDistance(this.distance)
       this.gyro.setDistance(this.distance)
@@ -199,38 +210,100 @@ export default {
     animate () {
       const easing = 'easeInOutQuad'
 
-      let moveScreen = anime({
-        targets: this.$refs.scene,
-        translateZ: [
-          { value: '1.1em', duration: 0, delay: 0, elasticity: 0 },
-          { value: '-1.9em', duration: 6000, delay: 1000, elasticity: 2, easing: easing }
-        ],
-
-        rotateX: [
-          { value: -90, duration: 0, delay: 0, elasticity: 0 },
-          { value: -16, duration: 7000, delay: 0, elasticity: 50, easing: easing }
-        ],
-
-        translateX: [
-          { value: '0em', duration: 0, delay: 0, elasticity: 0 },
-          { value: '0.4em', duration: 5000, delay: 2000, elasticity: 50, easing: easing }
-        ],
-
-        translateY: [
-          { value: '-1.7em', duration: 0, delay: 0, elasticity: 0 },
-          { value: '0em', duration: 3000, delay: 0, elasticity: 100, easing: easing }
-        ],
-        rotateY: [
-          { value: 0, duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: -52, duration: 5000, delay: 2000, elasticity: 7, easing: easing }
-        ]
-      })
-
-      let moveLaser = anime({
+      anime({
         targets: this.$refs.laser,
         scaleY: [
           { value: 0, duration: 0, delay: 0, elasticity: 7, easing: easing },
           { value: 1, duration: 300, delay: 2400, elasticity: 7, easing: easing }
+        ]
+      })
+
+      return anime({
+        targets: this.$refs.scene,
+        translateZ: [
+          { value: frames.screen.translateZ.initial, duration: 0, delay: 0, elasticity: 0 },
+          { value: frames.screen.translateZ.side, duration: 6000, delay: 1000, elasticity: 2, easing: easing }
+        ],
+
+        rotateX: [
+          { value: frames.screen.rotateX.initial, duration: 0, delay: 0, elasticity: 0 },
+          { value: frames.screen.rotateX.side, duration: 7000, delay: 0, elasticity: 50, easing: easing }
+        ],
+
+        translateX: [
+          { value: frames.screen.translateX.initial, duration: 0, delay: 0, elasticity: 0 },
+          { value: frames.screen.translateX.side, duration: 5000, delay: 2000, elasticity: 50, easing: easing }
+        ],
+
+        translateY: [
+          { value: frames.screen.translateY.initial, duration: 0, delay: 0, elasticity: 0 },
+          { value: frames.screen.translateY.side, duration: 3000, delay: 0, elasticity: 100, easing: easing }
+        ],
+        rotateY: [
+          { value: frames.screen.rotateY.initial, duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: frames.screen.rotateY.side, duration: 5000, delay: 2000, elasticity: 7, easing: easing }
+        ]
+      })
+    },
+
+    animateFullscreen () {
+      window.cancelAnimationFrame(animationFrame)
+      this.mouseEnabled = false
+      this.$vuetamin.store.mutate('updateIsPressing', { isPressing: false })
+
+      const easing = 'easeInOutQuad'
+
+      const startTranslateZ = `${this.distance}px`
+      const startRotateX = -this.beta + 90
+      const startRotateZ = 180 - this.alpha
+
+      let movePhone = anime({
+        targets: this.$refs.phone,
+        translateZ: [
+          { value: startTranslateZ, duration: 0, delay: 0, elasticity: 0 },
+          { value: '1000px', duration: 3000, delay: 0, elasticity: 2, easing: easing }
+        ],
+
+        rotateX: [
+          { value: startRotateX, duration: 0, delay: 0, elasticity: 0 },
+          { value: 120, duration: 3000, delay: 0, elasticity: 50, easing: easing }
+        ],
+
+        rotateZ: [
+          { value: startRotateZ, duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: 0, duration: 3000, delay: 0, elasticity: 7, easing: easing }
+        ],
+
+        translateY: [
+          { value: '0em', duration: 0, delay: 0, elasticity: 0 },
+          { value: '2em', duration: 3000, delay: 0, elasticity: 2, easing: easing }
+        ]
+      })
+
+      return anime({
+        targets: this.$refs.scene,
+        translateZ: [
+          { value: frames.screen.translateZ.side, duration: 0, delay: 0, elasticity: 0 },
+          { value: frames.screen.translateZ.full, duration: 3000, delay: 1000, elasticity: 2, easing: easing }
+        ],
+
+        rotateX: [
+          { value: frames.screen.rotateX.side, duration: 0, delay: 0, elasticity: 0 },
+          { value: frames.screen.rotateX.full, duration: 2000, delay: 500, elasticity: 50, easing: easing }
+        ],
+
+        translateX: [
+          { value: frames.screen.translateX.side, duration: 0, delay: 0, elasticity: 0 },
+          { value: frames.screen.translateX.full, duration: 2000, delay: 500, elasticity: 50, easing: easing }
+        ],
+
+        translateY: [
+          { value: frames.screen.translateY.side, duration: 0, delay: 0, elasticity: 0 },
+          { value: frames.screen.translateY.full, duration: 2000, delay: 0, elasticity: 100, easing: easing }
+        ],
+        rotateY: [
+          { value: frames.screen.rotateY.side, duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: frames.screen.rotateY.full, duration: 2000, delay: 0, elasticity: 7, easing: easing }
         ]
       })
     },
@@ -241,16 +314,25 @@ export default {
     },
 
     onMouseMove (e) {
+      if (!this.mouseEnabled) {
+        return
+      }
       e.preventDefault()
       this.setOrientation(e.pageX, e.pageY)
     },
 
     onMouseDown (e) {
+      if (!this.mouseEnabled) {
+        return
+      }
       e.preventDefault()
       this.$vuetamin.store.mutate('updateIsPressing', { isPressing: true })
     },
 
     onMouseUp (e) {
+      if (!this.mouseEnabled) {
+        return
+      }
       e.preventDefault()
       this.$vuetamin.store.mutate('updateIsPressing', { isPressing: false })
     },
@@ -261,16 +343,22 @@ export default {
     },
 
     loop () {
-      if ((this.count / 3) > record.length) {
+      // Stop the animation loop when the end of the array is reached.
+      if ((this.count) > record.length) {
+        this.$vuetamin.store.mutate('updateBrushRadius', this.vuetaminState.brush.radius)
+        this.$vuetamin.store.mutate('updateLazyRadius', this.vuetaminState.lazyRadius)
+
+        this.mouseEnabled = true
+
         return
       }
 
       const type = record[this.count]
-      const x = record[this.count + 1] / 10
-      const y = record[this.count + 2] / 10
+      const alpha = record[this.count + 1] / 10
+      const beta = record[this.count + 2] / 10
 
-      this.alpha = x
-      this.beta = y
+      this.alpha = alpha
+      this.beta = beta
 
       if (type === 1 || type === 2) {
         const isPressing = type === 1
@@ -279,12 +367,7 @@ export default {
 
       this.count = this.count + 3
 
-      if ((this.count / 3) <= record.length) {
-        animationFrame = window.requestAnimationFrame(this.loop.bind(this))
-      } else {
-        this.$vuetamin.store.mutate('updateBrushRadius', this.vuetaminState.brush.radius)
-        this.$vuetamin.store.mutate('updateLazyRadius', this.vuetaminState.lazyRadius)
-      }
+      animationFrame = window.requestAnimationFrame(this.loop.bind(this))
     },
 
     pushRecord (type) {
@@ -303,22 +386,12 @@ export default {
     this.gyro.updateOffset({ alpha: this.alpha, beta: this.beta })
     this.updateScreenSize()
 
-    timeouts.push(window.setTimeout(() => {
-      this.animate()
-    }, 500))
+    this.vuetaminState = this.$vuetamin.store.getState()
 
-    timeouts.push(window.setTimeout(() => {
-      this.$emit('appeared')
-    }, 4500))
+    this.$vuetamin.store.mutate('updateLazyRadius', 40 * (this.windowWidth / 800))
+    this.$vuetamin.store.mutate('updateBrushRadius', 4 * (this.windowWidth / 800))
 
-    timeouts.push(window.setTimeout(() => {
-      this.vuetaminState = this.$vuetamin.store.getState()
-
-      this.$vuetamin.store.mutate('updateLazyRadius', 40 * (this.windowWidth / 800))
-      this.$vuetamin.store.mutate('updateBrushRadius', 4 * (this.windowWidth / 800))
-
-      this.loop()
-    }, 200))
+    this.loop()
 
     window.addEventListener('mousemove', this.onMouseMove)
     window.addEventListener('mousedown', this.onMouseDown)
@@ -364,7 +437,7 @@ $timing-function: cubic-bezier(0.72,-0.04, 0.32, 1.06);
 $wireframe-border: 2px solid rgb(175, 175, 175);
 
 $animation-base: 900;
-$perspective: 1.7;
+$perspective: 2;
 $animation-phone-distance: 1;
 
 $phone-translate-z: var(--animation-phone-distance);
@@ -420,6 +493,7 @@ $screen-border-width: 0.03;
   width: b(1);
   height: b(1);
   position: absolute;
+  z-index: 499;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -535,13 +609,12 @@ $screen-border-width: 0.03;
   top: 50%;
   left: 50%;
   // border: $wireframe-border;
-  border-radius: 7px;
+  box-shadow: inset 0 0px 0px 2px #999;
   transform: translate(-50%, -50%);
   transform-style: preserve-3d;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: inset 0 -2px 8px black;
 }
 
 .stand {
@@ -574,17 +647,11 @@ $screen-border-width: 0.03;
 .screen__display {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: b($screen-border-width) solid #fafafa;
+  box-shadow: 0 0px 0px 2px #999;
+  // border: b($screen-border-width) solid #fafafa;
   border-radius: 4px;
-  z-index: 9999999;
+  z-index: 400;
   overflow: hidden;
-  .drawing {
-    border: 3px solid rgba(black, 0.2);
-  }
 }
 
 .screen__side {

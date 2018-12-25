@@ -1,17 +1,21 @@
 <template>
   <div class="desktop relative">
     <div class="desktop-container relative overlay material">
-      <transition name="appear">
-        <pairing
-          v-if="!isPaired"
-          :pairing="pairing"
-          :is-blocked="isBlocked"
-          @pairingTimeout="handleTimeout"
-          @skipPairing="skipPairing"
-        />
-      </transition>
-      <transition name="appear">
-        <drawing v-if="isPaired"></drawing>
+      <pairing
+        v-if="!isDrawing"
+        :pairing="pairing"
+        :is-blocked="isBlocked"
+        @pairingTimeout="handleTimeout"
+        @skipPairing="skipPairing"
+      />
+      <transition
+        appear
+        v-on:appear="animationEnter"
+        v-on:enter="animationEnter"
+        v-on:leave="animationLeave"
+        mode="out-in"
+      >
+        <component :is="isDrawing ? 'Drawing' : 'Animation'" ref="dynamic" />
       </transition>
     </div>
   </div>
@@ -23,6 +27,8 @@ import debouncedResize from 'debounced-resize'
 import { BREAKPOINT_REMOTE } from '@/settings'
 
 import Pairing from '@/components/Desktop/Pairing.vue'
+import Animation from '@/components/Common/Animation.vue'
+import Drawing from '@/components/Desktop/Drawing.vue'
 import { getViewportSize, encodeEventMessage } from '@/tools/helpers'
 
 export default {
@@ -30,7 +36,8 @@ export default {
 
   components: {
     Pairing,
-    'drawing': () => import('@/components/Desktop/Drawing.vue')
+    Animation,
+    Drawing
   },
 
   data () {
@@ -45,6 +52,10 @@ export default {
   computed: {
     hasPairing () {
       return this.pairing && this.pairing.code && this.pairing.hash
+    },
+
+    isDrawing () {
+      return this.isPaired || this.skipped
     }
   },
 
@@ -58,6 +69,25 @@ export default {
   },
 
   methods: {
+    animationEnter (el, done) {
+      if (this.$refs.dynamic.$options.name === 'Animation') {
+        this.$refs.dynamic.animate().finished.then(() => {
+          done()
+        })
+      } else {
+        done()
+      }
+    },
+    animationLeave (el, done) {
+      console.log(el)
+      if (this.$refs.dynamic.$options.name === 'Animation') {
+        this.$refs.dynamic.animateFullscreen().finished.then(() => {
+          done()
+        })
+      } else {
+        done()
+      }
+    },
     getPairingCode () {
       if (this.hasPairing) {
         return
@@ -164,5 +194,6 @@ export default {
 <style lang="scss">
 .desktop {
   height: 100%;
+  overflow: hidden;
 }
 </style>
