@@ -1,5 +1,5 @@
 <template>
-  <canvas class="fixed overlay canvas canvas--interface" ref="canvas_interface"></canvas>
+  <canvas class="absolute overlay canvas canvas--interface" ref="canvas_interface"></canvas>
 </template>
 
 <script>

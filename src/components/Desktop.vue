@@ -8,15 +8,7 @@
         @pairingTimeout="handleTimeout"
         @skipPairing="skipPairing"
       />
-      <transition
-        appear
-        v-on:appear="animationEnter"
-        v-on:enter="animationEnter"
-        v-on:leave="animationLeave"
-        mode="out-in"
-      >
-        <component :is="isDrawing ? 'Drawing' : 'Animation'" ref="dynamic" />
-      </transition>
+      <animation-desktop :is-drawing="isDrawing" />
     </div>
   </div>
 </template>
@@ -27,8 +19,7 @@ import debouncedResize from 'debounced-resize'
 import { BREAKPOINT_REMOTE } from '@/settings'
 
 import Pairing from '@/components/Desktop/Pairing.vue'
-import Animation from '@/components/Common/Animation.vue'
-import Drawing from '@/components/Desktop/Drawing.vue'
+import AnimationDesktop from '@/components/Common/Animation/AnimationDesktop.vue'
 import { getViewportSize, encodeEventMessage } from '@/tools/helpers'
 
 export default {
@@ -36,8 +27,7 @@ export default {
 
   components: {
     Pairing,
-    Animation,
-    Drawing
+    AnimationDesktop
   },
 
   data () {
@@ -74,8 +64,6 @@ export default {
         this.$refs.dynamic.animate().finished.then(() => {
           done()
         })
-      } else {
-        done()
       }
     },
     animationLeave (el, done) {

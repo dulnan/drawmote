@@ -1,7 +1,7 @@
 <template>
   <div>
-    <canvas class="fixed overlay canvas canvas--main" ref="canvas_main"></canvas>
-    <canvas class="fixed overlay canvas canvas--temp" ref="canvas_temp"></canvas>
+    <canvas class="absolute overlay canvas canvas--main" ref="canvas_main"></canvas>
+    <canvas class="absolute overlay canvas canvas--temp" ref="canvas_temp"></canvas>
   </div>
 </template>
 

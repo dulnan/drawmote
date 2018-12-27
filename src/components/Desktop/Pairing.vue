@@ -33,7 +33,6 @@
 
 <script>
 import Logo from '@/components/Common/Logo.vue'
-import Animation from '@/components/Common/Animation.vue'
 import RestoreConnection from '@/components/Common/RestoreConnection.vue'
 
 const PAIRING_TIMEOUT = 120
@@ -45,7 +44,6 @@ export default {
 
   components: {
     Logo,
-    Animation,
     RestoreConnection
   },
 
