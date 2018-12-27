@@ -81,7 +81,7 @@ export default {
 
   data () {
     return {
-      seek: 100,
+      seek: 0,
       seekFull: 100,
       showDebug: false,
 
@@ -98,7 +98,7 @@ export default {
       gyro: new GyroPlane({
         width: 900,
         height: 506,
-        distance: 700
+        distance: 400
       }),
 
       count: 0,
@@ -111,6 +111,7 @@ export default {
 
       mouseEnabled: false,
       sceneVisible: true,
+      isDesktop: false,
 
       vuetaminState: {}
     }
@@ -298,12 +299,12 @@ export default {
 
     this.vuetaminState = this.$vuetamin.store.getState()
 
-    this.$vuetamin.store.mutate('updateLazyRadius', 40 * (this.windowWidth / 800))
-    this.$vuetamin.store.mutate('updateBrushRadius', 4 * (this.windowWidth / 800))
+    this.$vuetamin.store.mutate('updateLazyRadius', 40 * (this.distance / 800))
+    this.$vuetamin.store.mutate('updateBrushRadius', 4 * (this.distance / 800))
 
     this.$nextTick(() => {
       this.animateEnter()
-      this.animationEnter.seek(this.animationEnter.duration * (this.seek / 100))
+      // this.animationEnter.seek(this.animationEnter.duration * (this.seek / 100))
     })
   },
 
@@ -480,6 +481,10 @@ $screen-border-width: 0.03;
   border: 4px solid #ddd;
   transform: rotateX(90deg) translateZ(-2px) translateY(b(1.5));
   transform-origin: bottom;
+  display: none;
+  @include media('sm') {
+    display: block;
+  }
 }
 
 .phone__button {

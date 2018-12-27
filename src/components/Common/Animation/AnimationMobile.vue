@@ -5,13 +5,13 @@ import Animation from './Animation.vue'
 let frames = {
   screen: {
     translateZ: {
-      initial: '1.0em',
-      side: '-0.5em',
+      initial: '-1.5em',
+      side: '-1.8em',
       full: '0em'
     },
     rotateX: {
-      initial: 3,
-      side: -34,
+      initial: 0,
+      side: -74,
       full: 0
     },
     translateX: {
@@ -21,7 +21,7 @@ let frames = {
     },
     translateY: {
       initial: '-0em',
-      side: '-0.25em',
+      side: '-1.3em',
       full: '0em'
     },
     rotateY: {
@@ -53,7 +53,7 @@ export default {
     },
 
     distance () {
-      return 850
+      return 400
     }
   },
 
@@ -63,13 +63,8 @@ export default {
 
       this.clearTimeouts()
 
-      this.timeouts.push(window.setTimeout(() => {
-        this.screenAppeared = true
-        // this.loop()
-      }, 1000))
-
       this.animationEnter = anime.timeline({
-        autoplay: false
+        autoplay: true
       })
 
       this.animationEnter.add({
@@ -83,16 +78,17 @@ export default {
 
       this.animationEnter.add({
         targets: this.$refs.logo,
-        offset: 5000,
+        offset: 1000,
         translateZ: [
-          { value: '0.1em', duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: '0em', duration: 400, delay: 0, elasticity: 100, easing: easing }
+          { value: '0.85em', duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: '0.1em', duration: 2000, delay: 0, elasticity: 7, easing: easing },
+          { value: '0em', duration: 400, delay: 2000, elasticity: 100, easing: easing }
         ]
       })
 
       this.animationEnter.add({
         targets: this.$refs.phone,
-        offset: 1500,
+        offset: 1200,
 
         rotateX: [
           { value: 0, duration: 0, delay: 0, elasticity: 7, easing: easing },
@@ -103,40 +99,40 @@ export default {
           { value: 0, duration: 2000, delay: 1500, elasticity: 7, easing: easing }
         ],
         translateZ: [
-          { value: '1em', duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: 0, duration: 2000, delay: 1000, elasticity: 7, easing: easing }
+          { value: '2.5em', duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: 0, duration: 2700, delay: 0, elasticity: 7, easing: easing }
         ],
         translateY: [
-          { value: this.distance * 0.2, duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: this.distance, duration: 3000, delay: 2500, elasticity: 7, easing: easing }
+          { value: 0, duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: this.distance, duration: 3000, delay: 1500, elasticity: 7, easing: easing }
         ]
       })
 
       this.animationEnter.add({
         targets: this.$refs.scene,
-        offset: 1000,
+        offset: 2000,
         translateZ: [
           { value: frames.screen.translateZ.initial, duration: 0, delay: 0, elasticity: 0 },
-          { value: frames.screen.translateZ.side, duration: 5000, delay: 0, elasticity: 2, easing: easing }
+          { value: frames.screen.translateZ.side, duration: 4000, delay: 0, elasticity: 2, easing: easing }
         ],
 
         rotateX: [
           { value: frames.screen.rotateX.initial, duration: 0, delay: 0, elasticity: 0 },
-          { value: frames.screen.rotateX.side, duration: 4000, delay: 2000, elasticity: 0, easing: easing }
+          { value: frames.screen.rotateX.side, duration: 3000, delay: 1000, elasticity: 0, easing: easing }
         ],
 
         translateX: [
           { value: frames.screen.translateX.initial, duration: 0, delay: 0, elasticity: 0 },
-          { value: frames.screen.translateX.side, duration: 3000, delay: 2500, elasticity: 0, easing: easing }
+          { value: frames.screen.translateX.side, duration: 3000, delay: 1500, elasticity: 0, easing: easing }
         ],
 
         translateY: [
           { value: frames.screen.translateY.initial, duration: 0, delay: 0, elasticity: 0 },
-          { value: frames.screen.translateY.side, duration: 4000, delay: 2000, elasticity: 0, easing: easing }
+          { value: frames.screen.translateY.side, duration: 3000, delay: 1100, elasticity: 0, easing: easing }
         ],
         rotateY: [
           { value: frames.screen.rotateY.initial, duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: frames.screen.rotateY.side, duration: 4000, delay: 2000, elasticity: 7, easing: easing }
+          { value: frames.screen.rotateY.side, duration: 3000, delay: 2000, elasticity: 7, easing: easing }
         ]
       })
     },

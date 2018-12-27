@@ -38,6 +38,12 @@ export default {
 
   extends: Animation,
 
+  data () {
+    return {
+      isDesktop: true
+    }
+  },
+
   computed: {
     animationStyle () {
       return {
