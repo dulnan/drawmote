@@ -1,14 +1,15 @@
 <template>
   <div class="desktop relative">
     <div class="desktop-container relative overlay material">
-      <pairing
-        v-if="!isDrawing"
-        :pairing="pairing"
-        :is-blocked="isBlocked"
-        @pairingTimeout="handleTimeout"
-        @skipPairing="skipPairing"
-      />
-      <animation-desktop :is-drawing="isDrawing" />
+      <animation-desktop v-if="!isDrawing">
+        <pairing
+          :pairing="pairing"
+          :is-blocked="isBlocked"
+          @pairingTimeout="handleTimeout"
+          @skipPairing="skipPairing"
+        />
+      </animation-desktop>
+      <drawing v-if="isDrawing" />
     </div>
   </div>
 </template>
@@ -20,6 +21,7 @@ import { BREAKPOINT_REMOTE } from '@/settings'
 
 import Pairing from '@/components/Desktop/Pairing.vue'
 import AnimationDesktop from '@/components/Common/Animation/AnimationDesktop.vue'
+import Drawing from '@/components/Desktop/Drawing.vue'
 import { getViewportSize, encodeEventMessage } from '@/tools/helpers'
 
 export default {
@@ -27,6 +29,7 @@ export default {
 
   components: {
     Pairing,
+    Drawing,
     AnimationDesktop
   },
 

@@ -1,4 +1,9 @@
 <template>
+  <transition
+    v-on:enter="onEnter"
+    v-on:appear="onEnter"
+    v-on:leave="onLeave"
+  >
   <div class="animation">
     <div class="animation__slot" ref="slot">
       <slot></slot>
@@ -37,7 +42,7 @@
             <div class="screen__side" v-show="sceneVisible"></div>
             <div class="screen__side" v-show="sceneVisible"></div>
             <div class="screen__side" v-show="sceneVisible"></div>
-            <div class="screen__display" :style="displayStyle">
+            <div class="screen__display" :style="displayStyle" ref="display">
               <drawing />
             </div>
           </div>
@@ -58,6 +63,7 @@
       </div>
     </div>
   </div>
+  </transition>
 </template>
 
 <script>
@@ -237,6 +243,22 @@ export default {
   },
 
   methods: {
+    onEnter (el, done) {
+      this.animateEnter()
+
+      this.animationEnter.finished.then(() => {
+        done()
+      })
+    },
+
+    onLeave (el, done) {
+      this.animateLeave()
+
+      this.animationLeave.finished.then(() => {
+        done()
+      })
+    },
+
     cancelAnimations () {
       this.clearTimeouts()
     },
@@ -306,11 +328,6 @@ export default {
 
     this.$vuetamin.store.mutate('updateLazyRadius', 40 * (this.distance / 800))
     this.$vuetamin.store.mutate('updateBrushRadius', 4 * (this.distance / 800))
-
-    this.$nextTick(() => {
-      this.animateEnter()
-      // this.animationEnter.seek(this.animationEnter.duration * (this.seek / 100))
-    })
   },
 
   beforeDestroy () {
@@ -412,6 +429,21 @@ $screen-border-width: 0.03;
     transform-origin: top right;
     border-left-width: $border * 2;
   }
+}
+
+.animation {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  background: white;
+}
+
+.animation__slot {
+  position: relative;
+  z-index: 1000;
 }
 
 .animation__stage {

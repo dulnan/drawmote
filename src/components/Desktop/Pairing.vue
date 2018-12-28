@@ -1,34 +1,32 @@
 <template>
-  <transition name="appear" appear>
-    <div class="overlay pairing-desktop absolute flex" :style="transformOriginStyle">
-      <div class="pairing-container">
-        <h1 class="text-heavy">drawmote</h1>
-        <p class="h2 text-bold mrgb+ text-muted">{{ $t('subtitle') }}</p>
-        <p class="text-muted text-light mrgt0 h2 pairing-lead">{{ $t('desktop.lead') }}</p>
-        <div class="code code--desktop sm-mrgt md-mrgt+">
-          <div class="code__content">
-            <div v-for="(number, index) in pairingCodeNumbers" :key="index" class="code__item" :class="{ 'visible': hasCode }">
-              <div class="code-circle contains" :class="'code-circle--' + number">
-                <span>{{ number }}</span>
-              </div>
+  <div class="overlay pairing-desktop absolute flex" :style="transformOriginStyle">
+    <div class="pairing-container">
+      <h1 class="text-heavy">drawmote</h1>
+      <p class="h2 text-bold mrgb+ text-muted">{{ $t('subtitle') }}</p>
+      <p class="text-muted text-light mrgt0 h2 pairing-lead">{{ $t('desktop.lead') }}</p>
+      <div class="code code--desktop sm-mrgt md-mrgt+">
+        <div class="code__content">
+          <div v-for="(number, index) in pairingCodeNumbers" :key="index" class="code__item" :class="{ 'visible': hasCode }">
+            <div class="code-circle contains" :class="'code-circle--' + number">
+              <span>{{ number }}</span>
             </div>
           </div>
         </div>
-        <div class="pairing__actions mrgt">
-          <p class="text-muted text-light mrgv0 pairing-skip">
-            <button class="btn btn--bare" @click="togglePairing">{{ $t('desktop.nophone') }}</button>
-          </p>
-          <p class="text-muted text-light pairing-lead mrg0 text-brand" v-if="isBlocked">
-            {{ $t('desktop.tooManyAttempts') }}
-          </p>
-          <p class="code-timeout text-muted text-light mrg0" :class="{ 'visible': hasCode && countdown < 60 }">
-            <span>{{ $t('desktop.countdownPrefix') }} {{ $tc('desktop.countdownSeconds', countdown, { count: countdown }) }} {{ $t('desktop.countdownSuffix') }}</span>
-          </p>
-        </div>
       </div>
-      <restore-connection />
+      <div class="pairing__actions mrgt">
+        <p class="text-muted text-light mrgv0 pairing-skip">
+          <button class="btn btn--bare" @click="togglePairing">{{ $t('desktop.nophone') }}</button>
+        </p>
+        <p class="text-muted text-light pairing-lead mrg0 text-brand" v-if="isBlocked">
+          {{ $t('desktop.tooManyAttempts') }}
+        </p>
+        <p class="code-timeout text-muted text-light mrg0" :class="{ 'visible': hasCode && countdown < 60 }">
+          <span>{{ $t('desktop.countdownPrefix') }} {{ $tc('desktop.countdownSeconds', countdown, { count: countdown }) }} {{ $t('desktop.countdownSuffix') }}</span>
+        </p>
+      </div>
     </div>
-  </transition>
+    <restore-connection />
+  </div>
 </template>
 
 <script>
@@ -165,16 +163,6 @@ export default {
   @include media('lg') {
     padding: 4rem;
     padding-bottom: calc(4rem + #{$footer-height-xs});
-  }
-  &.appear-enter-active, &.appear-leave-active {
-    transition: 3s;
-  }
-  &.appear-enter-active {
-    transition-delay: 4s;
-  }
-  &.appear-enter, &.appear-leave-to {
-    transform: translateX(-60%);
-    opacity: 0;
   }
 }
 

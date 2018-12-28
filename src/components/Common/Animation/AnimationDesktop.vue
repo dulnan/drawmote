@@ -60,11 +60,24 @@ export default {
 
       this.timeouts.push(window.setTimeout(() => {
         this.screenAppeared = true
-        this.loop()
+        // this.loop()
       }, 7000))
 
       this.animationEnter = anime.timeline({
         autoplay: true
+      })
+
+      this.animationEnter.add({
+        targets: this.$refs.slot,
+        offset: 4300,
+        opacity: [
+          { value: 0, duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: 1, duration: 2000, delay: 0, elasticity: 7, easing: easing }
+        ],
+        translateX: [
+          { value: '-20vw', duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: '0vw', duration: 2000, delay: 0, elasticity: 7, easing: easing }
+        ]
       })
 
       this.animationEnter.add({
@@ -77,17 +90,26 @@ export default {
       })
 
       this.animationEnter.add({
+        targets: this.$refs.logoImage,
+        offset: 0,
+        opacity: [
+          { value: 0, duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: 1, duration: 800, delay: 0, elasticity: 100, easing: easing }
+        ]
+      })
+
+      this.animationEnter.add({
         targets: this.$refs.logo,
-        offset: 5000,
+        offset: 0,
         translateZ: [
-          { value: '0.1em', duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: '0em', duration: 400, delay: 0, elasticity: 100, easing: easing }
+          { value: '0.2em', duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: '0em', duration: 800, delay: 0, elasticity: 100, easing: easing }
         ]
       })
 
       this.animationEnter.add({
         targets: this.$refs.phone,
-        offset: 1500,
+        offset: 600,
 
         rotateX: [
           { value: 90, duration: 0, delay: 0, elasticity: 7, easing: easing },
@@ -109,7 +131,7 @@ export default {
 
       this.animationEnter.add({
         targets: this.$refs.scene,
-        offset: 1000,
+        offset: 400,
         translateZ: [
           { value: frames.screen.translateZ.initial, duration: 0, delay: 0, elasticity: 0 },
           { value: frames.screen.translateZ.side, duration: 5000, delay: 0, elasticity: 2, easing: easing }
@@ -134,6 +156,15 @@ export default {
           { value: frames.screen.rotateY.side, duration: 4000, delay: 2000, elasticity: 7, easing: easing }
         ]
       })
+
+      this.animationEnter.add({
+        targets: this.$refs.screen,
+        offset: 6000,
+        opacity: [
+          { value: 1, duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: 0, duration: 500, delay: 0, elasticity: 7, easing: easing }
+        ]
+      })
     },
 
     animateLeave () {
@@ -147,11 +178,24 @@ export default {
       const startRotateX = -this.beta + 90
       const startRotateZ = 180 - this.alpha
 
-      this.animationFullscreen = anime.timeline({
+      this.animationLeave = anime.timeline({
         autoplay: true
       })
 
-      this.animationFullscreen.add({
+      this.animationLeave.add({
+        targets: this.$refs.slot,
+        offset: 0,
+        opacity: [
+          { value: 1, duration: 0, delay: 0, elasticity: 0 },
+          { value: 0, duration: 1500, delay: 0, elasticity: 2, easing: easing }
+        ],
+        translateX: [
+          { value: '0vw', duration: 0, delay: 0, elasticity: 0 },
+          { value: '-20vw', duration: 1500, delay: 0, elasticity: 2, easing: easing }
+        ]
+      })
+
+      this.animationLeave.add({
         targets: this.$refs.laser,
         offset: 1000,
         scaleY: [
@@ -160,7 +204,7 @@ export default {
         ]
       })
 
-      this.animationFullscreen.add({
+      this.animationLeave.add({
         targets: this.$refs.phone,
         offset: 1000,
         translateZ: [
@@ -179,7 +223,7 @@ export default {
         ]
       })
 
-      this.animationFullscreen.add({
+      this.animationLeave.add({
         targets: this.$refs.scene,
         offset: 0,
         translateZ: [
@@ -206,10 +250,6 @@ export default {
           { value: frames.screen.rotateY.side, duration: 0, delay: 0, elasticity: 7, easing: easing },
           { value: frames.screen.rotateY.full, duration: 4000, delay: 0, elasticity: 7, easing: easing }
         ]
-      })
-
-      this.animationFullscreen.finished.then(() => {
-        this.sceneVisible = false
       })
     },
 
@@ -238,8 +278,11 @@ export default {
     }
   },
 
-  mounted () {
+  beforeMount () {
     this.updateSizes()
+  },
+
+  mounted () {
     debouncedResize((e) => {
       this.updateSizes()
     })
