@@ -229,7 +229,23 @@ export default {
       }
       e.preventDefault()
       this.$vuetamin.store.mutate('updateIsPressing', { isPressing: false })
+    },
+
+    loop () {
+      this.alpha = this.$mote.gyroscope.alpha
+      this.beta = this.$mote.gyroscope.beta
+      window.requestAnimationFrame(this.loop.bind(this))
     }
+  },
+
+  mounted () {
+    console.log(this.$mote)
+    this.$mote.updateScreenViewport({
+      width: this.windowWidth,
+      height: this.windowHeight
+    })
+
+    this.loop()
   }
 }
 </script>

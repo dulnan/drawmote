@@ -8,7 +8,7 @@
     <div class="animation__slot" ref="slot">
       <slot></slot>
     </div>
-    <div class="seek">
+    <div class="seek" v-if="showDebug">
       <input type="range" min="0" max="100" step="0.1" v-model="seek" />
     </div>
     <div class="animation__debug" v-if="showDebug">

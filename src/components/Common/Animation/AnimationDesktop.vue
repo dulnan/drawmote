@@ -65,7 +65,7 @@ export default {
 
       this.timeouts.push(window.setTimeout(() => {
         this.screenAppeared = true
-        // this.loop()
+        this.loop()
       }, 7000))
 
       this.animationEnter = anime.timeline({

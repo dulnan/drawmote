@@ -5,10 +5,6 @@
     </animation-mobile>
 
     <controlling v-if="isConnected" />
-
-    <button @click="isConnected = !isConnected" class="debug-button">
-      connect
-    </button>
   </div>
 </template>
 
@@ -79,11 +75,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.debug-button {
-  position: fixed;
-  bottom: 9rem;
-  z-index: 9999999;
-}
-</style>
