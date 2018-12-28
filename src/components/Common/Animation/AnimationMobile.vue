@@ -68,31 +68,52 @@ export default {
       })
 
       this.animationEnter.add({
+        targets: this.$refs.slot,
+        offset: 4400,
+        translateY: [
+          { value: '-30vw', duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: '0vw', duration: 1600, delay: 0, elasticity: 40, easing: 'easeOutQuart' }
+        ],
+        opacity: [
+          { value: 0, duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: 1, duration: 1600, delay: 0, elasticity: 7, easing: 'easeOutQuart' }
+        ]
+      })
+
+      this.animationEnter.add({
         targets: this.$refs.laser,
         offset: 5000,
         scaleY: [
           { value: 0, duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: 1, duration: 400, delay: 400, elasticity: 7, easing: easing }
+          { value: 1, duration: 400, delay: 0, elasticity: 7, easing: easing }
+        ]
+      })
+
+      this.animationEnter.add({
+        targets: this.$refs.logoImage,
+        offset: 0,
+        opacity: [
+          { value: 0, duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: 1, duration: 500, delay: 0, elasticity: 7, easing: easing }
         ]
       })
 
       this.animationEnter.add({
         targets: this.$refs.logo,
-        offset: 1000,
+        offset: 0,
         translateZ: [
-          { value: '0.85em', duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: '0.95em', duration: 0, delay: 0, elasticity: 7, easing: easing },
           { value: '0.1em', duration: 2000, delay: 0, elasticity: 7, easing: easing },
-          { value: '0em', duration: 400, delay: 2000, elasticity: 100, easing: easing }
+          { value: '0em', duration: 400, delay: 2600, elasticity: 100, easing: easing }
         ]
       })
 
       this.animationEnter.add({
         targets: this.$refs.phone,
         offset: 1200,
-
         rotateX: [
           { value: 0, duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: 90, duration: 2000, delay: 1500, elasticity: 7, easing: easing }
+          { value: 90, duration: 2000, delay: 1000, elasticity: 7, easing: easing }
         ],
         rotateZ: [
           { value: 0, duration: 0, delay: 0, elasticity: 7, easing: easing },
@@ -110,7 +131,7 @@ export default {
 
       this.animationEnter.add({
         targets: this.$refs.scene,
-        offset: 2000,
+        offset: 600,
         translateZ: [
           { value: frames.screen.translateZ.initial, duration: 0, delay: 0, elasticity: 0 },
           { value: frames.screen.translateZ.side, duration: 4000, delay: 0, elasticity: 2, easing: easing }
@@ -118,7 +139,7 @@ export default {
 
         rotateX: [
           { value: frames.screen.rotateX.initial, duration: 0, delay: 0, elasticity: 0 },
-          { value: frames.screen.rotateX.side, duration: 3000, delay: 1000, elasticity: 0, easing: easing }
+          { value: frames.screen.rotateX.side, duration: 3800, delay: 1000, elasticity: 0, easing: easing }
         ],
 
         translateX: [
@@ -132,7 +153,7 @@ export default {
         ],
         rotateY: [
           { value: frames.screen.rotateY.initial, duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: frames.screen.rotateY.side, duration: 3000, delay: 2000, elasticity: 7, easing: easing }
+          { value: frames.screen.rotateY.side, duration: 3000, delay: 0, elasticity: 7, easing: easing }
         ]
       })
     },

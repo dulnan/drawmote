@@ -1,7 +1,5 @@
 <template>
   <div class="mobile-pairing">
-    <animation-mobile />
-    <transition appear name="appear">
       <div class="mobile-pairing__content relative pdgh">
         <h1 class="text-heavy mrgt">drawmote</h1>
         <p class="h2 text-muted text-light text-hyphens mrgb+ mrgt">{{ $t('mobile.lead') }}</p>
@@ -35,14 +33,12 @@
 
         </div>
       </div>
-    </transition>
     <restore-connection />
   </div>
 </template>
 
 <script>
 import Logo from '@/components/Common/Logo.vue'
-import AnimationMobile from '@/components/Common/Animation/AnimationMobile.vue'
 import RestoreConnection from '@/components/Common/RestoreConnection.vue'
 
 export default {
@@ -50,7 +46,6 @@ export default {
 
   components: {
     Logo,
-    AnimationMobile,
     RestoreConnection
   },
 

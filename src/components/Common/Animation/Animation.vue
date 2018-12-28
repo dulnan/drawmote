@@ -1,5 +1,8 @@
 <template>
   <div class="animation">
+    <div class="animation__slot" ref="slot">
+      <slot></slot>
+    </div>
     <div class="seek">
       <input type="range" v-model="seek" />
     </div>
@@ -46,7 +49,9 @@
             <div class="phone__button"></div>
             <div class="phone__laser" ref="laser" :style="laserStyle"></div>
             <div class="phone__display">
-              <img src="drawmote-logo.png" ref="logo" />
+              <div class="phone__logo" ref="logo">
+                <img src="drawmote-logo.png" ref="logoImage" />
+              </div>
             </div>
           </div>
         </div>
@@ -418,6 +423,7 @@ $screen-border-width: 0.03;
   position: absolute;
   z-index: 499;
   transform-origin: top left;
+  overflow: hidden;
   @include media('sm') {
     left: 50%;
     top: 50%;
@@ -531,12 +537,17 @@ $screen-border-width: 0.03;
     background: #bbb;
     border-radius: 2rem;
   }
+}
+
+.phone__logo {
+  background: white;
+  width: 70%;
+  border: 1px solid $alt-color-light;
+  border-radius: 23%;
+  overflow: hidden;
   img {
-    max-width: 70%;
+    width: 100%;
     margin: 0 auto;
-    display: block;
-    border: 1px solid $alt-color-light;
-    border-radius: 23%;
     display: block;
     background: white;
   }

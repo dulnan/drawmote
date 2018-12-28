@@ -1,8 +1,8 @@
 <template>
   <div class="mobile h-100">
-    <transition name="appear">
+    <animation-mobile>
       <pairing v-if="!isConnected"></pairing>
-    </transition>
+    </animation-mobile>
     <transition name="appear">
       <controlling v-if="isConnected"></controlling>
     </transition>
@@ -11,6 +11,7 @@
 
 <script>
 import Pairing from '@/components/Mobile/Pairing.vue'
+import AnimationMobile from '@/components/Common/Animation/AnimationMobile.vue'
 import Controlling from '@/components/Mobile/Controlling.vue'
 
 import { decodeEventMessage } from '@/tools/helpers'
@@ -20,6 +21,7 @@ export default {
 
   components: {
     Pairing,
+    AnimationMobile,
     Controlling
   },
 
@@ -63,6 +65,8 @@ export default {
 
     this.$peersox.onString = this.handleMessage.bind(this)
     this.$mote._onDataChange = this.handleDataChange.bind(this)
+
+    console.log(this.$mote)
   },
 
   beforeDestroy () {
