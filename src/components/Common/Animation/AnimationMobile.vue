@@ -181,6 +181,10 @@ export default {
           { value: frames.screen.rotateY.side, duration: 3000, delay: 0, elasticity: 7, easing: easing }
         ]
       })
+
+      this.animationEnter.finished.then(() => {
+        this.screenAppeared = true
+      })
     },
 
     animateLeave () {
@@ -244,6 +248,8 @@ export default {
       width: this.windowWidth,
       height: this.windowHeight
     })
+
+    this.$mote.updateScreenDistance(this.distance)
 
     this.loop()
   }

@@ -4,7 +4,7 @@
     v-on:appear="onEnter"
     v-on:leave="onLeave"
   >
-  <div class="animation" ref="animation">
+  <div class="animation" ref="animation" @touchstart="handleTouchStart" @touchend="handleTouchEnd">
     <div class="animation__slot" ref="slot">
       <slot></slot>
     </div>
@@ -244,6 +244,14 @@ export default {
   },
 
   methods: {
+    handleTouchStart () {
+      this.$mote.updateClick(true)
+    },
+
+    handleTouchEnd () {
+      this.$mote.updateClick(false)
+    },
+
     onEnter (el, done) {
       this.animateEnter()
       // this.animationEnter.seek(this.animationEnter.duration * (this.seek / 100))
