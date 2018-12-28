@@ -62,7 +62,7 @@ export default {
 .footer__content {
   position: relative;
   z-index: $index-footer;
-  background: $alt-color-lighter;
+  background: white;
   border-top: 1px solid $alt-color-light;
 }
 

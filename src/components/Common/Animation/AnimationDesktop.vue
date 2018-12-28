@@ -12,7 +12,7 @@ let frames = {
     },
     rotateX: {
       initial: -90,
-      side: -30,
+      side: -24,
       full: 0
     },
     translateX: {
@@ -27,7 +27,12 @@ let frames = {
     },
     rotateY: {
       initial: 45,
-      side: -45,
+      side: -41,
+      full: 0
+    },
+    rotateZ: {
+      initial: 0,
+      side: -1.2,
       full: 0
     }
   }
@@ -75,7 +80,7 @@ export default {
           { value: 1, duration: 2000, delay: 0, elasticity: 7, easing: easing }
         ],
         translateX: [
-          { value: '-20vw', duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: '-17vw', duration: 0, delay: 0, elasticity: 7, easing: easing },
           { value: '0vw', duration: 2000, delay: 0, elasticity: 7, easing: easing }
         ]
       })
@@ -85,7 +90,26 @@ export default {
         offset: 5000,
         scaleY: [
           { value: 0, duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: 1, duration: 400, delay: 400, elasticity: 7, easing: easing }
+          { value: 1, duration: 400, delay: 0, elasticity: 7, easing: easing }
+        ]
+      })
+
+      this.animationEnter.add({
+        targets: this.$refs.circle,
+        offset: 5190,
+        translateX: [
+          { value: '-50%', duration: 0, delay: 0, elasticity: 7, easing: easing }
+        ],
+        translateY: [
+          { value: '-50%', duration: 0, delay: 0, elasticity: 7, easing: easing }
+        ],
+        opacity: [
+          { value: 1, duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: 0, duration: 1000, delay: 0, elasticity: 7, easing: easing }
+        ],
+        scale: [
+          { value: 0, duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: 2.5, duration: 1000, delay: 0, elasticity: 7, easing: easing }
         ]
       })
 
@@ -103,7 +127,8 @@ export default {
         offset: 0,
         translateZ: [
           { value: '0.2em', duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: '0em', duration: 800, delay: 0, elasticity: 100, easing: easing }
+          { value: '0.1em', duration: 4000, delay: 0, elasticity: 7, easing: easing },
+          { value: '0em', duration: 800, delay: 300, elasticity: 100, easing: easing }
         ]
       })
 
@@ -154,15 +179,10 @@ export default {
         rotateY: [
           { value: frames.screen.rotateY.initial, duration: 0, delay: 0, elasticity: 7, easing: easing },
           { value: frames.screen.rotateY.side, duration: 4000, delay: 2000, elasticity: 7, easing: easing }
-        ]
-      })
-
-      this.animationEnter.add({
-        targets: this.$refs.screen,
-        offset: 6000,
-        opacity: [
-          { value: 1, duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: 0, duration: 500, delay: 0, elasticity: 7, easing: easing }
+        ],
+        rotateZ: [
+          { value: frames.screen.rotateZ.initial, duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: frames.screen.rotateZ.side, duration: 4000, delay: 2000, elasticity: 7, easing: easing }
         ]
       })
     },
@@ -200,7 +220,7 @@ export default {
         offset: 1000,
         scaleY: [
           { value: 1, duration: 0, delay: 0, elasticity: 0 },
-          { value: 0, duration: 1000, delay: 0, elasticity: 2, easing: easing }
+          { value: 0, duration: 400, delay: 0, elasticity: 2, easing: easing }
         ]
       })
 
@@ -228,7 +248,7 @@ export default {
         offset: 0,
         translateZ: [
           { value: frames.screen.translateZ.side, duration: 0, delay: 0, elasticity: 0 },
-          { value: frames.screen.translateZ.full, duration: 3000, delay: 2000, elasticity: 2, easing: easing }
+          { value: frames.screen.translateZ.full, duration: 2000, delay: 1000, elasticity: 2, easing: easing }
         ],
 
         rotateX: [
@@ -238,7 +258,7 @@ export default {
 
         translateX: [
           { value: frames.screen.translateX.side, duration: 0, delay: 0, elasticity: 0 },
-          { value: frames.screen.translateX.full, duration: 3000, delay: 0, elasticity: 0, easing: easing }
+          { value: frames.screen.translateX.full, duration: 2000, delay: 0, elasticity: 0, easing: easing }
         ],
 
         translateY: [
@@ -248,7 +268,21 @@ export default {
 
         rotateY: [
           { value: frames.screen.rotateY.side, duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: frames.screen.rotateY.full, duration: 4000, delay: 0, elasticity: 7, easing: easing }
+          { value: frames.screen.rotateY.full, duration: 3000, delay: 0, elasticity: 7, easing: easing }
+        ],
+
+        rotateZ: [
+          { value: frames.screen.rotateZ.side, duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: frames.screen.rotateZ.full, duration: 3000, delay: 0, elasticity: 7, easing: easing }
+        ]
+      })
+
+      this.animationLeave.add({
+        targets: this.$el,
+        offset: 3000,
+        opacity: [
+          { value: 1, duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: 0, duration: 1000, delay: 0, elasticity: 7, easing: easing }
         ]
       })
     },

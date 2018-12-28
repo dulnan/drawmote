@@ -9,7 +9,7 @@
       <slot></slot>
     </div>
     <div class="seek">
-      <input type="range" v-model="seek" />
+      <input type="range" min="0" max="100" step="0.1" v-model="seek" />
     </div>
     <div class="animation__debug" v-if="showDebug">
       <label>Base</label>
@@ -42,7 +42,8 @@
             <div class="screen__side" v-show="sceneVisible"></div>
             <div class="screen__side" v-show="sceneVisible"></div>
             <div class="screen__side" v-show="sceneVisible"></div>
-            <div class="screen__display" :style="displayStyle" ref="display">
+            <div class="screen__display" :style="displayStyle">
+              <div class="screen__circle" ref="circle"></div>
               <drawing />
             </div>
           </div>
@@ -92,7 +93,7 @@ export default {
 
   data () {
     return {
-      seek: 0,
+      seek: 100,
       seekFull: 100,
       showDebug: false,
 
@@ -245,6 +246,7 @@ export default {
   methods: {
     onEnter (el, done) {
       this.animateEnter()
+      // this.animationEnter.seek(this.animationEnter.duration * (this.seek / 100))
 
       this.animationEnter.finished.then(() => {
         done()
@@ -503,21 +505,22 @@ $screen-border-width: 0.03;
   width: 3px;
   background: $color-red;
   box-shadow: 0 0 1px 2px $color-red;
-  opacity: 0.3;
+  opacity: 0.2;
   transform: translateZ(b(-0.005));
   transform-origin: bottom;
 }
 
 .floor {
-  width: b(2.8);
-  height: b(2);
+  width: b(2);
+  height: b(6);
   background: white;
   position: absolute;
   z-index: 0;
   bottom: 0;
-  left: b(-1);
-  border: 4px solid #ddd;
-  transform: rotateX(90deg) translateZ(-2px) translateY(b(1.5));
+  left: b(-0.5);
+  // border: 4px solid #ddd;
+  background: linear-gradient(90deg, #f4f4f4, #fcfcfc);
+  transform: rotateX(90deg) translateZ(-2px) translateY(b(1.25));
   transform-origin: bottom;
   display: none;
   @include media('sm') {
@@ -645,6 +648,18 @@ $screen-border-width: 0.03;
     // #a1a5ab,
     // #c2c5cb)
   }
+}
+
+.screen__circle {
+  width: b(0.1);
+  height: b(0.1);
+  border: 3px solid $color-red;
+  border-radius: 100%;
+  position: absolute;
+  z-index: 999;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .phone__brush {
