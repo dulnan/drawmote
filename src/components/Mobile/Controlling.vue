@@ -1,7 +1,9 @@
 <template>
-  <div class="controlling">
-    <touch-handler></touch-handler>
-  </div>
+  <transition name="appear">
+    <div class="controlling">
+      <touch-handler />
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -30,9 +32,6 @@ export default {
     }
   },
 
-  methods: {
-  },
-
   mounted () {
     const viewport = getViewportSize()
     this.brushCoordinates = {
@@ -42,3 +41,20 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.controlling {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  &.appear-enter-active, &.appear-leave-active {
+    transition: 2s;
+  }
+  &.appear-enter, &.appear-leave-to {
+    transform: translateY(50%);
+    opacity: 0;
+  }
+}
+</style>

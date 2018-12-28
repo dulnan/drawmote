@@ -1,11 +1,14 @@
 <template>
   <div class="mobile h-100">
-    <animation-mobile>
-      <pairing v-if="!isConnected"></pairing>
+    <animation-mobile v-if="!isConnected">
+      <pairing />
     </animation-mobile>
-    <transition name="appear">
-      <controlling v-if="isConnected"></controlling>
-    </transition>
+
+    <controlling v-if="isConnected" />
+
+    <button @click="isConnected = !isConnected" class="debug-button">
+      connect
+    </button>
   </div>
 </template>
 
@@ -65,8 +68,6 @@ export default {
 
     this.$peersox.onString = this.handleMessage.bind(this)
     this.$mote._onDataChange = this.handleDataChange.bind(this)
-
-    console.log(this.$mote)
   },
 
   beforeDestroy () {
@@ -78,3 +79,11 @@ export default {
   }
 }
 </script>
+
+<style>
+.debug-button {
+  position: fixed;
+  bottom: 9rem;
+  z-index: 9999999;
+}
+</style>

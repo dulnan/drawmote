@@ -94,12 +94,9 @@ export default {
 
 <style lang="scss">
 .mobile-controller {
-  position: fixed;
-  padding-top: 0;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
+  position: relative;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   padding-bottom: 53px;

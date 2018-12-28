@@ -4,7 +4,7 @@
     v-on:appear="onEnter"
     v-on:leave="onLeave"
   >
-  <div class="animation">
+  <div class="animation" ref="animation">
     <div class="animation__slot" ref="slot">
       <slot></slot>
     </div>
@@ -200,7 +200,7 @@ export default {
 
   watch: {
     seek (seek) {
-      this.animationEnter.seek(this.animationEnter.duration * (seek / 100))
+      this.animationLeave.seek(this.animationLeave.duration * (seek / 100))
     },
 
     seekFull (seek) {
@@ -518,13 +518,11 @@ $screen-border-width: 0.03;
   z-index: 0;
   bottom: 0;
   left: b(-0.5);
-  // border: 4px solid #ddd;
-  background: linear-gradient(90deg, #f4f4f4, #fcfcfc);
+  background: linear-gradient(180deg, #ddd, #fff);
   transform: rotateX(90deg) translateZ(-2px) translateY(b(1.25));
   transform-origin: bottom;
-  display: none;
   @include media('sm') {
-    display: block;
+    background: linear-gradient(90deg, #f4f4f4, #fcfcfc);
   }
 }
 
