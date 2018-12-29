@@ -2,6 +2,7 @@
   <div id="drawmote" class="relative">
     <mobile v-if="isMobile" />
     <desktop v-else />
+    <restore-connection />
     <the-footer :is-mobile="isMobile" />
     <connection-timeout :is-mobile="isMobile" />
   </div>
@@ -12,6 +13,7 @@ import { BREAKPOINT_REMOTE } from '@/settings'
 import Desktop from '@/components/Desktop.vue'
 import Mobile from '@/components/Mobile.vue'
 import TheFooter from '@/components/Common/Footer/Footer.vue'
+import RestoreConnection from '@/components/Common/RestoreConnection.vue'
 import ConnectionTimeout from '@/components/Common/ConnectionTimeout.vue'
 
 const IS_MOBILE = window.innerWidth < BREAKPOINT_REMOTE
@@ -23,6 +25,7 @@ export default {
     Desktop,
     Mobile,
     TheFooter,
+    RestoreConnection,
     ConnectionTimeout
   },
 

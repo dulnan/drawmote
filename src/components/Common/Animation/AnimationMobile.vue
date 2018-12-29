@@ -236,7 +236,7 @@ export default {
     },
 
     loop () {
-      this.alpha = this.$mote.gyroscope.alpha
+      this.alpha = this.$mote.gyroscope.alpha - 180
       this.beta = this.$mote.gyroscope.beta
       window.requestAnimationFrame(this.loop.bind(this))
     }
@@ -248,6 +248,8 @@ export default {
       width: this.windowWidth,
       height: this.windowHeight
     })
+
+    this.$mote.gyroplane.updateOffset({ alpha: this.alpha, beta: this.beta })
 
     this.$mote.updateScreenDistance(this.distance)
 

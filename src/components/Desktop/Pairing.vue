@@ -25,13 +25,11 @@
         </p>
       </div>
     </div>
-    <restore-connection />
   </div>
 </template>
 
 <script>
 import Logo from '@/components/Common/Logo.vue'
-import RestoreConnection from '@/components/Common/RestoreConnection.vue'
 
 const PAIRING_TIMEOUT = 120
 let interval = null
@@ -41,8 +39,7 @@ export default {
   name: 'Pairing',
 
   components: {
-    Logo,
-    RestoreConnection
+    Logo
   },
 
   data () {
