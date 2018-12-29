@@ -245,11 +245,17 @@ export default {
 
   methods: {
     handleTouchStart () {
-      this.$mote.updateClick(true)
+      this.$vuetamin.store.mutate('updateIsPressing', {
+        isPressing: true,
+        fromMouse: true
+      })
     },
 
     handleTouchEnd () {
-      this.$mote.updateClick(false)
+      this.$vuetamin.store.mutate('updateIsPressing', {
+        isPressing: false,
+        fromMouse: true
+      })
     },
 
     onEnter (el, done) {
@@ -526,11 +532,12 @@ $screen-border-width: 0.03;
   z-index: 0;
   bottom: 0;
   left: b(-0.5);
-  background: linear-gradient(180deg, #ddd, #fff);
+  // background: linear-gradient(180deg, #ddd, #fff);
+  background: #fafafa;
   transform: rotateX(90deg) translateZ(-2px) translateY(b(1.25));
   transform-origin: bottom;
   @include media('sm') {
-    background: linear-gradient(90deg, #f4f4f4, #fcfcfc);
+    // background: linear-gradient(90deg, #f4f4f4, #fcfcfc);
   }
 }
 
