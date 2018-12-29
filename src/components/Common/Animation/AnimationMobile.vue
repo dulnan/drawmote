@@ -211,30 +211,6 @@ export default {
       })
     },
 
-    onMouseMove (e) {
-      if (!this.mouseEnabled) {
-        return
-      }
-      // e.preventDefault()
-      this.setOrientation(e.pageX, e.pageY)
-    },
-
-    onMouseDown (e) {
-      if (!this.mouseEnabled) {
-        return
-      }
-      e.preventDefault()
-      this.$vuetamin.store.mutate('updateIsPressing', { isPressing: true })
-    },
-
-    onMouseUp (e) {
-      if (!this.mouseEnabled) {
-        return
-      }
-      e.preventDefault()
-      this.$vuetamin.store.mutate('updateIsPressing', { isPressing: false })
-    },
-
     loop () {
       this.alpha = this.$mote.gyroscope.alpha - 180
       this.beta = this.$mote.gyroscope.beta - 30
@@ -243,7 +219,6 @@ export default {
   },
 
   mounted () {
-    console.log(this.$mote)
     this.$mote.updateScreenViewport({
       width: this.windowWidth,
       height: this.windowHeight
