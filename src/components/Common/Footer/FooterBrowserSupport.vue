@@ -70,7 +70,7 @@ export default {
     width: 100%;
     text-align: left;
     transition: 0.4s;
-    background: $alt-color-lighter;
+    background: white;
     &.is-open {
       background: white;
     }

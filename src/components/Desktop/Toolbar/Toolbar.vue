@@ -81,9 +81,12 @@ export default {
       lastItemClick: '',
       wasPressingBefore: false,
       wheelDelta: 0,
-      canvasFilterSupported: false,
-      isConnected: false
+      canvasFilterSupported: false
     }
+  },
+
+  props: {
+    connected: Boolean
   },
 
   computed: {
@@ -116,7 +119,7 @@ export default {
               return false
             }
 
-            if (tool.id === 'distance' && !this.isConnected) {
+            if (tool.id === 'distance' && !this.connected) {
               return false
             }
 
@@ -186,7 +189,6 @@ export default {
 
   mounted () {
     this.calculatePointerAreas()
-    this.isConnected = this.$peersox.isConnected()
   },
 
   beforeDestroy () {

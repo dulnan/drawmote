@@ -9,7 +9,7 @@
           @skipPairing="skipPairing"
         />
       </animation-desktop>
-      <drawing v-if="isDrawing" />
+      <drawing v-if="isDrawing" :connected="!skipped" />
     </div>
   </div>
 </template>

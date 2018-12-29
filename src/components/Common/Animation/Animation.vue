@@ -44,7 +44,7 @@
             <div class="screen__side" v-show="sceneVisible"></div>
             <div class="screen__display" :style="displayStyle">
               <div class="screen__circle" ref="circle"></div>
-              <drawing />
+              <drawing :connected="true" />
             </div>
           </div>
           <div class="phone" :style="phoneStyle" ref="phone" v-if="sceneVisible">

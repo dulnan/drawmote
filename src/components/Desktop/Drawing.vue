@@ -1,6 +1,6 @@
 <template>
   <div class="drawing">
-    <toolbar ref="toolbar" />
+    <toolbar ref="toolbar" :connected="connected" />
     <div class="drawing-area" ref="canvasContainer" :style="drawingAreaStyle"></div>
     <canvas-drawing />
     <canvas-interface />
@@ -27,6 +27,10 @@ export default {
     Toolbar,
     CanvasDrawing,
     CanvasInterface
+  },
+
+  props: {
+    connected: Boolean
   },
 
   data () {
