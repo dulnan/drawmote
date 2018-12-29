@@ -237,7 +237,7 @@ export default {
 
     loop () {
       this.alpha = this.$mote.gyroscope.alpha - 180
-      this.beta = this.$mote.gyroscope.beta
+      this.beta = this.$mote.gyroscope.beta - 30
       window.requestAnimationFrame(this.loop.bind(this))
     }
   },
