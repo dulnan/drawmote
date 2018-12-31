@@ -1,8 +1,8 @@
 <template>
   <div class="mobile h-100">
-    <animation-mobile v-if="!isConnected">
+    <animation-wrapper v-if="!isConnected">
       <pairing />
-    </animation-mobile>
+    </animation-wrapper>
 
     <controlling v-if="isConnected" />
   </div>
@@ -10,7 +10,7 @@
 
 <script>
 import Pairing from '@/components/Mobile/Pairing.vue'
-import AnimationMobile from '@/components/Common/Animation/AnimationMobile.vue'
+import AnimationWrapper from '@/components/Common/Animation/AnimationWrapper.vue'
 import Controlling from '@/components/Mobile/Controlling.vue'
 
 import { decodeEventMessage } from '@/tools/helpers'
@@ -20,7 +20,7 @@ export default {
 
   components: {
     Pairing,
-    AnimationMobile,
+    AnimationWrapper,
     Controlling
   },
 

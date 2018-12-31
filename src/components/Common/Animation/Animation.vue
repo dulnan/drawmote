@@ -4,7 +4,13 @@
     v-on:appear="onEnter"
     v-on:leave="onLeave"
   >
-  <div class="animation" ref="animation" @touchstart="handleTouchStart" @touchend="handleTouchEnd">
+  <div
+    class="animation"
+    :class="{ 'is-desktop': isDesktop }"
+    ref="animation"
+    @touchstart="handleTouchStart"
+    @touchend="handleTouchEnd"
+  >
     <div class="animation__slot" ref="slot">
       <slot></slot>
     </div>
@@ -73,8 +79,6 @@ import { GyroPlane } from 'gyro-plane'
 import BackgroundAnimation from '@/components/Common/BackgroundAnimation.vue'
 import Drawing from '@/components/Desktop/Drawing.vue'
 
-const record = require('@/tools/record.json')
-
 let animationFrame = null
 
 let animeAnimations = []
@@ -88,7 +92,8 @@ export default {
   },
 
   props: {
-    isDrawing: Boolean
+    isDrawing: Boolean,
+    isDesktop: Boolean
   },
 
   data () {
@@ -123,7 +128,6 @@ export default {
 
       mouseEnabled: false,
       sceneVisible: true,
-      isDesktop: false,
 
       vuetaminState: {}
     }
@@ -301,34 +305,6 @@ export default {
       this.windowHeight = window.innerHeight
     },
 
-    loop () {
-      // Stop the animation loop when the end of the array is reached.
-      if ((this.count) > record.length) {
-        this.$vuetamin.store.mutate('updateBrushRadius', this.vuetaminState.brush.radius)
-        this.$vuetamin.store.mutate('updateLazyRadius', this.vuetaminState.lazyRadius)
-
-        this.mouseEnabled = true
-
-        return
-      }
-
-      const type = record[this.count]
-      const alpha = record[this.count + 1] / 10
-      const beta = record[this.count + 2] / 10
-
-      this.alpha = alpha
-      this.beta = beta
-
-      if (type === 1 || type === 2) {
-        const isPressing = type === 1
-        this.$vuetamin.store.mutate('updateIsPressing', { isPressing })
-      }
-
-      this.count = this.count + 3
-
-      animationFrame = window.requestAnimationFrame(this.loop.bind(this))
-    },
-
     pushRecord (type) {
       const alpha = Math.round(this.alpha * 10)
       const beta = Math.round(this.beta * 10)
@@ -460,6 +436,10 @@ $screen-border-width: 0.03;
 .animation__slot {
   position: relative;
   z-index: 1000;
+  padding-top: 70vw;
+  .is-desktop & {
+    padding-top: 0;
+  }
 }
 
 .animation__stage {
@@ -472,7 +452,7 @@ $screen-border-width: 0.03;
   z-index: 499;
   transform-origin: top left;
   overflow: hidden;
-  @include media('sm') {
+  .is-desktop & {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
@@ -484,7 +464,7 @@ $screen-border-width: 0.03;
 
 .animation__world {
   perspective: b($perspective-mobile);
-  @include media('sm') {
+  @include media('md') {
     perspective: b($perspective);
   }
   transform-style: preserve-3d;

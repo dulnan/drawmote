@@ -3,36 +3,64 @@ import anime from 'animejs'
 import Animation from './Animation.vue'
 import debouncedResize from 'debounced-resize'
 
+const record = require('@/tools/record.json')
+
+let animationFrame = null
+
 let frames = {
   screen: {
     translateZ: {
       initial: '1.4em',
-      side: '-1.3em',
+      side: {
+        sm: '-1.4em',
+        md: '-1.3em',
+        lg: '-1.3em'
+      },
       full: '0em'
     },
     rotateX: {
       initial: -90,
-      side: -24,
+      side: {
+        sm: -19,
+        md: -24,
+        lg: -24
+      },
       full: 0
     },
     translateX: {
       initial: '0em',
-      side: '0.45em',
+      side: {
+        sm: '0.55em',
+        md: '0.45em',
+        lg: '0.45em'
+      },
       full: '0em'
     },
     translateY: {
       initial: '-0em',
-      side: '-0.1em',
+      side: {
+        sm: '0em',
+        md: '-0.1em',
+        lg: '-0.1em'
+      },
       full: '0em'
     },
     rotateY: {
       initial: 45,
-      side: -41,
+      side: {
+        sm: -38,
+        md: -41,
+        lg: -41
+      },
       full: 0
     },
     rotateZ: {
       initial: 0,
-      side: -1.2,
+      side: {
+        sm: -1.9,
+        md: -1.2,
+        lg: -1.2
+      },
       full: 0
     }
   }
@@ -45,7 +73,7 @@ export default {
 
   data () {
     return {
-      isDesktop: true
+      viewport: 'sm'
     }
   },
 
@@ -159,30 +187,30 @@ export default {
         offset: 400,
         translateZ: [
           { value: frames.screen.translateZ.initial, duration: 0, delay: 0, elasticity: 0 },
-          { value: frames.screen.translateZ.side, duration: 5000, delay: 0, elasticity: 2, easing: easing }
+          { value: frames.screen.translateZ.side[this.viewport], duration: 5000, delay: 0, elasticity: 2, easing: easing }
         ],
 
         rotateX: [
           { value: frames.screen.rotateX.initial, duration: 0, delay: 0, elasticity: 0 },
-          { value: frames.screen.rotateX.side, duration: 4000, delay: 2000, elasticity: 0, easing: easing }
+          { value: frames.screen.rotateX.side[this.viewport], duration: 4000, delay: 2000, elasticity: 0, easing: easing }
         ],
 
         translateX: [
           { value: frames.screen.translateX.initial, duration: 0, delay: 0, elasticity: 0 },
-          { value: frames.screen.translateX.side, duration: 3000, delay: 2500, elasticity: 0, easing: easing }
+          { value: frames.screen.translateX.side[this.viewport], duration: 3000, delay: 2500, elasticity: 0, easing: easing }
         ],
 
         translateY: [
           { value: frames.screen.translateY.initial, duration: 0, delay: 0, elasticity: 0 },
-          { value: frames.screen.translateY.side, duration: 4000, delay: 2000, elasticity: 0, easing: easing }
+          { value: frames.screen.translateY.side[this.viewport], duration: 4000, delay: 2000, elasticity: 0, easing: easing }
         ],
         rotateY: [
           { value: frames.screen.rotateY.initial, duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: frames.screen.rotateY.side, duration: 4000, delay: 2000, elasticity: 7, easing: easing }
+          { value: frames.screen.rotateY.side[this.viewport], duration: 4000, delay: 2000, elasticity: 7, easing: easing }
         ],
         rotateZ: [
           { value: frames.screen.rotateZ.initial, duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: frames.screen.rotateZ.side, duration: 4000, delay: 2000, elasticity: 7, easing: easing }
+          { value: frames.screen.rotateZ.side[this.viewport], duration: 4000, delay: 2000, elasticity: 7, easing: easing }
         ]
       })
     },
@@ -247,32 +275,32 @@ export default {
         targets: this.$refs.scene,
         offset: 0,
         translateZ: [
-          { value: frames.screen.translateZ.side, duration: 0, delay: 0, elasticity: 0 },
+          { value: frames.screen.translateZ.side[this.viewport], duration: 0, delay: 0, elasticity: 0 },
           { value: frames.screen.translateZ.full, duration: 2000, delay: 1000, elasticity: 2, easing: easing }
         ],
 
         rotateX: [
-          { value: frames.screen.rotateX.side, duration: 0, delay: 0, elasticity: 0 },
+          { value: frames.screen.rotateX.side[this.viewport], duration: 0, delay: 0, elasticity: 0 },
           { value: frames.screen.rotateX.full, duration: 2000, delay: 1000, elasticity: 0, easing: easing }
         ],
 
         translateX: [
-          { value: frames.screen.translateX.side, duration: 0, delay: 0, elasticity: 0 },
+          { value: frames.screen.translateX.side[this.viewport], duration: 0, delay: 0, elasticity: 0 },
           { value: frames.screen.translateX.full, duration: 2000, delay: 0, elasticity: 0, easing: easing }
         ],
 
         translateY: [
-          { value: frames.screen.translateY.side, duration: 0, delay: 0, elasticity: 0 },
+          { value: frames.screen.translateY.side[this.viewport], duration: 0, delay: 0, elasticity: 0 },
           { value: frames.screen.translateY.full, duration: 2000, delay: 1000, elasticity: 0, easing: easing }
         ],
 
         rotateY: [
-          { value: frames.screen.rotateY.side, duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: frames.screen.rotateY.side[this.viewport], duration: 0, delay: 0, elasticity: 7, easing: easing },
           { value: frames.screen.rotateY.full, duration: 3000, delay: 0, elasticity: 7, easing: easing }
         ],
 
         rotateZ: [
-          { value: frames.screen.rotateZ.side, duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: frames.screen.rotateZ.side[this.viewport], duration: 0, delay: 0, elasticity: 7, easing: easing },
           { value: frames.screen.rotateZ.full, duration: 3000, delay: 0, elasticity: 7, easing: easing }
         ]
       })
@@ -309,6 +337,45 @@ export default {
       }
       e.preventDefault()
       this.$vuetamin.store.mutate('updateIsPressing', { isPressing: false })
+    },
+
+    loop () {
+      // Stop the animation loop when the end of the array is reached.
+      if ((this.count) > record.length) {
+        this.$vuetamin.store.mutate('updateBrushRadius', this.vuetaminState.brush.radius)
+        this.$vuetamin.store.mutate('updateLazyRadius', this.vuetaminState.lazyRadius)
+
+        this.mouseEnabled = true
+
+        return
+      }
+
+      const type = record[this.count]
+      const alpha = record[this.count + 1] / 10
+      const beta = record[this.count + 2] / 10
+
+      this.alpha = alpha
+      this.beta = beta
+
+      if (type === 1 || type === 2) {
+        const isPressing = type === 1
+        this.$vuetamin.store.mutate('updateIsPressing', { isPressing })
+      }
+
+      this.count = this.count + 3
+
+      animationFrame = window.requestAnimationFrame(this.loop.bind(this))
+    }
+
+  },
+
+  created () {
+    if (window.innerWidth > 1680) {
+      this.viewport = 'xl'
+    } else if (window.innerWidth > 1441) {
+      this.viewport = 'lg'
+    } else if (window.innerWidth > 1024) {
+      this.viewport = 'md'
     }
   },
 

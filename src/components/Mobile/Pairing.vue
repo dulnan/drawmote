@@ -112,7 +112,6 @@ export default {
   z-index: $index-mobile-pairing;
   margin-bottom: auto;
   padding-bottom: 2rem;
-  padding-top: 62vw;
   &.appear-enter-active, &.appear-leave-active {
     transition: 2.0s;
   }

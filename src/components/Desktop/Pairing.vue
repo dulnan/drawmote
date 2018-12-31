@@ -149,7 +149,7 @@ export default {
   align-items: flex-start;
   justify-content: flex-start;
   overflow: hidden;
-  padding: 1rem;
+  padding: 2rem;
   padding-bottom: calc(#{$footer-height-xs} + 2rem);
   position: relative;
   z-index: 800;
@@ -222,6 +222,10 @@ export default {
   opacity: 0;
   transition: 0.3s;
   transition-delay: 0.3s;
+  span {
+    display: inline-block;
+    vertical-align: middle;
+  }
   &.visible {
     opacity: 1;
   }
