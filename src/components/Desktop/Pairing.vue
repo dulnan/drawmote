@@ -153,6 +153,7 @@ export default {
   padding-bottom: calc(#{$footer-height-xs} + 2rem);
   position: relative;
   z-index: 800;
+  user-select: none;
   @include media('md') {
     padding: 3rem;
     padding-bottom: calc(#{$footer-height-xs} + 3rem);
@@ -165,6 +166,10 @@ export default {
 
 .pairing-container {
   position: relative;
+  margin: 0 auto;
+  .is-desktop & {
+    margin: 0;
+  }
 }
 
 .pairing__actions {

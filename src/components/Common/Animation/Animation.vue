@@ -6,7 +6,7 @@
   >
   <div
     class="animation"
-    :class="{ 'is-desktop': isDesktop }"
+    :class="{ 'is-desktop': isDesktop, 'is-rendered': isRendered }"
     ref="animation"
     @touchstart="handleTouchStart"
     @touchend="handleTouchEnd"
@@ -76,10 +76,7 @@
 <script>
 import { GyroPlane } from 'gyro-plane'
 
-import BackgroundAnimation from '@/components/Common/BackgroundAnimation.vue'
 import Drawing from '@/components/Desktop/Drawing.vue'
-
-let animationFrame = null
 
 let animeAnimations = []
 
@@ -87,7 +84,6 @@ export default {
   name: 'Animation',
 
   components: {
-    BackgroundAnimation,
     Drawing
   },
 
@@ -105,6 +101,7 @@ export default {
       timeouts: [],
 
       screenAppeared: false,
+      isRendered: false,
 
       alpha: 180,
       beta: 0,
@@ -127,9 +124,7 @@ export default {
       scale: 1,
 
       mouseEnabled: false,
-      sceneVisible: true,
-
-      vuetaminState: {}
+      sceneVisible: true
     }
   },
 
@@ -264,7 +259,6 @@ export default {
 
     onEnter (el, done) {
       this.animateEnter()
-      // this.animationEnter.seek(this.animationEnter.duration * (this.seek / 100))
 
       this.animationEnter.finished.then(() => {
         done()
@@ -295,9 +289,8 @@ export default {
     },
 
     setOrientation (x, y) {
-      const base = 800
-      this.alpha = (27) * -(x - (base / 2)) / (base / 2) + 180
-      this.beta = (27) * -(y - (base / 2)) / (base / 2)
+      this.alpha = (32) * -(x - (this.windowWidth / 2)) / (this.windowWidth / 2) + 180
+      this.beta = (27) * -(y - (this.windowHeight / 2)) / (this.windowHeight / 2)
     },
 
     updateSizes () {
@@ -315,17 +308,10 @@ export default {
   mounted () {
     this.gyro.updateOffset({ alpha: this.alpha, beta: this.beta })
     this.updateScreenSize()
-
-    this.vuetaminState = this.$vuetamin.store.getState()
-
-    this.$vuetamin.store.mutate('updateLazyRadius', 40 * (this.distance / 800))
-    this.$vuetamin.store.mutate('updateBrushRadius', 4 * (this.distance / 800))
   },
 
   beforeDestroy () {
     this.clearTimeouts()
-
-    window.cancelAnimationFrame(animationFrame)
   }
 }
 </script>
@@ -370,7 +356,7 @@ $wireframe-border-color: rgb(175, 175, 175);
 
 $animation-base: 900;
 $perspective-mobile: 2;
-$perspective: 1.25;
+$perspective: 1;
 $animation-phone-distance: 1;
 
 $phone-translate-z: var(--animation-phone-distance);
@@ -431,6 +417,10 @@ $screen-border-width: 0.03;
   height: 100%;
   z-index: 1000;
   background: white;
+  opacity: 0;
+  &.is-rendered {
+    opacity: 1;
+  }
 }
 
 .animation__slot {
@@ -464,7 +454,7 @@ $screen-border-width: 0.03;
 
 .animation__world {
   perspective: b($perspective-mobile);
-  @include media('md') {
+  .is-desktop & {
     perspective: b($perspective);
   }
   transform-style: preserve-3d;
@@ -506,18 +496,19 @@ $screen-border-width: 0.03;
 
 .floor {
   width: b(2);
-  height: b(6);
+  height: b(2);
   background: white;
   position: absolute;
   z-index: 0;
   bottom: 0;
-  left: b(-0.5);
+  left: b(-0.25);
   // background: linear-gradient(180deg, #ddd, #fff);
   background: #fafafa;
-  transform: rotateX(90deg) translateZ(-2px) translateY(b(1.25));
+  transform: rotateX(90deg) translateZ(-2px) translateY(b(1.5));
   transform-origin: bottom;
-  @include media('sm') {
-    // background: linear-gradient(90deg, #f4f4f4, #fcfcfc);
+  display: none;
+  .is-desktop & {
+    display: block;
   }
 }
 

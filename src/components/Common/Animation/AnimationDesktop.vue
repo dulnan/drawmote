@@ -3,10 +3,6 @@ import anime from 'animejs'
 import Animation from './Animation.vue'
 import debouncedResize from 'debounced-resize'
 
-const record = require('@/tools/record.json')
-
-let animationFrame = null
-
 let frames = {
   screen: {
     translateZ: {
@@ -93,7 +89,7 @@ export default {
 
       this.timeouts.push(window.setTimeout(() => {
         this.screenAppeared = true
-        this.loop()
+        this.mouseEnabled = true
       }, 7000))
 
       this.animationEnter = anime.timeline({
@@ -124,7 +120,7 @@ export default {
 
       this.animationEnter.add({
         targets: this.$refs.circle,
-        offset: 5190,
+        offset: 5000,
         translateX: [
           { value: '-50%', duration: 0, delay: 0, elasticity: 7, easing: easing }
         ],
@@ -133,11 +129,11 @@ export default {
         ],
         opacity: [
           { value: 1, duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: 0, duration: 1000, delay: 0, elasticity: 7, easing: easing }
+          { value: 0, duration: 900, delay: 0, elasticity: 7, easing: easing }
         ],
         scale: [
           { value: 0, duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: 2.5, duration: 1000, delay: 0, elasticity: 7, easing: easing }
+          { value: 3, duration: 1100, delay: 0, elasticity: 70, easing: easing }
         ]
       })
 
@@ -213,6 +209,8 @@ export default {
           { value: frames.screen.rotateZ.side[this.viewport], duration: 4000, delay: 2000, elasticity: 7, easing: easing }
         ]
       })
+
+      this.isRendered = true
     },
 
     animateLeave () {
@@ -327,7 +325,7 @@ export default {
       if (!this.mouseEnabled) {
         return
       }
-      e.preventDefault()
+      // e.preventDefault()
       this.$vuetamin.store.mutate('updateIsPressing', { isPressing: true })
     },
 
@@ -335,38 +333,9 @@ export default {
       if (!this.mouseEnabled) {
         return
       }
-      e.preventDefault()
+      // e.preventDefault()
       this.$vuetamin.store.mutate('updateIsPressing', { isPressing: false })
-    },
-
-    loop () {
-      // Stop the animation loop when the end of the array is reached.
-      if ((this.count) > record.length) {
-        this.$vuetamin.store.mutate('updateBrushRadius', this.vuetaminState.brush.radius)
-        this.$vuetamin.store.mutate('updateLazyRadius', this.vuetaminState.lazyRadius)
-
-        this.mouseEnabled = true
-
-        return
-      }
-
-      const type = record[this.count]
-      const alpha = record[this.count + 1] / 10
-      const beta = record[this.count + 2] / 10
-
-      this.alpha = alpha
-      this.beta = beta
-
-      if (type === 1 || type === 2) {
-        const isPressing = type === 1
-        this.$vuetamin.store.mutate('updateIsPressing', { isPressing })
-      }
-
-      this.count = this.count + 3
-
-      animationFrame = window.requestAnimationFrame(this.loop.bind(this))
     }
-
   },
 
   created () {

@@ -104,7 +104,8 @@ export default {
   text-align: center;
   color: $color-black;
   margin-bottom: $footer-height-xs;
-  min-height: calc(100vh - #{$footer-height-xs});
+  user-select: none;
+  // min-height: calc(100vh - #{$footer-height-xs});
   overflow: hidden;
 }
 

@@ -62,7 +62,7 @@ export default {
     },
 
     distance () {
-      return 400
+      return 1000
     }
   },
 
@@ -181,6 +181,8 @@ export default {
           { value: frames.screen.rotateY.side, duration: 3000, delay: 0, elasticity: 7, easing: easing }
         ]
       })
+
+      this.isRendered = true
 
       this.animationEnter.finished.then(() => {
         this.screenAppeared = true
