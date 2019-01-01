@@ -25,13 +25,15 @@ export default new Vuex.Store({
     },
 
     disconnect ({ commit }) {
-      commit('setSkipped', false)
       commit('setConnected', false)
     },
 
     skip ({ commit }) {
       commit('setSkipped', true)
-      commit('setConnected', false)
+    },
+
+    unskip ({ commit }) {
+      commit('setSkipped', false)
     }
   }
 })

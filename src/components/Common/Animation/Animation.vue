@@ -1,80 +1,81 @@
 <template>
   <transition
     v-on:enter="onEnter"
-    v-on:appear="onEnter"
+    v-on:appear="onAppear"
     v-on:leave="onLeave"
   >
-  <div
-    class="animation"
-    :class="{ 'is-desktop': isDesktop, 'is-rendered': isRendered }"
-    ref="animation"
-    @touchstart="handleTouchStart"
-    @touchend="handleTouchEnd"
-  >
-    <div class="animation__slot" ref="slot">
-      <slot></slot>
-    </div>
-    <div class="seek" v-if="showDebug">
-      <input type="range" min="0" max="100" step="0.1" v-model="seek" />
-    </div>
-    <div class="animation__debug" v-if="showDebug">
-      <label>Base</label>
-      <input type="range" min="400" max="2000" step="1" v-model.number="base">
-      <input type="number" v-model="base"/>
+    <div
+      class="animation"
+      :class="{ 'is-desktop': isDesktop, 'is-rendered': isRendered }"
+      ref="animation"
+      @touchstart="handleTouchStart"
+      @touchend="handleTouchEnd"
+    >
+      <div class="animation__slot" ref="slot">
+        <slot></slot>
+      </div>
+      <div class="seek" v-if="showDebug">
+        <input type="range" min="0" max="100" step="0.1" v-model="seek" />
+      </div>
+      <div class="animation__debug" v-if="showDebug">
+        <label>Base</label>
+        <input type="range" min="400" max="2000" step="1" v-model.number="base">
+        <input type="number" v-model="base"/>
 
-      <label>Alpha</label>
-      <input type="range" min="120" max="240" step="1" v-model.number="alpha">
-      <input type="number" v-model="alpha"/>
+        <label>Alpha</label>
+        <input type="range" min="120" max="240" step="1" v-model.number="alpha">
+        <input type="number" v-model="alpha"/>
 
-      <label>Beta</label>
-      <input type="range" min="-180" max="180" step="1" v-model.number="beta">
-      <input type="number" v-model="beta"/>
+        <label>Beta</label>
+        <input type="range" min="-180" max="180" step="1" v-model.number="beta">
+        <input type="number" v-model="beta"/>
 
-      <label>Scene X</label>
-      <input type="range" min="-180" max="180" step="1" v-model.number="sceneX">
-      <input type="number" v-model="sceneX"/>
+        <label>Scene X</label>
+        <input type="range" min="-180" max="180" step="1" v-model.number="sceneX">
+        <input type="number" v-model="sceneX"/>
 
-      <button @click="updateScreenSize">updateScreenSize</button>
-      <button @click="setOrientation(600, 400)">set orientation</button>
-    </div>
+        <button @click="updateScreenSize">updateScreenSize</button>
+        <button @click="setOrientation(600, 400)">set orientation</button>
+      </div>
 
-    <div class="animation__stage" :style="animationStyle" :class="{ 'is-pairing': !isDrawing }">
-      <div class="animation__world" ref="world">
-        <div class="animation__scene" ref="scene" :style="sceneStyle">
-          <div class="stand" v-show="sceneVisible"></div>
-          <div class="floor" v-show="sceneVisible"></div>
-          <div class="screen" :style="screenStyle">
-            <div class="screen__side" v-show="sceneVisible"></div>
-            <div class="screen__side" v-show="sceneVisible"></div>
-            <div class="screen__side" v-show="sceneVisible"></div>
-            <div class="screen__side" v-show="sceneVisible"></div>
-            <div class="screen__display" :style="displayStyle">
-              <div class="screen__circle" ref="circle"></div>
-              <drawing :connected="true" />
+      <div class="animation__stage" :style="animationStyle" :class="{ 'is-pairing': !isDrawing }">
+        <div class="animation__world" ref="world">
+          <div class="animation__scene" ref="scene" :style="sceneStyle">
+            <div class="stand" v-show="sceneVisible"></div>
+            <div class="floor" v-show="sceneVisible"></div>
+            <div class="screen" :style="screenStyle">
+              <div class="screen__side" v-show="sceneVisible"></div>
+              <div class="screen__side" v-show="sceneVisible"></div>
+              <div class="screen__side" v-show="sceneVisible"></div>
+              <div class="screen__side" v-show="sceneVisible"></div>
+              <div class="screen__display" :style="displayStyle">
+                <div class="screen__circle" ref="circle"></div>
+                <drawing :connected="true" />
+              </div>
             </div>
-          </div>
-          <div class="phone" :style="phoneStyle" ref="phone" v-if="sceneVisible">
-            <div class="phone__side"></div>
-            <div class="phone__side"></div>
-            <div class="phone__side"></div>
-            <div class="phone__side"></div>
-            <div class="phone__button"></div>
-            <div class="phone__laser" ref="laser" :style="laserStyle"></div>
-            <div class="phone__display">
-              <div class="phone__logo" ref="logo">
-                <img src="drawmote-logo.png" ref="logoImage" />
+            <div class="phone" :style="phoneStyle" ref="phone" v-if="sceneVisible">
+              <div class="phone__side"></div>
+              <div class="phone__side"></div>
+              <div class="phone__side"></div>
+              <div class="phone__side"></div>
+              <div class="phone__button"></div>
+              <div class="phone__laser" ref="laser" :style="laserStyle"></div>
+              <div class="phone__display">
+                <div class="phone__logo" ref="logo">
+                  <img src="drawmote-logo.png" ref="logoImage" />
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
   </transition>
 </template>
 
 <script>
 import { GyroPlane } from 'gyro-plane'
+import { mapState } from 'vuex'
 
 import Drawing from '@/components/Desktop/Drawing.vue'
 
@@ -100,7 +101,7 @@ export default {
 
       timeouts: [],
 
-      screenAppeared: false,
+      animationDone: false,
       isRendered: false,
 
       alpha: 180,
@@ -129,6 +130,8 @@ export default {
   },
 
   computed: {
+    ...mapState(['isConnected']),
+
     brush () {
       this.gyro.updateOrientation({ alpha: this.alpha, beta: this.beta })
 
@@ -178,7 +181,7 @@ export default {
     },
 
     phoneStyle () {
-      if (!this.screenAppeared) {
+      if (!this.animationDone) {
         return {}
       }
       return {
@@ -257,18 +260,38 @@ export default {
       })
     },
 
-    onEnter (el, done) {
+    onAppear (el, done) {
+      this.animationDone = false
+      this.mouseEnabled = false
       this.animateEnter()
 
       this.animationEnter.finished.then(() => {
+        this.animationDone = true
+        this.mouseEnabled = true
+        done()
+      })
+    },
+
+    onEnter (el, done) {
+      this.animationDone = false
+      this.mouseEnabled = false
+      this.animateLeave(true)
+
+      this.animationLeave.finished.then(() => {
+        this.animationDone = true
+        this.mouseEnabled = true
         done()
       })
     },
 
     onLeave (el, done) {
+      this.animationDone = false
+      this.mouseEnabled = false
       this.animateLeave()
 
       this.animationLeave.finished.then(() => {
+        this.animationDone = true
+        this.mouseEnabled = true
         done()
       })
     },
@@ -303,6 +326,10 @@ export default {
       const beta = Math.round(this.beta * 10)
       this.record.push(type, alpha, beta)
     }
+  },
+
+  beforeMount () {
+    this.isRendered = false
   },
 
   mounted () {
@@ -418,8 +445,8 @@ $screen-border-width: 0.03;
   z-index: 1000;
   background: white;
   opacity: 0;
-  &.is-rendered {
-    opacity: 1;
+  &:not(.is-rendered) {
+    opacity: 0 !important;
   }
 }
 

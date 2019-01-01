@@ -1,10 +1,12 @@
 <template>
-  <div class="drawing">
-    <toolbar ref="toolbar" :connected="connected" />
-    <div class="drawing-area" ref="canvasContainer" :style="drawingAreaStyle"></div>
-    <canvas-drawing />
-    <canvas-interface />
-  </div>
+  <transition name="appear">
+    <div class="drawing">
+      <toolbar ref="toolbar" :connected="connected" />
+      <div class="drawing-area" ref="canvasContainer" :style="drawingAreaStyle"></div>
+      <canvas-drawing />
+      <canvas-interface />
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -120,6 +122,12 @@ export default {
   width: 100%;
   height: 100%;
   background: white;
+  &.appear-enter-active, &.appear-leave-active {
+    transition: 1s;
+  }
+  &.appear-enter, &.appear-leave-to {
+    opacity: 0;
+  }
 }
 
 .drawing-area {

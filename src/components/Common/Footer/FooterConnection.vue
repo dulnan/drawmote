@@ -11,7 +11,7 @@
     <button
       class="btn btn--bare text-bold check pdg lg-pdg h-100 hover"
       v-if="isSkipped"
-      @click="$store.dispatch('disconnect')"
+      @click="$store.dispatch('unskip')"
     >
       Back to pairing
     </button>

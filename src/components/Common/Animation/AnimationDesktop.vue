@@ -166,13 +166,20 @@ export default {
 
       this.clearTimeouts()
 
-      this.timeouts.push(window.setTimeout(() => {
-        this.screenAppeared = true
-        this.mouseEnabled = true
-      }, 7000))
-
       this.animationEnter = anime.timeline({
-        autoplay: true
+        autoplay: true,
+        begin: () => {
+          this.isRendered = true
+        }
+      })
+
+      this.animationEnter.add({
+        targets: this.$el,
+        offset: 0,
+        opacity: [
+          { value: 0, duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: 1, duration: 200, delay: 0, elasticity: 7, easing: easing }
+        ]
       })
 
       this.animationEnter.add({
@@ -288,13 +295,10 @@ export default {
           { value: frames.screen.rotateZ.side[this.viewport], duration: 4000, delay: 2000, elasticity: 7, easing: easing }
         ]
       })
-
-      this.isRendered = true
     },
 
-    animateLeave () {
+    animateLeave (reverse) {
       this.cancelAnimations()
-      this.mouseEnabled = false
       this.$vuetamin.store.mutate('updateIsPressing', { isPressing: false })
 
       const easing = 'easeInOutQuad'
@@ -304,7 +308,28 @@ export default {
       const startRotateZ = 180 - this.alpha
 
       this.animationLeave = anime.timeline({
-        autoplay: true
+        autoplay: true,
+        direction: reverse ? 'reverse' : 'normal',
+        begin: () => {
+          this.isRendered = true
+        }
+      })
+
+      this.animationLeave.add({
+        targets: this.$el,
+        offset: 3000,
+        opacity: [
+          { value: 1, duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: 0, duration: 1000, delay: 0, elasticity: 7, easing: easing }
+        ]
+      })
+
+      this.animationLeave.add({
+        targets: this.$refs.circle,
+        offset: 0,
+        opacity: [
+          { value: 0, duration: 0, delay: 0, elasticity: 2, easing: easing }
+        ]
       })
 
       this.animationLeave.add({
@@ -382,14 +407,7 @@ export default {
         ]
       })
 
-      this.animationLeave.add({
-        targets: this.$el,
-        offset: 3000,
-        opacity: [
-          { value: 1, duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: 0, duration: 1000, delay: 0, elasticity: 7, easing: easing }
-        ]
-      })
+      // this.animationLeave.play()
     },
 
     onMouseMove (e) {
