@@ -444,7 +444,7 @@ $screen-border-width: 0.03;
   height: 100%;
   z-index: 1000;
   background: white;
-  opacity: 0;
+  opacity: 1;
   &:not(.is-rendered) {
     opacity: 0 !important;
   }

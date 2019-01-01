@@ -73,7 +73,10 @@ export default {
       this.clearTimeouts()
 
       this.animationEnter = anime.timeline({
-        autoplay: true
+        autoplay: true,
+        begin: () => {
+          this.isRendered = true
+        }
       })
 
       this.animationEnter.add({
@@ -181,12 +184,6 @@ export default {
           { value: frames.screen.rotateY.side, duration: 3000, delay: 0, elasticity: 7, easing: easing }
         ]
       })
-
-      this.isRendered = true
-
-      this.animationEnter.finished.then(() => {
-        this.screenAppeared = true
-      })
     },
 
     animateLeave () {
@@ -196,7 +193,10 @@ export default {
       this.$vuetamin.store.mutate('updateIsPressing', { isPressing: false })
 
       this.animationLeave = anime.timeline({
-        autoplay: true
+        autoplay: true,
+        begin: () => {
+          this.isRendered = true
+        }
       })
 
       this.animationLeave.add({
