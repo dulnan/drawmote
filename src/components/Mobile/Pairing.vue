@@ -1,52 +1,49 @@
 <template>
   <div class="mobile-pairing">
-      <div class="mobile-pairing__content relative pdgh">
-        <h1 class="text-heavy mrgt">drawmote</h1>
-        <p class="h2 text-muted text-light text-hyphens mrgb+ mrgt">{{ $t('mobile.lead') }}</p>
-        <div class="code code--mobile relative">
-          <div class="code__circles flex">
-            <div class="code__item" v-for="(char, index) in inputChars" :key="char + index">
-              <div
-                class="code-circle"
-                :class="[{ 'contains': char !== ' ', 'invalid': char.search(/[0-9]/g) }, 'code-circle--' + char]"
-              >
-                <span>{{ char }}</span>
-              </div>
+    <div class="mobile-pairing__content relative pdgh">
+      <h1 class="text-heavy mrgt">drawmote</h1>
+      <p class="h2 text-muted text-light text-hyphens mrgb+ mrgt">{{ $t('mobile.lead') }}</p>
+      <div class="code code--mobile relative">
+        <div class="code__circles flex">
+          <div class="code__item" v-for="(char, index) in inputChars" :key="char + index">
+            <div
+              class="code-circle"
+              :class="[{ 'contains': char !== ' ', 'invalid': char.search(/[0-9]/g) }, 'code-circle--' + char]"
+            >
+              <span>{{ char }}</span>
             </div>
           </div>
-
-          <form class="code__form absolute" @submit.prevent="onSubmit">
-            <input maxlength="6" v-model="inputValue" class="code__input absolute" type="tel" pattern="[0-9]*" novalidate ref="pairing_id">
-          </form>
-
-          <button
-            v-show="inputValue.length === 6"
-            @click.prevent="onSubmit"
-            class="btn btn--primary btn--block mrgt+"
-          >
-            <span>{{ $t('mobile.pairButton') }}</span>
-          </button>
-
-          <transition name="appear">
-            <div v-if="codeInvalid" class="code__error">{{ $t('mobile.codeInvalid') }}</div>
-          </transition>
-
         </div>
+
+        <form class="code__form absolute" @submit.prevent="onSubmit">
+          <input maxlength="6" v-model="inputValue" class="code__input absolute" type="tel" pattern="[0-9]*" novalidate ref="pairing_id">
+        </form>
+
+        <button
+          v-show="inputValue.length === 6"
+          @click.prevent="onSubmit"
+          class="btn btn--primary btn--block mrgt+"
+        >
+          <span>{{ $t('mobile.pairButton') }}</span>
+        </button>
+
+        <transition name="appear">
+          <div v-if="codeInvalid" class="code__error">{{ $t('mobile.codeInvalid') }}</div>
+        </transition>
+
       </div>
-    <restore-connection />
+    </div>
   </div>
 </template>
 
 <script>
 import Logo from '@/components/Common/Logo.vue'
-import RestoreConnection from '@/components/Common/RestoreConnection.vue'
 
 export default {
   name: 'Pairing',
 
   components: {
-    Logo,
-    RestoreConnection
+    Logo
   },
 
   data () {

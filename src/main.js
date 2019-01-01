@@ -11,7 +11,8 @@ import Track from './plugins/Track'
 import Settings from './plugins/Settings'
 import PeerSox from './plugins/PeerSox'
 
-import store from './store'
+import vuetaminStore from './store/vuetamin'
+import vuexStore from './store/vuex'
 import i18n from './i18n'
 
 import { getServerUrls } from '@/tools/helpers.js'
@@ -36,7 +37,7 @@ if (process.env.VUE_APP_SERVER_ENV !== 'local') {
 
 getGymote().then(({ default: Gymote }) => {
   const serverUrls = getServerUrls()
-  Vue.use(Vuetamin, { store })
+  Vue.use(Vuetamin, { store: vuetaminStore })
   Vue.use(Gymote)
   Vue.use(PeerSox, serverUrls)
   Vue.use(Track)
@@ -45,6 +46,7 @@ getGymote().then(({ default: Gymote }) => {
   Vue.config.productionTip = false
 
   new Vue({
+    store: vuexStore,
     i18n,
     render: h => h(App)
   }).$mount('#drawmote')

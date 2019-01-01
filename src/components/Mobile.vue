@@ -13,6 +13,7 @@ import Pairing from '@/components/Mobile/Pairing.vue'
 import AnimationWrapper from '@/components/Common/Animation/AnimationWrapper.vue'
 import Controlling from '@/components/Mobile/Controlling.vue'
 
+import { mapState } from 'vuex'
 import { decodeEventMessage } from '@/tools/helpers'
 
 export default {
@@ -24,20 +25,18 @@ export default {
     Controlling
   },
 
-  data () {
-    return {
-      isConnected: false
-    }
+  computed: {
+    ...mapState(['isConnected'])
   },
 
   methods: {
     handleConnected () {
-      this.isConnected = true
+      this.$store.dispatch('connect')
       this.$mote.start()
     },
 
     handleConnectionClosed () {
-      this.isConnected = false
+      this.$store.dispatch('disconnect')
       this.$mote.stop()
     },
 

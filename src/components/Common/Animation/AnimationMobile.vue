@@ -62,7 +62,7 @@ export default {
     },
 
     distance () {
-      return 1000
+      return 500
     }
   },
 

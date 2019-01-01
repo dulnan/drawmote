@@ -1,6 +1,6 @@
 <script>
 import { HARDNESS_MIN, HARDNESS_MAX } from '@/settings'
-import threads from '@/store/threads'
+import threads from '@/store/vuetamin/threads'
 
 import Slider from '@/components/Desktop/Toolbar/Slider/Slider.vue'
 

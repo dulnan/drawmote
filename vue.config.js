@@ -62,6 +62,12 @@ module.exports = {
           return args
         })
     }
+    if (process.env.NODE_ENV === 'development') {
+      config
+        .output
+        .filename('[name].[hash].js')
+        .end()
+    }
     const svgRule = config.module.rule('svg')
 
     svgRule.uses.clear()

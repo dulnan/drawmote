@@ -6,17 +6,16 @@
           :pairing="pairing"
           :is-blocked="isBlocked"
           @pairingTimeout="handleTimeout"
-          @skipPairing="skipPairing"
         />
       </animation-wrapper>
-      <drawing v-if="isDrawing" :connected="!skipped" />
+      <drawing v-if="isDrawing" />
     </div>
   </div>
 </template>
 
 <script>
 import debouncedResize from 'debounced-resize'
-
+import { mapState } from 'vuex'
 import { BREAKPOINT_REMOTE } from '@/settings'
 
 import Pairing from '@/components/Desktop/Pairing.vue'
@@ -36,27 +35,33 @@ export default {
   data () {
     return {
       pairing: {},
-      isPaired: false,
-      isBlocked: false,
-      skipped: false
+      isBlocked: false
     }
   },
 
   computed: {
+    ...mapState(['isConnected', 'isSkipped']),
+
     hasPairing () {
       return this.pairing && this.pairing.code && this.pairing.hash
     },
 
     isDrawing () {
-      return this.isPaired || this.skipped
+      return this.isConnected || this.isSkipped
     }
   },
 
   watch: {
-    isPaired (isPaired) {
-      if (!isPaired && !this.skipped) {
+    isConnected (isConnected) {
+      if (!isConnected && !this.isSkipped) {
         this.pairing = {}
         this.getPairingCode()
+      }
+    },
+
+    isSkipped (isSkipped) {
+      if (isSkipped && this.$peersox.isConnected()) {
+        this.$peersox.close()
       }
     }
   },
@@ -104,16 +109,6 @@ export default {
       })
     },
 
-    skipPairing () {
-      this.skipped = true
-      this.isPaired = true
-      this.pairing = {}
-
-      if (this.$peersox.isConnected()) {
-        this.$peersox.close()
-      }
-    },
-
     updateViewport () {
       const viewport = getViewportSize()
 
@@ -135,16 +130,14 @@ export default {
     },
 
     handleConnected ({ pairing }) {
-      this.isPaired = true
+      this.$store.dispatch('connect')
 
       this.updateViewport()
       this.$peersox.storePairing(pairing)
     },
 
     handleDisconnected () {
-      if (!this.skipped) {
-        this.isPaired = false
-      }
+      this.$store.dispatch('disconnect')
     },
 
     handleBinary (intArray) {

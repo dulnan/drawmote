@@ -15,7 +15,7 @@
       </div>
       <div class="pairing__actions mrgt">
         <p class="text-muted text-light mrgv0 pairing-skip">
-          <button class="btn btn--bare" @click="togglePairing">{{ $t('desktop.nophone') }}</button>
+          <button class="btn btn--bare" @click="skipPairing">{{ $t('desktop.nophone') }}</button>
         </p>
         <p class="text-muted text-light pairing-lead mrg0 text-brand" v-if="isBlocked">
           {{ $t('desktop.tooManyAttempts') }}
@@ -102,8 +102,8 @@ export default {
       this.center = center
     },
 
-    togglePairing () {
-      this.$emit('skipPairing')
+    skipPairing () {
+      this.$store.dispatch('skip')
       this.$track('Pairing', 'skip', 1)
     },
 

@@ -5,6 +5,7 @@
         <footer-browser-support :is-mobile="isMobile" />
         <footer-language />
         <footer-github />
+        <footer-connection />
         <footer-copyright />
       </ul>
     </div>
@@ -16,6 +17,7 @@ import debouncedResize from 'debounced-resize'
 
 import FooterBrowserSupport from '@/components/Common/Footer/FooterBrowserSupport.vue'
 import FooterCopyright from '@/components/Common/Footer/FooterCopyright.vue'
+import FooterConnection from '@/components/Common/Footer/FooterConnection.vue'
 import FooterGithub from '@/components/Common/Footer/FooterGithub.vue'
 import FooterLanguage from '@/components/Common/Footer/FooterLanguage.vue'
 
@@ -25,6 +27,7 @@ export default {
   components: {
     FooterBrowserSupport,
     FooterCopyright,
+    FooterConnection,
     FooterGithub,
     FooterLanguage
   },

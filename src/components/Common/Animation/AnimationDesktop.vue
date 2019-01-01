@@ -4,6 +4,85 @@ import Animation from './Animation.vue'
 import debouncedResize from 'debounced-resize'
 
 let frames = {
+  slot: {
+    opacity: {
+      initial: 0,
+      side: 1,
+      full: 0
+    },
+    translateX: {
+      initial: '-17vw',
+      side: '0vw',
+      full: 0
+    }
+  },
+  laser: {
+    scaleY: {
+      initial: 0,
+      side: 1,
+      full: null
+    }
+  },
+  circle: {
+    translateX: {
+      initial: '-50%',
+      side: '-50%',
+      full: '-50%'
+    },
+    translateY: {
+      initial: '-50%',
+      side: '-50%',
+      full: '-50%'
+    },
+    opacity: {
+      initial: 1,
+      side: 0,
+      full: 0
+    },
+    scale: {
+      initial: 0,
+      side: 3,
+      full: 3
+    }
+  },
+  logoImage: {
+    opacity: {
+      initial: 0,
+      side: 1,
+      full: 1
+    }
+  },
+  logo: {
+    translateZ: {
+      initial: ['0.2em', '0.1em'],
+      side: '0em',
+      full: ''
+    }
+  },
+
+  phone: {
+    rotateX: {
+      initial: 90,
+      side: 90,
+      full: null
+    },
+    rotateZ: {
+      initial: 0,
+      side: 0,
+      full: null
+    },
+    translateZ: {
+      initial: '-0.499em',
+      side: '0em',
+      full: null
+    },
+    translateY: {
+      initial: distance => distance * 0.105,
+      side: distance => distance,
+      full: distance => distance
+    }
+  },
+
   screen: {
     translateZ: {
       initial: '1.4em',
@@ -100,12 +179,12 @@ export default {
         targets: this.$refs.slot,
         offset: 4300,
         opacity: [
-          { value: 0, duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: 1, duration: 2000, delay: 0, elasticity: 7, easing: easing }
+          { value: frames.slot.opacity.initial, duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: frames.slot.opacity.side, duration: 2000, delay: 0, elasticity: 7, easing: easing }
         ],
         translateX: [
-          { value: '-17vw', duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: '0vw', duration: 2000, delay: 0, elasticity: 7, easing: easing }
+          { value: frames.slot.translateX.initial, duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: frames.slot.translateX.side, duration: 2000, delay: 0, elasticity: 7, easing: easing }
         ]
       })
 
@@ -113,8 +192,8 @@ export default {
         targets: this.$refs.laser,
         offset: 5000,
         scaleY: [
-          { value: 0, duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: 1, duration: 400, delay: 0, elasticity: 7, easing: easing }
+          { value: frames.laser.scaleY.initial, duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: frames.laser.scaleY.side, duration: 400, delay: 0, elasticity: 7, easing: easing }
         ]
       })
 
@@ -122,18 +201,18 @@ export default {
         targets: this.$refs.circle,
         offset: 5000,
         translateX: [
-          { value: '-50%', duration: 0, delay: 0, elasticity: 7, easing: easing }
+          { value: frames.circle.translateX.initial, duration: 0, delay: 0, elasticity: 7, easing: easing }
         ],
         translateY: [
-          { value: '-50%', duration: 0, delay: 0, elasticity: 7, easing: easing }
+          { value: frames.circle.translateY.initial, duration: 0, delay: 0, elasticity: 7, easing: easing }
         ],
         opacity: [
-          { value: 1, duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: 0, duration: 900, delay: 0, elasticity: 7, easing: easing }
+          { value: frames.circle.opacity.initial, duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: frames.circle.opacity.side, duration: 900, delay: 0, elasticity: 7, easing: easing }
         ],
         scale: [
-          { value: 0, duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: 3, duration: 1100, delay: 0, elasticity: 70, easing: easing }
+          { value: frames.circle.scale.initial, duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: frames.circle.scale.side, duration: 1100, delay: 0, elasticity: 70, easing: easing }
         ]
       })
 
@@ -141,8 +220,8 @@ export default {
         targets: this.$refs.logoImage,
         offset: 0,
         opacity: [
-          { value: 0, duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: 1, duration: 800, delay: 0, elasticity: 100, easing: easing }
+          { value: frames.logoImage.opacity.initial, duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: frames.logoImage.opacity.side, duration: 800, delay: 0, elasticity: 100, easing: easing }
         ]
       })
 
@@ -150,9 +229,9 @@ export default {
         targets: this.$refs.logo,
         offset: 0,
         translateZ: [
-          { value: '0.2em', duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: '0.1em', duration: 4000, delay: 0, elasticity: 7, easing: easing },
-          { value: '0em', duration: 800, delay: 300, elasticity: 100, easing: easing }
+          { value: frames.logo.translateZ.initial[0], duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: frames.logo.translateZ.initial[1], duration: 4000, delay: 0, elasticity: 7, easing: easing },
+          { value: frames.logo.translateZ.side, duration: 800, delay: 300, elasticity: 100, easing: easing }
         ]
       })
 
@@ -161,20 +240,20 @@ export default {
         offset: 600,
 
         rotateX: [
-          { value: 90, duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: 90, duration: 2000, delay: 1500, elasticity: 7, easing: easing }
+          { value: frames.phone.rotateX.initial, duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: frames.phone.rotateX.side, duration: 2000, delay: 1500, elasticity: 7, easing: easing }
         ],
         rotateZ: [
-          { value: 0, duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: 0, duration: 2000, delay: 1500, elasticity: 7, easing: easing }
+          { value: frames.phone.rotateZ.initial, duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: frames.phone.rotateZ.side, duration: 2000, delay: 1500, elasticity: 7, easing: easing }
         ],
         translateZ: [
-          { value: '-0.499em', duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: 0, duration: 2000, delay: 1000, elasticity: 7, easing: easing }
+          { value: frames.phone.translateZ.initial, duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: frames.phone.translateZ.side, duration: 2000, delay: 1000, elasticity: 7, easing: easing }
         ],
         translateY: [
-          { value: this.distance * 0.105, duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: this.distance, duration: 3000, delay: 2500, elasticity: 7, easing: easing }
+          { value: frames.phone.translateY.initial(this.distance), duration: 0, delay: 0, elasticity: 7, easing: easing },
+          { value: frames.phone.translateY.side(this.distance), duration: 3000, delay: 2500, elasticity: 7, easing: easing }
         ]
       })
 

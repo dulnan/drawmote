@@ -12,7 +12,7 @@ import { EventBus } from '@/events'
 
 import Canvas from '@/classes/Canvas'
 import { isSamePoint } from '@/tools/helpers.js'
-import threads from '@/store/threads'
+import threads from '@/store/vuetamin/threads'
 
 export default {
   name: 'CanvasDrawing',

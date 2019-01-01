@@ -38,6 +38,7 @@
 
 <script>
 import IconRestore from '@/assets/icons/icon-restore.svg'
+import { mapState } from 'vuex'
 
 /**
  * Provides a way to restore a previously made connection.
@@ -55,13 +56,14 @@ export default {
       pairing: {},
       isRestoring: false,
       isRestored: false,
-      isConnected: false,
       connectionTimeout: false,
       windowTimeout: null
     }
   },
 
   computed: {
+    ...mapState(['isConnected']),
+
     isVisible () {
       return this.connectionRestorable && !this.isConnected
     }
@@ -102,7 +104,6 @@ export default {
     },
 
     handleConnected () {
-      this.isConnected = true
       this.isRestored = true
       this.connectionRestorable = false
       this.connectionTimeout = false

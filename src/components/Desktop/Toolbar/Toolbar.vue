@@ -40,7 +40,6 @@
 import ButtonClear from '@/components/Desktop/Toolbar/Button/ButtonClear.vue'
 import ButtonUndo from '@/components/Desktop/Toolbar/Button/ButtonUndo.vue'
 import ButtonRedo from '@/components/Desktop/Toolbar/Button/ButtonRedo.vue'
-
 import ButtonColor from '@/components/Desktop/Toolbar/Button/ButtonColor.vue'
 
 import SliderBrushRadius from '@/components/Desktop/Toolbar/Slider/SliderBrushRadius.vue'
@@ -50,7 +49,9 @@ import SliderLazyRadius from '@/components/Desktop/Toolbar/Slider/SliderLazyRadi
 import SliderDistance from '@/components/Desktop/Toolbar/Slider/SliderDistance.vue'
 
 import { COLORS, TOOLBAR_TOOLS, TOOLBAR_SLIDERS } from '@/settings'
-import threads from '@/store/threads'
+import threads from '@/store/vuetamin/threads'
+
+import { mapState } from 'vuex'
 
 import Color from '@/classes/Color'
 
@@ -85,11 +86,9 @@ export default {
     }
   },
 
-  props: {
-    connected: Boolean
-  },
-
   computed: {
+    ...mapState(['isSkipped']),
+
     toolGroups () {
       return [
         {
@@ -119,7 +118,7 @@ export default {
               return false
             }
 
-            if (tool.id === 'distance' && !this.connected) {
+            if (tool.id === 'distance' && this.isSkipped) {
               return false
             }
 
