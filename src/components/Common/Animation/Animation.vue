@@ -50,7 +50,7 @@
               <div class="screen__side" v-show="sceneVisible"></div>
               <div class="screen__display" :style="displayStyle">
                 <div class="screen__circle" ref="circle"></div>
-                <drawing :connected="true" />
+                <drawing :show-toolbar="showToolbar" />
               </div>
             </div>
             <div class="phone" :style="phoneStyle" ref="phone" v-if="sceneVisible">
@@ -125,7 +125,9 @@ export default {
       scale: 1,
 
       mouseEnabled: false,
-      sceneVisible: true
+      sceneVisible: true,
+
+      showToolbar: true
     }
   },
 
@@ -168,8 +170,8 @@ export default {
 
     laserStyle () {
       return {
-        height: `${this.distance * 1.01}px`,
-        top: `-${this.distance * 1.01}px`
+        height: `${this.distance}px`,
+        top: `-${this.distance}px`
       }
     },
 
@@ -187,8 +189,8 @@ export default {
       return {
         transform: `
           translateZ(${this.distance}px)
-          rotateX(${-this.beta + 90}deg)
-          rotateZ(${180 - this.alpha}deg)
+          rotateX(${Math.round((-this.beta + 90) * 10) / 10}deg)
+          rotateZ(${Math.round((180 - this.alpha) * 10) / 10}deg)
         `
       }
     },
@@ -497,6 +499,7 @@ $screen-border-width: 0.03;
   transform: translateZ(1.1em) rotateX(-90deg) translateY(-1.7em);
   transform: translateZ(0em) rotateY(-0deg);
   transform-style: preserve-3d;
+  will-change: transform;
 }
 
 .phone {
@@ -507,16 +510,19 @@ $screen-border-width: 0.03;
   border-width: 1px;
   transform-style: preserve-3d;
   position: relative;
+  will-change: transform;
 }
 
 .phone__laser {
   position: absolute;
-  top: b(-1.15);
+  top: b(-2.15);
   left: calc(50% - 1px);
   width: 3px;
+  z-index: 999999;
+  backface-visibility: hidden;
+  will-change: transform;
   background: $color-red;
-  box-shadow: 0 0 1px 2px $color-red;
-  opacity: 0.2;
+  background: linear-gradient(rgba($color-red, 0), $color-red);
   transform: translateZ(b(-0.005));
   transform-origin: bottom;
 }
@@ -667,7 +673,7 @@ $screen-border-width: 0.03;
   border: 3px solid $color-red;
   border-radius: 100%;
   position: absolute;
-  z-index: 999;
+  z-index: $index-drawing + 1;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);

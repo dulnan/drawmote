@@ -1,6 +1,6 @@
 <template>
   <div class="drawing">
-    <toolbar ref="toolbar" :connected="connected" />
+    <toolbar ref="toolbar" v-if="showToolbar" />
     <div class="drawing-area" ref="canvasContainer" :style="drawingAreaStyle"></div>
     <canvas-drawing />
     <canvas-interface />
@@ -30,7 +30,10 @@ export default {
   },
 
   props: {
-    connected: Boolean
+    showToolbar: {
+      type: Boolean,
+      default: true
+    }
   },
 
   data () {

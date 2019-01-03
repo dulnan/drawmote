@@ -6,12 +6,12 @@ let frames = {
   screen: {
     translateZ: {
       initial: '-1.5em',
-      side: '-2.5em',
+      side: '-0.9em',
       full: '0.2em'
     },
     rotateX: {
       initial: 0,
-      side: -79,
+      side: -54,
       full: -90
     },
     translateX: {
@@ -21,7 +21,7 @@ let frames = {
     },
     translateY: {
       initial: '-0em',
-      side: '-1.9em',
+      side: '-0.4em',
       full: '-1.7em'
     },
     rotateY: {
@@ -48,7 +48,8 @@ export default {
 
   data () {
     return {
-      scale: 0.3
+      scale: 0.3,
+      showToolbar: false
     }
   },
 
@@ -58,6 +59,13 @@ export default {
       return {
         fontSize: this.base + 'px',
         transform: `scale(${scale})`
+      }
+    },
+
+    laserStyle () {
+      return {
+        height: `${this.distance * 0.8}px`,
+        top: `-${this.distance * 0.8}px`
       }
     },
 
@@ -214,8 +222,8 @@ export default {
     },
 
     loop () {
-      this.alpha = this.$mote.gyroscope.alpha - 180
-      this.beta = this.$mote.gyroscope.beta - 30
+      this.alpha = Math.round((this.$mote.gyroscope.alpha - 180) * 10) / 10
+      this.beta = Math.round((this.$mote.gyroscope.beta - 30) * 10) / 10
       window.requestAnimationFrame(this.loop.bind(this))
     }
   },
