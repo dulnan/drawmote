@@ -38,7 +38,7 @@
         <button @click="setOrientation(600, 400)">set orientation</button>
       </div>
 
-      <div class="animation__stage" :style="animationStyle" :class="{ 'is-pairing': !isDrawing }" v-if="!isPrerendering">
+      <div class="animation__stage" :style="animationStyle" :class="{ 'is-pairing': !isDrawing }">
         <div class="animation__world" ref="world">
           <div class="animation__scene" ref="scene" :style="sceneStyle">
             <div class="stand" v-show="sceneVisible"></div>
@@ -125,9 +125,7 @@ export default {
       scale: 1,
 
       mouseEnabled: false,
-      sceneVisible: true,
-
-      isPrerendering: window.__PRERENDERING
+      sceneVisible: true
     }
   },
 

@@ -155,7 +155,8 @@ export default {
   computed: {
     animationStyle () {
       return {
-        fontSize: this.base + 'px'
+        fontSize: this.base + 'px',
+        transform: 'translate(-50%,-50%)'
       }
     }
   },
