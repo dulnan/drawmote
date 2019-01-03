@@ -452,7 +452,7 @@ $screen-border-width: 0.03;
 
 .animation__slot {
   position: relative;
-  z-index: 1000;
+  z-index: 9000;
   padding-top: 70vw;
   .is-desktop & {
     padding-top: 0;

@@ -318,10 +318,10 @@ export default {
 
       this.animationLeave.add({
         targets: this.$el,
-        offset: 3000,
+        offset: 3500,
         opacity: [
           { value: 1, duration: 0, delay: 0, elasticity: 7, easing: easing },
-          { value: 0, duration: 1000, delay: 0, elasticity: 7, easing: easing }
+          { value: 0, duration: 500, delay: 0, elasticity: 7, easing: easing }
         ]
       })
 

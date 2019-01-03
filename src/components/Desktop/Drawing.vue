@@ -1,12 +1,10 @@
 <template>
-  <transition name="appear">
-    <div class="drawing">
-      <toolbar ref="toolbar" :connected="connected" />
-      <div class="drawing-area" ref="canvasContainer" :style="drawingAreaStyle"></div>
-      <canvas-drawing />
-      <canvas-interface />
-    </div>
-  </transition>
+  <div class="drawing">
+    <toolbar ref="toolbar" :connected="connected" />
+    <div class="drawing-area" ref="canvasContainer" :style="drawingAreaStyle"></div>
+    <canvas-drawing />
+    <canvas-interface />
+  </div>
 </template>
 
 <script>
@@ -117,13 +115,17 @@ export default {
   overflow: hidden;
   position: absolute;
   user-select: none;
+  z-index: $index-drawing;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background: white;
   &.appear-enter-active, &.appear-leave-active {
-    transition: 1s;
+    transition: 0.5s;
+  }
+  &.appear-enter-active {
+    transition-delay: 3s;
   }
   &.appear-enter, &.appear-leave-to {
     opacity: 0;

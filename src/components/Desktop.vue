@@ -8,7 +8,9 @@
           @pairingTimeout="handleTimeout"
         />
       </animation-wrapper>
-      <drawing v-if="isDrawing" />
+      <transition name="appear">
+        <drawing v-if="isDrawing" />
+      </transition>
     </div>
   </div>
 </template>
