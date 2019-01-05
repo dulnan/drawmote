@@ -437,9 +437,7 @@ export default {
   },
 
   created () {
-    if (window.innerWidth > 1680) {
-      this.viewport = 'xl'
-    } else if (window.innerWidth > 1441) {
+    if (window.innerWidth > 1441) {
       this.viewport = 'lg'
     } else if (window.innerWidth > 1024) {
       this.viewport = 'md'

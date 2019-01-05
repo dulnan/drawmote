@@ -16,8 +16,6 @@ import TheFooter from '@/components/Common/Footer/Footer.vue'
 import RestoreConnection from '@/components/Common/RestoreConnection.vue'
 import ConnectionTimeout from '@/components/Common/ConnectionTimeout.vue'
 
-const IS_MOBILE = window.innerWidth < BREAKPOINT_REMOTE
-
 export default {
   name: 'app',
 
@@ -31,13 +29,20 @@ export default {
 
   data () {
     return {
-      isMobile: IS_MOBILE,
+      isMobile: true,
       hasLoaded: false
     }
   },
 
+  beforeMount () {
+    this.isMobile = window.innerWidth < BREAKPOINT_REMOTE
+  },
+
   mounted () {
-    document.dispatchEvent(new Event('render-event'))
+    this.$nextTick(() => {
+      document.dispatchEvent(new Event('render-event'))
+      this.$forceUpdate()
+    })
   }
 }
 </script>

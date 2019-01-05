@@ -17,7 +17,7 @@ if (process.env.NODE_ENV === 'production') {
       skipThirdPartyRequests: true
     }),
     postProcess (context) {
-      context.html = context.html.replace('id="drawmote"', 'id="drawmote" data-server-rendered="true"')
+      // context.html = context.html.replace('id="drawmote"', 'id="drawmote" data-server-rendered="true"')
       return context
     }
   }))
