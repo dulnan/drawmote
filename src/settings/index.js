@@ -112,3 +112,4 @@ export const TOOLBAR_SLIDERS = [
 ]
 
 export const BREAKPOINT_REMOTE = 700
+export const BREAKPOINT_ANIMATION = 1024
