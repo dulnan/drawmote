@@ -56,6 +56,12 @@ module.exports = {
       })
     if (process.env.NODE_ENV === 'production') {
       config
+        .plugin('preload')
+        .tap(args => {
+          args[0].fileBlacklist.push(/\.css$/)
+          return args
+        })
+      config
         .plugin('html')
         .tap(args => {
           args[0].inlineSource = '.(css)$'
