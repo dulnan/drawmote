@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { BREAKPOINT_ANIMATION } from '@/settings'
 import AnimationDesktop from '@/components/Common/Animation/AnimationDesktop.vue'
 import AnimationMobile from '@/components/Common/Animation/AnimationMobile.vue'
 
@@ -23,7 +24,7 @@ export default {
   },
 
   created () {
-    if (window.innerWidth >= 1024) {
+    if (window.innerWidth > BREAKPOINT_ANIMATION) {
       this.isDesktop = true
     }
   },
