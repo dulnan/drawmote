@@ -44,8 +44,8 @@ export default {
     /**
      * Call the function to set the width and height of the canvas elements.
      */
-    setCanvasSizes () {
-      setupCanvases(this.$vuetamin.store.getState().sizes.viewport, [this.$refs.canvas_interface])
+    setCanvasSizes (state) {
+      setupCanvases(state.sizes.viewport, [this.$refs.canvas_interface])
     },
 
     drawToCanvas (state) {
@@ -169,10 +169,6 @@ export default {
       context.fill()
       context.stroke()
     }
-  },
-
-  mounted () {
-    this.setCanvasSizes()
   },
 
   created () {

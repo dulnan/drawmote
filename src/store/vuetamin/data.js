@@ -2,6 +2,7 @@ import { LazyBrush } from 'lazy-brush'
 import { getState } from '@/tools/cookies'
 import Rectangle from '@/classes/Rectangle'
 import Brush from '@/classes/Brush'
+import { ANIMATION_SCREEN_VIEWPORT } from '@/settings'
 
 /**
  * Build the Vuetamin data store.
@@ -9,12 +10,6 @@ import Brush from '@/classes/Brush'
  * @returns {Object}
  */
 export default function () {
-  const viewport = {
-    width: 1280,
-    height: 900,
-    ratio: 1
-  }
-
   const cookieState = getState()
   let brushOptions = {}
   let lazyRadius = 80
@@ -39,7 +34,7 @@ export default function () {
       y: 0
     },
 
-    viewport: viewport,
+    viewport: ANIMATION_SCREEN_VIEWPORT,
 
     canvasRect: new Rectangle(0, 0, 0, 0),
     toolbarRect: new Rectangle(0, 0, 0, 0),

@@ -4,6 +4,7 @@
     <div class="drawing-area" ref="canvasContainer" :style="drawingAreaStyle"></div>
     <canvas-drawing />
     <canvas-interface />
+    <resize-observer @notify="getElementSizes" />
   </div>
 </template>
 

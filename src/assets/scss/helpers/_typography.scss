@@ -28,14 +28,16 @@
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: $alt-color-dark;
-  @include media('sm') {
-    font-size: rem(12px);
-  }
-  @include media('md') {
-    font-size: rem(14px);
-  }
-  @include media('lg') {
-    font-size: rem(14px);
+  .is-drawing & {
+    @include media('sm') {
+      font-size: rem(12px);
+    }
+    @include media('md') {
+      font-size: rem(14px);
+    }
+    @include media('lg') {
+      font-size: rem(14px);
+    }
   }
 }
 

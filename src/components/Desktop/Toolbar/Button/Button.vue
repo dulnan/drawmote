@@ -52,23 +52,27 @@ export default {
     height: 100%;
     margin: auto 0;
 
-    @include media('sm') {
-      font-size: $toolbar-button-width-sm;
-    }
+    .is-drawing & {
+      @include media('sm') {
+        font-size: $toolbar-button-width-sm;
+      }
 
-    @include media('md') {
-      font-size: $toolbar-button-width-md;
-    }
+      @include media('md') {
+        font-size: $toolbar-button-width-md;
+      }
 
-    @include media('lg') {
-      font-size: $toolbar-button-width-lg;
+      @include media('lg') {
+        font-size: $toolbar-button-width-lg;
+      }
     }
 
     svg {
       width: 0.6em;
       max-height: 100%;
-      @include media('lg') {
-        width: 0.4em;
+      .is-drawing & {
+        @include media('lg') {
+          width: 0.4em;
+        }
       }
     }
   }

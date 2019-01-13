@@ -1,6 +1,6 @@
 <template>
-  <component :is="isDesktop ? 'AnimationDesktop' : 'AnimationMobile'" :is-desktop="isDesktop">
-    <slot></slot>
+  <component :is="'Animation'" :is-desktop="isDesktop" @sceneready="sceneReady = true">
+    <slot v-if="sceneReady"></slot>
   </component>
 </template>
 
@@ -8,18 +8,21 @@
 import { BREAKPOINT_ANIMATION } from '@/settings'
 import AnimationDesktop from '@/components/Common/Animation/AnimationDesktop.vue'
 import AnimationMobile from '@/components/Common/Animation/AnimationMobile.vue'
+import Animation from '@/components/Common/Animation/Animation.vue'
 
 export default {
   name: 'AnimationWrapper',
 
   components: {
+    Animation,
     AnimationDesktop,
     AnimationMobile
   },
 
   data () {
     return {
-      isDesktop: false
+      isDesktop: false,
+      sceneReady: false
     }
   },
 

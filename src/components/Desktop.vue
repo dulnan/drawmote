@@ -18,7 +18,7 @@
 <script>
 import debouncedResize from 'debounced-resize'
 import { mapState } from 'vuex'
-import { BREAKPOINT_REMOTE } from '@/settings'
+import { BREAKPOINT_REMOTE, ANIMATION_SCREEN_VIEWPORT } from '@/settings'
 
 import Pairing from '@/components/Desktop/Pairing.vue'
 import AnimationWrapper from '@/components/Common/Animation/AnimationWrapper.vue'
@@ -112,7 +112,11 @@ export default {
     },
 
     updateViewport () {
-      const viewport = getViewportSize()
+      let viewport = ANIMATION_SCREEN_VIEWPORT
+
+      if (this.isConnected) {
+        viewport = getViewportSize()
+      }
 
       this.$vuetamin.store.mutate('updateViewport', viewport)
       this.$peersox.send(encodeEventMessage('viewport', viewport))

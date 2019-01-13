@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>test</title>
+		<meta charset="utf-8">
+		<meta name="generator" content="Three.js Editor">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				font-family: sans-serif;
+				font-size: 13px;
+				margin: 0px;
+				overflow: hidden;
+			}
+
+			#screen {
+				background: white;
+				font-size: 30px;
+			}
+
+			.webgl {
+				position: relative;
+				z-index: 20;
+			}
+
+			.renderer-css {
+				z-index: 10;
+				pointer-events: none;
+			}
+
+			.dg.ac {
+				z-index: 300 !important;
+			}
+
+		</style>
+	</head>
+	<body ontouchstart="">
+		<script src="js/three.min.js"></script>
+		<script type="text/javascript" src="js/OrbitControls.js"></script>
+		<script type="text/javascript" src="js/CSS3DRenderer.js"></script>
+		<script type="text/javascript" src="js/RectAreaLightUniformsLib.js"></script>
+		<script src="js/dat.gui.min.js"></script>
+		<script src="js/stats.min.js"></script>
+		<script src="js/app.js"></script>
+
+		<script>
+
+			var loader = new THREE.FileLoader();
+			loader.load( 'app.json', function ( text ) {
+
+				var player = new APP.Player();
+				player.load( JSON.parse( text ) );
+				player.setSize( window.innerWidth, window.innerHeight );
+				player.play();
+
+				document.body.appendChild( player.dom );
+
+				window.addEventListener( 'resize', function () {
+					player.setSize( window.innerWidth, window.innerHeight );
+				} );
+
+			} );
+
+		</script>
+	</body>
+</html>

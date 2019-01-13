@@ -7,6 +7,7 @@ import App from './App.vue'
 import * as Sentry from '@sentry/browser'
 
 import Vuetamin from 'vuetamin'
+import VueResize from 'vue-resize'
 import Track from './plugins/Track'
 import Settings from './plugins/Settings'
 import PeerSox from './plugins/PeerSox'
@@ -42,6 +43,7 @@ getGymote().then(({ default: Gymote }) => {
   Vue.use(PeerSox, serverUrls)
   Vue.use(Track)
   Vue.use(Settings)
+  Vue.use(VueResize)
 
   Vue.config.productionTip = false
 

@@ -219,36 +219,38 @@ export default {
 }
 
 .toolbar-group--colors {
-  li {
-    @include media('sm') {
-      margin-right: 0.125rem;
-    }
-    @include media('md') {
-      margin-right: 0.25rem;
-    }
-    @include media('lg') {
-      margin-right: 0.5rem;
-    }
-    &:first-child {
+  .is-drawing & {
+    li {
       @include media('sm') {
-        margin-left: rem(7px);
+        margin-right: 0.125rem;
       }
       @include media('md') {
-        margin-left: rem(10px);
+        margin-right: 0.25rem;
       }
       @include media('lg') {
-        margin-left: rem(13px);
+        margin-right: 0.5rem;
       }
-    }
-    &:last-child {
-      @include media('sm') {
-        margin-right: rem(7px);
+      &:first-child {
+        @include media('sm') {
+          margin-left: rem(7px);
+        }
+        @include media('md') {
+          margin-left: rem(10px);
+        }
+        @include media('lg') {
+          margin-left: rem(13px);
+        }
       }
-      @include media('md') {
-        margin-right: rem(10px);
-      }
-      @include media('lg') {
-        margin-right: rem(13px);
+      &:last-child {
+        @include media('sm') {
+          margin-right: rem(7px);
+        }
+        @include media('md') {
+          margin-right: rem(10px);
+        }
+        @include media('lg') {
+          margin-right: rem(13px);
+        }
       }
     }
   }
