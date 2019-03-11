@@ -48,13 +48,12 @@ export default {
 .toolbar-item--colors {
   overflow: visible;
   .toolbar-button {
-    border: 3px solid white;
     border-radius: 100%;
     width: 1em;
     height: 1em;
     @include media('lg') {
-      width: 0.75em;
-      height: 0.75em;
+      width: 0.6em;
+      height: 0.6em;
     }
 
     &:hover, .hover & {

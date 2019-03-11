@@ -45,9 +45,9 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #ddd;
     overflow: visible;
     font-size: $toolbar-button-width-xs;
+    color: $text-color;
     width: 1em;
     height: 100%;
     margin: auto 0;
@@ -69,6 +69,7 @@ export default {
     svg {
       width: 0.6em;
       max-height: 100%;
+      fill: currentColor;
       .is-drawing & {
         @include media('lg') {
           width: 0.4em;

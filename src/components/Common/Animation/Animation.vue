@@ -1,11 +1,13 @@
 <template>
   <div ref="container">
-    <!-- <drawing /> -->
+    <slot></slot>
+    <div class="debug-range">
+      <input type="range" min="0" max="100" step="0.001" value="0" @input="handleRange">
+    </div>
   </div>
 </template>
 
 <script>
-import { GyroPlane } from 'gyro-plane'
 import { mapState } from 'vuex'
 
 import Drawing from '@/components/Desktop/Drawing.vue'
@@ -37,12 +39,6 @@ export default {
       windowWidth: 958,
       windowHeight: 542,
 
-      gyro: new GyroPlane({
-        width: ANIMATION_SCREEN_VIEWPORT.width,
-        height: ANIMATION_SCREEN_VIEWPORT.height,
-        distance: 1000
-      }),
-
       count: 0,
 
       mouseEnabled: true,
@@ -51,37 +47,35 @@ export default {
   },
 
   computed: {
-    ...mapState(['isConnected']),
-
-    brush () {
-      this.gyro.updateOrientation({ alpha: this.alpha, beta: this.beta })
-
-      // To get the calculated coordinates, you have to call this function.
-      return this.gyro.getScreenCoordinates()
-    }
+    ...mapState(['isConnected'])
   },
 
   watch: {
     brush (coordinates) {
       if (coordinates) {
-        this.$vuetamin.store.mutate('updatePointer', {
-          coordinates: {
-            x: coordinates.x, y: coordinates.y
-          }
-        })
+
       }
     },
 
     alpha (alpha) {
-      this.animation.setPhoneRotation(alpha, this.beta)
+      this.updateRotation(alpha, this.beta)
     },
 
     beta (beta) {
-      this.animation.setPhoneRotation(this.alpha, beta)
+      this.updateRotation(this.alpha, beta)
     }
   },
 
   methods: {
+    handleRange (e) {
+      this.animation.seekAnimation(e.target.value)
+    },
+    updateRotation (alpha, beta) {
+      const coordinates = this.animation.setPhoneRotation(alpha, beta)
+      if (!coordinates) return
+      this.$vuetamin.store.mutate('updatePointer', { coordinates })
+    },
+
     onMouseMove (e) {
       if (!this.mouseEnabled) {
         return
@@ -107,8 +101,8 @@ export default {
     },
 
     setOrientation (x, y) {
-      this.alpha = (27) * -(x - (this.windowWidth / 2)) / (this.windowWidth / 2)
-      this.beta = (17) * -(y - (this.windowHeight / 2)) / (this.windowHeight / 2)
+      this.alpha = -(x - (this.windowWidth / 2)) / (this.windowWidth / 2)
+      this.beta = -(y - (this.windowHeight / 2)) / (this.windowHeight / 2)
     },
 
     updateSizes () {
@@ -122,16 +116,14 @@ export default {
 
     debouncedResize((e) => {
       this.updateSizes()
+      this.animation.setSize(this.windowWidth, this.windowHeight)
     })
 
-    this.gyro.updateOffset({ alpha: this.alpha, beta: this.beta })
     this.animation = new ThreeAnimation(this.$refs.container, ANIMATION_SCREEN_VIEWPORT)
     this.animation.setSize(window.innerWidth, window.innerHeight)
 
     const screen = this.animation.getScreen()
-
     const DrawingCtor = this.$root.constructor.extend(Drawing)
-
     this.instance = new DrawingCtor({
       parent: this,
       propsData: {
@@ -160,6 +152,17 @@ export default {
 </script>
 
 <style lang="scss">
+.debug-range {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 99999;
+  padding: 1rem;
+  padding-bottom: 4rem;
+  // display: none;
+}
+
 .renderer-webgl,
 .renderer-css {
   position: relative;
@@ -173,6 +176,12 @@ export default {
 }
 
 .renderer-css {
+  &, canvas {
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
 }
 
 .dg.ac {
@@ -188,5 +197,6 @@ export default {
   position: relative;
   height: 100%;
   width: 100%;
+
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <li class="text-bold mrgla hover">
-    <a class="pdg block" href="https://github.com/dulnan/drawmote">
+    <a class="pdg block text-white" href="https://github.com/dulnan/drawmote">
       <icon-github class="icon icon--large" />
       <span class="hidden-sm-down">GitHub</span>
     </a>

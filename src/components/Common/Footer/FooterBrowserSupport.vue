@@ -70,9 +70,7 @@ export default {
     width: 100%;
     text-align: left;
     transition: 0.4s;
-    background: white;
     &.is-open {
-      background: white;
     }
   }
   @include media('sm') {

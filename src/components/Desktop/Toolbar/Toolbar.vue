@@ -1,5 +1,5 @@
 <template>
-  <div class="toolbar bg-white" ref="toolbar">
+  <div class="toolbar" ref="toolbar">
     <ul class="list-inline list-inline--tight list-inline--divided toolbar-list flex--align-stretch">
       <li
         v-for="group in toolGroups"

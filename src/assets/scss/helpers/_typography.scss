@@ -22,12 +22,19 @@
   background: white;
 }
 
+.text-white {
+  color: white;
+}
+
+.text-muted-white {
+  color: rgba(white, 0.8);
+}
+
 .label {
   font-weight: 700;
   font-size: rem(12px);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: $alt-color-dark;
   .is-drawing & {
     @include media('sm') {
       font-size: rem(12px);

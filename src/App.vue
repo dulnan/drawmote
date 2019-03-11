@@ -49,7 +49,7 @@ export default {
 
 <style lang="scss">
 #drawmote {
-  background: white;
+  background: #000;
   @include media('sm') {
     position: absolute;
     top: 0;

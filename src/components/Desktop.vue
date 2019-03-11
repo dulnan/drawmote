@@ -1,13 +1,16 @@
 <template>
-  <div class="desktop relative">
+  <div class="desktop relative" :class="{ 'is-drawing': isDrawing }">
     <div class="desktop-container relative overlay material">
-      <animation-wrapper v-if="!isDrawing">
+      <animation
+        v-if="!isDrawing"
+        :is-desktop="true"
+      >
         <pairing
           :pairing="pairing"
           :is-blocked="isBlocked"
           @pairingTimeout="handleTimeout"
         />
-      </animation-wrapper>
+      </animation>
       <transition name="appear">
         <drawing v-if="isDrawing" />
       </transition>
@@ -21,7 +24,7 @@ import { mapState } from 'vuex'
 import { BREAKPOINT_REMOTE, ANIMATION_SCREEN_VIEWPORT } from '@/settings'
 
 import Pairing from '@/components/Desktop/Pairing.vue'
-import AnimationWrapper from '@/components/Common/Animation/AnimationWrapper.vue'
+import Animation from '@/components/Common/Animation/Animation.vue'
 import Drawing from '@/components/Desktop/Drawing.vue'
 import { getViewportSize, encodeEventMessage } from '@/tools/helpers'
 
@@ -31,7 +34,7 @@ export default {
   components: {
     Pairing,
     Drawing,
-    AnimationWrapper
+    Animation
   },
 
   data () {

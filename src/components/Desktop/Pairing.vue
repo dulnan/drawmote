@@ -1,9 +1,9 @@
 <template>
   <div class="overlay pairing-desktop absolute flex" :style="transformOriginStyle">
     <div class="pairing-container">
-      <h1 class="text-heavy">drawmote</h1>
-      <p class="h2 text-bold mrgb+ text-muted">{{ $t('subtitle') }}</p>
-      <p class="text-muted text-light mrgt0 h2 pairing-lead">{{ $t('desktop.lead') }}</p>
+      <h1 class="text-heavy text-white">drawmote</h1>
+      <p class="h2 text-bold mrgb+ text-muted-white">{{ $t('subtitle') }}</p>
+      <p class="text-muted-white text-light mrgt0 h2 pairing-lead">{{ $t('desktop.lead') }}</p>
       <div class="code code--desktop sm-mrgt md-mrgt+">
         <div class="code__content">
           <div v-for="(number, index) in pairingCodeNumbers" :key="index" class="code__item" :class="{ 'visible': hasCode }">
@@ -145,31 +145,29 @@ export default {
 @import '@/assets/scss/components/_code.scss';
 
 .pairing-desktop {
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
   overflow: hidden;
   padding: 2rem;
-  padding-bottom: calc(#{$footer-height-xs} + 2rem);
-  position: relative;
   z-index: 800;
-  user-select: none;
+  // user-select: none;
+  pointer-events: none;
+  // background: url('/pattern@1x.png');
+  // @media only screen and (min--moz-device-pixel-ratio: 2),
+  // only screen and (-o-min-device-pixel-ratio: 2/1),
+  // only screen and (-webkit-min-device-pixel-ratio: 2),
+  // only screen and (min-device-pixel-ratio: 2) {
+  //   background: url('/pattern@2x.png');
+  //   background-size: 8px 8px;
+  // }
   @include media('md') {
     padding: 3rem;
-    padding-bottom: calc(#{$footer-height-xs} + 3rem);
   }
   @include media('lg') {
     padding: 4rem;
-    padding-bottom: calc(4rem + #{$footer-height-xs});
   }
 }
 
 .pairing-container {
   position: relative;
-  margin: 0 auto;
-  .is-desktop & {
-    margin: 0;
-  }
 }
 
 .pairing__actions {

@@ -1,7 +1,7 @@
 <template>
   <div class="footer" ref="footer">
     <div class="footer__content">
-      <ul class="list-inline list-inline--divided list-inline--tight text-small footer__list">
+      <ul class="list-inline list-inline--tight text-small footer__list">
         <footer-browser-support :is-mobile="isMobile" />
         <footer-language />
         <footer-github />
@@ -60,13 +60,12 @@ export default {
   bottom: 0;
   user-select: none;
   z-index: $index-footer;
+  color: white;
 }
 
 .footer__content {
   position: relative;
   z-index: $index-footer;
-  background: white;
-  border-top: 1px solid $alt-color-light;
 }
 
 .footer__list {

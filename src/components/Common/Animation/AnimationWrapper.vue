@@ -1,6 +1,6 @@
 <template>
   <component :is="'Animation'" :is-desktop="isDesktop" @sceneready="sceneReady = true">
-    <slot v-if="sceneReady"></slot>
+    <slot></slot>
   </component>
 </template>
 

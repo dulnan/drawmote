@@ -1,7 +1,7 @@
 $code-size-xs: 4rem;
 $code-size-sm: 4rem;
-$code-size-md: 4.25rem;
-$code-size-lg: 5rem;
+$code-size-md: 4rem;
+$code-size-lg: 6rem;
 
 $code-numbers: (
   0: ($color-yellow, 40%),
@@ -21,11 +21,10 @@ $code-numbers: (
 }
 
 .code-circle {
-  color: $color-code;
+  color: white;
   font-size: $code-size-xs;
   width: 1em;
   height: 1em;
-  border-radius: 3px;
   text-transform: uppercase;
   display: flex;
   align-items: center;
@@ -34,27 +33,27 @@ $code-numbers: (
   line-height: 1;
   text-align: center;
   font-weight: 700;
-  color: $alt-color-dark;
   position: relative;
-  background: white;
-  border: 1px solid $alt-color;
+  // border: 1px solid rgba(white, 0.1);
+  // background: rgba(white, 0.1);
+  background: rgba(white, 0.1);
   // box-shadow: 0 3px 4px rgba($alt-color, 0.1),
   //             0 0px 2px rgba($alt-color, 0.3);
 
   &:before {
     content: "";
     position: absolute;
-    bottom: 0.05em;
-    right: 0.05em;
-    left: 0.05em;
-    height: 0.1em;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    height: 0.5rem;
     // width: 0.15em;
     border-radius: inherit;
     background: $alt-color-light;
   }
   
   &.contains {
-    border-color: $alt-color;
+    // border: 1px solid rgba(white, 0.3);
   }
   &.contains.invalid {
     color: $alt-color-light !important;
@@ -77,27 +76,16 @@ $code-numbers: (
 
   @include media('sm') {
     font-size: $code-size-sm;
-    border: 1px solid $alt-color-lighter;
+    // border: 1px solid $alt-color-lighter;
     // box-shadow: 0 5px 4px rgba($alt-color, 0.2),
     //             0 0px 2px 1px rgba($alt-color, 0.3);
     // box-shadow: 0 3px 10px rgba($alt-color, 0.2),
     //             0 2px 4px 1px rgba($alt-color, 0.1);
-
-    &:before {
-      bottom: 0.25rem;
-      right: 0.25rem;
-      left: 0.25rem;
-    }
   }
   @include media('md') {
     font-size: $code-size-md;
   }
-  @include media('lg') {
-    font-size: $code-size-lg;
-    &:before {
-      height: rem(7px);
-    }
-  }
+  
 }
 
 .code__item {
@@ -106,7 +94,7 @@ $code-numbers: (
     margin-right: 1rem;
   }
   @include media('lg') {
-    margin-right: 1.5rem;
+    margin-right: 1rem;
   }
   &:last-child {
     margin-right: 0;

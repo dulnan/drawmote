@@ -81,7 +81,7 @@ $alt-color-lighter:                 #f7f7f6;
 $alt-color-light:                   #dedede;
 $alt-color:                         #cecece;
 $alt-color-dark:                    #615450;
-$alt-color-darker:                  #292321;
+$alt-color-darker:                  #463f3d;
 
 
 /**
@@ -99,9 +99,9 @@ $font-size-large:                   1.5rem;
 
 $line-height-default:               1.45;
 
-$text-color:                        $color-brown-dark;
+$text-color:                        $alt-color-light;
 $link-color:                        $brand-color;
-$muted-color:                       $color-brown-light;
+$muted-color:                       $alt-color;
 
 
 /**
@@ -237,7 +237,7 @@ $form-group-spacing:                $spacing-unit-small;
  * Lists
  */
 
-$list-separator-style:              1px solid $alt-color-lighter;
+$list-separator-style:              1px solid $alt-color-darker;
 
 
 /**
