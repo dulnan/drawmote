@@ -29,14 +29,84 @@ require('three/examples/js/postprocessing/UnrealBloomPass.js')
 
 const sceneObject = require('./app.json')
 
-const CAMERA = [
-  { 'offset': 0, 'options': { 'duration': 4000, 'delay': 0, 'elasticity': 7, 'endDelay': 0, 'easing': 'easeInOutCubic' }, 'values': { 'positionX': 3.61, 'positionY': 2.03, 'positionZ': -0.4, 'targetX': -6.44, 'targetY': -0.92, 'targetZ': 3.12 } },
-  { 'offset': 1000, 'options': { 'duration': 8000, 'delay': 0, 'elasticity': 7, 'endDelay': 0, 'easing': 'easeInOutCubic' }, 'values': { 'positionX': 6.4, 'positionY': -2.39, 'positionZ': 14.97, 'targetX': -6.05, 'targetY': -2.33, 'targetZ': 0.53 } }
-]
+const CAMERA = (width, height) => {
+  return [
+    {
+      offset: 0,
+      options: {
+        duration: 4000,
+        delay: 0,
+        elasticity: 7,
+        endDelay: 0,
+        easing: 'easeInOutCubic'
+      },
+      values: {
+        positionX: 3.61,
+        positionY: 2.03,
+        positionZ: -0.4,
+        targetX: -6.44,
+        targetY: -0.92,
+        targetZ: 3.12
+      }
+    },
+    {
+      offset: 1000,
+      options: {
+        duration: 8000,
+        delay: 0,
+        elasticity: 7,
+        endDelay: 0,
+        easing: 'easeInOutCubic'
+      },
+      values: {
+        positionX: 6.4,
+        positionY: -2.39,
+        positionZ: 14,
+        targetX: -6.75,
+        targetY: -2,
+        targetZ: 0
+      }
+    }
+  ]
+}
 
 const PHONE = [
-  { 'offset': 0, 'options': { 'duration': 4000, 'delay': 0, 'elasticity': 7, 'endDelay': 0, 'easing': 'easeInOutBack' }, 'values': { 'positionX': 3.265, 'positionY': -0.647, 'positionZ': 6.467, 'rotationX': 0.334, 'rotationY': 0.877, 'rotationZ': 0 } },
-  { 'offset': 1000, 'options': { 'duration': 8000, 'delay': 0, 'elasticity': 7, 'endDelay': 0, 'easing': 'easeOutBack' }, 'values': { 'positionX': 0, 'positionY': -4.916, 'positionZ': 6.467, 'rotationX': -0.428531, 'rotationY': -0.624392, 'rotationZ': 0 } }
+  {
+    offset: 0,
+    options: {
+      duration: 4000,
+      delay: 0,
+      elasticity: 7,
+      endDelay: 0,
+      easing: 'easeInOutBack'
+    },
+    values: {
+      positionX: 3.265,
+      positionY: -0.647,
+      positionZ: 6.467,
+      rotationX: 0.334,
+      rotationY: 0.877,
+      rotationZ: 0
+    }
+  },
+  {
+    offset: 1000,
+    options: {
+      duration: 8000,
+      delay: 0,
+      elasticity: 7,
+      endDelay: 0,
+      easing: 'easeOutBack'
+    },
+    values: {
+      positionX: 0,
+      positionY: -4.916,
+      positionZ: 6.467,
+      rotationX: -0.428531,
+      rotationY: -0.624392,
+      rotationZ: 0
+    }
+  }
 ]
 const round = value => {
   return Math.round(value * 1000000) / 1000000
@@ -135,8 +205,8 @@ export default class ThreeAnimation extends EventEmitter {
     if (project.gammaInput) this.webgl.renderer.gammaInput = true
     if (project.gammaOutput) this.webgl.renderer.gammaOutput = true
     if (project.shadows) this.webgl.renderer.shadowMap.enabled = true
-    this.loader.parse(json.scene, (scene) => {
-      this.loader.parse(json.camera, (camera) => {
+    this.loader.parse(json.scene, scene => {
+      this.loader.parse(json.camera, camera => {
         this.setScene(scene)
         this.setCamera(camera)
 
@@ -213,10 +283,12 @@ export default class ThreeAnimation extends EventEmitter {
     // rectLight.add(rectLightHelper)
     this.displayScreen.add(rectLight)
 
-    var Sgeometry = new THREE.SphereGeometry(0.1, 32, 32)
-    var Smaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 })
-    this.sphere = new THREE.Mesh(Sgeometry, Smaterial)
-    this.webgl.scene.add(this.sphere)
+    // var Sgeometry = new THREE.SphereGeometry(0.1, 32, 32)
+    // var Smaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 })
+    // this.sphere = new THREE.Mesh(Sgeometry, Smaterial)
+    // this.webgl.scene.add(this.sphere)
+
+    this.addTargetSphere()
 
     const rectLightPhone = new THREE.RectAreaLight(
       0x392248,
@@ -242,7 +314,7 @@ export default class ThreeAnimation extends EventEmitter {
       this.camera.updateMatrixWorld()
       this.camera.updateProjectionMatrix()
 
-      let sourceValues = CAMERA[init]
+      let sourceValues = CAMERA(this.width, this.height)[init]
 
       let newValues = {
         offset: sourceValues.offset,
@@ -452,6 +524,10 @@ export default class ThreeAnimation extends EventEmitter {
         .onChange(this.updateCamera.bind(this))
     })
 
+    cameraFolder.add(this.camera, 'zoom', 0, 4).step(0.01).onChange(() => {
+      this.camera.updateProjectionMatrix()
+    })
+
     let phoneFolder = this.gui.addFolder('Phone')
 
     Object.keys(this.phoneAnimation).forEach(key => {
@@ -485,7 +561,11 @@ export default class ThreeAnimation extends EventEmitter {
     this.cameraTarget.y = this.cameraAnimation.targetY
     this.cameraTarget.z = this.cameraAnimation.targetZ
 
-    this.sphere.position.copy(this.cameraTarget)
+    if (this.sphere) {
+      this.sphere.position.copy(this.cameraTarget)
+    }
+
+    this.camera.zoom = Math.min(Math.max((this.width / this.height) / 1.9, 0.7), 1.3)
 
     this.camera.updateMatrixWorld()
   }
@@ -555,7 +635,8 @@ export default class ThreeAnimation extends EventEmitter {
 
   setCamera (value) {
     this.camera = value
-    this.camera.aspect = this.width / this.height
+    // this.camera.aspect = this.width / this.height
+    this.camera.aspect = 1
     this.camera.updateProjectionMatrix()
   }
 
@@ -567,7 +648,11 @@ export default class ThreeAnimation extends EventEmitter {
     this.width = width
     this.height = height
 
+    this.setCameraValues(CAMERA(this.width, this.height)[1])
+    this.updateCamera()
+
     if (this.camera) {
+      // this.camera.aspect = this.width / this.height
       this.camera.aspect = this.width / this.height
       this.camera.updateProjectionMatrix()
     }
@@ -586,7 +671,9 @@ export default class ThreeAnimation extends EventEmitter {
   }
 
   animate (t) {
-    this.animeAnimation.tick(t)
+    if (this.animeAnimation) {
+      // this.animeAnimation.tick(t)
+    }
 
     this.time = performance.now()
 
@@ -611,10 +698,16 @@ export default class ThreeAnimation extends EventEmitter {
   }
 
   animateEnter () {
-    this.setCameraValues(CAMERA[0])
+    this.setCameraValues(CAMERA(this.width, this.height)[1])
+    this.setPhoneValues(PHONE[1])
+    this.updateCamera()
+    this.updatePhone()
+    this.updateGui()
+    return
 
     let animeAnimation = anime.timeline({
       autoplay: false,
+      direction: 'reverse',
       complete: () => {
         this.animationFinished = true
       },
@@ -625,7 +718,7 @@ export default class ThreeAnimation extends EventEmitter {
       }
     })
 
-    this.addToTimeline('camera', animeAnimation, CAMERA)
+    this.addToTimeline('camera', animeAnimation, CAMERA(this.width, this.height))
     this.addToTimeline('phone', animeAnimation, PHONE)
 
     this.animeAnimation = animeAnimation
@@ -647,17 +740,18 @@ export default class ThreeAnimation extends EventEmitter {
     }, 1000)
   }
 
-  setCameraValues (v) {
-    this.camera.position.x = v.values.positionX || 0
-    this.camera.position.y = v.values.positionY || 0
-    this.camera.position.z = v.values.positionZ || 0
+  setCameraValues ({ values }) {
+    this.cameraAnimation.positionX = values.positionX
+    this.cameraAnimation.positionY = values.positionY
+    this.cameraAnimation.positionZ = values.positionZ
 
-    // this.camera.quaternion.w = quaternion.w || 0
-    // this.camera.quaternion.x = quaternion.x || 0
-    // this.camera.quaternion.y = quaternion.y || 0
-    // this.camera.quaternion.z = quaternion.z || 0
+    this.cameraAnimation.targetX = values.targetX
+    this.cameraAnimation.targetY = values.targetY
+    this.cameraAnimation.targetZ = values.targetZ
+  }
 
-    this.updateCamera()
+  setPhoneValues ({ values }) {
+    this.phoneAnimation = values
   }
 
   addToTimeline (target, timeline, frames) {

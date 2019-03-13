@@ -1,19 +1,19 @@
 $code-size-xs: 4rem;
-$code-size-sm: 4rem;
+$code-size-sm: 3rem;
 $code-size-md: 4rem;
-$code-size-lg: 6rem;
+$code-size-lg: 5rem;
 
 $code-numbers: (
-  0: ($color-yellow, 40%),
-  1: ($color-green, 40%),
-  2: ($color-greendark, 40%),
-  3: ($color-bluelight, 40%),
+  0: ($color-yellow, 20%),
+  1: ($color-green, 20%),
+  2: ($color-greendark, 20%),
+  3: ($color-bluelight, 20%),
   4: ($color-bluedark, 40%),
-  5: ($color-orange, 30%),
-  6: ($color-lavender, 40%),
-  7: ($color-turquoise, 55%),
-  8: ($color-red, 40%),
-  9: ($color-pink, 40%)
+  5: ($color-orange, 20%),
+  6: ($color-lavender, 20%),
+  7: ($color-turquoise, 25%),
+  8: ($color-red, 20%),
+  9: ($color-pink, 20%)
 );
 
 .code__content {
@@ -29,26 +29,31 @@ $code-numbers: (
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  border-radius: 0.05em;
 
   line-height: 1;
   text-align: center;
   font-weight: 700;
+  // border: 1px solid;
   position: relative;
-  // border: 1px solid rgba(white, 0.1);
+  border-radius: 0.1em;
   // background: rgba(white, 0.1);
-  background: rgba(white, 0.1);
+  background: rgba(black, 0.1);
   // box-shadow: 0 3px 4px rgba($alt-color, 0.1),
   //             0 0px 2px rgba($alt-color, 0.3);
 
   &:before {
     content: "";
     position: absolute;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    height: 0.5rem;
+    bottom: 0.05em;
+    left: 0.05em;
+    right: 0.05em;
+    height: 0.1em;
+    transform: rotate(10deg);
+    border-radius: 1em;
+    transform-origin: top left;
     // width: 0.15em;
-    border-radius: inherit;
     background: $alt-color-light;
   }
   
@@ -62,14 +67,15 @@ $code-numbers: (
 
   @each $index, $color in $code-numbers {
     &.code-circle--#{$index} {
-      //border-color: darken(nth($color, 1), nth($color, 2));
+      color: lighten(nth($color, 1), nth($color, 2));
+      background: rgba(nth($color, 1), 0.1);
       &:before {
         background: nth($color, 1);
       }
     }
   }
   span {
-    font-size: 0.55em;
+    font-size: 0.50em;
     display: inline-block;
     margin-top: -0.2em;
   }
@@ -85,7 +91,9 @@ $code-numbers: (
   @include media('md') {
     font-size: $code-size-md;
   }
-  
+  @include media('lg') {
+    font-size: $code-size-lg;
+  }
 }
 
 .code__item {

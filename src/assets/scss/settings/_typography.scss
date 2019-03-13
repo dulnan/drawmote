@@ -58,7 +58,7 @@ $rhythm-size-xs: (
 
 $rhythm-size-xxs: (
   size: 15,
-  leading: 2.5
+  leading: 1.25
 );
 
 $rhythm-size-xxxs: (
@@ -69,26 +69,26 @@ $rhythm-size-xxxs: (
 
 $font-h1: (
   xs: $rhythm-size-l,
-  sm: $rhythm-size-xl,
-  md: $rhythm-size-xxl
+  md: $rhythm-size-xl,
+  lg: $rhythm-size-xxxl
 );
 
 $font-h2: (
   xs: $rhythm-size-xs,
+  sm: $rhythm-size-xxs,
+  md: $rhythm-size-s,
+  lg: $rhythm-size-m,
 );
 
 $font-h3: (
-  xs: $rhythm-size-xs,
-  sm: $rhythm-size-s,
-  md: $rhythm-size-s,
-  lg: $rhythm-size-m,
+  xs: $rhythm-size-xxs,
+  lg: $rhythm-size-s
 );
 
 $font-h4: (
   xs: $rhythm-size-xs,
   sm: $rhythm-size-xs,
   md: $rhythm-size-xs,
-  lg: $rhythm-size-s,
 );
 
 $font-h5: (

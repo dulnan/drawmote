@@ -1,9 +1,9 @@
 <template>
   <div class="overlay pairing-desktop absolute flex" :style="transformOriginStyle">
     <div class="pairing-container">
-      <h1 class="text-heavy text-white">drawmote</h1>
+      <h1 class="text-heavy h1 text-white">drawmote</h1>
       <p class="h2 text-bold mrgb+ text-muted-white">{{ $t('subtitle') }}</p>
-      <p class="text-muted-white text-light mrgt0 h2 pairing-lead">{{ $t('desktop.lead') }}</p>
+      <p class="text-muted-white mrgt0 h3 pairing-lead">{{ $t('desktop.lead') }}</p>
       <div class="code code--desktop sm-mrgt md-mrgt+">
         <div class="code__content">
           <div v-for="(number, index) in pairingCodeNumbers" :key="index" class="code__item" :class="{ 'visible': hasCode }">
@@ -14,9 +14,9 @@
         </div>
       </div>
       <div class="pairing__actions mrgt">
-        <p class="text-muted text-light mrgv0 pairing-skip">
+        <!-- <p class="text-muted text-light mrgv0 pairing-skip">
           <button class="btn btn--bare" @click="skipPairing">{{ $t('desktop.nophone') }}</button>
-        </p>
+        </p> -->
         <p class="text-muted text-light pairing-lead mrg0 text-brand" v-if="isBlocked">
           {{ $t('desktop.tooManyAttempts') }}
         </p>
@@ -146,10 +146,12 @@ export default {
 
 .pairing-desktop {
   overflow: hidden;
-  padding: 2rem;
+  padding: 2rem 3vw;
   z-index: 800;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
   // user-select: none;
-  pointer-events: none;
   // background: url('/pattern@1x.png');
   // @media only screen and (min--moz-device-pixel-ratio: 2),
   // only screen and (-o-min-device-pixel-ratio: 2/1),
@@ -159,14 +161,15 @@ export default {
   //   background-size: 8px 8px;
   // }
   @include media('md') {
-    padding: 3rem;
+    padding: 0;
   }
   @include media('lg') {
-    padding: 4rem;
+    padding: 0;
   }
 }
 
 .pairing-container {
+  padding-bottom: 13vh;
   position: relative;
 }
 
@@ -213,11 +216,15 @@ export default {
 }
 
 .pairing-lead {
-  max-width: 30.5rem;
+  max-width: 23rem;
   margin: 0 auto;
+  text-align: justify;
+  @include media('md') {
+    max-width: 29rem;
+  }
   @include media('lg') {
+  max-width: 35rem;
     margin: 0;
-    max-width: 37.5rem;
   }
 }
 

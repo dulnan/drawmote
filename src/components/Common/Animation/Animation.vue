@@ -1,7 +1,8 @@
 <template>
   <div ref="container">
     <slot></slot>
-    <div class="debug-range">
+    <div class="ratio">{{ ratio }}</div>
+    <div class="debug-range" v-if="debug">
       <input type="range" min="0" max="100" step="0.001" value="0" @input="handleRange">
     </div>
   </div>
@@ -42,12 +43,18 @@ export default {
       count: 0,
 
       mouseEnabled: true,
-      sceneVisible: true
+      sceneVisible: true,
+
+      debug: false
     }
   },
 
   computed: {
-    ...mapState(['isConnected'])
+    ...mapState(['isConnected']),
+
+    ratio () {
+      return this.windowWidth / this.windowHeight
+    }
   },
 
   watch: {
@@ -198,5 +205,15 @@ export default {
   height: 100%;
   width: 100%;
 
+}
+
+.ratio {
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 2rem;
+  font-size: 2rem;
+  font-weight: bold;
+  z-index: 99999999;
 }
 </style>
