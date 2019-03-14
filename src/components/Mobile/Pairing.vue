@@ -99,11 +99,11 @@ export default {
   justify-content: center;
   align-items: center;
   text-align: center;
-  color: $color-black;
   margin-bottom: $footer-height-xs;
   user-select: none;
   // min-height: calc(100vh - #{$footer-height-xs});
   overflow: hidden;
+  padding-top: 84vw;
 }
 
 .mobile-pairing__content {

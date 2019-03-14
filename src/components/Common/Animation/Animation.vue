@@ -1,7 +1,8 @@
 <template>
-  <div ref="container">
+  <div class="animation" :class="{ 'is-desktop': isDesktop }">
+    <div class="three-animation" ref="container"></div>
     <slot></slot>
-    <div class="ratio">{{ ratio }}</div>
+    <div class="ratio" v-if="debug">{{ ratio }}</div>
     <div class="debug-range" v-if="debug">
       <input type="range" min="0" max="100" step="0.001" value="0" @input="handleRange">
     </div>
@@ -126,7 +127,7 @@ export default {
       this.animation.setSize(this.windowWidth, this.windowHeight)
     })
 
-    this.animation = new ThreeAnimation(this.$refs.container, ANIMATION_SCREEN_VIEWPORT)
+    this.animation = new ThreeAnimation(this.$refs.container, ANIMATION_SCREEN_VIEWPORT, this.isDesktop)
     this.animation.setSize(window.innerWidth, window.innerHeight)
 
     const screen = this.animation.getScreen()
@@ -170,6 +171,18 @@ export default {
   // display: none;
 }
 
+.three-animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+width: 100vw;
+  height: 100vw;
+  .is-desktop & {
+    width: 100%;
+    height: 100%;
+  }
+}
+
 .renderer-webgl,
 .renderer-css {
   position: relative;
@@ -193,6 +206,9 @@ export default {
 
 .dg.ac {
   z-index: 999999;
+  @include media('md', $breakpoints-desc) {
+    top: 100vw;
+  }
 }
 
 #screen {

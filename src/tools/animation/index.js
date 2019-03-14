@@ -13,62 +13,57 @@ require('three/examples/js/controls/OrbitControls')
 require('three/examples/js/renderers/CSS3DRenderer')
 require('three/examples/js/lights/RectAreaLightUniformsLib')
 
-require('three/examples/js/shaders/CopyShader.js')
-require('three/examples/js/shaders/LuminosityShader.js')
-require('three/examples/js/shaders/SobelOperatorShader.js')
-require('three/examples/js/postprocessing/EffectComposer.js')
-require('three/examples/js/postprocessing/RenderPass.js')
-require('three/examples/js/postprocessing/ShaderPass.js')
-
-require('three/examples/js/postprocessing/EffectComposer.js')
-require('three/examples/js/postprocessing/RenderPass.js')
-require('three/examples/js/postprocessing/ShaderPass.js')
-require('three/examples/js/shaders/CopyShader.js')
-require('three/examples/js/shaders/LuminosityHighPassShader.js')
-require('three/examples/js/postprocessing/UnrealBloomPass.js')
-
 const sceneObject = require('./app.json')
 
-const CAMERA = (width, height) => {
-  return [
-    {
-      offset: 0,
-      options: {
-        duration: 4000,
-        delay: 0,
-        elasticity: 7,
-        endDelay: 0,
-        easing: 'easeInOutCubic'
-      },
-      values: {
-        positionX: 3.61,
-        positionY: 2.03,
-        positionZ: -0.4,
-        targetX: -6.44,
-        targetY: -0.92,
-        targetZ: 3.12
-      }
+const CAMERA_MOBILE = [
+  { 'offset': 0, 'options': { 'duration': 4000, 'delay': 0, 'elasticity': 7, 'endDelay': 0, 'easing': 'easeInOutCubic' }, 'values': { 'positionX': 0, 'positionY': -2.89, 'positionZ': 7.16, 'targetX': 0, 'targetY': -2.87, 'targetZ': 5.03 } },
+  { 'offset': 1000, 'options': { 'duration': 4000, 'delay': 0, 'elasticity': 7, 'endDelay': 0, 'easing': 'easeInOutCubic' }, 'values': { 'positionX': 0, 'positionY': 0.31, 'positionZ': 7.55, 'targetX': 0, 'targetY': -47.71, 'targetZ': -39.52 } },
+  { 'offset': 5000, 'options': { 'duration': 7000, 'delay': 0, 'elasticity': 7, 'endDelay': 0, 'easing': 'easeInOutCubic' }, 'values': { 'positionX': 0, 'positionY': 24.19, 'positionZ': 10.43, 'targetX': 0, 'targetY': -47.7, 'targetZ': 7.43 } }
+]
+
+const PHONE_MOBILE = [
+  { 'offset': 0, 'options': { 'duration': 4000, 'delay': 0, 'elasticity': 7, 'endDelay': 0, 'easing': 'easeInOutBack' }, 'values': { 'positionX': 0, 'positionY': -2.835, 'positionZ': 5.132, 'rotationX': 1.6, 'rotationY': 0, 'rotationZ': 0 } },
+  { 'offset': 1000, 'options': { 'duration': 7000, 'delay': 0, 'elasticity': 7, 'endDelay': 0, 'easing': 'easeInOutCubic' }, 'values': { 'positionX': 0, 'positionY': -2.835, 'positionZ': 5.132, 'rotationX': 0.062, 'rotationY': 0.062, 'rotationZ': 0 } }
+]
+
+const CAMERA = [
+  {
+    offset: 0,
+    options: {
+      duration: 4000,
+      delay: 0,
+      elasticity: 7,
+      endDelay: 0,
+      easing: 'easeInOutCubic'
     },
-    {
-      offset: 1000,
-      options: {
-        duration: 8000,
-        delay: 0,
-        elasticity: 7,
-        endDelay: 0,
-        easing: 'easeInOutCubic'
-      },
-      values: {
-        positionX: 6.4,
-        positionY: -2.39,
-        positionZ: 14,
-        targetX: -6.75,
-        targetY: -2,
-        targetZ: 0
-      }
+    values: {
+      positionX: 3.61,
+      positionY: 2.03,
+      positionZ: -0.4,
+      targetX: -6.44,
+      targetY: -0.92,
+      targetZ: 3.12
     }
-  ]
-}
+  },
+  {
+    offset: 1000,
+    options: {
+      duration: 8000,
+      delay: 0,
+      elasticity: 7,
+      endDelay: 0,
+      easing: 'easeInOutCubic'
+    },
+    values: {
+      positionX: 6.4,
+      positionY: -2.39,
+      positionZ: 14,
+      targetX: -6.75,
+      targetY: -2,
+      targetZ: 0
+    }
+  }
+]
 
 const PHONE = [
   {
@@ -90,13 +85,13 @@ const PHONE = [
     }
   },
   {
-    offset: 1000,
+    offset: 3000,
     options: {
       duration: 8000,
       delay: 0,
       elasticity: 7,
       endDelay: 0,
-      easing: 'easeOutBack'
+      easing: 'easeInOutBack'
     },
     values: {
       positionX: 0,
@@ -115,7 +110,7 @@ const round = value => {
 const ANCHOR = new THREE.Vector3(0, 0, 0)
 
 export default class ThreeAnimation extends EventEmitter {
-  constructor (container, viewport) {
+  constructor (container, viewport, isDesktop) {
     super()
 
     this.loader = new THREE.ObjectLoader()
@@ -123,6 +118,8 @@ export default class ThreeAnimation extends EventEmitter {
 
     this.time = null
     this.prevTime = null
+
+    this.isDesktop = isDesktop
 
     this.webgl = {
       scene: null,
@@ -133,9 +130,6 @@ export default class ThreeAnimation extends EventEmitter {
       scene: new THREE.Scene(),
       renderer: new THREE.CSS3DRenderer()
     }
-
-    this.composer = null
-    this.effectSobel = null
 
     this.displayScreen = null
     this.displayPhone = null
@@ -161,13 +155,6 @@ export default class ThreeAnimation extends EventEmitter {
     }
 
     this.wrapper = null
-
-    this.params = {
-      exposure: 1.1,
-      bloomStrength: 3,
-      bloomThreshold: 1,
-      bloomRadius: 1
-    }
 
     this.cameraAnimation = {
       positionX: 0,
@@ -196,6 +183,8 @@ export default class ThreeAnimation extends EventEmitter {
 
     this.animationFinished = false
 
+    this.isMobile = true
+
     this.load(sceneObject)
     // this.initBloom()
   }
@@ -211,7 +200,6 @@ export default class ThreeAnimation extends EventEmitter {
         this.setCamera(camera)
 
         this.init()
-        this.initShader()
         this.animateEnter()
       })
     })
@@ -314,7 +302,7 @@ export default class ThreeAnimation extends EventEmitter {
       this.camera.updateMatrixWorld()
       this.camera.updateProjectionMatrix()
 
-      let sourceValues = CAMERA(this.width, this.height)[init]
+      let sourceValues = CAMERA[init]
 
       let newValues = {
         offset: sourceValues.offset,
@@ -409,60 +397,6 @@ export default class ThreeAnimation extends EventEmitter {
     this.css.scene.add(cssObject)
 
     return container
-  }
-
-  initShader () {
-    this.composer = new THREE.EffectComposer(this.webgl.renderer)
-    this.composer.setSize(this.width, this.height)
-    let renderPass = new THREE.RenderPass(this.webgl.scene, this.camera)
-    this.composer.addPass(renderPass)
-    // color to grayscale conversion
-    const effectGrayScale = new THREE.ShaderPass(THREE.LuminosityShader)
-    this.composer.addPass(effectGrayScale)
-    // you might want to use a gaussian blur filter before
-    // the next pass to improve the result of the Sobel operator
-    // Sobel operator
-    this.effectSobel = new THREE.ShaderPass(THREE.SobelOperatorShader)
-    this.effectSobel.renderToScreen = true
-    this.effectSobel.uniforms.resolution.value.x = window.innerWidth
-    this.effectSobel.uniforms.resolution.value.y = window.innerHeight
-    this.composer.addPass(this.effectSobel)
-  }
-
-  initBloom () {
-    var renderScene = new THREE.RenderPass(this.webgl.scene, this.camera)
-    this.bloomPass = new THREE.UnrealBloomPass(
-      new THREE.Vector2(this.width, this.height),
-      1.5,
-      0.4,
-      0.85
-    )
-    this.bloomPass.renderToScreen = true
-    this.bloomPass.threshold = this.params.bloomThreshold
-    this.bloomPass.strength = this.params.bloomStrength
-    this.bloomPass.radius = this.params.bloomRadius
-    this.composer = new THREE.EffectComposer(this.webgl.renderer)
-    this.composer.setSize(this.width, this.height)
-    this.composer.addPass(renderScene)
-    this.composer.addPass(this.bloomPass)
-
-    let folder = this.gui.addFolder('Bloom')
-
-    folder.add(this.params, 'exposure', 0.1, 2).onChange(value => {
-      this.webgl.renderer.toneMappingExposure = Math.pow(value, 4.0)
-    })
-    folder.add(this.params, 'bloomThreshold', 0.0, 1.0).onChange(value => {
-      this.bloomPass.threshold = Number(value)
-    })
-    folder.add(this.params, 'bloomStrength', 0.0, 3.0).onChange(value => {
-      this.bloomPass.strength = Number(value)
-    })
-    folder
-      .add(this.params, 'bloomRadius', 0.0, 1.0)
-      .step(0.01)
-      .onChange(value => {
-        this.bloomPass.radius = Number(value)
-      })
   }
 
   addGui (rectLight, rectLightPhone) {
@@ -565,7 +499,11 @@ export default class ThreeAnimation extends EventEmitter {
       this.sphere.position.copy(this.cameraTarget)
     }
 
-    this.camera.zoom = Math.min(Math.max((this.width / this.height) / 1.9, 0.7), 1.3)
+    if (this.isDesktop) {
+      this.camera.zoom = Math.min(Math.max((this.width / this.height) / 1.9, 0.7), 1.3)
+    } else {
+      this.camera.zoom = 1
+    }
 
     this.camera.updateMatrixWorld()
   }
@@ -578,6 +516,8 @@ export default class ThreeAnimation extends EventEmitter {
     this.objectPhone.position.x = this.phoneAnimation.positionX
     this.objectPhone.position.y = this.phoneAnimation.positionY
     this.objectPhone.position.z = this.phoneAnimation.positionZ
+
+    this.objectPhone.updateMatrixWorld()
   }
 
   addOrbitControls () {
@@ -594,14 +534,15 @@ export default class ThreeAnimation extends EventEmitter {
   }
 
   setPhoneRotation (alpha, beta) {
+    return
     if (!this.animationFinished) {
-      return
+
     }
     // this.objectPhone.position.x = 0
     // this.objectPhone.position.y = -3
 
     this.phoneAnimation.rotationX = THREE.Math.degToRad(beta * 27 + 0)
-    this.phoneAnimation.rotationY = THREE.Math.degToRad(alpha * 36 - 0)
+    this.phoneAnimation.rotationY = THREE.Math.degToRad(alpha * 36 - 10)
 
     this.updatePhone()
 
@@ -645,34 +586,39 @@ export default class ThreeAnimation extends EventEmitter {
   }
 
   setSize (width, height) {
-    this.width = width
-    this.height = height
+    const w = width
+    const h = this.isDesktop ? height : width * 2
 
-    this.setCameraValues(CAMERA(this.width, this.height)[1])
-    this.updateCamera()
+    this.width = w
+    this.height = h
+
+    if (this.animationFinished) {
+      if (this.isDesktop) {
+        this.setCameraValues(CAMERA[1])
+      } else {
+        this.setCameraValues(CAMERA_MOBILE[1])
+      }
+      this.updateCamera()
+    }
 
     if (this.camera) {
       // this.camera.aspect = this.width / this.height
-      this.camera.aspect = this.width / this.height
+      this.camera.aspect = w / h
       this.camera.updateProjectionMatrix()
     }
 
     if (this.webgl.renderer) {
-      this.webgl.renderer.setSize(width, height)
+      this.webgl.renderer.setSize(w, h)
     }
 
     if (this.css.renderer) {
-      this.css.renderer.setSize(width, height)
-    }
-
-    if (this.composer) {
-      this.composer.setSize(width, height)
+      this.css.renderer.setSize(w, h)
     }
   }
 
   animate (t) {
     if (this.animeAnimation) {
-      // this.animeAnimation.tick(t)
+      this.animeAnimation.tick(t)
     }
 
     this.time = performance.now()
@@ -681,7 +627,6 @@ export default class ThreeAnimation extends EventEmitter {
     this.updatePhone()
 
     this.webgl.renderer.render(this.webgl.scene, this.camera)
-    // this.composer.render(this.webgl.scene, this.camera)
     this.css.renderer.render(this.css.scene, this.camera)
 
     this.prevTime = this.time
@@ -698,16 +643,8 @@ export default class ThreeAnimation extends EventEmitter {
   }
 
   animateEnter () {
-    this.setCameraValues(CAMERA(this.width, this.height)[1])
-    this.setPhoneValues(PHONE[1])
-    this.updateCamera()
-    this.updatePhone()
-    this.updateGui()
-    return
-
     let animeAnimation = anime.timeline({
       autoplay: false,
-      direction: 'reverse',
       complete: () => {
         this.animationFinished = true
       },
@@ -718,8 +655,17 @@ export default class ThreeAnimation extends EventEmitter {
       }
     })
 
-    this.addToTimeline('camera', animeAnimation, CAMERA(this.width, this.height))
-    this.addToTimeline('phone', animeAnimation, PHONE)
+    if (this.isDesktop) {
+      this.setPhoneValues(PHONE[1])
+      this.setCameraValues(CAMERA[1])
+      this.addToTimeline('camera', animeAnimation, CAMERA)
+      this.addToTimeline('phone', animeAnimation, PHONE)
+    } else {
+      this.setPhoneValues(PHONE_MOBILE[0])
+      this.setCameraValues(CAMERA_MOBILE[0])
+      this.addToTimeline('camera', animeAnimation, CAMERA_MOBILE)
+      this.addToTimeline('phone', animeAnimation, PHONE_MOBILE)
+    }
 
     this.animeAnimation = animeAnimation
   }
@@ -751,7 +697,13 @@ export default class ThreeAnimation extends EventEmitter {
   }
 
   setPhoneValues ({ values }) {
-    this.phoneAnimation = values
+    this.phoneAnimation.positionX = values.positionX
+    this.phoneAnimation.positionY = values.positionY
+    this.phoneAnimation.positionZ = values.positionZ
+
+    this.phoneAnimation.rotationX = values.rotationX
+    this.phoneAnimation.rotationY = values.rotationY
+    this.phoneAnimation.rotationZ = values.rotationZ
   }
 
   addToTimeline (target, timeline, frames) {
