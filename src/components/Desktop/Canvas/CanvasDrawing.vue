@@ -31,6 +31,8 @@ export default {
 
   methods: {
     handleSizes (state) {
+      console.log('HANDLE SIZES')
+      console.log(state.sizes.viewport)
       this.setCanvasSizes()
       this.canvasState.updateSizes(state.sizes.viewport)
     },

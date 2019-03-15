@@ -73,7 +73,7 @@ export default {
   @include media('sm') {
     .hover {
       &:hover {
-        background: white;
+        background: $alt-color-darker-transparent;
       }
     }
   }

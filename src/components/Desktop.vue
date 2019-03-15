@@ -1,5 +1,5 @@
 <template>
-  <div class="desktop relative" :class="{ 'is-drawing': isDrawing }">
+  <div class="desktop relative">
     <div class="desktop-container relative overlay material">
       <animation
         v-if="!isDrawing"
@@ -58,6 +58,8 @@ export default {
 
   watch: {
     isConnected (isConnected) {
+      this.updateViewport()
+
       if (!isConnected && !this.isSkipped) {
         this.pairing = {}
         this.getPairingCode()
@@ -65,6 +67,8 @@ export default {
     },
 
     isSkipped (isSkipped) {
+      this.updateViewport()
+
       if (isSkipped && this.$peersox.isConnected()) {
         this.$peersox.close()
       }
@@ -117,7 +121,7 @@ export default {
     updateViewport () {
       let viewport = ANIMATION_SCREEN_VIEWPORT
 
-      if (this.isConnected) {
+      if (this.isConnected || this.isSkipped) {
         viewport = getViewportSize()
       }
 

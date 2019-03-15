@@ -1,12 +1,17 @@
 <template>
-  <div class="animation" :class="{ 'is-desktop': isDesktop }">
-    <div class="three-animation" ref="container"></div>
-    <slot></slot>
-    <div class="ratio" v-if="debug">{{ ratio }}</div>
-    <div class="debug-range" v-if="debug">
-      <input type="range" min="0" max="100" step="0.001" value="0" @input="handleRange">
+  <transition
+    v-on:leave="leave"
+    v-on:after-leave="onAfterLeave"
+  >
+    <div class="animation" :class="{ 'is-desktop': isDesktop }">
+      <div class="three-animation" ref="container"></div>
+      <slot></slot>
+      <div class="ratio" v-if="debug">{{ ratio }}</div>
+      <div class="debug-range" v-if="debug">
+        <input type="range" min="0" max="100" step="0.001" value="0" @input="handleRange">
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -35,8 +40,8 @@ export default {
     return {
       isRendered: false,
 
-      alpha: 180,
-      beta: 0,
+      x: 180,
+      y: 0,
 
       windowWidth: 958,
       windowHeight: 542,
@@ -46,12 +51,12 @@ export default {
       mouseEnabled: true,
       sceneVisible: true,
 
-      debug: false
+      debug: true
     }
   },
 
   computed: {
-    ...mapState(['isConnected']),
+    ...mapState(['isConnected', 'isSkipped']),
 
     ratio () {
       return this.windowWidth / this.windowHeight
@@ -65,21 +70,35 @@ export default {
       }
     },
 
-    alpha (alpha) {
-      this.updateRotation(alpha, this.beta)
+    x (x) {
+      this.updateRotation(x, this.y)
     },
 
-    beta (beta) {
-      this.updateRotation(this.alpha, beta)
+    y (y) {
+      this.updateRotation(this.x, y)
     }
   },
 
   methods: {
+    leave (el, done) {
+      this.animation.animateLeave(() => {
+        done()
+      })
+    },
+
+    onAfterLeave () {
+      this.instance.$destroy()
+      this.instance.$el.remove()
+      this.instance = null
+      this.animation.dispose()
+    },
+
     handleRange (e) {
       this.animation.seekAnimation(e.target.value)
     },
-    updateRotation (alpha, beta) {
-      const coordinates = this.animation.setPhoneRotation(alpha, beta)
+
+    updateRotation (x, y) {
+      const coordinates = this.animation.setPhoneRotation(x, y)
       if (!coordinates) return
       this.$vuetamin.store.mutate('updatePointer', { coordinates })
     },
@@ -109,8 +128,8 @@ export default {
     },
 
     setOrientation (x, y) {
-      this.alpha = -(x - (this.windowWidth / 2)) / (this.windowWidth / 2)
-      this.beta = -(y - (this.windowHeight / 2)) / (this.windowHeight / 2)
+      this.x = x / this.windowWidth
+      this.y = y / this.windowHeight
     },
 
     updateSizes () {
@@ -127,34 +146,30 @@ export default {
       this.animation.setSize(this.windowWidth, this.windowHeight)
     })
 
-    this.animation = new ThreeAnimation(this.$refs.container, ANIMATION_SCREEN_VIEWPORT, this.isDesktop)
-    this.animation.setSize(window.innerWidth, window.innerHeight)
+    this.animation = new ThreeAnimation(this.$refs.container, ANIMATION_SCREEN_VIEWPORT, this.isDesktop, this.debug)
 
     const screen = this.animation.getScreen()
     const DrawingCtor = this.$root.constructor.extend(Drawing)
     this.instance = new DrawingCtor({
       parent: this,
       propsData: {
-        showToolbar: true
+        showToolbar: true,
+        isDrawing: false
       }
     }).$mount(screen)
 
     this.animation.play()
+    this.animation.setSize(this.windowWidth, this.windowHeight)
 
     window.addEventListener('mousemove', this.onMouseMove)
     window.addEventListener('mousedown', this.onMouseDown)
     window.addEventListener('mouseup', this.onMouseUp)
   },
 
-  beforeDestroy () {
+  destroyed () {
     window.removeEventListener('mousemove', this.onMouseMove)
     window.removeEventListener('mousedown', this.onMouseDown)
     window.removeEventListener('mouseup', this.onMouseUp)
-
-    this.instance.$destroy()
-    this.instance.$el.remove()
-    this.instance = null
-    this.animation.dispose()
   }
 }
 </script>
@@ -172,11 +187,12 @@ export default {
 }
 
 .three-animation {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-width: 100vw;
-  height: 100vw;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
   .is-desktop & {
     width: 100%;
     height: 100%;
@@ -206,7 +222,7 @@ width: 100vw;
 
 .dg.ac {
   z-index: 999999;
-  @include media('md', $breakpoints-desc) {
+  @include media('sm', $breakpoints-desc) {
     top: 100vw;
   }
 }

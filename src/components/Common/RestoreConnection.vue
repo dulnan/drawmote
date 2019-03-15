@@ -137,8 +137,7 @@ export default {
   position: sticky;
   bottom: $footer-height-xs;
   z-index: $index-footer - 1;
-  background: white;
-  border-top: 1px solid $alt-color-light;
+  background: $alt-color-darker-transparent;
   margin-top: 4rem;
 
   opacity: 1;
@@ -151,9 +150,11 @@ export default {
 
   @include media('sm') {
     position: absolute;
-    left: 0;
-    width: 100%;
+    left: 1rem;
+    right: 1rem;
     flex-direction: row;
+    border-radius: $border-radius-default;
+    bottom: calc(#{$footer-height-xs} + 0.5rem);
   }
 
   &.appear-enter-active, &.appear-leave-active {

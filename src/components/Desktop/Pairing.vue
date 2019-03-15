@@ -14,9 +14,9 @@
         </div>
       </div>
       <div class="pairing__actions mrgt">
-        <!-- <p class="text-muted text-light mrgv0 pairing-skip">
+        <p class="text-muted text-light mrgv0 pairing-skip">
           <button class="btn btn--bare" @click="skipPairing">{{ $t('desktop.nophone') }}</button>
-        </p> -->
+        </p>
         <p class="text-muted text-light pairing-lead mrg0 text-brand" v-if="isBlocked">
           {{ $t('desktop.tooManyAttempts') }}
         </p>

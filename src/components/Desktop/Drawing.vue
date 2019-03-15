@@ -1,5 +1,5 @@
 <template>
-  <div class="drawing">
+  <div class="drawing" :class="{ 'is-drawing': isDrawing }">
     <toolbar ref="toolbar" v-if="showToolbar" />
     <div class="drawing-area" ref="canvasContainer" :style="drawingAreaStyle"></div>
     <canvas-drawing />
@@ -32,6 +32,10 @@ export default {
 
   props: {
     showToolbar: {
+      type: Boolean,
+      default: true
+    },
+    isDrawing: {
       type: Boolean,
       default: true
     }
@@ -129,7 +133,7 @@ export default {
     transition: 0.5s;
   }
   &.appear-enter-active {
-    transition-delay: 3s;
+    transition-delay: 3.5s;
   }
   &.appear-enter, &.appear-leave-to {
     opacity: 0;
