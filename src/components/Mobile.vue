@@ -32,7 +32,6 @@ export default {
   methods: {
     handleConnected () {
       this.$store.dispatch('connect')
-      this.$mote.start()
     },
 
     handleConnectionClosed () {
@@ -41,6 +40,10 @@ export default {
     },
 
     handleMessage (rawMessage) {
+      if (!this.isConnected) {
+        return
+      }
+
       const { event, data } = decodeEventMessage(rawMessage)
 
       if (event === 'viewport') {
@@ -53,13 +56,17 @@ export default {
     },
 
     handleDataChange (data) {
-      this.$peersox.send(data)
+      if (this.isConnected) {
+        this.$peersox.send(data)
+      }
     }
   },
 
   mounted () {
     this.$peersox.on('peerConnected', this.handleConnected.bind(this))
     this.$peersox.on('connectionClosed', this.handleConnectionClosed.bind(this))
+
+    this.$mote.start()
 
     this.$peersox.onString = this.handleMessage.bind(this)
     this.$mote._onDataChange = this.handleDataChange.bind(this)

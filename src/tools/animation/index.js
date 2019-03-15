@@ -535,15 +535,15 @@ export default class ThreeAnimation extends EventEmitter {
     }
   }
 
-  setPhoneRotation (x, y) {
+  setPhoneRotationFromGyro ({ alpha, beta }) {
+    this.phoneAnimation.rotationX = THREE.Math.degToRad(beta - 40)
+    this.phoneAnimation.rotationY = THREE.Math.degToRad(alpha)
+  }
+
+  setPhoneRotationFromMouse (x, y) {
     if (!this.animationFinished) {
       return
     }
-    // this.objectPhone.position.x = 0
-    // this.objectPhone.position.y = -3
-
-    // x    -0.259      0.818
-    // y    -5.391      -7.178
 
     const rangeX = [-0.26, 0.82]
     const rangeY = [-0.95, 0.95]
@@ -554,6 +554,12 @@ export default class ThreeAnimation extends EventEmitter {
     this.updatePhone()
 
     this.objectPhone.updateMatrixWorld()
+  }
+
+  getIntersection () {
+    if (!this.animationFinished) {
+      return
+    }
 
     let direction = new THREE.Vector3()
     let position = new THREE.Vector3()

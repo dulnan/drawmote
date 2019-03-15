@@ -51,7 +51,7 @@ export default {
       mouseEnabled: true,
       sceneVisible: true,
 
-      debug: true
+      debug: false
     }
   },
 
@@ -80,6 +80,14 @@ export default {
   },
 
   methods: {
+    loop () {
+      const orientation = this.$mote.gyroscope.getOrientation(100)
+
+      this.animation.setPhoneRotationFromGyro(orientation)
+      this.getIntersection()
+
+      window.requestAnimationFrame(this.loop)
+    },
     leave (el, done) {
       this.animation.animateLeave(() => {
         done()
@@ -98,7 +106,12 @@ export default {
     },
 
     updateRotation (x, y) {
-      const coordinates = this.animation.setPhoneRotation(x, y)
+      this.animation.setPhoneRotationFromMouse(x, y)
+      this.getIntersection()
+    },
+
+    getIntersection () {
+      const coordinates = this.animation.getIntersection()
       if (!coordinates) return
       this.$vuetamin.store.mutate('updatePointer', { coordinates })
     },
@@ -164,6 +177,10 @@ export default {
     window.addEventListener('mousemove', this.onMouseMove)
     window.addEventListener('mousedown', this.onMouseDown)
     window.addEventListener('mouseup', this.onMouseUp)
+
+    if (!this.isDesktop) {
+      this.loop()
+    }
   },
 
   destroyed () {
