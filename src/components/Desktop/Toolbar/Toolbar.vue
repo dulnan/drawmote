@@ -205,6 +205,7 @@ export default {
   right: 0;
   height: $toolbar-height - 1rem;
   user-select: none;
+  background: $alt-color-darker;
   @include media('md') {
     height: $toolbar-height;
   }
@@ -225,7 +226,7 @@ export default {
         margin-right: 0.125rem;
       }
       @include media('md') {
-        margin-right: 0.25rem;
+        margin-right: 0.5rem;
       }
       @include media('lg') {
         margin-right: 0.5rem;

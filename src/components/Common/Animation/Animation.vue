@@ -203,6 +203,10 @@ export default {
   // display: none;
 }
 
+.animation {
+  user-select: none;
+}
+
 .three-animation {
   position: fixed;
   top: 0;

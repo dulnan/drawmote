@@ -1,9 +1,9 @@
 <template>
   <div class="overlay pairing-desktop absolute flex" :style="transformOriginStyle">
     <div class="pairing-container">
-      <h1 class="text-heavy h1 text-white">drawmote</h1>
-      <p class="h2 text-bold mrgb+ text-muted-white">{{ $t('subtitle') }}</p>
-      <p class="text-muted-white mrgt0 h3 pairing-lead">{{ $t('desktop.lead') }}</p>
+      <h1 class="text-heavy h1">drawmote</h1>
+      <p class="h2 text-bold mrgb+ text-muted">{{ $t('subtitle') }}</p>
+      <p class="text-muted mrgt0 h3 pairing-lead">{{ $t('desktop.lead') }}</p>
       <div class="code code--desktop sm-mrgt md-mrgt+">
         <div class="code__content">
           <div v-for="(number, index) in pairingCodeNumbers" :key="index" class="code__item" :class="{ 'visible': hasCode }">

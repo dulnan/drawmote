@@ -137,7 +137,7 @@ export default {
   position: sticky;
   bottom: $footer-height-xs;
   z-index: $index-footer - 1;
-  background: $alt-color-darker-transparent;
+  background: $alt-color-dark;
   margin-top: 4rem;
 
   opacity: 1;

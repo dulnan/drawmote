@@ -60,7 +60,6 @@ export default {
   bottom: 0;
   user-select: none;
   z-index: $index-footer;
-  color: white;
 }
 
 .footer__content {
@@ -73,7 +72,7 @@ export default {
   @include media('sm') {
     .hover {
       &:hover {
-        background: $alt-color-darker-transparent;
+        background: $alt-color-dark;
       }
     }
   }

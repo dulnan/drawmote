@@ -49,11 +49,11 @@ export default {
   overflow: visible;
   .toolbar-button {
     border-radius: 100%;
-    width: 1em;
-    height: 1em;
+    width: 0.75em;
+    height: 0.75em;
     @include media('lg') {
-      width: 0.6em;
-      height: 0.6em;
+      width: 0.5em;
+      height: 0.5em;
     }
 
     &:hover, .hover & {

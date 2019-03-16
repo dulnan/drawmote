@@ -1,41 +1,28 @@
 export const COLORS = [
   {
-    name: 'lightblue',
-    hex: '#3cc6ed'
+    name: 'red',
+    hex: '#F06D31'
   },
   {
-    name: 'darkblue',
-    hex: '#204e87'
+    name: 'blue',
+    hex: '#48bec5'
+  },
+  {
+    name: 'green',
+    hex: '#97d779'
   },
   {
     name: 'yellow',
-    hex: '#ffb750'
-  },
-  {
-    name: 'orange',
-    hex: '#f36747'
-  },
-  {
-    name: 'lightgreen',
-    hex: '#c3d57f'
-  },
-  {
-    name: 'darkgreen',
-    hex: '#798f16'
+    hex: '#ffd52b'
   },
   {
     name: 'white',
-    hex: '#ffffff'
+    hex: '#f0f1b7'
   },
   {
-    name: 'grey',
-    hex: '#e3e3e3'
-  },
-  {
-    name: 'darkbrown',
-    hex: '#3e372e'
+    name: 'black',
+    hex: '#201123'
   }
-
 ]
 
 export const DEFAULT_COLOR = COLORS[3]

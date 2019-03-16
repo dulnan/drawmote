@@ -101,8 +101,8 @@ export default {
         const brushY = state.sizes.toolbarRect.height + backgroundRadius + 24
 
         context.beginPath()
-        context.fillStyle = 'white'
-        context.strokeStyle = '#dedede'
+        context.fillStyle = '#2a192d'
+        context.strokeStyle = '#39293c'
         context.lineWidth = 1
         context.setLineDash([])
         context.arc(brushX, brushY, backgroundRadius, 0, Math.PI * 2, true)

@@ -128,7 +128,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background: #392248;
+  background: $alt-color-darker;
   &.appear-enter-active, &.appear-leave-active {
     transition: 0.5s;
   }

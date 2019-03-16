@@ -468,7 +468,6 @@ export default class ThreeAnimation extends EventEmitter {
 
   setCamera (value) {
     this.camera = value
-    // this.camera.aspect = this.width / this.height
     this.camera.aspect = 1
     this.camera.updateProjectionMatrix()
   }
@@ -494,7 +493,6 @@ export default class ThreeAnimation extends EventEmitter {
     }
 
     if (this.camera) {
-      // this.camera.aspect = this.width / this.height
       this.camera.aspect = w / h
       this.updateCamera()
     }

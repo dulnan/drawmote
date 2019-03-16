@@ -18,16 +18,8 @@
   hyphens: auto;
 }
 
-.bg-white {
-  background: white;
-}
-
 .text-white {
-  color: white;
-}
-
-.text-muted-white {
-  color: rgba(white, 0.8);
+  color: $text-color;
 }
 
 .label {

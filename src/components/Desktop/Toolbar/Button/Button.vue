@@ -82,7 +82,7 @@ export default {
     cursor: default;
   }
   &.hover:not(.disabled):not(.toolbar-item--colors) {
-    background: $alt-color-lighter !important;
+    background: $alt-color-dark !important;
   }
 }
 </style>
