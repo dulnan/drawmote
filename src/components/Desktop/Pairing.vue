@@ -1,5 +1,5 @@
 <template>
-  <div class="overlay pairing-desktop absolute flex" :style="transformOriginStyle">
+  <div class="overlay pairing-desktop absolute flex" :style="transformOriginStyle" :class="{ 'is-desktop-animation': desktopAnimation }">
     <div class="pairing-container">
       <h1 class="text-heavy h1">drawmote</h1>
       <p class="h2 text-bold mrgb+ text-muted">{{ $t('subtitle') }}</p>
@@ -58,6 +58,10 @@ export default {
       required: true
     },
     isBlocked: {
+      type: Boolean,
+      default: false
+    },
+    desktopAnimation: {
       type: Boolean,
       default: false
     }
@@ -147,19 +151,16 @@ export default {
 .pairing-desktop {
   overflow: hidden;
   padding: 2rem 3vw;
-  z-index: 800;
-  align-items: center;
+  padding-top: 84vw;
   justify-content: center;
-  width: 50%;
-  // user-select: none;
-  // background: url('/pattern@1x.png');
-  // @media only screen and (min--moz-device-pixel-ratio: 2),
-  // only screen and (-o-min-device-pixel-ratio: 2/1),
-  // only screen and (-webkit-min-device-pixel-ratio: 2),
-  // only screen and (min-device-pixel-ratio: 2) {
-  //   background: url('/pattern@2x.png');
-  //   background-size: 8px 8px;
-  // }
+  text-align: center;
+  &.is-desktop-animation {
+    text-align: left;
+    padding: 2rem 3vw;
+    z-index: 800;
+    align-items: center;
+    width: 50%;
+  }
   @include media('md') {
     padding: 0;
   }
@@ -169,13 +170,15 @@ export default {
 }
 
 .pairing-container {
-  padding-bottom: 13vh;
+  padding-bottom: 7vh;
   position: relative;
 }
 
 .pairing__actions {
-  display: flex;
-  align-items: center;
+  @include media('md') {
+    display: flex;
+    align-items: center;
+  }
 }
 
 .code--desktop {
@@ -217,13 +220,12 @@ export default {
 
 .pairing-lead {
   max-width: 23rem;
-  margin: 0 auto;
   text-align: justify;
   @include media('md') {
     max-width: 29rem;
   }
   @include media('lg') {
-  max-width: 35rem;
+    max-width: 35rem;
     margin: 0;
   }
 }

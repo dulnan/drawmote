@@ -19,8 +19,8 @@ import { mapState } from 'vuex'
 
 import Drawing from '@/components/Desktop/Drawing.vue'
 import ThreeAnimation from '@/tools/animation'
-import { getViewportSize } from '@/tools/helpers'
 import { ANIMATION_SCREEN_VIEWPORT } from '@/settings'
+import threads from '@/store/vuetamin/threads'
 
 import debouncedResize from 'debounced-resize'
 
@@ -33,7 +33,11 @@ export default {
 
   props: {
     isDrawing: Boolean,
-    isDesktop: Boolean
+    isDesktop: Boolean,
+    desktopAnimation: {
+      type: Boolean,
+      default: false
+    }
   },
 
   data () {
@@ -64,12 +68,6 @@ export default {
   },
 
   watch: {
-    brush (coordinates) {
-      if (coordinates) {
-
-      }
-    },
-
     x (x) {
       this.updateRotation(x, this.y)
     },
@@ -88,6 +86,7 @@ export default {
 
       window.requestAnimationFrame(this.loop)
     },
+
     leave (el, done) {
       this.animation.animateLeave(() => {
         done()
@@ -159,7 +158,7 @@ export default {
       this.animation.setSize(this.windowWidth, this.windowHeight)
     })
 
-    this.animation = new ThreeAnimation(this.$refs.container, ANIMATION_SCREEN_VIEWPORT, this.isDesktop, this.debug)
+    this.animation = new ThreeAnimation(this.$refs.container, ANIMATION_SCREEN_VIEWPORT, this.desktopAnimation, this.debug)
 
     const screen = this.animation.getScreen()
     const DrawingCtor = this.$root.constructor.extend(Drawing)
@@ -178,15 +177,27 @@ export default {
     window.addEventListener('mousedown', this.onMouseDown)
     window.addEventListener('mouseup', this.onMouseUp)
 
+    window.addEventListener('touchstart', this.onMouseDown)
+    window.addEventListener('touchend', this.onMouseUp)
+    window.addEventListener('touchcancel', this.onMouseUp)
+
     if (!this.isDesktop) {
       this.loop()
     }
+
+    this.animation.on('animationEnd', () => {
+      this.$vuetamin.trigger(threads.SIZES)
+    })
   },
 
   destroyed () {
     window.removeEventListener('mousemove', this.onMouseMove)
     window.removeEventListener('mousedown', this.onMouseDown)
     window.removeEventListener('mouseup', this.onMouseUp)
+
+    window.removeEventListener('touchstart', this.onMouseDown)
+    window.removeEventListener('touchend', this.onMouseUp)
+    window.removeEventListener('touchcancel', this.onMouseUp)
   }
 }
 </script>

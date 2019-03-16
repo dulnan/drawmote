@@ -4,10 +4,12 @@
       <animation
         v-if="!isDrawing"
         :is-desktop="true"
+        :desktop-animation="desktopAnimation"
       >
         <pairing
           :pairing="pairing"
           :is-blocked="isBlocked"
+          :desktop-animation="desktopAnimation"
           @pairingTimeout="handleTimeout"
         />
       </animation>
@@ -40,7 +42,8 @@ export default {
   data () {
     return {
       pairing: {},
-      isBlocked: false
+      isBlocked: false,
+      viewportWidth: 700
     }
   },
 
@@ -53,6 +56,10 @@ export default {
 
     isDrawing () {
       return this.isConnected || this.isSkipped
+    },
+
+    desktopAnimation () {
+      return this.viewportWidth >= 1024
     }
   },
 
@@ -156,6 +163,10 @@ export default {
     handleBinary (intArray) {
       this.$mote.handleRemoteData(intArray)
     }
+  },
+
+  beforeMount () {
+    this.viewportWidth = getViewportSize().width
   },
 
   mounted () {

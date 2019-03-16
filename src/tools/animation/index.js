@@ -531,6 +531,7 @@ export default class ThreeAnimation extends EventEmitter {
       autoplay: false,
       complete: () => {
         this.animationFinished = true
+        this.emit('animationEnd')
       },
       update: () => {
         this.updateGui()
