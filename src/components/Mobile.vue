@@ -1,8 +1,8 @@
 <template>
   <div class="mobile h-100">
-    <animation-wrapper v-if="!isConnected">
+    <animation v-if="!isConnected">
       <pairing />
-    </animation-wrapper>
+    </animation>
 
     <controlling v-if="isConnected" />
   </div>
@@ -10,7 +10,7 @@
 
 <script>
 import Pairing from '@/components/Mobile/Pairing.vue'
-import AnimationWrapper from '@/components/Common/Animation/AnimationWrapper.vue'
+import Animation from '@/components/Common/Animation/Animation.vue'
 import Controlling from '@/components/Mobile/Controlling.vue'
 
 import { mapState } from 'vuex'
@@ -21,7 +21,7 @@ export default {
 
   components: {
     Pairing,
-    AnimationWrapper,
+    Animation,
     Controlling
   },
 
