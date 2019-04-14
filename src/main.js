@@ -5,6 +5,7 @@ import Vue from 'vue'
 import App from './App.vue'
 
 import * as Sentry from '@sentry/browser'
+import * as Integrations from '@sentry/integrations'
 
 import Vuetamin from 'vuetamin'
 import VueResize from 'vue-resize'
@@ -32,7 +33,7 @@ if (!window.__PRERENDERING && process.env.VUE_APP_SERVER_ENV !== 'local') {
     dsn: 'https://b0df1bd1d041480f9e8e4dd2c3b56ed5@sentry.io/1342499',
     release: `drawmote@${process.env.PKG_VERSION}`,
     environment: process.env.VUE_APP_SERVER_ENV,
-    integrations: [new Sentry.Integrations.Vue({ Vue })]
+    integrations: [new Integrations.Vue({ Vue, attachProps: true })]
   })
 }
 
