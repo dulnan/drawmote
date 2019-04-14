@@ -109,7 +109,7 @@ export default {
   bottom: 0;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
-  z-index: 1000;
+  z-index: $index-footer - 1;
   padding-bottom: 5rem !important;
   &.appear-enter-active, &.appear-leave-active {
     transition: .7s ease-in-out;
