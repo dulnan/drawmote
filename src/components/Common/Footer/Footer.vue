@@ -5,7 +5,7 @@
         <footer-browser-support :is-mobile="isMobile" />
         <footer-language />
         <footer-github />
-        <footer-connection />
+        <footer-connection v-if="!isMobile" />
         <footer-copyright />
       </ul>
     </div>
