@@ -24,7 +24,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 module.exports = {
-  productionSourceMap: false,
+  productionSourceMap: true,
   filenameHashing: true,
   pluginOptions: {
     'style-resources-loader': {
