@@ -1,18 +1,19 @@
 <template>
   <div class="mobile h-100">
-    <transition name="appear">
-      <pairing v-if="!isConnected"></pairing>
-    </transition>
-    <transition name="appear">
-      <controlling v-if="isConnected"></controlling>
-    </transition>
+    <animation v-if="!isConnected">
+      <pairing />
+    </animation>
+
+    <controlling v-if="isConnected" />
   </div>
 </template>
 
 <script>
 import Pairing from '@/components/Mobile/Pairing.vue'
+import Animation from '@/components/Common/Animation/Animation.vue'
 import Controlling from '@/components/Mobile/Controlling.vue'
 
+import { mapState } from 'vuex'
 import { decodeEventMessage } from '@/tools/helpers'
 
 export default {
@@ -20,27 +21,29 @@ export default {
 
   components: {
     Pairing,
+    Animation,
     Controlling
   },
 
-  data () {
-    return {
-      isConnected: false
-    }
+  computed: {
+    ...mapState(['isConnected'])
   },
 
   methods: {
     handleConnected () {
-      this.isConnected = true
-      this.$mote.start()
+      this.$store.dispatch('connect')
     },
 
     handleConnectionClosed () {
-      this.isConnected = false
+      this.$store.dispatch('disconnect')
       this.$mote.stop()
     },
 
     handleMessage (rawMessage) {
+      if (!this.isConnected) {
+        return
+      }
+
       const { event, data } = decodeEventMessage(rawMessage)
 
       if (event === 'viewport') {
@@ -53,13 +56,17 @@ export default {
     },
 
     handleDataChange (data) {
-      this.$peersox.send(data)
+      if (this.isConnected) {
+        this.$peersox.send(data)
+      }
     }
   },
 
   mounted () {
     this.$peersox.on('peerConnected', this.handleConnected.bind(this))
     this.$peersox.on('connectionClosed', this.handleConnectionClosed.bind(this))
+
+    this.$mote.start()
 
     this.$peersox.onString = this.handleMessage.bind(this)
     this.$mote._onDataChange = this.handleDataChange.bind(this)

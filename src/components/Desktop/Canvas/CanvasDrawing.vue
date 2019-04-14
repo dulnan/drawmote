@@ -1,7 +1,7 @@
 <template>
   <div>
-    <canvas class="fixed overlay canvas canvas--main" ref="canvas_main"></canvas>
-    <canvas class="fixed overlay canvas canvas--temp" ref="canvas_temp"></canvas>
+    <canvas class="absolute overlay canvas canvas--main" ref="canvas_main"></canvas>
+    <canvas class="absolute overlay canvas canvas--temp" ref="canvas_temp"></canvas>
   </div>
 </template>
 
@@ -12,7 +12,7 @@ import { EventBus } from '@/events'
 
 import Canvas from '@/classes/Canvas'
 import { isSamePoint } from '@/tools/helpers.js'
-import threads from '@/store/threads'
+import threads from '@/store/vuetamin/threads'
 
 export default {
   name: 'CanvasDrawing',

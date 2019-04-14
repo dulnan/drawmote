@@ -45,30 +45,35 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #ddd;
     overflow: visible;
     font-size: $toolbar-button-width-xs;
+    color: $text-color;
     width: 1em;
     height: 100%;
     margin: auto 0;
 
-    @include media('sm') {
-      font-size: $toolbar-button-width-sm;
-    }
+    .is-drawing & {
+      @include media('sm') {
+        font-size: $toolbar-button-width-sm;
+      }
 
-    @include media('md') {
-      font-size: $toolbar-button-width-md;
-    }
+      @include media('md') {
+        font-size: $toolbar-button-width-md;
+      }
 
-    @include media('lg') {
-      font-size: $toolbar-button-width-lg;
+      @include media('lg') {
+        font-size: $toolbar-button-width-lg;
+      }
     }
 
     svg {
       width: 0.6em;
       max-height: 100%;
-      @include media('lg') {
-        width: 0.4em;
+      fill: currentColor;
+      .is-drawing & {
+        @include media('lg') {
+          width: 0.4em;
+        }
       }
     }
   }
@@ -77,7 +82,7 @@ export default {
     cursor: default;
   }
   &.hover:not(.disabled):not(.toolbar-item--colors) {
-    background: $alt-color-lighter !important;
+    background: $alt-color-dark !important;
   }
 }
 </style>

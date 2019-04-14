@@ -1,27 +1,20 @@
 @import 'typography';
 
-$color-brown-dark:            #311808;
-$color-brown-light:           #82746c;
+$color-red:                   #F06D31;
+$color-yellow:                #ffd52b;
+$color-orange:                #f39a2d;
 
-$color-red:                   #ff653b;
-$color-yellow:                #ffde56;
-$color-orange:                #ff9f1e;
+$color-pink:                  #db50b4;
+$color-lavender:              #7059d3;
 
-$color-pink:                  #f385d4;
+$color-bluelight:             #48bec5;
+$color-bluedark:              #2b67c2;
 
-$color-lavender:              #a79bdf;
+$color-green:                 #97d779;
+$color-greendark:             #5da83a;
 
-$color-bluelight:             #3cc6ed;
-$color-bluedark:              #204e87;
+$color-turquoise:             #478bb3;
 
-$color-black:                 #121212;
-
-$color-green:                 #c3d57f;
-$color-greendark:             #798f16;
-
-$color-turquoise:             #bff1d9;
-
-$color-code:                  #444;
 
 $code-margin:                 0.2em;
 $code-radius:                 $code-margin;
@@ -40,7 +33,8 @@ $index-brush-toolbar:         500;
 $index-mobile-pairing:        700;
 
 $index-background-animation:  800;
-$index-footer:                800;
+$index-footer:                1200;
+$index-drawing:               1100;
 $index-pairing:               700;
 
 $index-modal:                1000;
@@ -75,13 +69,16 @@ $rtl:                               false;
 $brand-color:                       #fb6131;
 $brand-color-darker:                darken($brand-color, 10%);
 
-$alt-color-lightest:                #fbfbfb;
-$alt-color-lighter:                 #f7f7f6;
-$alt-color-light:                   #dedede;
-$alt-color:                         #cecece;
-$alt-color-dark:                    #615450;
-$alt-color-darker:                  #292321;
+$alt-color-lightest:                #dfdde0;
+$alt-color-lighter:                 #a7a0a8;
+$alt-color-light:                   #867c88;
+$alt-color:                         #554757;
+$alt-color-dark:                    #39293c;
+$alt-color-darker:                  #2a192d;
+$alt-color-darkest:                 #201123;
 
+
+$color-translucent-dark:      rgba($alt-color-darkest, 0.8);
 
 /**
  * Typography
@@ -98,9 +95,9 @@ $font-size-large:                   1.5rem;
 
 $line-height-default:               1.45;
 
-$text-color:                        $color-brown-dark;
+$text-color:                        $alt-color-lightest;
 $link-color:                        $brand-color;
-$muted-color:                       $color-brown-light;
+$muted-color:                       $alt-color-lighter;
 
 
 /**
@@ -236,7 +233,7 @@ $form-group-spacing:                $spacing-unit-small;
  * Lists
  */
 
-$list-separator-style:              1px solid $alt-color-lighter;
+$list-separator-style:              1px solid $alt-color-dark;
 
 
 /**

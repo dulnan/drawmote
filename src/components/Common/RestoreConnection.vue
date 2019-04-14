@@ -38,6 +38,7 @@
 
 <script>
 import IconRestore from '@/assets/icons/icon-restore.svg'
+import { mapState } from 'vuex'
 
 /**
  * Provides a way to restore a previously made connection.
@@ -55,15 +56,16 @@ export default {
       pairing: {},
       isRestoring: false,
       isRestored: false,
-      isConnected: false,
       connectionTimeout: false,
       windowTimeout: null
     }
   },
 
   computed: {
+    ...mapState(['isConnected', 'isSkipped']),
+
     isVisible () {
-      return this.connectionRestorable && !this.isConnected
+      return this.connectionRestorable && (!this.isConnected && !this.isSkipped)
     }
   },
 
@@ -102,7 +104,6 @@ export default {
     },
 
     handleConnected () {
-      this.isConnected = true
       this.isRestored = true
       this.connectionRestorable = false
       this.connectionTimeout = false
@@ -136,8 +137,7 @@ export default {
   position: sticky;
   bottom: $footer-height-xs;
   z-index: $index-footer - 1;
-  background: white;
-  border-top: 1px solid $alt-color-light;
+  background: $color-translucent-dark;
   margin-top: 4rem;
 
   opacity: 1;
@@ -150,9 +150,11 @@ export default {
 
   @include media('sm') {
     position: absolute;
-    left: 0;
-    width: 100%;
+    left: 1rem;
+    right: 1rem;
     flex-direction: row;
+    border-radius: $border-radius-default;
+    bottom: calc(#{$footer-height-xs} + 0.5rem);
   }
 
   &.appear-enter-active, &.appear-leave-active {
@@ -160,6 +162,7 @@ export default {
   }
   &.appear-enter, &.appear-leave-to {
     transform: translateY(100%);
+    opacity: 0;
   }
 }
 

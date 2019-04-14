@@ -1,55 +1,52 @@
 <template>
-  <div class="overlay pairing-desktop absolute flex" :style="transformOriginStyle">
-    <div class="pairing__container">
-      <div class="md-mrgr++">
-        <logo @center="updateCenter" />
-      </div>
-      <div>
-        <h1 class="text-heavy sm-mrgt md-mrgt+ lg-mrgt++">drawmote</h1>
-        <p class="h2 text-bold mrgb+ text-muted">{{ $t('subtitle') }}</p>
-        <p class="text-muted text-light mrgt0 h2 pairing-lead">{{ $t('desktop.lead') }}</p>
-        <div class="code code--desktop sm-mrgt md-mrgt+ lg-mrgt++">
-          <div class="code__content">
-            <div v-for="(number, index) in pairingCodeNumbers" :key="index" class="code__item" :class="{ 'visible': hasCode }">
-              <div class="code-circle contains" :class="'code-circle--' + number">
-                <span>{{ number }}</span>
-              </div>
+  <div class="overlay pairing-desktop absolute flex" :style="transformOriginStyle" :class="{ 'is-desktop-animation': desktopAnimation }">
+    <div class="pairing-container">
+      <h1 class="text-heavy h1">drawmote</h1>
+      <p class="h2 text-bold mrgb+ text-muted">{{ $t('subtitle') }}</p>
+      <p class="text-muted mrgt0 h3 pairing-lead">{{ $t('desktop.lead') }}</p>
+      <div class="code code--desktop sm-mrgt md-mrgt+">
+        <div class="code__content">
+          <div v-for="(number, index) in pairingCodeNumbers" :key="index" class="code__item" :class="{ 'visible': hasCode }">
+            <div class="code-circle contains" :class="'code-circle--' + number">
+              <span>{{ number }}</span>
             </div>
           </div>
         </div>
-        <p class="text-muted text-light">
-          <button class="btn btn--bare pairing-skip" @click="togglePairing">{{ $t('desktop.nophone') }}</button>
+      </div>
+      <div class="pairing__actions mrgt">
+        <p class="text-muted text-light mrgv0 pairing-skip">
+          <button class="btn btn--bare" @click="skipPairing">{{ $t('desktop.nophone') }}</button>
         </p>
-        <p class="text-muted text-light pairing-lead mrgt text-brand" v-if="isBlocked">
+        <p class="text-muted text-light pairing-lead mrg0 text-brand" v-if="isBlocked">
           {{ $t('desktop.tooManyAttempts') }}
         </p>
-        <p class="code-timeout text-muted text-light" :class="{ 'visible': hasCode && countdown < 60 }">
-          {{ $t('desktop.countdownPrefix') }}<span>{{ $tc('desktop.countdownSeconds', countdown, { count: countdown }) }}</span>{{ $t('desktop.countdownSuffix') }}
+        <p class="code-timeout text-muted text-light mrg0" :class="{ 'visible': hasCode && countdown < 60 }">
+          <span>{{ $t('desktop.countdownPrefix') }} {{ $tc('desktop.countdownSeconds', countdown, { count: countdown }) }} {{ $t('desktop.countdownSuffix') }}</span>
         </p>
       </div>
     </div>
-    <restore-connection />
   </div>
 </template>
 
 <script>
 import Logo from '@/components/Common/Logo.vue'
-import RestoreConnection from '@/components/Common/RestoreConnection.vue'
 
 const PAIRING_TIMEOUT = 120
 let interval = null
+let transitionTimeout = null
 
 export default {
   name: 'Pairing',
 
   components: {
-    Logo,
-    RestoreConnection
+    Logo
   },
 
   data () {
     return {
       showModal: false,
+      hasAppeared: false,
+      showCode: false,
       countdown: PAIRING_TIMEOUT,
       center: { x: 0, y: 0 }
     }
@@ -61,6 +58,10 @@ export default {
       required: true
     },
     isBlocked: {
+      type: Boolean,
+      default: false
+    },
+    desktopAnimation: {
       type: Boolean,
       default: false
     }
@@ -80,7 +81,7 @@ export default {
     },
 
     hasCode: function () {
-      return this.pairing && this.pairing.code && this.pairing.code.length > 0
+      return this.pairing && this.pairing.code && this.pairing.code.length > 0 && this.showCode
     },
 
     transformOriginStyle () {
@@ -105,8 +106,8 @@ export default {
       this.center = center
     },
 
-    togglePairing () {
-      this.$emit('skipPairing')
+    skipPairing () {
+      this.$store.dispatch('skip')
       this.$track('Pairing', 'skip', 1)
     },
 
@@ -132,56 +133,58 @@ export default {
   },
 
   mounted () {
+    window.clearTimeout(transitionTimeout)
+    transitionTimeout = window.setTimeout(() => {
+      this.showCode = true
+    }, 1500)
+  },
+
+  beforeDestroy () {
+    window.clearTimeout(transitionTimeout)
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '@/assets/scss/components/_code.scss';
 
 .pairing-desktop {
-  transform-style: preserve-3d;
-  perspective: 700px;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   overflow: hidden;
-  padding-bottom: calc(#{$footer-height-xs} + 2rem);
+  padding: 2rem 3vw;
+  padding-top: 84vw;
+  justify-content: center;
+  text-align: center;
+  transform-origin: center center;
+  &.is-desktop-animation {
+    text-align: left;
+    padding: 2rem 3vw;
+    z-index: 800;
+    align-items: center;
+    width: 50%;
+  }
   @include media('md') {
-    padding-bottom: $footer-height-xs;
+    padding: 0;
   }
-  &.appear-enter-active, &.appear-leave-active {
-    transition: .5s;
-    .pairing__content {
-      transition: .5s;
-    }
-  }
-  &.appear-enter, &.appear-leave-to {
-    opacity: 0;
-    .pairing__content {
-      transform: translateZ(5rem);
-    }
+  @include media('lg') {
+    padding: 0;
   }
 }
 
-.pairing__container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+.pairing-container {
+  padding-bottom: 7vh;
+  position: relative;
+}
+
+.pairing__actions {
   @include media('md') {
-    flex-direction: row;
-    align-items: flex-start;
-    text-align: left;
+    display: flex;
+    align-items: center;
   }
 }
 
 .code--desktop {
   display: flex;
-  justify-content: center;
-  @include media('md') {
-    justify-content: flex-start;
-  }
+  justify-content: flex-start;
   .code__item {
     opacity: 0;
     transform: scale(1.3);
@@ -217,11 +220,14 @@ export default {
 }
 
 .pairing-lead {
-  max-width: 34rem;
-  margin: 0 auto;
+  max-width: 23rem;
+  text-align: justify;
+  @include media('md') {
+    max-width: 29rem;
+  }
   @include media('lg') {
+    max-width: 35rem;
     margin: 0;
-    max-width: 40rem;
   }
 }
 
@@ -229,14 +235,21 @@ export default {
   opacity: 0;
   transition: 0.3s;
   transition-delay: 0.3s;
+  span {
+    display: inline-block;
+    vertical-align: middle;
+  }
   &.visible {
     opacity: 1;
   }
 }
 
 .pairing-skip {
+  margin-right: auto;
   &:hover {
-    color: $brand-color;
+    .btn {
+      color: $brand-color;
+    }
   }
 }
 </style>

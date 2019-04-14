@@ -1,5 +1,5 @@
 <template>
-  <div class="toolbar bg-white" ref="toolbar">
+  <div class="toolbar" ref="toolbar">
     <ul class="list-inline list-inline--tight list-inline--divided toolbar-list flex--align-stretch">
       <li
         v-for="group in toolGroups"
@@ -27,7 +27,8 @@
               :tool="tool"
               :group-id="group.id"
               :action="group.action"
-              :hovered-key="toolBeingHovered" />
+              :hovered-key="toolBeingHovered"
+              />
           </li>
         </ul>
       </li>
@@ -39,7 +40,6 @@
 import ButtonClear from '@/components/Desktop/Toolbar/Button/ButtonClear.vue'
 import ButtonUndo from '@/components/Desktop/Toolbar/Button/ButtonUndo.vue'
 import ButtonRedo from '@/components/Desktop/Toolbar/Button/ButtonRedo.vue'
-
 import ButtonColor from '@/components/Desktop/Toolbar/Button/ButtonColor.vue'
 
 import SliderBrushRadius from '@/components/Desktop/Toolbar/Slider/SliderBrushRadius.vue'
@@ -49,7 +49,9 @@ import SliderLazyRadius from '@/components/Desktop/Toolbar/Slider/SliderLazyRadi
 import SliderDistance from '@/components/Desktop/Toolbar/Slider/SliderDistance.vue'
 
 import { COLORS, TOOLBAR_TOOLS, TOOLBAR_SLIDERS } from '@/settings'
-import threads from '@/store/threads'
+import threads from '@/store/vuetamin/threads'
+
+import { mapState } from 'vuex'
 
 import Color from '@/classes/Color'
 
@@ -80,12 +82,13 @@ export default {
       lastItemClick: '',
       wasPressingBefore: false,
       wheelDelta: 0,
-      canvasFilterSupported: false,
-      isConnected: false
+      canvasFilterSupported: false
     }
   },
 
   computed: {
+    ...mapState(['isSkipped']),
+
     toolGroups () {
       return [
         {
@@ -115,7 +118,7 @@ export default {
               return false
             }
 
-            if (tool.id === 'distance' && !this.isConnected) {
+            if (tool.id === 'distance' && this.isSkipped) {
               return false
             }
 
@@ -185,7 +188,6 @@ export default {
 
   mounted () {
     this.calculatePointerAreas()
-    this.isConnected = this.$peersox.isConnected()
   },
 
   beforeDestroy () {
@@ -203,6 +205,7 @@ export default {
   right: 0;
   height: $toolbar-height - 1rem;
   user-select: none;
+  background: $alt-color-darker;
   @include media('md') {
     height: $toolbar-height;
   }
@@ -217,36 +220,38 @@ export default {
 }
 
 .toolbar-group--colors {
-  li {
-    @include media('sm') {
-      margin-right: 0.125rem;
-    }
-    @include media('md') {
-      margin-right: 0.25rem;
-    }
-    @include media('lg') {
-      margin-right: 0.5rem;
-    }
-    &:first-child {
+  .is-drawing & {
+    li {
       @include media('sm') {
-        margin-left: rem(7px);
+        margin-right: 0.125rem;
       }
       @include media('md') {
-        margin-left: rem(10px);
+        margin-right: 0.5rem;
       }
       @include media('lg') {
-        margin-left: rem(13px);
+        margin-right: 0.5rem;
       }
-    }
-    &:last-child {
-      @include media('sm') {
-        margin-right: rem(7px);
+      &:first-child {
+        @include media('sm') {
+          margin-left: rem(7px);
+        }
+        @include media('md') {
+          margin-left: rem(10px);
+        }
+        @include media('lg') {
+          margin-left: rem(13px);
+        }
       }
-      @include media('md') {
-        margin-right: rem(10px);
-      }
-      @include media('lg') {
-        margin-right: rem(13px);
+      &:last-child {
+        @include media('sm') {
+          margin-right: rem(7px);
+        }
+        @include media('md') {
+          margin-right: rem(10px);
+        }
+        @include media('lg') {
+          margin-right: rem(13px);
+        }
       }
     }
   }

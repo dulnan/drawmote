@@ -7,7 +7,7 @@
 }
 
 .text-bold {
-  font-weight: 700;
+  font-weight: 700 !important;
 }
 
 .text-heavy {
@@ -18,8 +18,8 @@
   hyphens: auto;
 }
 
-.bg-white {
-  background: white;
+.text-white {
+  color: $text-color;
 }
 
 .label {
@@ -27,15 +27,16 @@
   font-size: rem(12px);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: $alt-color-dark;
-  @include media('sm') {
-    font-size: rem(12px);
-  }
-  @include media('md') {
-    font-size: rem(14px);
-  }
-  @include media('lg') {
-    font-size: rem(14px);
+  .is-drawing & {
+    @include media('sm') {
+      font-size: rem(12px);
+    }
+    @include media('md') {
+      font-size: rem(14px);
+    }
+    @include media('lg') {
+      font-size: rem(14px);
+    }
   }
 }
 

@@ -1,9 +1,8 @@
 <template>
   <div class="mobile-pairing">
-    <logo />
     <div class="mobile-pairing__content relative pdgh">
       <h1 class="text-heavy mrgt">drawmote</h1>
-      <p class="h2 text-muted text-light text-hyphens mrgb+ mrgt">{{ $t('mobile.lead') }}</p>
+      <p class="h3 text-muted text-light text-hyphens mrgb md-mrgb+ mrgt- md-mrgt">{{ $t('mobile.lead') }}</p>
       <div class="code code--mobile relative">
         <div class="code__circles flex">
           <div class="code__item" v-for="(char, index) in inputChars" :key="char + index">
@@ -34,20 +33,17 @@
 
       </div>
     </div>
-    <restore-connection />
   </div>
 </template>
 
 <script>
 import Logo from '@/components/Common/Logo.vue'
-import RestoreConnection from '@/components/Common/RestoreConnection.vue'
 
 export default {
   name: 'Pairing',
 
   components: {
-    Logo,
-    RestoreConnection
+    Logo
   },
 
   data () {
@@ -102,15 +98,28 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-align: center;
-  color: $color-black;
+  // text-align: center;
   margin-bottom: $footer-height-xs;
-  min-height: calc(100vh - #{$footer-height-xs});
+  user-select: none;
+  // min-height: calc(100vh - #{$footer-height-xs});
+  overflow: hidden;
+  padding-top: 80vw;
 }
 
 .mobile-pairing__content {
   z-index: $index-mobile-pairing;
   margin-bottom: auto;
+  padding-bottom: 2rem;
+  &.appear-enter-active, &.appear-leave-active {
+    transition: 2.0s;
+  }
+  &.appear-enter-active {
+    transition-delay: 4.3s;
+  }
+  &.appear-enter, &.appear-leave-to {
+    transform: translateY(-30vw);
+    opacity: 0;
+  }
 }
 
 .code--mobile {

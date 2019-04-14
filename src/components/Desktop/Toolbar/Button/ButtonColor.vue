@@ -3,7 +3,7 @@ import Button from '@/components/Desktop/Toolbar/Button/Button.vue'
 
 import { getRgbaString, shadeRgbColor } from '@/tools/helpers.js'
 
-import threads from '@/store/threads'
+import threads from '@/store/vuetamin/threads'
 
 export default {
   extends: Button,
@@ -48,13 +48,12 @@ export default {
 .toolbar-item--colors {
   overflow: visible;
   .toolbar-button {
-    border: 3px solid white;
     border-radius: 100%;
-    width: 1em;
-    height: 1em;
+    width: 0.75em;
+    height: 0.75em;
     @include media('lg') {
-      width: 0.75em;
-      height: 0.75em;
+      width: 0.5em;
+      height: 0.5em;
     }
 
     &:hover, .hover & {

@@ -1,5 +1,5 @@
 <template>
-  <canvas class="fixed overlay canvas canvas--interface" ref="canvas_interface"></canvas>
+  <canvas class="absolute overlay canvas canvas--interface" ref="canvas_interface"></canvas>
 </template>
 
 <script>
@@ -9,7 +9,7 @@
 import { setupCanvases, clearCanvas } from '@/tools/canvas'
 import { Catenary } from 'catenary-curve'
 
-import threads from '@/store/threads'
+import threads from '@/store/vuetamin/threads'
 import { RADIUS_MAX } from '@/settings'
 
 const BRUSH_PREVIEW_PADDING = 30
@@ -44,8 +44,8 @@ export default {
     /**
      * Call the function to set the width and height of the canvas elements.
      */
-    setCanvasSizes () {
-      setupCanvases(this.$vuetamin.store.getState().sizes.viewport, [this.$refs.canvas_interface])
+    setCanvasSizes (state) {
+      setupCanvases(state.sizes.viewport, [this.$refs.canvas_interface])
     },
 
     drawToCanvas (state) {
@@ -79,7 +79,7 @@ export default {
       context.beginPath()
       context.lineWidth = 1
       context.lineCap = 'round'
-      context.strokeStyle = 'rgba(30,30,30,0.8)'
+      context.strokeStyle = 'rgba(255,255,255,0.8)'
       context.setLineDash([2, 4])
       this.catenary.drawToCanvas(context, state.points.pointer, state.points.brush, state.lazyRadius)
       context.stroke()
@@ -88,7 +88,7 @@ export default {
        * Brush anchor
        */
       context.beginPath()
-      context.fillStyle = 'rgba(50,50,50,1)'
+      context.fillStyle = 'white'
       context.arc(state.points.brush.x, state.points.brush.y, 2, 0, Math.PI * 2, true)
       context.fill()
 
@@ -101,8 +101,8 @@ export default {
         const brushY = state.sizes.toolbarRect.height + backgroundRadius + 24
 
         context.beginPath()
-        context.fillStyle = 'white'
-        context.strokeStyle = '#dedede'
+        context.fillStyle = '#2a192d'
+        context.strokeStyle = '#39293c'
         context.lineWidth = 1
         context.setLineDash([])
         context.arc(brushX, brushY, backgroundRadius, 0, Math.PI * 2, true)
@@ -127,12 +127,12 @@ export default {
        * Pointer cross and dot.
        */
       context.beginPath()
-      context.fillStyle = 'rgba(50,50,50,0.2)'
+      context.fillStyle = 'rgba(255,255,255,0.2)'
       context.arc(state.points.pointer.x, state.points.pointer.y, 4, 0, Math.PI * 2, true)
       context.fill()
 
       context.beginPath()
-      context.strokeStyle = 'rgba(20,20,20,1)'
+      context.strokeStyle = 'rgba(255,255,255,1)'
       context.lineWidth = 1
       context.moveTo(state.points.pointer.x - 10, state.points.pointer.y)
       context.lineTo(state.points.pointer.x + 10, state.points.pointer.y)
@@ -169,10 +169,6 @@ export default {
       context.fill()
       context.stroke()
     }
-  },
-
-  mounted () {
-    this.setCanvasSizes()
   },
 
   created () {

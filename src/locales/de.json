@@ -64,6 +64,8 @@
     "continueDrawing": "Ohne Smartphone fortfahren"
   },
   "footer": {
-    "copyright": "Entwickelt von"
+    "copyright": "Entwickelt von",
+    "toPairing": "Zurück zum Start",
+    "disconnect": "Verbindung trennen"
   }
 }

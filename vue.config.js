@@ -17,14 +17,14 @@ if (process.env.NODE_ENV === 'production') {
       skipThirdPartyRequests: true
     }),
     postProcess (context) {
-      context.html = context.html.replace('id="drawmote"', 'id="drawmote" data-server-rendered="true"')
+      // context.html = context.html.replace('id="drawmote"', 'id="drawmote" data-server-rendered="true"')
       return context
     }
   }))
 }
 
 module.exports = {
-  productionSourceMap: false,
+  productionSourceMap: true,
   filenameHashing: true,
   pluginOptions: {
     'style-resources-loader': {
@@ -56,11 +56,23 @@ module.exports = {
       })
     if (process.env.NODE_ENV === 'production') {
       config
+        .plugin('preload')
+        .tap(args => {
+          args[0].fileBlacklist.push(/\.css$/)
+          return args
+        })
+      config
         .plugin('html')
         .tap(args => {
           args[0].inlineSource = '.(css)$'
           return args
         })
+    }
+    if (process.env.NODE_ENV === 'development') {
+      config
+        .output
+        .filename('[name].[hash].js')
+        .end()
     }
     const svgRule = config.module.rule('svg')
 

@@ -81,3 +81,21 @@ export function encodeEventMessage (event, data) {
 export function decodeEventMessage (message) {
   return JSON.parse(message)
 }
+
+/**
+ * Scale an input number between an input range proportionally down to be
+ * in an output range.
+ *
+ * @param {number} input - Input number.
+ * @param {Array<number, number>} inputRange - The input range.
+ * @param {Array<number, number>} outputRange - The output range.
+ *
+ * @returns {number}
+ */
+export function scaleRange (input, inputRange, outputRange) {
+  const [inMin, inMax] = inputRange
+  const [outMin, outMax] = outputRange
+
+  // return (inMax - inMin) * (input - outMin) / (outMax - outMin) + inMin
+  return ((input - inMin) * (outMax - outMin)) / ((inMax - inMin) + outMin)
+}

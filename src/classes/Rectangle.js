@@ -1,7 +1,7 @@
 import { Point } from 'lazy-brush'
 
 export default class Rectangle {
-  constructor (x, y, width, height) {
+  constructor (x = 0, y = 0, width = 0, height = 0) {
     this.p1 = new Point(x, y)
     this.p2 = new Point(x + width, y + height)
   }
@@ -30,6 +30,18 @@ export default class Rectangle {
     this.p1.y = domRect.top
     this.p2.x = domRect.left + domRect.width
     this.p2.y = domRect.top + domRect.height
+  }
+
+  /**
+   * Set the rectangles points based on the width, height and distance to parent.
+   *
+   * @param {HTMLElement} element
+   */
+  setFromElement (element) {
+    this.p1.x = Number(element.offsetLeft)
+    this.p1.y = Number(element.offsetTop)
+    this.p2.x = Number(element.offsetLeft + element.offsetWidth)
+    this.p2.y = Number(element.offsetTop + element.offsetHeight)
   }
 
   /**

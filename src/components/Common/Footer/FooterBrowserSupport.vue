@@ -1,7 +1,7 @@
 <template>
   <li class="relative footer-browser-support">
     <button
-      class="btn btn--bare text-bold check pdg lg-pdg h-100 hover"
+      class="btn btn--bare text-bold check pdg lg-pdg h-100 hover footer-text"
       @click="toggleBrowserSupport"
       :class="[supportState, { 'is-open': browserSupportVisible }]"
     >
@@ -69,10 +69,8 @@ export default {
   > .btn {
     width: 100%;
     text-align: left;
-    transition: 0.4s;
-    background: $alt-color-lighter;
     &.is-open {
-      background: white;
+      background: $color-translucent-dark;
     }
   }
   @include media('sm') {

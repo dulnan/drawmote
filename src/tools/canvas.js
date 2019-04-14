@@ -1,3 +1,5 @@
+import { BREAKPOINT_ANIMATION } from '@/settings'
+
 /**
  * Sets the given size and scaling of the canvases.
  *
@@ -7,7 +9,11 @@
  * @param {HTMLCanvasElement[]} canvases Array of canvases to set the sizes.
  */
 export function setupCanvases ({ width, height }, canvases) {
-  const dpi = Math.min(window.devicePixelRatio, 1.25)
+  let dpi = 0.5
+
+  if (window.innerWidth > BREAKPOINT_ANIMATION) {
+    dpi = Math.min(window.devicePixelRatio, 1.25)
+  }
 
   canvases.forEach(canvas => {
     let context = canvas.getContext('2d')

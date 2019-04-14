@@ -1,26 +1,33 @@
 <template>
   <div class="desktop relative">
     <div class="desktop-container relative overlay material">
-      <transition name="appear">
+      <animation
+        v-if="!isDrawing"
+        :is-desktop="true"
+        :desktop-animation="desktopAnimation"
+      >
         <pairing
-          v-if="!isPaired"
           :pairing="pairing"
           :is-blocked="isBlocked"
+          :desktop-animation="desktopAnimation"
           @pairingTimeout="handleTimeout"
-          @skipPairing="skipPairing"
         />
+      </animation>
+      <transition name="appear">
+        <drawing v-if="isDrawing" />
       </transition>
-      <drawing v-if="isPaired"></drawing>
     </div>
   </div>
 </template>
 
 <script>
 import debouncedResize from 'debounced-resize'
-
-import { BREAKPOINT_REMOTE } from '@/settings'
+import { mapState } from 'vuex'
+import { BREAKPOINT_REMOTE, ANIMATION_SCREEN_VIEWPORT } from '@/settings'
 
 import Pairing from '@/components/Desktop/Pairing.vue'
+import Animation from '@/components/Common/Animation/Animation.vue'
+import Drawing from '@/components/Desktop/Drawing.vue'
 import { getViewportSize, encodeEventMessage } from '@/tools/helpers'
 
 export default {
@@ -28,34 +35,71 @@ export default {
 
   components: {
     Pairing,
-    'drawing': () => import('@/components/Desktop/Drawing.vue')
+    Drawing,
+    Animation
   },
 
   data () {
     return {
       pairing: {},
-      isPaired: false,
       isBlocked: false,
-      skipped: false
+      viewportWidth: 700
     }
   },
 
   computed: {
+    ...mapState(['isConnected', 'isSkipped']),
+
     hasPairing () {
       return this.pairing && this.pairing.code && this.pairing.hash
+    },
+
+    isDrawing () {
+      return this.isConnected || this.isSkipped
+    },
+
+    desktopAnimation () {
+      return this.viewportWidth >= 1024
     }
   },
 
   watch: {
-    isPaired (isPaired) {
-      if (!isPaired && !this.skipped) {
+    isConnected (isConnected) {
+      this.updateViewport()
+
+      if (!isConnected && !this.isSkipped) {
         this.pairing = {}
         this.getPairingCode()
+      }
+    },
+
+    isSkipped (isSkipped) {
+      this.updateViewport()
+
+      if (isSkipped && this.$peersox.isConnected()) {
+        this.$peersox.close()
       }
     }
   },
 
   methods: {
+    animationEnter (el, done) {
+      if (this.$refs.dynamic.$options.name === 'Animation') {
+        this.$refs.dynamic.animate().finished.then(() => {
+          done()
+        })
+      }
+    },
+    animationLeave (el, done) {
+      console.log(el)
+      if (this.$refs.dynamic.$options.name === 'Animation') {
+        this.$refs.dynamic.animateFullscreen().finished.then(() => {
+          done()
+        })
+      } else {
+        done()
+      }
+    },
     getPairingCode () {
       if (this.hasPairing) {
         return
@@ -81,18 +125,12 @@ export default {
       })
     },
 
-    skipPairing () {
-      this.skipped = true
-      this.isPaired = true
-      this.pairing = {}
-
-      if (this.$peersox.isConnected()) {
-        this.$peersox.close()
-      }
-    },
-
     updateViewport () {
-      const viewport = getViewportSize()
+      let viewport = ANIMATION_SCREEN_VIEWPORT
+
+      if (this.isConnected || this.isSkipped) {
+        viewport = getViewportSize()
+      }
 
       this.$vuetamin.store.mutate('updateViewport', viewport)
       this.$peersox.send(encodeEventMessage('viewport', viewport))
@@ -112,21 +150,23 @@ export default {
     },
 
     handleConnected ({ pairing }) {
-      this.isPaired = true
+      this.$store.dispatch('connect')
 
       this.updateViewport()
       this.$peersox.storePairing(pairing)
     },
 
     handleDisconnected () {
-      if (!this.skipped) {
-        this.isPaired = false
-      }
+      this.$store.dispatch('disconnect')
     },
 
     handleBinary (intArray) {
       this.$mote.handleRemoteData(intArray)
     }
+  },
+
+  beforeMount () {
+    this.viewportWidth = getViewportSize().width
   },
 
   mounted () {
@@ -161,7 +201,7 @@ export default {
 
 <style lang="scss">
 .desktop {
-  perspective: 700px;
   height: 100%;
+  overflow: hidden;
 }
 </style>

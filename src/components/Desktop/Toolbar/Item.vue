@@ -50,9 +50,18 @@ export default {
 
   methods: {
     getRectangle () {
-      const rect = this.$el.getBoundingClientRect()
+      const el = this.$el
 
-      const rectangle = new Rectangle(rect.left, rect.top, rect.width, rect.height)
+      // Easiest quick solution for getting the left offset in the toolbar.
+      const group = el.parentElement.parentElement.parentElement
+      const parentOffsetLeft = group.offsetLeft
+
+      const x = el.offsetLeft + parentOffsetLeft
+      const y = 0
+      const width = el.offsetWidth
+      const height = el.offsetHeight
+
+      const rectangle = new Rectangle(x, y, width, height)
 
       return {
         coords: rectangle,
