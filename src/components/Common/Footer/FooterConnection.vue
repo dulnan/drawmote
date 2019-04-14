@@ -1,7 +1,7 @@
 <template>
   <li class="footer-connection">
     <button
-      class="btn btn--bare text-bold check pdg lg-pdg h-100 hover"
+      class="btn btn--bare text-bold check pdg lg-pdg h-100 hover footer-text"
       v-if="isConnected"
       @click="$store.dispatch('disconnect')"
     >
@@ -9,7 +9,7 @@
     </button>
 
     <button
-      class="btn btn--bare text-bold check pdg lg-pdg h-100 hover"
+      class="btn btn--bare text-bold check pdg lg-pdg h-100 hover footer-text"
       v-if="isSkipped"
       @click="$store.dispatch('unskip')"
     >

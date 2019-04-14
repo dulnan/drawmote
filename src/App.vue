@@ -5,16 +5,20 @@
     <restore-connection />
     <the-footer :is-mobile="isMobile" />
     <connection-timeout :is-mobile="isMobile" />
+    <attribution v-if="attributionVisible" />
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import { BREAKPOINT_REMOTE } from '@/settings'
 import Desktop from '@/components/Desktop.vue'
 import Mobile from '@/components/Mobile.vue'
 import TheFooter from '@/components/Common/Footer/Footer.vue'
 import RestoreConnection from '@/components/Common/RestoreConnection.vue'
 import ConnectionTimeout from '@/components/Common/ConnectionTimeout.vue'
+import Attribution from '@/components/Common/Attribution.vue'
 
 export default {
   name: 'app',
@@ -24,7 +28,8 @@ export default {
     Mobile,
     TheFooter,
     RestoreConnection,
-    ConnectionTimeout
+    ConnectionTimeout,
+    Attribution
   },
 
   data () {
@@ -32,6 +37,10 @@ export default {
       isMobile: true,
       isReady: false
     }
+  },
+
+  computed: {
+    ...mapState(['attributionVisible'])
   },
 
   beforeMount () {

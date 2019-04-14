@@ -7,7 +7,8 @@ export default new Vuex.Store({
   state: {
     isSkipped: false,
     isConnected: false,
-    introPlayed: false
+    introPlayed: false,
+    attributionVisible: false
   },
   mutations: {
     setSkipped (state, isSkipped) {
@@ -20,6 +21,10 @@ export default new Vuex.Store({
 
     setIntroPlayed (state, introPlayed) {
       state.introPlayed = introPlayed
+    },
+
+    setAttributionVisible (state, isVisible) {
+      state.attributionVisible = isVisible
     }
   },
 
@@ -39,6 +44,10 @@ export default new Vuex.Store({
 
     unskip ({ commit }) {
       commit('setSkipped', false)
+    },
+
+    toggleAttributionVisibility ({ state, commit }) {
+      commit('setAttributionVisible', !state.attributionVisible)
     }
   }
 })

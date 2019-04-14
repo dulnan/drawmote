@@ -7,7 +7,7 @@
     >
       <option v-for="(lang, i) in languages" :key="`Lang${i}`" :value="lang.key">{{ lang.label }}</option>
     </select>
-    <div class="text-bold pdg h-100 language__button">
+    <div class="text-bold pdg h-100 language__button footer-text">
       <span class="arrow-after hidden-sm-down">{{ currentLanguage.label }}</span>
       <span class="arrow-after hidden-md-up text-uppercase">{{ currentLanguage.key }}</span>
     </div>
