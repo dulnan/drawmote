@@ -1,6 +1,6 @@
 <template>
   <transition name="appear" v-on:after-leave="onAfterLeave">
-    <div class="animation" :class="{ 'is-desktop': isDesktop }">
+    <div class="animation" :class="{ 'is-desktop': isDesktop, 'is-fallback': useFallback }">
       <div class="three-animation" ref="container"></div>
       <slot></slot>
       <div class="ratio" v-if="debug">{{ ratio }}</div>
@@ -16,6 +16,9 @@ import { mapState } from 'vuex'
 
 import Drawing from '@/components/Desktop/Drawing.vue'
 import ThreeAnimation from '@/tools/animation'
+
+import webglIsSupported from '@/tools/animation/webglSupport'
+
 import { ANIMATION_SCREEN_VIEWPORT } from '@/settings'
 import threads from '@/store/vuetamin/threads'
 
@@ -51,6 +54,8 @@ export default {
 
       mouseEnabled: true,
       sceneVisible: true,
+
+      useFallback: false,
 
       debug: false
     }
@@ -142,6 +147,11 @@ export default {
   },
 
   mounted () {
+    if (!webglIsSupported()) {
+      this.useFallback = true
+      return
+    }
+
     const pairingEl = this.$slots.default[0].elm
     this.updateSizes()
 
@@ -234,6 +244,17 @@ export default {
   right: 0;
   bottom: 0;
   overflow: hidden;
+
+  .is-fallback & {
+    background-image: url('/fallback-mobile.jpg');
+    background-size: cover;
+    background-position: top center;
+
+    @include media('lg') {
+    background-image: url('/fallback-desktop.jpg');
+    background-position: center;
+    }
+  }
   .is-desktop & {
     width: 100%;
     height: 100%;
@@ -277,7 +298,10 @@ export default {
   position: relative;
   height: 100%;
   width: 100%;
+}
 
+.screen-container {
+  z-index: 10;
 }
 
 .ratio {
