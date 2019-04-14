@@ -21,7 +21,7 @@ export const COLORS = [
   },
   {
     name: 'black',
-    hex: '#201123'
+    hex: '#2a192d'
   }
 ]
 
