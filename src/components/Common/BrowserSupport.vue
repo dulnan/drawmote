@@ -159,10 +159,8 @@ export default {
   bottom: 100%;
   left: 0;
   width: calc(100% + 1px);
-  border: $list-separator-style;
-  border-width: 1px 1px 0 0;
   z-index: -1;
-  background: white;
+  background: $color-translucent-dark;
 
   &.appear-enter-active, &.appear-leave-active {
     transition: .5s;
@@ -192,7 +190,6 @@ export default {
 }
 
 .browser-support__content {
-  background: white;
 }
 
 .check-list {

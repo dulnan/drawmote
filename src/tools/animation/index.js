@@ -21,10 +21,12 @@ const round = value => {
 }
 
 export default class ThreeAnimation extends EventEmitter {
-  constructor (container, viewport, isDesktop, debug) {
+  constructor (container, viewport, isDesktop, debug, pairingEl) {
     super()
 
     this._debug = debug
+
+    this.pairingEl = pairingEl
 
     this.loader = new THREE.ObjectLoader()
     this.camera = null
@@ -99,7 +101,7 @@ export default class ThreeAnimation extends EventEmitter {
         this.setCamera(camera)
 
         this.init()
-        this.animateEnter()
+        this.emit('ready')
       })
     })
   }
@@ -325,6 +327,7 @@ export default class ThreeAnimation extends EventEmitter {
 
     cameraFolder.add(this.camera, 'zoom', 0, 4).step(0.01).onChange(() => {
       this.camera.updateProjectionMatrix()
+      this.updateCamera()
     })
 
     let phoneFolder = this.gui.addFolder('Phone')
@@ -476,6 +479,18 @@ export default class ThreeAnimation extends EventEmitter {
     this.webgl.scene = value
   }
 
+  setFinalCameraState () {
+    if (this.isDesktop) {
+      this.setCameraValues(CAMERA[1])
+      this.setPhoneValues(PHONE[1])
+    } else {
+      this.setCameraValues(CAMERA_MOBILE[2])
+      this.setPhoneValues(PHONE_MOBILE[1])
+    }
+    this.updateCamera()
+    this.animationFinished = true
+  }
+
   setSize (width, height) {
     const w = width
     const h = this.isDesktop ? height : width * 2
@@ -484,12 +499,7 @@ export default class ThreeAnimation extends EventEmitter {
     this.height = h
 
     if (this.animationFinished) {
-      if (this.isDesktop) {
-        this.setCameraValues(CAMERA[1])
-      } else {
-        this.setCameraValues(CAMERA_MOBILE[2])
-      }
-      this.updateCamera()
+      this.setFinalCameraState()
     }
 
     if (this.camera) {
@@ -543,11 +553,26 @@ export default class ThreeAnimation extends EventEmitter {
       this.setCameraValues(CAMERA[1])
       this.addToTimeline('camera', animeAnimation, CAMERA)
       this.addToTimeline('phone', animeAnimation, PHONE)
+      animeAnimation.add({
+        targets: this.pairingEl,
+        scale: [1.2, 1],
+        opacity: [0, 1],
+        transformOrigin: ['50% 50% 0', '50% 50% 0'],
+        easing: 'easeInOutQuad',
+        duration: 1900
+      }, '-=2000')
     } else {
       this.setPhoneValues(PHONE_MOBILE[0])
       this.setCameraValues(CAMERA_MOBILE[0])
       this.addToTimeline('camera', animeAnimation, CAMERA_MOBILE)
       this.addToTimeline('phone', animeAnimation, PHONE_MOBILE)
+      animeAnimation.add({
+        targets: this.pairingEl,
+        opacity: [0, 1],
+        translateY: ['20%', '0%'],
+        easing: 'easeInOutQuad',
+        duration: 1700
+      }, '-=1800')
     }
 
     this.animeAnimation = animeAnimation

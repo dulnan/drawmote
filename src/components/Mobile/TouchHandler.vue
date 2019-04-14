@@ -102,14 +102,12 @@ export default {
   padding-bottom: 53px;
 }
 .mobile-touch {
-  height: 100%;
+  flex: 1;
   display: flex;
   flex-direction: column;
 }
 .calibration {
   margin-top: auto;
-  border-top: 1px solid $alt-color-light;
-  background: white;
 }
 
 .click-area {
@@ -124,8 +122,8 @@ export default {
   padding: 1rem;
   margin: 0 auto;
   border-radius: 100%;
-  border: 1px solid rgba($alt-color-light, 0.5);
-  background: linear-gradient(lighten($alt-color-lighter, 0%), lighten($alt-color-lighter, 2%));
+  border: 1px solid rgba($alt-color-darkest, 0.5);
+  background: linear-gradient(lighten($alt-color-darkest, 0%), lighten($alt-color-darkest, 2%));
   position: relative;
 
   &:before {
@@ -136,17 +134,19 @@ export default {
     bottom: 1rem;
     right: 1rem;
     border-radius: inherit;
-    background: linear-gradient(lighten($alt-color-lighter, 1%), lighten($alt-color-light, 9%));
-    box-shadow: 0 3px 10px rgba($alt-color, 0.35),
-              0 4px 3px rgba($alt-color, 0.5),
-              inset 0 4px 3px rgba(white, 0.5);
+
+background: linear-gradient(0deg, lighten($alt-color-darkest, 2%), lighten($alt-color-darker, 4%));
+    box-shadow: inset 0 3px 10px rgba($alt-color-dark, 0.15),
+                inset 0 4px 2px rgba($alt-color-dark, 0.1);
+
   }
   .is-clicking & {
     &:before {
-    background: linear-gradient(0deg, lighten($alt-color-lighter, 2%), lighten($alt-color-light, 4%));
-    box-shadow: inset 0 3px 10px rgba($alt-color, 0.15),
-                inset 0 4px 2px rgba($alt-color, 0.1);
-    }
+    background: linear-gradient(lighten($alt-color-darkest, 1%), lighten($alt-color-darker, 9%));
+    box-shadow: 0 3px 10px rgba($alt-color-dark, 0.35),
+              0 4px 3px rgba($alt-color-dark, 0.5),
+              inset 0 4px 3px rgba($alt-color, 0.5);
+        }
   }
 }
 </style>

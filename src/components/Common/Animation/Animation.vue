@@ -1,8 +1,5 @@
 <template>
-  <transition
-    v-on:leave="leave"
-    v-on:after-leave="onAfterLeave"
-  >
+  <transition name="appear" v-on:after-leave="onAfterLeave">
     <div class="animation" :class="{ 'is-desktop': isDesktop }">
       <div class="three-animation" ref="container"></div>
       <slot></slot>
@@ -60,7 +57,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['isConnected', 'isSkipped']),
+    ...mapState(['isConnected', 'isSkipped', 'introPlayed']),
 
     ratio () {
       return this.windowWidth / this.windowHeight
@@ -85,12 +82,6 @@ export default {
       this.getIntersection()
 
       window.requestAnimationFrame(this.loop)
-    },
-
-    leave (el, done) {
-      this.animation.animateLeave(() => {
-        done()
-      })
     },
 
     onAfterLeave () {
@@ -151,6 +142,7 @@ export default {
   },
 
   mounted () {
+    const pairingEl = this.$slots.default[0].elm
     this.updateSizes()
 
     debouncedResize((e) => {
@@ -158,7 +150,7 @@ export default {
       this.animation.setSize(this.windowWidth, this.windowHeight)
     })
 
-    this.animation = new ThreeAnimation(this.$refs.container, ANIMATION_SCREEN_VIEWPORT, this.desktopAnimation, this.debug)
+    this.animation = new ThreeAnimation(this.$refs.container, ANIMATION_SCREEN_VIEWPORT, this.desktopAnimation, this.debug, pairingEl)
 
     const screen = this.animation.getScreen()
     const DrawingCtor = this.$root.constructor.extend(Drawing)
@@ -185,9 +177,17 @@ export default {
       this.loop()
     }
 
+    if (!this.introPlayed) {
+      this.animation.animateEnter()
+    } else {
+      this.animation.setFinalCameraState()
+    }
+
     this.animation.on('animationEnd', () => {
       this.$vuetamin.trigger(threads.SIZES)
     })
+
+    this.$store.commit('setIntroPlayed', true)
   },
 
   destroyed () {
@@ -216,6 +216,15 @@ export default {
 
 .animation {
   user-select: none;
+  &.appear-enter-active, &.appear-leave-active {
+    transition: 1.0s;
+  }
+  &.appear-leave-active {
+    transition-delay: 1s;
+  }
+  &.appear-enter, &.appear-leave-to {
+    opacity: 0;
+  }
 }
 
 .three-animation {

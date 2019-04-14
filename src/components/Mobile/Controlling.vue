@@ -53,7 +53,7 @@ export default {
     transition: 2s;
   }
   &.appear-enter, &.appear-leave-to {
-    transform: translateY(50%);
+    transform: translateY(10%);
     opacity: 0;
   }
 }

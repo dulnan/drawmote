@@ -62,10 +62,10 @@ export default {
   },
 
   computed: {
-    ...mapState(['isConnected']),
+    ...mapState(['isConnected', 'isSkipped']),
 
     isVisible () {
-      return this.connectionRestorable && !this.isConnected
+      return this.connectionRestorable && (!this.isConnected && !this.isSkipped)
     }
   },
 
@@ -137,7 +137,7 @@ export default {
   position: sticky;
   bottom: $footer-height-xs;
   z-index: $index-footer - 1;
-  background: $alt-color-dark;
+  background: $color-translucent-dark;
   margin-top: 4rem;
 
   opacity: 1;

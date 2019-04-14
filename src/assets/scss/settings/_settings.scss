@@ -15,6 +15,7 @@ $color-greendark:             #5da83a;
 
 $color-turquoise:             #478bb3;
 
+
 $code-margin:                 0.2em;
 $code-radius:                 $code-margin;
 
@@ -75,6 +76,9 @@ $alt-color:                         #554757;
 $alt-color-dark:                    #39293c;
 $alt-color-darker:                  #2a192d;
 $alt-color-darkest:                 #201123;
+
+
+$color-translucent-dark:      rgba($alt-color-darkest, 0.8);
 
 /**
  * Typography

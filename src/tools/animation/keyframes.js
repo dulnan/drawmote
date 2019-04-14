@@ -2,7 +2,7 @@ export const CAMERA_MOBILE = [
   {
     offset: 0,
     options: {
-      duration: 4000,
+      duration: 2000,
       delay: 0,
       elasticity: 7,
       endDelay: 0,
@@ -20,7 +20,7 @@ export const CAMERA_MOBILE = [
   {
     offset: 1000,
     options: {
-      duration: 4000,
+      duration: 2000,
       delay: 0,
       elasticity: 7,
       endDelay: 0,
@@ -36,9 +36,9 @@ export const CAMERA_MOBILE = [
     }
   },
   {
-    offset: 5000,
+    offset: 3000,
     options: {
-      duration: 7000,
+      duration: 4000,
       delay: 0,
       elasticity: 7,
       endDelay: 0,
@@ -77,7 +77,7 @@ export const PHONE_MOBILE = [
   {
     offset: 1000,
     options: {
-      duration: 7000,
+      duration: 4000,
       delay: 0,
       elasticity: 7,
       endDelay: 0,
@@ -114,28 +114,11 @@ export const CAMERA_LEAVE = {
 }
 
 export const CAMERA = [
-  {
-    offset: 0,
-    options: {
-      duration: 4000,
-      delay: 0,
-      elasticity: 7,
-      endDelay: 0,
-      easing: 'easeInOutCubic'
-    },
-    values: {
-      positionX: 3.61,
-      positionY: 2.03,
-      positionZ: -0.4,
-      targetX: -6.44,
-      targetY: -0.92,
-      targetZ: 3.12
-    }
-  },
+  { 'offset': 0, 'options': { 'duration': 4000, 'delay': 0, 'elasticity': 7, 'endDelay': 0, 'easing': 'easeInOutCubic' }, 'values': { 'positionX': -1.46, 'positionY': -6.06, 'positionZ': 5.66, 'targetX': -6.75, 'targetY': -2, 'targetZ': -3.24 } },
   {
     offset: 1000,
     options: {
-      duration: 8000,
+      duration: 4000,
       delay: 0,
       elasticity: 7,
       endDelay: 0,
@@ -156,7 +139,7 @@ export const PHONE = [
   {
     offset: 0,
     options: {
-      duration: 4000,
+      duration: 2000,
       delay: 0,
       elasticity: 7,
       endDelay: 0,
@@ -172,9 +155,9 @@ export const PHONE = [
     }
   },
   {
-    offset: 1000,
+    offset: 0,
     options: {
-      duration: 7000,
+      duration: 5000,
       delay: 0,
       elasticity: 7,
       endDelay: 0,

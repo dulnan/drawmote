@@ -6,7 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     isSkipped: false,
-    isConnected: false
+    isConnected: false,
+    introPlayed: false
   },
   mutations: {
     setSkipped (state, isSkipped) {
@@ -15,6 +16,10 @@ export default new Vuex.Store({
 
     setConnected (state, isConnected) {
       state.isConnected = isConnected
+    },
+
+    setIntroPlayed (state, introPlayed) {
+      state.introPlayed = introPlayed
     }
   },
 

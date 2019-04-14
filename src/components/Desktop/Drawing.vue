@@ -133,7 +133,7 @@ export default {
     transition: 0.5s;
   }
   &.appear-enter-active {
-    transition-delay: 2.5s;
+    transition-delay: 0s;
   }
   &.appear-enter, &.appear-leave-to {
     opacity: 0;

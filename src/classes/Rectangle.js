@@ -38,7 +38,6 @@ export default class Rectangle {
    * @param {HTMLElement} element
    */
   setFromElement (element) {
-    console.log('JAAaAAA')
     this.p1.x = Number(element.offsetLeft)
     this.p1.y = Number(element.offsetTop)
     this.p2.x = Number(element.offsetLeft + element.offsetWidth)

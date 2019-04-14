@@ -71,6 +71,7 @@ export default {
     text-align: left;
     transition: 0.4s;
     &.is-open {
+      background: $color-translucent-dark;
     }
   }
   @include media('sm') {

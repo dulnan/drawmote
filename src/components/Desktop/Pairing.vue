@@ -154,6 +154,7 @@ export default {
   padding-top: 84vw;
   justify-content: center;
   text-align: center;
+  transform-origin: center center;
   &.is-desktop-animation {
     text-align: left;
     padding: 2rem 3vw;
