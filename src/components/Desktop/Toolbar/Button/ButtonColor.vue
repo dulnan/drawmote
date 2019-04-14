@@ -61,12 +61,12 @@ export default {
     }
   }
 
-  &.toolbar-item--color-white .toolbar-button {
-    box-shadow: 0 0 0 1px #eee;
+  &.toolbar-item--color-black .toolbar-button {
+    box-shadow: 0 0 0 1px $alt-color;
   }
 
   &.active .toolbar-button {
-    box-shadow: 0 0px 0px 2px currentColor;
+    box-shadow: 0 0px 0px 2px $alt-color-darker, 0 0px 0px 4px $alt-color-lighter;
   }
 }
 </style>
