@@ -69,7 +69,6 @@ export default {
   > .btn {
     width: 100%;
     text-align: left;
-    transition: 0.4s;
     &.is-open {
       background: $color-translucent-dark;
     }

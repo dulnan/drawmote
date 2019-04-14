@@ -162,6 +162,7 @@ export default {
   }
   &.appear-enter, &.appear-leave-to {
     transform: translateY(100%);
+    opacity: 0;
   }
 }
 
