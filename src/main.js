@@ -27,7 +27,7 @@ function getGymote () {
   }
 }
 
-if (process.env.VUE_APP_SERVER_ENV !== 'local') {
+if (!window.__PRERENDERING && process.env.VUE_APP_SERVER_ENV !== 'local') {
   Sentry.init({
     dsn: 'https://b0df1bd1d041480f9e8e4dd2c3b56ed5@sentry.io/1342499',
     release: `drawmote@${process.env.PKG_VERSION}`,
