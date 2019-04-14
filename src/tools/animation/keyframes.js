@@ -75,9 +75,9 @@ export const PHONE_MOBILE = [
     }
   },
   {
-    offset: 1000,
+    offset: 0,
     options: {
-      duration: 4000,
+      duration: 6000,
       delay: 0,
       elasticity: 7,
       endDelay: 0,
