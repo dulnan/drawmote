@@ -90,10 +90,15 @@ export default {
     },
 
     onAfterLeave () {
-      this.instance.$destroy()
-      this.instance.$el.remove()
-      this.instance = null
-      this.animation.dispose()
+      if (this.instance) {
+        this.instance.$destroy()
+        this.instance.$el.remove()
+        this.instance = null
+      }
+
+      if (this.animation) {
+        this.animation.dispose()
+      }
     },
 
     handleRange (e) {
@@ -197,6 +202,9 @@ export default {
       this.$vuetamin.trigger(threads.SIZES)
     })
 
+    this.animation.refresh()
+    this.animation.setSize(this.windowWidth, this.windowHeight)
+
     this.$store.commit('setIntroPlayed', true)
   },
 
@@ -279,6 +287,9 @@ export default {
     image-rendering: -webkit-crisp-edges;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
+  }
+  > div {
+    z-index: 10;
   }
 }
 

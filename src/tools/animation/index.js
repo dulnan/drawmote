@@ -656,6 +656,13 @@ export default class ThreeAnimation extends EventEmitter {
     })
   }
 
+  refresh () {
+    const screenContainer = this.container
+
+    screenContainer.style.display = 'none'
+    screenContainer.style.display = 'block'
+  }
+
   dispose () {
     while (this.dom.children.length) {
       this.dom.removeChild(this.dom.firstChild)
