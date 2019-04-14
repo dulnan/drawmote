@@ -5,7 +5,7 @@
       v-if="isConnected"
       @click="$store.dispatch('disconnect')"
     >
-      Disconnect
+      {{ $t('footer.disconnect') }}
     </button>
 
     <button
@@ -13,7 +13,7 @@
       v-if="isSkipped"
       @click="$store.dispatch('unskip')"
     >
-      Back to pairing
+      {{ $t('footer.toPairing') }}
     </button>
   </li>
 </template>

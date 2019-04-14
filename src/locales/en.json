@@ -64,6 +64,8 @@
     "continueDrawing": "Continue drawing"
   },
   "footer": {
-    "copyright": "Made by"
+    "copyright": "Made by",
+    "toPairing": "Back to pairing",
+    "disconnect": "Disconnect"
   }
 }
