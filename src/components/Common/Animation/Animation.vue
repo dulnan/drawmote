@@ -1,6 +1,6 @@
 <template>
   <transition name="appear" v-on:after-leave="onAfterLeave">
-    <div class="animation" :class="{ 'is-desktop': isDesktop, 'is-fallback': useFallback, 'is-ready': isRendered }">
+    <div class="animation" :class="{ 'is-desktop': isDesktop, 'is-fallback': useFallback }">
       <div class="three-animation" ref="container"></div>
       <slot></slot>
       <div class="ratio" v-if="debug">{{ ratio }}</div>
@@ -237,11 +237,6 @@ export default {
 
 .animation {
   user-select: none;
-  opacity: 0;
-  transition: 1.0s;
-  &.is-ready {
-    opacity: 1;
-  }
   &.appear-enter-active, &.appear-leave-active {
     transition: 1.0s;
   }

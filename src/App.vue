@@ -1,5 +1,5 @@
 <template>
-  <div id="drawmote" class="relative">
+  <div id="drawmote" class="relative" :class="{ 'is-ready': isReady }">
     <mobile v-if="isMobile" />
     <desktop v-else />
     <restore-connection />
@@ -30,7 +30,7 @@ export default {
   data () {
     return {
       isMobile: true,
-      hasLoaded: false
+      isReady: false
     }
   },
 
@@ -40,6 +40,10 @@ export default {
 
   mounted () {
     this.$nextTick(() => {
+      if (!window.__PRERENDERING) {
+        this.isReady = true
+      }
+
       document.dispatchEvent(new Event('render-event'))
       this.$forceUpdate()
     })
@@ -49,7 +53,12 @@ export default {
 
 <style lang="scss">
 #drawmote {
-  background: #000;
+  background: $alt-color-darker;
+  opacity: 0;
+  transition: 0.9s;
+  &.is-ready {
+    opacity: 1;
+  }
   @include media('sm') {
     position: absolute;
     top: 0;
