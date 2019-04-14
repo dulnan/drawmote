@@ -5,7 +5,7 @@
     <restore-connection />
     <the-footer :is-mobile="isMobile" />
     <connection-timeout :is-mobile="isMobile" />
-    <attribution v-if="attributionVisible" />
+    <attribution v-show="attributionVisible" />
   </div>
 </template>
 
