@@ -87,7 +87,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['isSkipped']),
+    ...mapState(['isSkipped', 'isConnected']),
 
     toolGroups () {
       return [
@@ -118,7 +118,7 @@ export default {
               return false
             }
 
-            if (tool.id === 'distance' && this.isSkipped) {
+            if (tool.id === 'distance' && !this.isConnected) {
               return false
             }
 
