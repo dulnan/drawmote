@@ -1,7 +1,7 @@
 <template>
     <transition name="appear">
       <div class="attribution-overlay pdg md-pdg+ lg-pdg++">
-        <div>
+        <div class="md-pdg++">
           <h2 class="text-heavy h1 mrgb">Attribution</h2>
           <p class="h2 mrgb+">drawmote was only made possible thanks to the contributions of the following people and projects.</p>
 
@@ -101,33 +101,37 @@ export default {
 
 <style lang="scss">
 .attribution-overlay {
-  background: $alt-color-darkest;
-  max-width: 30rem;
+  background: $color-translucent-dark;
   position: fixed;
   top: 0;
   right: 0;
+  left: 0;
   bottom: 0;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   z-index: $index-footer - 1;
   padding-bottom: 5rem !important;
+  > div {
+    max-width: 40rem;
+    margin: 0 auto;
+    @include media('sm') {
+      border: $list-separator-style;
+      background: $alt-color-darkest;
+    }
+  }
   &.appear-enter-active, &.appear-leave-active {
     transition: .7s ease-in-out;
-    @include media('xs', $breakpoints-desc) {
-      > div {
-        transition: .6s ease-in-out;
-      }
+    > div {
+      transition: .7s ease-in-out;
     }
   }
   &.appear-enter, &.appear-leave-to {
-    @include media('xs', $breakpoints-desc) {
-      opacity: 0;
-      > div {
-        transform: translateY(30%);
+    opacity: 0;
+    > div {
+      transform: translateY(30%);
+      @include media('sm') {
+        transform: translateX(30%);
       }
-    }
-    @include media('sm') {
-      transform: translateX(100%);
     }
   }
 
