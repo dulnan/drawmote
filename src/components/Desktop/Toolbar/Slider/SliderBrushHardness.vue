@@ -5,15 +5,14 @@ import threads from '@/store/vuetamin/threads'
 import Slider from '@/components/Desktop/Toolbar/Slider/Slider.vue'
 
 export default {
-  extends: Slider,
-
   name: 'SliderBrushHardness',
+  extends: Slider,
 
   vuetamin: {
     handleHardnessChange: [threads.BRUSH_HARDNESS]
   },
 
-  data () {
+  data() {
     return {
       min: HARDNESS_MIN,
       max: HARDNESS_MAX
@@ -21,13 +20,13 @@ export default {
   },
 
   methods: {
-    handleHardnessChange (state) {
+    handleHardnessChange(state) {
       if (this.value !== state.brush.hardness) {
         this.value = state.brush.hardness
       }
     },
 
-    handleValueChange (value) {
+    handleValueChange(value) {
       this.$vuetamin.store.mutate('updateBrushHardness', value)
     }
   }

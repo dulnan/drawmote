@@ -1,10 +1,10 @@
 <template>
   <div class="mobile h-100">
-    <animation v-if="!isConnected">
-      <pairing />
-    </animation>
+    <Animation v-if="!isConnected">
+      <Pairing />
+    </Animation>
 
-    <controlling v-if="isConnected" />
+    <Controlling v-if="isConnected" />
   </div>
 </template>
 
@@ -29,17 +29,35 @@ export default {
     ...mapState(['isConnected'])
   },
 
+  mounted() {
+    this.$peersox.on('peerConnected', this.handleConnected.bind(this))
+    this.$peersox.on('connectionClosed', this.handleConnectionClosed.bind(this))
+
+    this.$mote.start()
+
+    this.$peersox.onString = this.handleMessage.bind(this)
+    this.$mote._onDataChange = this.handleDataChange.bind(this)
+  },
+
+  beforeDestroy() {
+    this.$peersox.off('peerConnected', this.handleConnected)
+    this.$peersox.off('connectionClosed', this.handleConnectionClosed)
+
+    this.$peersox.onString = () => {}
+    this.$mote._onDataChange = () => {}
+  },
+
   methods: {
-    handleConnected () {
+    handleConnected() {
       this.$store.dispatch('connect')
     },
 
-    handleConnectionClosed () {
+    handleConnectionClosed() {
       this.$store.dispatch('disconnect')
       this.$mote.stop()
     },
 
-    handleMessage (rawMessage) {
+    handleMessage(rawMessage) {
       if (!this.isConnected) {
         return
       }
@@ -55,29 +73,11 @@ export default {
       }
     },
 
-    handleDataChange (data) {
+    handleDataChange(data) {
       if (this.isConnected) {
         this.$peersox.send(data)
       }
     }
-  },
-
-  mounted () {
-    this.$peersox.on('peerConnected', this.handleConnected.bind(this))
-    this.$peersox.on('connectionClosed', this.handleConnectionClosed.bind(this))
-
-    this.$mote.start()
-
-    this.$peersox.onString = this.handleMessage.bind(this)
-    this.$mote._onDataChange = this.handleDataChange.bind(this)
-  },
-
-  beforeDestroy () {
-    this.$peersox.off('peerConnected', this.handleConnected)
-    this.$peersox.off('connectionClosed', this.handleConnectionClosed)
-
-    this.$peersox.onString = () => {}
-    this.$mote._onDataChange = () => {}
   }
 }
 </script>

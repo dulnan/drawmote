@@ -20,7 +20,7 @@ import i18n from './i18n'
 import { getServerUrls } from '@/tools/helpers.js'
 import { BREAKPOINT_REMOTE } from '@/settings'
 
-function getGymote () {
+function getGymote() {
   if (window.innerWidth > BREAKPOINT_REMOTE) {
     return import('./plugins/GymoteScreen')
   } else {

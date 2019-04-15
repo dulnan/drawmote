@@ -50,8 +50,10 @@ $logo-base: 768;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 ((30 / $logo-base) * 1em) ((100 / $logo-base) * 1em) ((7 / $logo-base) * 1em) rgba(0,0,0,0.04),
-  0 ((1 / $logo-base) * 1em) ((4 / $logo-base) * 1em) ((2 / $logo-base) * 1em) rgba(0,0,0,0.01);
+  box-shadow: 0 ((30 / $logo-base) * 1em) ((100 / $logo-base) * 1em)
+      ((7 / $logo-base) * 1em) rgba(0, 0, 0, 0.04),
+    0 ((1 / $logo-base) * 1em) ((4 / $logo-base) * 1em) ((2 / $logo-base) * 1em)
+      rgba(0, 0, 0, 0.01);
   /* animation: 2s pulse cubic-bezier(1, -0.04, 0.63, 1.01) infinite alternate; */
 
   img {

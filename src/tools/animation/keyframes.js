@@ -114,7 +114,24 @@ export const CAMERA_LEAVE = {
 }
 
 export const CAMERA = [
-  { 'offset': 0, 'options': { 'duration': 4000, 'delay': 0, 'elasticity': 7, 'endDelay': 0, 'easing': 'easeInOutCubic' }, 'values': { 'positionX': -1.46, 'positionY': -6.06, 'positionZ': 5.66, 'targetX': -6.75, 'targetY': -2, 'targetZ': -3.24 } },
+  {
+    offset: 0,
+    options: {
+      duration: 4000,
+      delay: 0,
+      elasticity: 7,
+      endDelay: 0,
+      easing: 'easeInOutCubic'
+    },
+    values: {
+      positionX: -1.46,
+      positionY: -6.06,
+      positionZ: 5.66,
+      targetX: -6.75,
+      targetY: -2,
+      targetZ: -3.24
+    }
+  },
   {
     offset: 1000,
     options: {

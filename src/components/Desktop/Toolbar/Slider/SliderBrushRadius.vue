@@ -5,15 +5,14 @@ import threads from '@/store/vuetamin/threads'
 import Slider from '@/components/Desktop/Toolbar/Slider/Slider.vue'
 
 export default {
-  extends: Slider,
-
   name: 'SliderBrushRadius',
+  extends: Slider,
 
   vuetamin: {
     handleRadiusChange: [threads.BRUSH_RADIUS]
   },
 
-  data () {
+  data() {
     return {
       min: RADIUS_MIN,
       max: RADIUS_MAX
@@ -21,13 +20,13 @@ export default {
   },
 
   methods: {
-    handleRadiusChange (state) {
+    handleRadiusChange(state) {
       if (this.value !== state.brush.radius) {
         this.value = state.brush.radius
       }
     },
 
-    handleValueChange (value) {
+    handleValueChange(value) {
       this.$vuetamin.store.mutate('updateBrushRadius', value)
     }
   }

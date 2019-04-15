@@ -4,7 +4,7 @@ import { clearCanvas } from '@/tools/canvas'
  * A canvas action.
  */
 export default class Action {
-  constructor (type) {
+  constructor(type) {
     this.type = type
   }
 
@@ -14,7 +14,7 @@ export default class Action {
    * @param {HTMLCanvasElement} canvas
    * @param {Object} size
    */
-  do (canvas, size) {
+  do(canvas, size) {
     switch (this.type) {
       case 'erase':
         clearCanvas(canvas, size)

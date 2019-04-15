@@ -9,7 +9,7 @@ import { ANIMATION_SCREEN_VIEWPORT } from '@/settings'
  *
  * @returns {Object}
  */
-export default function () {
+export default function() {
   const cookieState = getState()
   let brushOptions = {}
   let lazyRadius = 80

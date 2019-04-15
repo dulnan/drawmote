@@ -14,10 +14,7 @@
     </div>
 
     <div class="calibration pdg">
-      <button
-        class="btn btn--primary btn--block"
-        @click="calibrate"
-      >
+      <button class="btn btn--primary btn--block" @click="calibrate">
         <span>{{ $t('mobile.calibrationButton') }}</span>
       </button>
     </div>
@@ -28,7 +25,7 @@
 export default {
   name: 'TouchHandler',
 
-  data () {
+  data() {
     return {
       isClicking: false,
       touchStartY: 0,
@@ -38,17 +35,17 @@ export default {
   },
 
   watch: {
-    isClicking (isClicking) {
+    isClicking(isClicking) {
       this.$mote.updateClick(isClicking)
     },
 
-    touchDiffY (diffY) {
+    touchDiffY(diffY) {
       this.$mote.updateTouch({ x: 0, y: diffY })
     }
   },
 
   methods: {
-    handleMainTouchStart (e) {
+    handleMainTouchStart(e) {
       e.preventDefault()
 
       this.touchDiffY = 0
@@ -58,7 +55,7 @@ export default {
       this.isClicking = true
     },
 
-    handleMainTouchMove (e) {
+    handleMainTouchMove(e) {
       e.preventDefault()
 
       const diffTime = new Date().getTime() - this.touchStartTime
@@ -72,20 +69,20 @@ export default {
       }
     },
 
-    handleMainTouchEnd (e) {
+    handleMainTouchEnd(e) {
       e.preventDefault()
 
       this.isClicking = false
     },
 
-    handleMainTouchCancel (e) {
+    handleMainTouchCancel(e) {
       e.preventDefault()
 
       this.isClicking = false
       this.touchDiffY = 0
     },
 
-    calibrate () {
+    calibrate() {
       this.$mote.calibrate()
     }
   }
@@ -123,11 +120,14 @@ export default {
   margin: 0 auto;
   border-radius: 100%;
   border: 1px solid rgba($alt-color-darkest, 0.5);
-  background: linear-gradient(lighten($alt-color-darkest, 0%), lighten($alt-color-darkest, 2%));
+  background: linear-gradient(
+    lighten($alt-color-darkest, 0%),
+    lighten($alt-color-darkest, 2%)
+  );
   position: relative;
 
   &:before {
-    content: "";
+    content: '';
     position: absolute;
     top: 1rem;
     left: 1rem;
@@ -135,18 +135,24 @@ export default {
     right: 1rem;
     border-radius: inherit;
 
-background: linear-gradient(0deg, lighten($alt-color-darkest, 2%), lighten($alt-color-darker, 4%));
+    background: linear-gradient(
+      0deg,
+      lighten($alt-color-darkest, 2%),
+      lighten($alt-color-darker, 4%)
+    );
     box-shadow: inset 0 3px 10px rgba($alt-color-dark, 0.15),
-                inset 0 4px 2px rgba($alt-color-dark, 0.1);
-
+      inset 0 4px 2px rgba($alt-color-dark, 0.1);
   }
   .is-clicking & {
     &:before {
-    background: linear-gradient(lighten($alt-color-darkest, 1%), lighten($alt-color-darker, 9%));
-    box-shadow: 0 3px 10px rgba($alt-color-dark, 0.35),
-              0 4px 3px rgba($alt-color-dark, 0.5),
-              inset 0 4px 3px rgba($alt-color, 0.5);
-        }
+      background: linear-gradient(
+        lighten($alt-color-darkest, 1%),
+        lighten($alt-color-darker, 9%)
+      );
+      box-shadow: 0 3px 10px rgba($alt-color-dark, 0.35),
+        0 4px 3px rgba($alt-color-dark, 0.5),
+        inset 0 4px 3px rgba($alt-color, 0.5);
+    }
   }
 }
 </style>

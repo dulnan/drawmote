@@ -2,16 +2,18 @@
   <li class="relative footer-browser-support">
     <button
       class="btn btn--bare text-bold check pdg lg-pdg h-100 hover footer-text"
-      @click="toggleBrowserSupport"
       :class="[supportState, { 'is-open': browserSupportVisible }]"
+      @click="toggleBrowserSupport"
     >
       <div class="check__title">
-        <span class="arrow-after">{{ $t(`browserSupport.footer.${supportState}`) }}</span>
+        <span class="arrow-after">{{
+          $t(`browserSupport.footer.${supportState}`)
+        }}</span>
       </div>
     </button>
-    <browser-support
-      :is-mobile="isMobile"
+    <BrowserSupport
       v-show="browserSupportVisible"
+      :is-mobile="isMobile"
       @supportState="handleBrowserSupportState"
       @close="closeBrowserSupport"
     />
@@ -29,10 +31,13 @@ export default {
   },
 
   props: {
-    isMobile: false
+    isMobile: {
+      type: Boolean,
+      default: false
+    }
   },
 
-  data () {
+  data() {
     return {
       supportState: 'checking',
       browserSupportVisible: false
@@ -40,12 +45,12 @@ export default {
   },
 
   methods: {
-    toggleBrowserSupport () {
+    toggleBrowserSupport() {
       this.browserSupportVisible = !this.browserSupportVisible
       this.$track('BrowserSupport', 'show', 1)
     },
 
-    handleBrowserSupportState (state) {
+    handleBrowserSupportState(state) {
       this.supportState = state
 
       if (state !== 'supported') {
@@ -53,7 +58,7 @@ export default {
       }
     },
 
-    closeBrowserSupport () {
+    closeBrowserSupport() {
       this.browserSupportVisible = false
     }
   }

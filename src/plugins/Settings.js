@@ -1,5 +1,5 @@
 export default {
-  install (Vue) {
+  install(Vue) {
     Vue.prototype.$settings = {
       isPrerendering: window.__PRERENDERING === true
     }

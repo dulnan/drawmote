@@ -2,7 +2,13 @@ import EventEmitter from 'eventemitter3'
 import anime from 'animejs'
 
 import { ANIMATION_SCREEN_VIEWPORT } from '@/settings'
-import { PHONE, PHONE_MOBILE, CAMERA, CAMERA_LEAVE, CAMERA_MOBILE } from './keyframes'
+import {
+  PHONE,
+  PHONE_MOBILE,
+  CAMERA,
+  CAMERA_LEAVE,
+  CAMERA_MOBILE
+} from './keyframes'
 import { scaleRange } from '@/tools/helpers'
 
 import * as THREE from 'three'
@@ -21,7 +27,7 @@ const round = value => {
 }
 
 export default class ThreeAnimation extends EventEmitter {
-  constructor (container, viewport, isDesktop, debug, pairingEl) {
+  constructor(container, viewport, isDesktop, debug, pairingEl) {
     super()
 
     this._debug = debug
@@ -89,7 +95,7 @@ export default class ThreeAnimation extends EventEmitter {
     this.load(sceneObject)
   }
 
-  load (json) {
+  load(json) {
     let project = json.project
     if (project.gammaInput) this.webgl.renderer.gammaInput = true
     if (project.gammaOutput) this.webgl.renderer.gammaOutput = true
@@ -106,7 +112,7 @@ export default class ThreeAnimation extends EventEmitter {
     })
   }
 
-  init () {
+  init() {
     this.webgl.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
     this.webgl.renderer.setClearColor(0x000000, 0)
 
@@ -154,13 +160,16 @@ export default class ThreeAnimation extends EventEmitter {
     this.displayScreen.add(rectLight)
 
     let intersectionPlane = new THREE.PlaneBufferGeometry(
-      (this.displayScreen.geometry.parameters.width * screenScale.x) * 2,
-      (this.displayScreen.geometry.parameters.height * screenScale.y) * 2,
+      this.displayScreen.geometry.parameters.width * screenScale.x * 2,
+      this.displayScreen.geometry.parameters.height * screenScale.y * 2,
       8,
       8
     )
 
-    var mat = new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide })
+    var mat = new THREE.MeshBasicMaterial({
+      color: 0x000000,
+      side: THREE.DoubleSide
+    })
     mat.opacity = 0
     mat.transparent = true
     this.intersectionPlane = new THREE.Mesh(intersectionPlane, mat)
@@ -235,7 +244,7 @@ export default class ThreeAnimation extends EventEmitter {
     this.addGui(rectLight)
   }
 
-  addTargetSphere () {
+  addTargetSphere() {
     if (this._debug) {
       var geometry = new THREE.SphereGeometry(0.1, 32, 32)
       var material = new THREE.MeshBasicMaterial({ color: 0xffff00 })
@@ -244,7 +253,7 @@ export default class ThreeAnimation extends EventEmitter {
     }
   }
 
-  addCssObject (name, source) {
+  addCssObject(name, source) {
     let container = document.createElement('div')
     container.classList.add(name + '-container')
 
@@ -288,7 +297,7 @@ export default class ThreeAnimation extends EventEmitter {
     return container
   }
 
-  addGui (rectLight) {
+  addGui(rectLight) {
     if (!this._debug) {
       return
     }
@@ -325,10 +334,13 @@ export default class ThreeAnimation extends EventEmitter {
         .onChange(this.updateCamera.bind(this))
     })
 
-    cameraFolder.add(this.camera, 'zoom', 0, 4).step(0.01).onChange(() => {
-      this.camera.updateProjectionMatrix()
-      this.updateCamera()
-    })
+    cameraFolder
+      .add(this.camera, 'zoom', 0, 4)
+      .step(0.01)
+      .onChange(() => {
+        this.camera.updateProjectionMatrix()
+        this.updateCamera()
+      })
 
     let phoneFolder = this.gui.addFolder('Phone')
 
@@ -355,11 +367,11 @@ export default class ThreeAnimation extends EventEmitter {
     actionFolder.open()
   }
 
-  getScreen () {
+  getScreen() {
     return this.container.children[0].children[0]
   }
 
-  updateCamera () {
+  updateCamera() {
     if (!this.camera) {
       return
     }
@@ -381,7 +393,10 @@ export default class ThreeAnimation extends EventEmitter {
     }
 
     if (this.isDesktop) {
-      this.camera.zoom = Math.min(Math.max((this.width / this.height) / 1.9, 0.7), 1.3)
+      this.camera.zoom = Math.min(
+        Math.max(this.width / this.height / 1.9, 0.7),
+        1.3
+      )
     } else {
       this.camera.zoom = 1
     }
@@ -390,7 +405,7 @@ export default class ThreeAnimation extends EventEmitter {
     this.camera.updateProjectionMatrix()
   }
 
-  updatePhone () {
+  updatePhone() {
     this.objectPhone.rotation.x = this.phoneAnimation.rotationX
     this.objectPhone.rotation.y = this.phoneAnimation.rotationY
     this.objectPhone.rotation.z = this.phoneAnimation.rotationZ
@@ -402,7 +417,7 @@ export default class ThreeAnimation extends EventEmitter {
     this.objectPhone.updateMatrixWorld()
   }
 
-  addOrbitControls () {
+  addOrbitControls() {
     if (this.features.orbit) {
       this.orbit = new THREE.OrbitControls(
         this.camera,
@@ -415,12 +430,12 @@ export default class ThreeAnimation extends EventEmitter {
     }
   }
 
-  setPhoneRotationFromGyro ({ alpha, beta }) {
+  setPhoneRotationFromGyro({ alpha, beta }) {
     this.phoneAnimation.rotationX = THREE.Math.degToRad(beta - 40)
     this.phoneAnimation.rotationY = THREE.Math.degToRad(alpha)
   }
 
-  setPhoneRotationFromMouse (x, y) {
+  setPhoneRotationFromMouse(x, y) {
     if (!this.animationFinished) {
       return
     }
@@ -428,15 +443,17 @@ export default class ThreeAnimation extends EventEmitter {
     const rangeX = [-0.26, 0.82]
     const rangeY = [-0.95, 0.95]
 
-    this.phoneAnimation.rotationX = scaleRange(1 - y, [0, 1], [0, rangeX[1] - rangeX[0]]) + rangeX[0]
-    this.phoneAnimation.rotationY = scaleRange(1 - x, [0, 1], [0, rangeY[1] - rangeY[0]]) + rangeY[0]
+    this.phoneAnimation.rotationX =
+      scaleRange(1 - y, [0, 1], [0, rangeX[1] - rangeX[0]]) + rangeX[0]
+    this.phoneAnimation.rotationY =
+      scaleRange(1 - x, [0, 1], [0, rangeY[1] - rangeY[0]]) + rangeY[0]
 
     this.updatePhone()
 
     this.objectPhone.updateMatrixWorld()
   }
 
-  getIntersection () {
+  getIntersection() {
     if (!this.animationFinished) {
       return
     }
@@ -469,17 +486,17 @@ export default class ThreeAnimation extends EventEmitter {
     return intersection
   }
 
-  setCamera (value) {
+  setCamera(value) {
     this.camera = value
     this.camera.aspect = 1
     this.camera.updateProjectionMatrix()
   }
 
-  setScene (value) {
+  setScene(value) {
     this.webgl.scene = value
   }
 
-  setFinalCameraState () {
+  setFinalCameraState() {
     if (this.isDesktop) {
       this.setCameraValues(CAMERA[1])
       this.setPhoneValues(PHONE[1])
@@ -491,7 +508,7 @@ export default class ThreeAnimation extends EventEmitter {
     this.animationFinished = true
   }
 
-  setSize (width, height) {
+  setSize(width, height) {
     const w = width
     const h = this.isDesktop ? height : width * 2
 
@@ -516,7 +533,7 @@ export default class ThreeAnimation extends EventEmitter {
     }
   }
 
-  animate (t) {
+  animate(t) {
     if (this.animeAnimation) {
       this.animeAnimation.tick(t)
     }
@@ -528,15 +545,15 @@ export default class ThreeAnimation extends EventEmitter {
     this.css.renderer.render(this.css.scene, this.camera)
   }
 
-  play () {
+  play() {
     this.webgl.renderer.setAnimationLoop(this.animate.bind(this))
   }
 
-  stop () {
+  stop() {
     this.webgl.renderer.stop()
   }
 
-  animateEnter () {
+  animateEnter() {
     let animeAnimation = anime.timeline({
       autoplay: false,
       complete: () => {
@@ -553,32 +570,38 @@ export default class ThreeAnimation extends EventEmitter {
       this.setCameraValues(CAMERA[1])
       this.addToTimeline('camera', animeAnimation, CAMERA)
       this.addToTimeline('phone', animeAnimation, PHONE)
-      animeAnimation.add({
-        targets: this.pairingEl,
-        scale: [1.2, 1],
-        opacity: [0, 1],
-        transformOrigin: ['50% 50% 0', '50% 50% 0'],
-        easing: 'easeInOutQuad',
-        duration: 1900
-      }, '-=2000')
+      animeAnimation.add(
+        {
+          targets: this.pairingEl,
+          scale: [1.2, 1],
+          opacity: [0, 1],
+          transformOrigin: ['50% 50% 0', '50% 50% 0'],
+          easing: 'easeInOutQuad',
+          duration: 1900
+        },
+        '-=2000'
+      )
     } else {
       this.setPhoneValues(PHONE_MOBILE[0])
       this.setCameraValues(CAMERA_MOBILE[0])
       this.addToTimeline('camera', animeAnimation, CAMERA_MOBILE)
       this.addToTimeline('phone', animeAnimation, PHONE_MOBILE)
-      animeAnimation.add({
-        targets: this.pairingEl,
-        opacity: [0, 1],
-        translateY: ['20%', '0%'],
-        easing: 'easeInOutQuad',
-        duration: 1700
-      }, '-=1800')
+      animeAnimation.add(
+        {
+          targets: this.pairingEl,
+          opacity: [0, 1],
+          translateY: ['20%', '0%'],
+          easing: 'easeInOutQuad',
+          duration: 1700
+        },
+        '-=1800'
+      )
     }
 
     this.animeAnimation = animeAnimation
   }
 
-  animateLeave (cb) {
+  animateLeave(cb) {
     let animeAnimation = anime.timeline({
       autoplay: false,
       complete: () => {
@@ -596,13 +619,13 @@ export default class ThreeAnimation extends EventEmitter {
     this.animeAnimation = animeAnimation
   }
 
-  seekAnimation (step) {
+  seekAnimation(step) {
     if (this.animeAnimation) {
       this.animeAnimation.seek(this.animeAnimation.duration * (step / 100))
     }
   }
 
-  updateGui () {
+  updateGui() {
     if (this._debug) {
       window.clearTimeout(this.guiUpdateTimeline)
 
@@ -614,7 +637,7 @@ export default class ThreeAnimation extends EventEmitter {
     }
   }
 
-  setCameraValues ({ values }) {
+  setCameraValues({ values }) {
     this.cameraAnimation.positionX = values.positionX
     this.cameraAnimation.positionY = values.positionY
     this.cameraAnimation.positionZ = values.positionZ
@@ -624,7 +647,7 @@ export default class ThreeAnimation extends EventEmitter {
     this.cameraAnimation.targetZ = values.targetZ
   }
 
-  setPhoneValues ({ values }) {
+  setPhoneValues({ values }) {
     this.phoneAnimation.positionX = values.positionX
     this.phoneAnimation.positionY = values.positionY
     this.phoneAnimation.positionZ = values.positionZ
@@ -634,7 +657,7 @@ export default class ThreeAnimation extends EventEmitter {
     this.phoneAnimation.rotationZ = values.rotationZ
   }
 
-  addToTimeline (target, timeline, frames) {
+  addToTimeline(target, timeline, frames) {
     frames.forEach((frame, index) => {
       if (index === 0) {
         return
@@ -656,14 +679,14 @@ export default class ThreeAnimation extends EventEmitter {
     })
   }
 
-  refresh () {
+  refresh() {
     const screenContainer = this.container
 
     screenContainer.style.display = 'none'
     screenContainer.style.display = 'block'
   }
 
-  dispose () {
+  dispose() {
     while (this.dom.children.length) {
       this.dom.removeChild(this.dom.firstChild)
     }

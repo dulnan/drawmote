@@ -1,5 +1,8 @@
 <template>
-  <canvas class="absolute overlay canvas canvas--interface" ref="canvas_interface"></canvas>
+  <canvas
+    ref="canvas_interface"
+    class="absolute overlay canvas canvas--interface"
+  ></canvas>
 </template>
 
 <script>
@@ -22,6 +25,10 @@ export default {
     drawToCanvas: [threads.BRUSH, threads.POINT, threads.SLIDE]
   },
 
+  created() {
+    this.catenary = new Catenary()
+  },
+
   methods: {
     /**
      * Clears the area outside a rectangle.
@@ -29,7 +36,7 @@ export default {
      * @param {CanvasRenderingContext2D} context
      * @param {Rectangle} rectangle
      */
-    clearOutside (context, rectangle) {
+    clearOutside(context, rectangle) {
       const x = rectangle.p1.x
       const y = rectangle.p1.y
 
@@ -44,11 +51,11 @@ export default {
     /**
      * Call the function to set the width and height of the canvas elements.
      */
-    setCanvasSizes (state) {
+    setCanvasSizes(state) {
       setupCanvases(state.sizes.viewport, [this.$refs.canvas_interface])
     },
 
-    drawToCanvas (state) {
+    drawToCanvas(state) {
       const canvas = this.$refs.canvas_interface
       const context = canvas.getContext('2d')
 
@@ -66,7 +73,14 @@ export default {
       if (state.brush.useFilter) {
         context.filter = `blur(${state.brush.canvasBlur}px)`
       }
-      context.arc(state.points.brush.x, state.points.brush.y, state.brush.canvasRadius, 0, Math.PI * 2, true)
+      context.arc(
+        state.points.brush.x,
+        state.points.brush.y,
+        state.brush.canvasRadius,
+        0,
+        Math.PI * 2,
+        true
+      )
       context.fill()
 
       if (state.brush.useFilter) {
@@ -81,7 +95,12 @@ export default {
       context.lineCap = 'round'
       context.strokeStyle = 'rgba(255,255,255,0.8)'
       context.setLineDash([2, 4])
-      this.catenary.drawToCanvas(context, state.points.pointer, state.points.brush, state.lazyRadius)
+      this.catenary.drawToCanvas(
+        context,
+        state.points.pointer,
+        state.points.brush,
+        state.lazyRadius
+      )
       context.stroke()
 
       /**
@@ -89,14 +108,21 @@ export default {
        */
       context.beginPath()
       context.fillStyle = 'white'
-      context.arc(state.points.brush.x, state.points.brush.y, 2, 0, Math.PI * 2, true)
+      context.arc(
+        state.points.brush.x,
+        state.points.brush.y,
+        2,
+        0,
+        Math.PI * 2,
+        true
+      )
       context.fill()
 
       /**
        * Brush preview
        */
       if (state.pointingAtToolbar) {
-        const backgroundRadius = (RADIUS_MAX * 2) + (2 * BRUSH_PREVIEW_PADDING)
+        const backgroundRadius = RADIUS_MAX * 2 + 2 * BRUSH_PREVIEW_PADDING
         const brushX = state.points.brush.x
         const brushY = state.sizes.toolbarRect.height + backgroundRadius + 24
 
@@ -116,7 +142,14 @@ export default {
           context.filter = `blur(${state.brush.canvasBlur}px)`
         }
 
-        context.arc(brushX, brushY, state.brush.canvasRadius, 0, Math.PI * 2, true)
+        context.arc(
+          brushX,
+          brushY,
+          state.brush.canvasRadius,
+          0,
+          Math.PI * 2,
+          true
+        )
         context.fill()
       }
 
@@ -128,7 +161,14 @@ export default {
        */
       context.beginPath()
       context.fillStyle = 'rgba(255,255,255,0.2)'
-      context.arc(state.points.pointer.x, state.points.pointer.y, 4, 0, Math.PI * 2, true)
+      context.arc(
+        state.points.pointer.x,
+        state.points.pointer.y,
+        4,
+        0,
+        Math.PI * 2,
+        true
+      )
       context.fill()
 
       context.beginPath()
@@ -145,7 +185,10 @@ export default {
        */
       // Find out the highest possible x and y coordinates before it's out of view.
       const maxX = state.sizes.canvasRect.width
-      const maxY = state.sizes.canvasRect.height + state.sizes.toolbarRect.height - state.sizes.footerRect.height
+      const maxY =
+        state.sizes.canvasRect.height +
+        state.sizes.toolbarRect.height -
+        state.sizes.footerRect.height
       const maxXHalf = maxX / 2
       const maxYHalf = maxY / 2
 
@@ -154,8 +197,18 @@ export default {
       const pointerDotY = Math.max(Math.min(state.points.pointer.y, maxY), 0)
 
       // Calculate how much outside the pointer is from the max and min amount.
-      const offsetX = Math.max(Math.max(Math.abs(state.points.pointer.x - maxXHalf) - maxXHalf, 0) - 10, 0) / 7
-      const offsetY = Math.max(Math.max(Math.abs(state.points.pointer.y - maxYHalf) - maxYHalf, 0) - 10, 0) / 7
+      const offsetX =
+        Math.max(
+          Math.max(Math.abs(state.points.pointer.x - maxXHalf) - maxXHalf, 0) -
+            10,
+          0
+        ) / 7
+      const offsetY =
+        Math.max(
+          Math.max(Math.abs(state.points.pointer.y - maxYHalf) - maxYHalf, 0) -
+            10,
+          0
+        ) / 7
 
       // The radius increases the more the pointer is outside the view.
       const radius = Math.min(Math.max(offsetX, offsetY), 30)
@@ -169,10 +222,6 @@ export default {
       context.fill()
       context.stroke()
     }
-  },
-
-  created () {
-    this.catenary = new Catenary()
   }
 }
 </script>

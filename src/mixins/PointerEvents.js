@@ -4,7 +4,7 @@ export default {
   name: 'PointerEvents',
 
   methods: {
-    handleWheel (e) {
+    handleWheel(e) {
       e.preventDefault()
 
       if (e.deltaY > 0) {
@@ -14,7 +14,7 @@ export default {
       }
     },
 
-    handleMouseMove (e) {
+    handleMouseMove(e) {
       this.preventEventIfRequired(e)
 
       this.$vuetamin.store.mutate('updatePointer', {
@@ -25,21 +25,21 @@ export default {
       })
     },
 
-    handleMouseDown () {
+    handleMouseDown() {
       this.$vuetamin.store.mutate('updateIsPressing', {
         isPressing: true,
         fromMouse: true
       })
     },
 
-    handleMouseUp () {
+    handleMouseUp() {
       this.$vuetamin.store.mutate('updateIsPressing', {
         isPressing: false,
         fromMouse: true
       })
     },
 
-    handleTouchStart (e) {
+    handleTouchStart(e) {
       this.preventEventIfRequired(e)
       const touch = e.changedTouches[0]
 
@@ -54,7 +54,7 @@ export default {
       this.handleMouseDown()
     },
 
-    handleTouchMove (e) {
+    handleTouchMove(e) {
       this.preventEventIfRequired(e)
 
       const touch = e.changedTouches[0]
@@ -67,19 +67,19 @@ export default {
       })
     },
 
-    handleTouchEnd (e) {
+    handleTouchEnd(e) {
       this.preventEventIfRequired(e)
       this.handleMouseUp()
     },
 
-    preventEventIfRequired (e) {
+    preventEventIfRequired(e) {
       if (!this.$vuetamin.store.getState().pointingAtToolbar) {
         e.preventDefault()
       }
     }
   },
 
-  mounted () {
+  mounted() {
     this.$el.addEventListener('wheel', this.handleWheel)
 
     this.$el.addEventListener('mousedown', this.handleMouseDown)
@@ -91,7 +91,7 @@ export default {
     this.$el.addEventListener('touchend', this.handleTouchEnd)
   },
 
-  destroyed () {
+  destroyed() {
     this.$el.removeEventListener('wheel', this.handleWheel)
 
     this.$el.removeEventListener('mousedown', this.handleMouseDown)

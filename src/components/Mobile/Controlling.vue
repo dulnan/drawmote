@@ -1,7 +1,7 @@
 <template>
   <transition name="appear">
     <div class="controlling">
-      <touch-handler />
+      <TouchHandler />
     </div>
   </transition>
 </template>
@@ -19,7 +19,7 @@ export default {
     TouchHandler
   },
 
-  data () {
+  data() {
     return {
       brushCoordinates: {
         x: 0,
@@ -32,7 +32,7 @@ export default {
     }
   },
 
-  mounted () {
+  mounted() {
     const viewport = getViewportSize()
     this.brushCoordinates = {
       x: viewport.width / 2,
@@ -49,10 +49,12 @@ export default {
   left: 0;
   bottom: 0;
   right: 0;
-  &.appear-enter-active, &.appear-leave-active {
+  &.appear-enter-active,
+  &.appear-leave-active {
     transition: 2s;
   }
-  &.appear-enter, &.appear-leave-to {
+  &.appear-enter,
+  &.appear-leave-to {
     transform: translateY(10%);
     opacity: 0;
   }

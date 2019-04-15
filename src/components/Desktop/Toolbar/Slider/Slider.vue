@@ -7,10 +7,22 @@
   >
     <div class="">
       <div class="tool-slider__text">
-        <div class="tool-slider__label label pdg0 tool-slider__label">{{ $t('tools.' + tool.id) }}</div>
-        <span class="tool-slider__value label flex-1 text-muted text-light pdg0">{{ roundedValue }}</span>
+        <div class="tool-slider__label label pdg0 tool-slider__label">
+          {{ $t('tools.' + tool.id) }}
+        </div>
+        <span
+          class="tool-slider__value label flex-1 text-muted text-light pdg0"
+          >{{ roundedValue }}</span
+        >
       </div>
-      <input type="range" :min="min" :max="max" :step="step" :value="value" @input="handleInput" />
+      <input
+        type="range"
+        :min="min"
+        :max="max"
+        :step="step"
+        :value="value"
+        @input="handleInput"
+      />
     </div>
   </div>
 </template>
@@ -21,11 +33,10 @@ import ToolbarItem from '@/components/Desktop/Toolbar/Item.vue'
 let timeout = null
 
 export default {
+  name: 'ToolbarSlider',
   extends: ToolbarItem,
 
-  name: 'ToolbarSlider',
-
-  data () {
+  data() {
     return {
       min: 0,
       max: 100,
@@ -36,15 +47,21 @@ export default {
   },
 
   computed: {
-    roundedValue () {
+    roundedValue() {
       return Math.round(this.value)
     }
   },
 
   methods: {
-    handleWheel (e) {
+    handleWheel(e) {
       const delta = Math.max(Math.min(e.deltaY, 6), -6)
-      const newValue = Math.round((Math.max(Math.min(this.value - (delta * this.multiplier), this.max), this.min)) * 100) / 100
+      const newValue =
+        Math.round(
+          Math.max(
+            Math.min(this.value - delta * this.multiplier, this.max),
+            this.min
+          ) * 100
+        ) / 100
       this.handleValueChange(newValue)
 
       if (!timeout) {
@@ -54,7 +71,7 @@ export default {
       }
     },
 
-    handleInput (e) {
+    handleInput(e) {
       this.handleValueChange(parseFloat(e.target.value))
     }
   }

@@ -1,6 +1,8 @@
 <template>
-  <div class="toolbar" ref="toolbar">
-    <ul class="list-inline list-inline--tight list-inline--divided toolbar-list flex--align-stretch">
+  <div ref="toolbar" class="toolbar">
+    <ul
+      class="list-inline list-inline--tight list-inline--divided toolbar-list flex--align-stretch"
+    >
       <li
         v-for="group in toolGroups"
         :key="group.id"
@@ -8,27 +10,28 @@
         :class="[
           'toolbar-group--' + group.id,
           { 'flex-1': group.id === 'sliders' }
-        ]" >
+        ]"
+      >
         <ul
           class="list-inline list-inline--tight toolbar-group-list flex--align-stretch"
           :class="{
-            'flex-1 list-inline--divided': group.id === 'sliders',
+            'flex-1 list-inline--divided': group.id === 'sliders'
           }"
         >
           <li
-            class="flex flex--align-stretch h-100"
             v-for="tool in group.items"
             :key="group.action + tool.id"
+            class="flex flex--align-stretch h-100"
             :class="{ 'flex-1': group.id === 'sliders' }"
           >
             <component
-              ref="items"
               :is="tool.component"
+              ref="items"
               :tool="tool"
               :group-id="group.id"
               :action="group.action"
               :hovered-key="toolBeingHovered"
-              />
+            />
           </li>
         </ul>
       </li>
@@ -75,7 +78,7 @@ export default {
     handleToolsChange: [threads.TOOLS]
   },
 
-  data () {
+  data() {
     return {
       pointerAreas: [],
       toolBeingHovered: '',
@@ -89,7 +92,7 @@ export default {
   computed: {
     ...mapState(['isSkipped', 'isConnected']),
 
-    toolGroups () {
+    toolGroups() {
       return [
         {
           id: 'tools',
@@ -129,18 +132,27 @@ export default {
     }
   },
 
+  mounted() {
+    this.calculatePointerAreas()
+  },
+
+  beforeDestroy() {},
+
   methods: {
-    handleConnection ({ connection }) {
+    handleConnection({ connection }) {
       this.connectionDevice = connection.device
     },
 
-    handleToolsChange (state) {
+    handleToolsChange(state) {
       let tool = this.getToolAtPoint(state.points.pointer)
 
       this.toolBeingHovered = tool ? tool.key : ''
 
       if (tool && state.isPressing) {
-        if (this.lastItemClick !== this.toolBeingHovered && !this.wasPressingBefore) {
+        if (
+          this.lastItemClick !== this.toolBeingHovered &&
+          !this.wasPressingBefore
+        ) {
           tool.el.click()
           this.lastItemClick = tool.key
         }
@@ -166,7 +178,7 @@ export default {
       this.wasPressingBefore = state.isPressing
     },
 
-    getToolAtPoint (point) {
+    getToolAtPoint(point) {
       for (let i = 0; i < this.pointerAreas.length; i++) {
         const area = this.pointerAreas[i]
         if (area.coords.containsPoint(point)) {
@@ -174,7 +186,7 @@ export default {
         }
       }
     },
-    calculatePointerAreas () {
+    calculatePointerAreas() {
       this.canvasFilterSupported = this.$vuetamin.store.data.canvasFilterSupported
 
       let items = []
@@ -184,13 +196,6 @@ export default {
 
       this.pointerAreas = items
     }
-  },
-
-  mounted () {
-    this.calculatePointerAreas()
-  },
-
-  beforeDestroy () {
   }
 }
 </script>

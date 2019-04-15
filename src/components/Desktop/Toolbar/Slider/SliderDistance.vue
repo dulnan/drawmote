@@ -6,15 +6,14 @@ import Slider from '@/components/Desktop/Toolbar/Slider/Slider.vue'
 import { encodeEventMessage } from '@/tools/helpers'
 
 export default {
-  extends: Slider,
-
   name: 'SliderDistance',
+  extends: Slider,
 
   vuetamin: {
     handleSizesChange: [threads.SIZES, threads.DISTANCE]
   },
 
-  data () {
+  data() {
     return {
       min: 0,
       max: 100,
@@ -22,8 +21,14 @@ export default {
     }
   },
 
+  mounted() {
+    this.$peersox.send(
+      encodeEventMessage('distance', this.$vuetamin.store.data.gymoteDistance)
+    )
+  },
+
   methods: {
-    handleSizesChange (state) {
+    handleSizesChange(state) {
       this.min = state.sizes.viewport.width / 4
       this.max = state.sizes.viewport.width * 2
 
@@ -32,15 +37,11 @@ export default {
       }
     },
 
-    handleValueChange (value) {
+    handleValueChange(value) {
       this.value = value
       this.$peersox.send(encodeEventMessage('distance', value))
       this.$vuetamin.store.mutate('updateGymoteDistance', value)
     }
-  },
-
-  mounted () {
-    this.$peersox.send(encodeEventMessage('distance', this.$vuetamin.store.data.gymoteDistance))
   }
 }
 </script>

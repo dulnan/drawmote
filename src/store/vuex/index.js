@@ -11,42 +11,42 @@ export default new Vuex.Store({
     attributionVisible: false
   },
   mutations: {
-    setSkipped (state, isSkipped) {
+    setSkipped(state, isSkipped) {
       state.isSkipped = isSkipped
     },
 
-    setConnected (state, isConnected) {
+    setConnected(state, isConnected) {
       state.isConnected = isConnected
     },
 
-    setIntroPlayed (state, introPlayed) {
+    setIntroPlayed(state, introPlayed) {
       state.introPlayed = introPlayed
     },
 
-    setAttributionVisible (state, isVisible) {
+    setAttributionVisible(state, isVisible) {
       state.attributionVisible = isVisible
     }
   },
 
   actions: {
-    connect ({ commit }) {
+    connect({ commit }) {
       commit('setSkipped', false)
       commit('setConnected', true)
     },
 
-    disconnect ({ commit }) {
+    disconnect({ commit }) {
       commit('setConnected', false)
     },
 
-    skip ({ commit }) {
+    skip({ commit }) {
       commit('setSkipped', true)
     },
 
-    unskip ({ commit }) {
+    unskip({ commit }) {
       commit('setSkipped', false)
     },
 
-    toggleAttributionVisibility ({ state, commit }) {
+    toggleAttributionVisibility({ state, commit }) {
       commit('setAttributionVisible', !state.attributionVisible)
     }
   }

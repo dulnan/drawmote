@@ -1,12 +1,21 @@
 <template>
-  <div class="overlay pairing-desktop absolute flex" :style="transformOriginStyle" :class="{ 'is-desktop-animation': desktopAnimation }">
+  <div
+    class="overlay pairing-desktop absolute flex"
+    :style="transformOriginStyle"
+    :class="{ 'is-desktop-animation': desktopAnimation }"
+  >
     <div class="pairing-container">
       <h1 class="text-heavy h1">drawmote</h1>
       <p class="h2 text-bold mrgb+ text-muted">{{ $t('subtitle') }}</p>
       <p class="text-muted mrgt0 h3 pairing-lead">{{ $t('desktop.lead') }}</p>
       <div class="code code--desktop sm-mrgt md-mrgt+">
         <div class="code__content">
-          <div v-for="(number, index) in pairingCodeNumbers" :key="index" class="code__item" :class="{ 'visible': hasCode }">
+          <div
+            v-for="(number, index) in pairingCodeNumbers"
+            :key="index"
+            class="code__item"
+            :class="{ visible: hasCode }"
+          >
             <div class="code-circle contains" :class="'code-circle--' + number">
               <span>{{ number }}</span>
             </div>
@@ -15,13 +24,27 @@
       </div>
       <div class="pairing__actions mrgt">
         <p class="text-muted text-light mrgv0 pairing-skip">
-          <button class="btn btn--bare" @click="skipPairing">{{ $t('desktop.nophone') }}</button>
+          <button class="btn btn--bare" @click="skipPairing">
+            {{ $t('desktop.nophone') }}
+          </button>
         </p>
-        <p class="text-muted text-light pairing-lead mrg0 text-brand" v-if="isBlocked">
+        <p
+          v-if="isBlocked"
+          class="text-muted text-light pairing-lead mrg0 text-brand"
+        >
           {{ $t('desktop.tooManyAttempts') }}
         </p>
-        <p class="code-timeout text-muted text-light mrg0" :class="{ 'visible': hasCode && countdown < 60 }">
-          <span>{{ $t('desktop.countdownPrefix') }} {{ $tc('desktop.countdownSeconds', countdown, { count: countdown }) }} {{ $t('desktop.countdownSuffix') }}</span>
+        <p
+          class="code-timeout text-muted text-light mrg0"
+          :class="{ visible: hasCode && countdown < 60 }"
+        >
+          <span
+            >{{ $t('desktop.countdownPrefix') }}
+            {{
+              $tc('desktop.countdownSeconds', countdown, { count: countdown })
+            }}
+            {{ $t('desktop.countdownSuffix') }}</span
+          >
         </p>
       </div>
     </div>
@@ -29,28 +52,12 @@
 </template>
 
 <script>
-import Logo from '@/components/Common/Logo.vue'
-
 const PAIRING_TIMEOUT = 120
 let interval = null
 let transitionTimeout = null
 
 export default {
   name: 'Pairing',
-
-  components: {
-    Logo
-  },
-
-  data () {
-    return {
-      showModal: false,
-      hasAppeared: false,
-      showCode: false,
-      countdown: PAIRING_TIMEOUT,
-      center: { x: 0, y: 0 }
-    }
-  },
 
   props: {
     pairing: {
@@ -67,8 +74,18 @@ export default {
     }
   },
 
+  data() {
+    return {
+      showModal: false,
+      hasAppeared: false,
+      showCode: false,
+      countdown: PAIRING_TIMEOUT,
+      center: { x: 0, y: 0 }
+    }
+  },
+
   computed: {
-    pairingCodeNumbers: function () {
+    pairingCodeNumbers: function() {
       if (this.isBlocked) {
         return new Array(6).fill('•')
       }
@@ -80,11 +97,16 @@ export default {
       return new Array(6).fill(' ')
     },
 
-    hasCode: function () {
-      return this.pairing && this.pairing.code && this.pairing.code.length > 0 && this.showCode
+    hasCode: function() {
+      return (
+        this.pairing &&
+        this.pairing.code &&
+        this.pairing.code.length > 0 &&
+        this.showCode
+      )
     },
 
-    transformOriginStyle () {
+    transformOriginStyle() {
       return {
         transformOrigin: `${this.center.x}px ${this.center.y}px`
       }
@@ -92,7 +114,7 @@ export default {
   },
 
   watch: {
-    pairing (pairing) {
+    pairing(pairing) {
       if (pairing) {
         this.startTimer()
       } else {
@@ -101,17 +123,28 @@ export default {
     }
   },
 
+  mounted() {
+    window.clearTimeout(transitionTimeout)
+    transitionTimeout = window.setTimeout(() => {
+      this.showCode = true
+    }, 1500)
+  },
+
+  beforeDestroy() {
+    window.clearTimeout(transitionTimeout)
+  },
+
   methods: {
-    updateCenter (center) {
+    updateCenter(center) {
       this.center = center
     },
 
-    skipPairing () {
+    skipPairing() {
       this.$store.dispatch('skip')
       this.$track('Pairing', 'skip', 1)
     },
 
-    startTimer () {
+    startTimer() {
       this.stopTimer()
       this.countdown = PAIRING_TIMEOUT
 
@@ -125,22 +158,11 @@ export default {
       }, 1000)
     },
 
-    stopTimer () {
+    stopTimer() {
       if (interval) {
         window.clearInterval(interval)
       }
     }
-  },
-
-  mounted () {
-    window.clearTimeout(transitionTimeout)
-    transitionTimeout = window.setTimeout(() => {
-      this.showCode = true
-    }, 1500)
-  },
-
-  beforeDestroy () {
-    window.clearTimeout(transitionTimeout)
   }
 }
 </script>
@@ -195,7 +217,7 @@ export default {
       transform: scale(0.8);
     }
     .code-circle:before {
-      transition: 0.5s cubic-bezier(0.57,-0.26, 0.24, 1.08);
+      transition: 0.5s cubic-bezier(0.57, -0.26, 0.24, 1.08);
       transform-origin: center;
       transform: scaleX(0);
     }
@@ -211,7 +233,9 @@ export default {
       }
     }
     &.visible {
-      &, span, .code-circle:before {
+      &,
+      span,
+      .code-circle:before {
         opacity: 1;
         transform: none;
       }

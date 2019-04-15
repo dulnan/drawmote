@@ -10,7 +10,7 @@ export default class {
    * @param {HTMLCanvasElement} canvasMain The canvas where the drawing is.
    * @param {HTMLCanvasElement} canvasTemp Temporary canvas for the current stroke.
    */
-  constructor (canvasMain, canvasTemp) {
+  constructor(canvasMain, canvasTemp) {
     this.actions = []
 
     this._canvasMain = canvasMain
@@ -31,7 +31,7 @@ export default class {
   /**
    * Initialize the canvases.
    */
-  init () {
+  init() {
     this.setSizes({ width: window.innerWidth, height: window.innerHeight })
   }
 
@@ -41,10 +41,12 @@ export default class {
    *
    * @returns {Object} Current state.
    */
-  get state () {
+  get state() {
     const undoPossible = this.actions.length > 0 && this._historyIndex > 0
-    const redoPossible = this.actions.length > 0 && this._historyIndex < this.actions.length
-    const clearPossible = this.lastActionType !== 'erase' || !this.lastActionType
+    const redoPossible =
+      this.actions.length > 0 && this._historyIndex < this.actions.length
+    const clearPossible =
+      this.lastActionType !== 'erase' || !this.lastActionType
 
     return { undoPossible, redoPossible, clearPossible }
   }
@@ -56,7 +58,7 @@ export default class {
    * @param {Number} size.width
    * @param {Number} size.height
    */
-  setSizes ({ width, height }) {
+  setSizes({ width, height }) {
     this._size.width = width
     this._size.height = height
   }
@@ -66,7 +68,7 @@ export default class {
    *
    * @param {Object} viewport
    */
-  updateSizes (viewport) {
+  updateSizes(viewport) {
     this.setSizes(viewport)
     this.redraw()
   }
@@ -76,7 +78,7 @@ export default class {
    *
    * @param {Object} canvasProperties
    */
-  start (canvasProperties) {
+  start(canvasProperties) {
     this.currentAction = new DrawAction(canvasProperties)
   }
 
@@ -85,7 +87,7 @@ export default class {
    * remove all actions after that. This basically removes the ability to use
    * redo at this point, until another undo step is done.
    */
-  updateHistoryState () {
+  updateHistoryState() {
     if (this._historyIndex !== this.actions.length) {
       this.actions.splice(this._historyIndex)
     }
@@ -97,7 +99,7 @@ export default class {
    *
    * @param {DrawAction} action The action to add to the history.
    */
-  pushAction (action) {
+  pushAction(action) {
     this.updateHistoryState()
     this.actions.push(action)
     this.lastActionType = action.type
@@ -107,7 +109,7 @@ export default class {
   /**
    * Handles the release of the mouse or touchend.
    */
-  release () {
+  release() {
     this.copy(this._canvasTemp, this._canvasMain)
     clearCanvas(this._canvasTemp, this._size)
 
@@ -120,7 +122,7 @@ export default class {
    *
    * @param {Point} point The x and y coordinates of the next point.
    */
-  move (point) {
+  move(point) {
     this.currentAction.points.push(point)
 
     clearCanvas(this._canvasTemp, this._size)
@@ -134,14 +136,16 @@ export default class {
    * @param {HTMLCanvasElement} source The canvas to copy from.
    * @param {HTMLCanvasElement} target The canvas to copy the source to.
    */
-  copy (source, target) {
-    target.getContext('2d').drawImage(source, 0, 0, this._size.width, this._size.height)
+  copy(source, target) {
+    target
+      .getContext('2d')
+      .drawImage(source, 0, 0, this._size.width, this._size.height)
   }
 
   /**
    * Undo the last action.
    */
-  undo () {
+  undo() {
     clearCanvas(this._canvasMain, this._size)
     this._historyIndex = Math.max(this._historyIndex - 1, 0)
 
@@ -153,7 +157,7 @@ export default class {
   /**
    * Redo the previous action.
    */
-  redo () {
+  redo() {
     this._historyIndex = Math.min(this._historyIndex + 1, this.actions.length)
 
     if (this._historyIndex <= this.actions.length) {
@@ -165,7 +169,7 @@ export default class {
   /**
    * Clear the main canvas and draw all current actions.
    */
-  redraw () {
+  redraw() {
     clearCanvas(this._canvasMain, this._size)
     this.drawActions()
   }
@@ -173,7 +177,7 @@ export default class {
   /**
    * Draw all current actions to the main canvas.
    */
-  drawActions () {
+  drawActions() {
     // First, figure out the range of actions to draw.
     // This loop will find the last occurence of an erase action.
     let startIndex = 0
@@ -195,7 +199,7 @@ export default class {
   /**
    * Erase the contents of the main canvas and push the action for it.
    */
-  erase () {
+  erase() {
     if (this.lastActionType === 'erase') {
       return
     }

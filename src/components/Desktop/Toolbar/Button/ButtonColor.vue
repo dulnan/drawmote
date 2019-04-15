@@ -6,16 +6,15 @@ import { getRgbaString, shadeRgbColor } from '@/tools/helpers.js'
 import threads from '@/store/vuetamin/threads'
 
 export default {
-  extends: Button,
-
   name: 'ToolbarButtonColor',
+  extends: Button,
 
   vuetamin: {
     handleColorChange: [threads.BRUSH_COLOR]
   },
 
   computed: {
-    style () {
+    style() {
       if (!this.tool.color) {
         return {}
       }
@@ -26,17 +25,17 @@ export default {
       }
     },
 
-    additionalClasses () {
+    additionalClasses() {
       return ['toolbar-item--color-' + this.tool.color.name]
     }
   },
 
   methods: {
-    handleColorChange (state) {
+    handleColorChange(state) {
       this.isActive = this.tool.color.name === state.brush.color.name
     },
 
-    handleClick () {
+    handleClick() {
       this.$vuetamin.store.mutate('updateBrushColor', this.tool.color)
       this.$track('Toolbar', 'setColor', this.tool.color.name)
     }
@@ -56,7 +55,8 @@ export default {
       height: 0.5em;
     }
 
-    &:hover, .hover & {
+    &:hover,
+    .hover & {
       opacity: 0.75;
     }
   }
@@ -66,7 +66,8 @@ export default {
   }
 
   &.active .toolbar-button {
-    box-shadow: 0 0px 0px 2px $alt-color-darker, 0 0px 0px 4px $alt-color-lighter;
+    box-shadow: 0 0px 0px 2px $alt-color-darker,
+      0 0px 0px 4px $alt-color-lighter;
   }
 }
 </style>

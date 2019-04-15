@@ -5,15 +5,14 @@ import threads from '@/store/vuetamin/threads'
 import Slider from '@/components/Desktop/Toolbar/Slider/Slider.vue'
 
 export default {
-  extends: Slider,
-
   name: 'SliderLazyRadius',
+  extends: Slider,
 
   vuetamin: {
     handleLazyRadiusChange: [threads.LAZYRADIUS]
   },
 
-  data () {
+  data() {
     return {
       min: LAZY_RADIUS_MIN,
       max: LAZY_RADIUS_MAX,
@@ -22,13 +21,13 @@ export default {
   },
 
   methods: {
-    handleLazyRadiusChange (state) {
+    handleLazyRadiusChange(state) {
       if (this.value !== state.lazyRadius) {
         this.value = state.lazyRadius
       }
     },
 
-    handleValueChange (value) {
+    handleValueChange(value) {
       this.$vuetamin.store.mutate('updateLazyRadius', value)
     }
   }
