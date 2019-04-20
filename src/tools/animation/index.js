@@ -113,7 +113,7 @@ export default class ThreeAnimation extends EventEmitter {
   }
 
   init() {
-    this.webgl.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
+    this.webgl.renderer.setPixelRatio(0.75)
     this.webgl.renderer.setClearColor(0x000000, 0)
 
     this.webgl.renderer.domElement.classList.add('renderer-webgl')
