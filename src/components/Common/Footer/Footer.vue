@@ -71,7 +71,7 @@ export default {
       content: '';
       position: absolute;
       pointer-events: none;
-      top: -2rem;
+      top: -1.5rem;
       left: 0;
       width: 100%;
       bottom: 0;

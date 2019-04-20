@@ -49,6 +49,7 @@ export default {
   left: 0;
   bottom: 0;
   right: 0;
+  background: $alt-color-darker;
   &.appear-enter-active,
   &.appear-leave-active {
     transition: 2s;
