@@ -2,6 +2,7 @@
   <div class="mobile-pairing">
     <div class="mobile-pairing__content relative pdgh">
       <h1 class="text-heavy mrgt">drawmote</h1>
+      <p class="h2 text-bold mrgb text-muted">{{ $t('subtitle') }}</p>
       <p
         class="h3 text-muted text-light text-hyphens mrgb md-mrgb+ mrgt- md-mrgt"
       >
