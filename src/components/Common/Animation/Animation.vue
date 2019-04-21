@@ -97,7 +97,6 @@ export default {
 
     debouncedResize(() => {
       this.updateSizes()
-      this.animation.setSize(this.windowWidth, this.windowHeight)
     })
 
     this.animation = new ThreeAnimation(
@@ -230,6 +229,9 @@ export default {
     updateSizes() {
       this.windowWidth = window.innerWidth
       this.windowHeight = window.innerHeight
+      if (this.animation) {
+        this.animation.setSize(this.windowWidth, this.windowHeight)
+      }
     }
   }
 }
