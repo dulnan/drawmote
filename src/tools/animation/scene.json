@@ -15,11 +15,11 @@
 			"generator": "Object3D.toJSON"
 		},
 		"object": {
-			"uuid": "3A7F0BC2-C555-457C-AC39-9ED468980421",
+			"uuid": "FD658E7D-1F9E-4FD5-939B-36225A4040B9",
 			"type": "PerspectiveCamera",
 			"name": "Camera",
 			"layers": 1,
-			"matrix": [0.553881,0,-0.832596,0,-0.157894,0.981855,-0.105038,0,0.817487,0.18964,0.54383,0,12.905168,0.719151,13.973044,1],
+			"matrix": [0.770807,0,-0.637068,0,0.033246,0.998639,0.040225,0,0.6362,-0.052186,0.769757,0,4.351453,-4.092505,8.276468,1],
 			"fov": 50,
 			"zoom": 1,
 			"near": 0.36,
@@ -302,40 +302,6 @@
 				}
 			},
 			{
-				"uuid": "FF396EB0-A957-499A-BBF9-1328389FF160",
-				"type": "BufferGeometry",
-				"data": {
-					"attributes": {
-						"normal": {
-							"itemSize": 3,
-							"type": "Float32Array",
-							"array": [0,0,1,0,0,1,0,0,1,0,0,1,1,0,0,1,0,0,1,0,0,1,0,0,0,0,-1,0,0,-1,0,0,-1,0,0,-1,-1,0,0,-1,0,0,-1,0,0,-1,0,0,0,1,0,0,1,0,0,1,0,0,1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0],
-							"normalized": false
-						},
-						"position": {
-							"itemSize": 3,
-							"type": "Float32Array",
-							"array": [9.5,-9.5,19,9.5,9.5,19,-9.5,9.5,19,-9.5,-9.5,19,9.5,-9.5,0,9.5,9.5,0,9.5,9.5,19,9.5,-9.5,19,-9.5,-9.5,0,-9.5,9.5,0,9.5,9.5,0,9.5,-9.5,0,-9.5,-9.5,19,-9.5,9.5,19,-9.5,9.5,0,-9.5,-9.5,0,9.5,9.5,19,9.5,9.5,0,-9.5,9.5,0,-9.5,9.5,19,9.5,-9.5,0,9.5,-9.5,19,-9.5,-9.5,19,-9.5,-9.5,0],
-							"normalized": false
-						},
-						"uv": {
-							"itemSize": 2,
-							"type": "Float32Array",
-							"array": [1,0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,1,0,1,1,0,1,0,0],
-							"normalized": false
-						}
-					},
-					"index": {
-						"type": "Uint32Array",
-						"array": [0,1,2,0,2,3,4,5,6,4,6,7,8,9,10,8,10,11,12,13,14,12,14,15,16,17,18,16,18,19,20,21,22,20,22,23]
-					},
-					"boundingSphere": {
-						"center": [0,0,9.5],
-						"radius": 16.454483
-					}
-				}
-			},
-			{
 				"uuid": "21A34A8C-B420-4A84-9AE9-9B67B05A2E9B",
 				"type": "BufferGeometry",
 				"data": {
@@ -458,20 +424,6 @@
 				"shininess": 37.38,
 				"opacity": 0.28,
 				"transparent": true,
-				"depthFunc": 3,
-				"depthTest": true,
-				"depthWrite": true
-			},
-			{
-				"uuid": "2686C56D-E1F1-40AB-92FF-B5B334397A7E",
-				"type": "MeshPhysicalMaterial",
-				"color": 16777215,
-				"roughness": 0.34,
-				"metalness": 0,
-				"emissive": 2434341,
-				"clearCoat": 1,
-				"clearCoatRoughness": 0,
-				"side": 2,
 				"depthFunc": 3,
 				"depthTest": true,
 				"depthWrite": true
@@ -645,7 +597,7 @@
 																	"layers": 1,
 																	"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,-0.089631,0.050364,-0.098647,1],
 																	"geometry": "6FF753BE-ACD3-48F9-8324-819EC5AAAF47",
-																	"material": "2686C56D-E1F1-40AB-92FF-B5B334397A7E"
+																	"material": "922D79CF-2713-4818-BD6A-71AB3D8DE137"
 																},
 																{
 																	"uuid": "744ABC7B-98A0-4A81-A511-3914682960E7",
@@ -653,7 +605,7 @@
 																	"layers": 1,
 																	"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
 																	"geometry": "676CF2FA-78A4-4A8F-B7C9-00A0243C5EBF",
-																	"material": "2686C56D-E1F1-40AB-92FF-B5B334397A7E"
+																	"material": "922D79CF-2713-4818-BD6A-71AB3D8DE137"
 																},
 																{
 																	"uuid": "EFE07253-64FF-4669-B930-8FF7948D8FB8",
@@ -661,7 +613,7 @@
 																	"layers": 1,
 																	"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
 																	"geometry": "D4790B01-2C63-4B0C-A567-4F5C662B79E0",
-																	"material": "2686C56D-E1F1-40AB-92FF-B5B334397A7E"
+																	"material": "922D79CF-2713-4818-BD6A-71AB3D8DE137"
 																},
 																{
 																	"uuid": "17DB6525-B695-4E82-B6DA-8FB22A641384",
@@ -828,17 +780,7 @@
 																											"type": "Object3D",
 																											"name": "Neck_Smaller",
 																											"layers": 1,
-																											"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,6,12,1],
-																											"children": [
-																												{
-																													"uuid": "9E5F9AD6-A318-456D-8244-53D2DC061A0A",
-																													"type": "Mesh",
-																													"name": "Neck_Smaller_Black_0",
-																													"layers": 1,
-																													"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,-0.004165,0.015952,0.000882,1],
-																													"geometry": "FF396EB0-A957-499A-BBF9-1328389FF160",
-																													"material": "922D79CF-2713-4818-BD6A-71AB3D8DE137"
-																												}]
+																											"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,6,12,1]
 																										},
 																										{
 																											"uuid": "62A11B54-FC58-4C09-9704-E93CB69118DF",

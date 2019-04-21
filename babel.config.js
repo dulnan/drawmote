@@ -1,14 +1,3 @@
 module.exports = {
-  presets: [
-    [
-      '@vue/app', {
-        polyfills: [
-          'es6.symbol'
-        ]
-      }
-    ]
-  ],
-  plugins: [
-    '@babel/plugin-proposal-object-rest-spread'
-  ]
+  presets: [['@vue/app', { useBuiltIns: 'entry', modules: false, loose: true }]]
 }

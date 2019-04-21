@@ -1,11 +1,11 @@
 <template>
   <div id="drawmote" class="relative" :class="{ 'is-ready': isReady }">
-    <mobile v-if="isMobile" />
-    <desktop v-else />
-    <restore-connection />
-    <the-footer :is-mobile="isMobile" />
-    <connection-timeout :is-mobile="isMobile" />
-    <attribution v-show="attributionVisible" />
+    <Mobile v-if="isMobile" />
+    <Desktop v-else />
+    <RestoreConnection />
+    <TheFooter :is-mobile="isMobile" />
+    <ConnectionTimeout :is-mobile="isMobile" />
+    <Attribution v-show="attributionVisible" />
   </div>
 </template>
 
@@ -21,7 +21,7 @@ import ConnectionTimeout from '@/components/Common/ConnectionTimeout.vue'
 import Attribution from '@/components/Common/Attribution.vue'
 
 export default {
-  name: 'app',
+  name: 'App',
 
   components: {
     Desktop,
@@ -32,7 +32,7 @@ export default {
     Attribution
   },
 
-  data () {
+  data() {
     return {
       isMobile: true,
       isReady: false
@@ -43,11 +43,11 @@ export default {
     ...mapState(['attributionVisible'])
   },
 
-  beforeMount () {
+  beforeMount() {
     this.isMobile = window.innerWidth < BREAKPOINT_REMOTE
   },
 
-  mounted () {
+  mounted() {
     this.$nextTick(() => {
       if (!window.__PRERENDERING) {
         this.isReady = true

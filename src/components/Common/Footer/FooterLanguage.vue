@@ -5,11 +5,20 @@
       class="language__select"
       @change="handleLanguageChange"
     >
-      <option v-for="(lang, i) in languages" :key="`Lang${i}`" :value="lang.key">{{ lang.label }}</option>
+      <option
+        v-for="(lang, i) in languages"
+        :key="`Lang${i}`"
+        :value="lang.key"
+        >{{ lang.label }}</option
+      >
     </select>
     <div class="text-bold pdg h-100 language__button footer-text">
-      <span class="arrow-after hidden-sm-down">{{ currentLanguage.label }}</span>
-      <span class="arrow-after hidden-md-up text-uppercase">{{ currentLanguage.key }}</span>
+      <span class="arrow-after hidden-sm-down">{{
+        currentLanguage.label
+      }}</span>
+      <span class="arrow-after hidden-md-up text-uppercase">{{
+        currentLanguage.key
+      }}</span>
     </div>
   </li>
 </template>
@@ -21,10 +30,13 @@ export default {
   name: 'FooterLanguage',
 
   props: {
-    isMobile: false
+    isMobile: {
+      type: Boolean,
+      default: false
+    }
   },
 
-  data () {
+  data() {
     return {
       languages: [
         {
@@ -40,8 +52,10 @@ export default {
   },
 
   computed: {
-    currentLanguage () {
-      const currentLanguage = this.languages.find(l => l.key === this.$i18n.locale)
+    currentLanguage() {
+      const currentLanguage = this.languages.find(
+        l => l.key === this.$i18n.locale
+      )
 
       // Return English as a fallback if for some reason i18n doesn't return
       // anything.
@@ -50,7 +64,7 @@ export default {
   },
 
   methods: {
-    handleLanguageChange (e) {
+    handleLanguageChange(e) {
       setLocale(e.target.value)
     }
   }

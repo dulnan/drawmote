@@ -1,6 +1,6 @@
 <template>
   <transition name="fade">
-    <div class="connection-timeout" v-if="isVisible">
+    <div v-if="isVisible" class="connection-timeout">
       <div>
         <h3 class="h2 text-bold">
           {{ $t('connectionTimeout.title') }}
@@ -10,18 +10,12 @@
         </p>
         <ul class="list-inline">
           <li>
-            <button
-              class="btn btn--primary relative"
-              @click="backToPairing"
-            >
+            <button class="btn btn--primary relative" @click="backToPairing">
               {{ $t('connectionTimeout.toPairing') }}
             </button>
           </li>
           <li v-if="!isMobile">
-            <button
-              class="btn btn--default relative"
-              @click="continueDrawing"
-            >
+            <button class="btn btn--default relative" @click="continueDrawing">
               {{ $t('connectionTimeout.continueDrawing') }}
             </button>
           </li>
@@ -32,17 +26,11 @@
 </template>
 
 <script>
-import IconRestore from '@/assets/icons/icon-restore.svg'
-
 /**
  * Provides a way to restore a previously made connection.
  */
 export default {
   name: 'ConnectionTimeout',
-
-  components: {
-    IconRestore
-  },
 
   props: {
     isMobile: {
@@ -51,38 +39,38 @@ export default {
     }
   },
 
-  data () {
+  data() {
     return {
       isVisible: false
     }
   },
 
-  methods: {
-    handleConnected () {
-      this.isVisible = false
-    },
-
-    handleConnectionTimeout () {
-      this.isVisible = true
-    },
-
-    continueDrawing () {
-      this.isVisible = false
-    },
-
-    backToPairing () {
-      this.$mote.disconnect()
-    }
-  },
-
-  mounted () {
+  mounted() {
     this.$peersox.on('connected', this.handleConnected)
     this.$peersox.on('connectionTimeout', this.handleConnectionTimeout)
   },
 
-  beforeDestroy () {
+  beforeDestroy() {
     this.$peersox.off('connected', this.handleConnected)
     this.$peersox.off('connectionTimeout', this.handleConnectionTimeout)
+  },
+
+  methods: {
+    handleConnected() {
+      this.isVisible = false
+    },
+
+    handleConnectionTimeout() {
+      this.isVisible = true
+    },
+
+    continueDrawing() {
+      this.isVisible = false
+    },
+
+    backToPairing() {
+      this.$mote.disconnect()
+    }
   }
 }
 </script>
@@ -102,9 +90,11 @@ export default {
   justify-content: center;
   text-align: center;
 
-  &.fade-enter-active, &.fade-leave-active {
-    &, > div {
-      transition: .5s;
+  &.fade-enter-active,
+  &.fade-leave-active {
+    &,
+    > div {
+      transition: 0.5s;
     }
   }
   &.fade-enter, &.fade-leave-to /* .fade-leave-active below version 2.1.8 */ {

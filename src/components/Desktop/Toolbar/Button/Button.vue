@@ -1,9 +1,10 @@
 <template>
-  <button :class="classes" class="btn btn--bare pointer-area flex" @click="handleClick">
-    <div
-      class="toolbar-button"
-      :style="style"
-    >
+  <button
+    :class="classes"
+    class="btn btn--bare pointer-area flex"
+    @click="handleClick"
+  >
+    <div class="toolbar-button" :style="style">
       <icon v-if="hasIcon" />
     </div>
   </button>
@@ -15,25 +16,24 @@ import { EventBus } from '@/events'
 import ToolbarItem from '@/components/Desktop/Toolbar/Item.vue'
 
 export default {
+  name: 'BrushToolbarTool',
   extends: ToolbarItem,
 
-  name: 'BrushToolbarTool',
-
-  data () {
+  data() {
     return {
       isActive: false
     }
   },
 
-  methods: {
-    handleClick (state) {
-      console.log('No click handler implemented!')
-    }
-  },
-
-  created () {
+  created() {
     const eventName = 'pointerOver_' + this.itemKey
     EventBus.$on(eventName, this.handleClick)
+  },
+
+  methods: {
+    handleClick() {
+      console.log('No click handler implemented!')
+    }
   }
 }
 </script>

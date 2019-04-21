@@ -1,9 +1,13 @@
 <template>
   <div class="drawing" :class="{ 'is-drawing': isDrawing }">
-    <toolbar ref="toolbar" v-if="showToolbar" />
-    <div class="drawing-area" ref="canvasContainer" :style="drawingAreaStyle"></div>
-    <canvas-drawing />
-    <canvas-interface />
+    <Toolbar v-if="showToolbar" ref="toolbar" />
+    <div
+      ref="canvasContainer"
+      class="drawing-area"
+      :style="drawingAreaStyle"
+    ></div>
+    <CanvasDrawing />
+    <CanvasInterface />
     <resize-observer @notify="getElementSizes" />
   </div>
 </template>
@@ -20,15 +24,13 @@ import PointerEvents from '@/mixins/PointerEvents.js'
 export default {
   name: 'Drawing',
 
-  mixins: [
-    PointerEvents
-  ],
-
   components: {
     Toolbar,
     CanvasDrawing,
     CanvasInterface
   },
+
+  mixins: [PointerEvents],
 
   props: {
     showToolbar: {
@@ -41,14 +43,14 @@ export default {
     }
   },
 
-  data () {
+  data() {
     return {
       toolbarHeight: 0
     }
   },
 
   computed: {
-    drawingAreaStyle () {
+    drawingAreaStyle() {
       return {
         top: `${this.toolbarHeight}px`
       }
@@ -59,8 +61,30 @@ export default {
     getElementSizes: [threads.SIZES]
   },
 
+  mounted() {
+    this.getElementSizes()
+
+    if (this.$mote.on) {
+      this.$mote.on('pointermove', this.handlePointerMove)
+      this.$mote.on('pointerdown', this.handlePointerDown)
+      this.$mote.on('pointerup', this.handlePointerUp)
+      this.$mote.on('touch', this.handleTouch)
+      this.$mote.on('calibrated', this.handleCalibrated)
+    }
+  },
+
+  beforeDestroy() {
+    if (this.$mote.on) {
+      this.$mote.off('pointermove', this.handlePointerMove)
+      this.$mote.off('pointerdown', this.handlePointerDown)
+      this.$mote.off('pointerup', this.handlePointerUp)
+      this.$mote.off('touch', this.handleTouch)
+      this.$mote.off('calibrated', this.handleCalibrated)
+    }
+  },
+
   methods: {
-    getElementSizes () {
+    getElementSizes() {
       if (this.$refs.canvasContainer) {
         const canvasContainer = this.$refs.canvasContainer
         this.$vuetamin.store.mutate('updateCanvasRect', canvasContainer)
@@ -73,46 +97,24 @@ export default {
       }
     },
 
-    handlePointerMove (coordinates) {
+    handlePointerMove(coordinates) {
       this.$vuetamin.store.mutate('updatePointer', { coordinates })
     },
 
-    handlePointerDown () {
+    handlePointerDown() {
       this.$vuetamin.store.mutate('updateIsPressing', { isPressing: true })
     },
 
-    handlePointerUp () {
+    handlePointerUp() {
       this.$vuetamin.store.mutate('updateIsPressing', { isPressing: false })
     },
 
-    handleTouch (touch) {
+    handleTouch(touch) {
       this.$vuetamin.store.mutate('updateTouch', touch)
     },
 
-    handleCalibrated () {
+    handleCalibrated() {
       this.$vuetamin.store.mutate('updateCalibration')
-    }
-  },
-
-  mounted () {
-    this.getElementSizes()
-
-    if (this.$mote.on) {
-      this.$mote.on('pointermove', this.handlePointerMove)
-      this.$mote.on('pointerdown', this.handlePointerDown)
-      this.$mote.on('pointerup', this.handlePointerUp)
-      this.$mote.on('touch', this.handleTouch)
-      this.$mote.on('calibrated', this.handleCalibrated)
-    }
-  },
-
-  beforeDestroy () {
-    if (this.$mote.on) {
-      this.$mote.off('pointermove', this.handlePointerMove)
-      this.$mote.off('pointerdown', this.handlePointerDown)
-      this.$mote.off('pointerup', this.handlePointerUp)
-      this.$mote.off('touch', this.handleTouch)
-      this.$mote.off('calibrated', this.handleCalibrated)
     }
   }
 }
@@ -129,13 +131,15 @@ export default {
   width: 100%;
   height: 100%;
   background: $alt-color-darker;
-  &.appear-enter-active, &.appear-leave-active {
+  &.appear-enter-active,
+  &.appear-leave-active {
     transition: 0.5s;
   }
   &.appear-enter-active {
     transition-delay: 0s;
   }
-  &.appear-enter, &.appear-leave-to {
+  &.appear-enter,
+  &.appear-leave-to {
     opacity: 0;
   }
 }

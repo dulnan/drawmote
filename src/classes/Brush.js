@@ -8,7 +8,7 @@ import {
 import Color from '@/classes/Color'
 
 export default class Brush {
-  constructor ({
+  constructor({
     color = DEFAULT_COLOR,
     radius = RADIUS_DEFAULT,
     hardness = HARDNESS_DEFAULT,
@@ -29,7 +29,7 @@ export default class Brush {
    *
    * @returns {Object} The brush properties.
    */
-  get state () {
+  get state() {
     return {
       color: this.color,
       radius: this.radius,
@@ -45,11 +45,11 @@ export default class Brush {
    *
    * @returns {Number} The radius in pixels.
    */
-  get canvasRadius () {
+  get canvasRadius() {
     if (!this.useFilter) {
       return this.radius
     }
-    return ((this.hardness / 100) + 1) * this.radius
+    return (this.hardness / 100 + 1) * this.radius
   }
 
   /**
@@ -57,8 +57,8 @@ export default class Brush {
    *
    * @returns {Number} The blur amount in pixels.
    */
-  get canvasBlur () {
-    return ((1 - (this.hardness / 100)) * this.radius)
+  get canvasBlur() {
+    return (1 - this.hardness / 100) * this.radius
   }
 
   /**
@@ -66,7 +66,7 @@ export default class Brush {
    *
    * @returns {String} The color as a rgba string.
    */
-  get canvasColor () {
+  get canvasColor() {
     return this.color.getRgbaString(this.opacity)
   }
 
@@ -75,7 +75,7 @@ export default class Brush {
    *
    * @returns {Object}
    */
-  get canvasProperties () {
+  get canvasProperties() {
     const properties = {
       lineJoin: 'round',
       lineCap: 'round',
@@ -97,7 +97,7 @@ export default class Brush {
    *
    * @param {Color} color The new color.
    */
-  setColor (color) {
+  setColor(color) {
     this.color = color
   }
 
@@ -106,7 +106,7 @@ export default class Brush {
    *
    * @param {Number} radius The new radius.
    */
-  setRadius (radius) {
+  setRadius(radius) {
     this.radius = radius
   }
 
@@ -115,7 +115,7 @@ export default class Brush {
    *
    * @param {Number} hardness The new hardness.
    */
-  setHardness (hardness) {
+  setHardness(hardness) {
     this.hardness = hardness
   }
 
@@ -124,7 +124,7 @@ export default class Brush {
    *
    * @param {Number} opacity The new opacity.
    */
-  setOpacity (opacity) {
+  setOpacity(opacity) {
     this.opacity = opacity
   }
 
@@ -133,7 +133,7 @@ export default class Brush {
    *
    * @param {String} style The new style.
    */
-  setStyle (style) {
+  setStyle(style) {
     this.style = style
   }
 
@@ -142,7 +142,7 @@ export default class Brush {
    *
    * @param {Boolean} isSupported Whether canvas filters are supported.
    */
-  setFilterSupport (isSupported) {
+  setFilterSupport(isSupported) {
     this.useFilter = isSupported
   }
 }

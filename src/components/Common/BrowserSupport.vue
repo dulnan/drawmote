@@ -1,19 +1,29 @@
 <template>
   <transition name="appear">
-    <div class="browser-support" :class="{ 'done': done }">
+    <div class="browser-support" :class="{ done: done }">
       <div class="browser-support__content pdg relative">
-        <button class="btn btn--bare browser-support__close" @click="$emit('close')">
+        <button
+          class="btn btn--bare browser-support__close"
+          @click="$emit('close')"
+        >
           <div class="pdg">
-            <icon-close class="icon block" />
+            <IconClose class="icon block" />
           </div>
         </button>
         <h3 class="label">{{ $t('browserSupport.title') }}</h3>
         <ul class="list check-list">
-          <li class="check check--small" v-for="check in doneChecks" :key="check.id" :class="check.state">
+          <li
+            v-for="check in doneChecks"
+            :key="check.id"
+            class="check check--small"
+            :class="check.state"
+          >
             <div class="check__title">
               {{ $t(`browserSupport.${check.id}.label`) }}
             </div>
-            <div class="check__notice">{{ $t(`browserSupport.${check.id}.${check.state}`) }}</div>
+            <div class="check__notice">
+              {{ $t(`browserSupport.${check.id}.${check.state}`) }}
+            </div>
           </li>
         </ul>
       </div>
@@ -31,7 +41,14 @@ export default {
     IconClose
   },
 
-  data () {
+  props: {
+    isMobile: {
+      type: Boolean,
+      default: false
+    }
+  },
+
+  data() {
     return {
       webRTC: null,
       webSocket: null,
@@ -41,24 +58,29 @@ export default {
     }
   },
 
-  props: {
-    isMobile: {
-      type: Boolean,
-      default: false
-    }
-  },
-
   computed: {
     /**
      * @returns {Array} Return the checks with their support status.
      */
-    doneChecks () {
+    doneChecks() {
       const checks = ['webRTC', 'webSocket', 'gyroscope', 'canvasFilter']
-      return checks.filter(c => this[c] !== null).map(c => {
-        return {
-          id: c,
-          state: this[c] === true ? 'supported' : 'unsupported'
-        }
+      return checks
+        .filter(c => this[c] !== null)
+        .map(c => {
+          return {
+            id: c,
+            state: this[c] === true ? 'supported' : 'unsupported'
+          }
+        })
+    }
+  },
+
+  mounted() {
+    if (!this.$settings.isPrerendering) {
+      this.runCheck()
+
+      this.$peersox.on('usingFallback', () => {
+        this.supportsWebRTC = false
       })
     }
   },
@@ -68,7 +90,7 @@ export default {
      * Checks if canvas filters are supported. This is needed for the hardness
      * property of the brush.
      */
-    supportsCanvasFilter () {
+    supportsCanvasFilter() {
       const ctx = document.createElement('canvas').getContext('2d')
       return typeof ctx.filter !== 'undefined'
     },
@@ -76,21 +98,21 @@ export default {
     /**
      * Checks if WebSockets are supported.
      */
-    supportsWebSocket () {
+    supportsWebSocket() {
       return this.$peersox.getDeviceSupport().WEBSOCKET
     },
 
     /**
      * Checks if WebRTC is supported.
      */
-    supportsWebRTC () {
+    supportsWebRTC() {
       return this.$peersox.getDeviceSupport().WEBRTC
     },
 
     /**
      * Checks if the device has a gyroscope.
      */
-    supportsGyroscope () {
+    supportsGyroscope() {
       return this.$mote.deviceHasGyroscope()
     },
 
@@ -98,7 +120,7 @@ export default {
      * Asynchronously run the checks. Issue tracking events, supportState event
      * and modify the Vuetamin store if canvas filters are supported.
      */
-    check () {
+    runCheck() {
       this.webRTC = this.supportsWebRTC()
       this.webSocket = this.webRTC ? null : this.supportsWebSocket()
 
@@ -119,7 +141,10 @@ export default {
 
       let supportState = 'supported'
 
-      if ((this.webRTC === false && this.webSocket === true) || this.canvasFilter === false) {
+      if (
+        (this.webRTC === false && this.webSocket === true) ||
+        this.canvasFilter === false
+      ) {
         supportState = 'partial'
       }
 
@@ -133,17 +158,10 @@ export default {
 
       this.done = true
 
-      this.$vuetamin.store.mutate('updateCanvasFilterSupport', this.canvasFilter)
-    }
-  },
-
-  mounted () {
-    if (!this.$settings.isPrerendering) {
-      this.check()
-
-      this.$peersox.on('usingFallback', () => {
-        this.supportsWebRTC = false
-      })
+      this.$vuetamin.store.mutate(
+        'updateCanvasFilterSupport',
+        this.canvasFilter
+      )
     }
   }
 }
@@ -162,14 +180,16 @@ export default {
   z-index: -1;
   background: $color-translucent-dark;
 
-  &.appear-enter-active, &.appear-leave-active {
-    transition: .5s;
+  &.appear-enter-active,
+  &.appear-leave-active {
+    transition: 0.5s;
     .browser-support__content {
-      transition: .2s;
+      transition: 0.2s;
       transition-delay: 0.3s;
     }
   }
-  &.appear-enter, &.appear-leave-to {
+  &.appear-enter,
+  &.appear-leave-to {
     transform: translateY(100%);
     .browser-support__content {
       opacity: 0;

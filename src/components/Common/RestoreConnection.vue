@@ -1,13 +1,15 @@
 <template>
   <transition name="appear">
-    <div class="connection pdg lg-pdg+" v-show="isVisible">
+    <div v-show="isVisible" class="connection pdg lg-pdg+">
       <div class="flex-1 flex">
         <div class="connection__icon hidden-md-down mrgr lg-mrgr+">
-          <icon-restore />
+          <IconRestore />
         </div>
         <div>
           <h3 class="text-bold">{{ $t('connection.title') }}</h3>
-          <p class="mrg0 h4 text-light text-hyphens mrgb sm-mrgb0 sm-pdgr-">{{ $t('connection.text') }}</p>
+          <p class="mrg0 h4 text-light text-hyphens mrgb sm-mrgb0 sm-pdgr-">
+            {{ $t('connection.text') }}
+          </p>
         </div>
       </div>
       <div class="connection__buttons flex md-mrgl">
@@ -22,12 +24,12 @@
         <div class="flex-1 pdgl">
           <button
             class="btn btn--primary connection__button connection__button--restore relative btn--block"
-            :class="{'restoring': isRestoring, 'is-restored': isRestored }"
+            :class="{ restoring: isRestoring, 'is-restored': isRestored }"
             @click="restoreConnection"
           >
             <span>{{ $t('connection.reconnect') }}</span>
             <div class="connection__button-animation">
-              <icon-restore />
+              <IconRestore />
             </div>
           </button>
         </div>
@@ -50,7 +52,7 @@ export default {
     IconRestore
   },
 
-  data () {
+  data() {
     return {
       connectionRestorable: false,
       pairing: {},
@@ -64,16 +66,38 @@ export default {
   computed: {
     ...mapState(['isConnected', 'isSkipped']),
 
-    isVisible () {
+    isVisible() {
       return this.connectionRestorable && (!this.isConnected && !this.isSkipped)
     }
+  },
+
+  mounted() {
+    this.$peersox.on('connected', this.handleConnected)
+
+    this.$peersox
+      .restorePairing()
+      .then(pairing => {
+        if (pairing) {
+          this.pairing = pairing
+          this.isRestoring = false
+          this.isRestored = false
+          this.connectionRestorable = true
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  },
+
+  beforeDestroy() {
+    this.$peersox.off('connected', this.handleConnected)
   },
 
   methods: {
     /**
      * Initialize a peering connection given the stored code and hash.
      */
-    restoreConnection () {
+    restoreConnection() {
       if (this.isRestoring) {
         return
       }
@@ -98,35 +122,16 @@ export default {
     /**
      * Delete the stored connection from the history.
      */
-    deleteConnection () {
+    deleteConnection() {
       this.connectionRestorable = false
       this.$peersox.deletePairing()
     },
 
-    handleConnected () {
+    handleConnected() {
       this.isRestored = true
       this.connectionRestorable = false
       this.connectionTimeout = false
     }
-  },
-
-  mounted () {
-    this.$peersox.on('connected', this.handleConnected)
-
-    this.$peersox.restorePairing().then(pairing => {
-      if (pairing) {
-        this.pairing = pairing
-        this.isRestoring = false
-        this.isRestored = false
-        this.connectionRestorable = true
-      }
-    }).catch(err => {
-      console.log(err)
-    })
-  },
-
-  beforeDestroy () {
-    this.$peersox.off('connected', this.handleConnected)
   }
 }
 </script>
@@ -157,10 +162,12 @@ export default {
     bottom: calc(#{$footer-height-xs} + 0.5rem);
   }
 
-  &.appear-enter-active, &.appear-leave-active {
-    transition: .5s;
+  &.appear-enter-active,
+  &.appear-leave-active {
+    transition: 0.5s;
   }
-  &.appear-enter, &.appear-leave-to {
+  &.appear-enter,
+  &.appear-leave-to {
     transform: translateY(100%);
     opacity: 0;
   }
@@ -203,7 +210,7 @@ export default {
     transition: 0.3s;
   }
   &:before {
-    content: "";
+    content: '';
     display: block;
     background: rgba($brand-color-darker, 0.7);
     position: absolute;

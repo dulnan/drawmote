@@ -5,7 +5,7 @@ import { midPointBetween } from '@/tools/helpers.js'
  * A canvas drawing action.
  */
 export default class DrawAction extends Action {
-  constructor (canvasProperties) {
+  constructor(canvasProperties) {
     super('stroke')
     this.canvasProperties = canvasProperties
     this.points = []
@@ -16,7 +16,7 @@ export default class DrawAction extends Action {
    *
    * @param {Object} props An object with canvas properties and the desired values.
    */
-  setCanvasProperties (canvas) {
+  setCanvasProperties(canvas) {
     const context = canvas.getContext('2d')
 
     Object.keys(this.canvasProperties).forEach(p => {
@@ -29,7 +29,7 @@ export default class DrawAction extends Action {
    *
    * @param {HTMLCanvasElement} canvas The canvas to draw on to.
    */
-  do (canvas) {
+  do(canvas) {
     // First prepare the canvas with the properties from the action.
     this.setCanvasProperties(canvas)
 

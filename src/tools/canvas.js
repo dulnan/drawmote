@@ -8,7 +8,7 @@ import { BREAKPOINT_ANIMATION } from '@/settings'
  * @param {Number} size.height Desired height.
  * @param {HTMLCanvasElement[]} canvases Array of canvases to set the sizes.
  */
-export function setupCanvases ({ width, height }, canvases) {
+export function setupCanvases({ width, height }, canvases) {
   let dpi = 0.5
 
   if (window.innerWidth > BREAKPOINT_ANIMATION) {
@@ -39,7 +39,11 @@ export function setupCanvases ({ width, height }, canvases) {
  * @param {Number} coordinates.x x coordinate.
  * @param {Number} coordinates.y y coordinate.
  */
-export function clearCanvas (canvas, { width, height } = {}, { x = 0, y = 0 } = {}) {
+export function clearCanvas(
+  canvas,
+  { width, height } = {},
+  { x = 0, y = 0 } = {}
+) {
   const canvasWidth = width || canvas.width
   const canvasHeight = height || canvas.height
 

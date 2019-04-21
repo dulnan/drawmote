@@ -2,13 +2,25 @@
   <div class="mobile-pairing">
     <div class="mobile-pairing__content relative pdgh">
       <h1 class="text-heavy mrgt">drawmote</h1>
-      <p class="h3 text-muted text-light text-hyphens mrgb md-mrgb+ mrgt- md-mrgt">{{ $t('mobile.lead') }}</p>
+      <p class="h2 text-bold mrgb text-muted">{{ $t('subtitle') }}</p>
+      <p
+        class="h4 text-muted text-light text-hyphens mrgb md-mrgb+ mrgt- md-mrgt"
+      >
+        {{ $t('mobile.lead') }}
+      </p>
       <div class="code code--mobile relative">
         <div class="code__circles flex">
-          <div class="code__item" v-for="(char, index) in inputChars" :key="char + index">
+          <div
+            v-for="(char, index) in inputChars"
+            :key="char + index"
+            class="code__item"
+          >
             <div
               class="code-circle"
-              :class="[{ 'contains': char !== ' ', 'invalid': char.search(/[0-9]/g) }, 'code-circle--' + char]"
+              :class="[
+                { contains: char !== ' ', invalid: char.search(/[0-9]/g) },
+                'code-circle--' + char
+              ]"
             >
               <span>{{ char }}</span>
             </div>
@@ -16,75 +28,86 @@
         </div>
 
         <form class="code__form absolute" @submit.prevent="onSubmit">
-          <input maxlength="6" v-model="inputValue" class="code__input absolute" type="tel" pattern="[0-9]*" novalidate ref="pairing_id">
+          <input
+            ref="pairing_id"
+            v-model="inputValue"
+            maxlength="6"
+            class="code__input absolute"
+            type="tel"
+            pattern="[0-9]*"
+            novalidate
+          />
         </form>
 
         <button
           v-show="inputValue.length === 6"
-          @click.prevent="onSubmit"
           class="btn btn--primary btn--block mrgt+"
+          @click.prevent="onSubmit"
         >
           <span>{{ $t('mobile.pairButton') }}</span>
         </button>
 
         <transition name="appear">
-          <div v-if="codeInvalid" class="code__error">{{ $t('mobile.codeInvalid') }}</div>
+          <div v-if="codeInvalid" class="code__error">
+            {{ $t('mobile.codeInvalid') }}
+          </div>
         </transition>
-
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Logo from '@/components/Common/Logo.vue'
-
 export default {
   name: 'Pairing',
 
-  components: {
-    Logo
-  },
-
-  data () {
+  data() {
     return {
       inputValue: '',
       codeInvalid: false
     }
   },
 
+  computed: {
+    inputChars: function() {
+      return String(this.inputValue + '      ')
+        .slice(0, 6)
+        .split('')
+    }
+  },
+
   watch: {
-    inputValue: function () {
+    inputValue: function() {
       this.codeInvalid = false
     }
   },
 
-  computed: {
-    inputChars: function () {
-      return String(this.inputValue + '      ').slice(0, 6).split('')
-    }
-  },
-
   methods: {
-    onSubmit () {
+    onSubmit() {
       const code = this.$refs.pairing_id.value
       this.validateCode(code)
     },
 
-    validateCode (code) {
-      this.$peersox.joinPairing(code).then(pairing => {
-        this.$peersox.connect(pairing).then(() => {
-          this.codeInvalid = false
-          this.$track('Pairing', 'valid', '1')
-          this.$peersox.storePairing(pairing)
-        }).catch((error) => {
-          console.log('Error connecting to the WebSocket server: ', error)
+    validateCode(code) {
+      this.$peersox
+        .joinPairing(code)
+        .then(pairing => {
+          this.$peersox
+            .connect(pairing)
+            .then(() => {
+              this.codeInvalid = false
+              this.$track('Pairing', 'valid', '1')
+              this.$peersox.storePairing(pairing)
+            })
+            .catch(error => {
+              console.log('Error connecting to the WebSocket server: ', error)
+            })
         })
-      }).catch((error) => {
-        console.log(error)
-        this.codeInvalid = true
-        this.$track('Pairing', 'valid', '0')
-      })
+        .catch(error => {
+          console.log(error)
+          this.codeInvalid = true
+          this.$track('Pairing', 'valid', '0')
+        })
     }
   }
 }
@@ -110,13 +133,15 @@ export default {
   z-index: $index-mobile-pairing;
   margin-bottom: auto;
   padding-bottom: 2rem;
-  &.appear-enter-active, &.appear-leave-active {
-    transition: 2.0s;
+  &.appear-enter-active,
+  &.appear-leave-active {
+    transition: 2s;
   }
   &.appear-enter-active {
     transition-delay: 4.3s;
   }
-  &.appear-enter, &.appear-leave-to {
+  &.appear-enter,
+  &.appear-leave-to {
     transform: translateY(-30vw);
     opacity: 0;
   }
@@ -155,10 +180,12 @@ export default {
     font-size: 0.875rem;
     letter-spacing: 0.5px;
     padding: 0.25rem 0;
-    &.appear-enter-active, &.appear-leave-active {
-      transition: .5s;
+    &.appear-enter-active,
+    &.appear-leave-active {
+      transition: 0.5s;
     }
-    &.appear-enter, &.appear-leave-to {
+    &.appear-enter,
+    &.appear-leave-to {
       opacity: 0;
       transform: translateY(50%);
     }

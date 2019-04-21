@@ -1,13 +1,13 @@
 <template>
-  <div class="footer" ref="footer">
+  <div ref="footer" class="footer">
     <div class="footer__content">
       <ul class="list-inline list-inline--tight text-small footer__list">
-        <footer-browser-support :is-mobile="isMobile" />
-        <footer-language />
-        <footer-github />
-        <footer-connection v-if="!isMobile" />
-        <footer-copyright />
-        <footer-attribution />
+        <FooterBrowserSupport :is-mobile="isMobile" />
+        <FooterLanguage />
+        <FooterGithub />
+        <FooterConnection v-if="!isMobile" />
+        <FooterCopyright />
+        <FooterAttribution />
       </ul>
     </div>
   </div>
@@ -36,21 +36,24 @@ export default {
   },
 
   props: {
-    isMobile: false
-  },
-
-  methods: {
-    updateSizes () {
-      const footer = this.$refs.footer
-      this.$vuetamin.store.mutate('updateFooterRect', footer)
+    isMobile: {
+      type: Boolean,
+      default: false
     }
   },
 
-  mounted () {
+  mounted() {
     this.updateSizes()
-    debouncedResize((e) => {
+    debouncedResize(() => {
       this.updateSizes()
     })
+  },
+
+  methods: {
+    updateSizes() {
+      const footer = this.$refs.footer
+      this.$vuetamin.store.mutate('updateFooterRect', footer)
+    }
   }
 }
 </script>
@@ -65,14 +68,19 @@ export default {
   z-index: $index-footer;
   @include media('xs', $breakpoints-desc) {
     &:before {
-      content: "";
+      content: '';
       position: absolute;
       pointer-events: none;
-      top: -2rem;
+      top: -1.5rem;
       left: 0;
       width: 100%;
       bottom: 0;
-      background: linear-gradient(0deg, $alt-color-darkest, rgba($alt-color-darkest, 0.9), rgba($alt-color-darkest, 0));
+      background: linear-gradient(
+        0deg,
+        $alt-color-darkest,
+        rgba($alt-color-darkest, 0.9),
+        rgba($alt-color-darkest, 0)
+      );
     }
   }
 }

@@ -1,7 +1,7 @@
 import { Point } from 'lazy-brush'
 
 export default class Rectangle {
-  constructor (x = 0, y = 0, width = 0, height = 0) {
+  constructor(x = 0, y = 0, width = 0, height = 0) {
     this.p1 = new Point(x, y)
     this.p2 = new Point(x + width, y + height)
   }
@@ -9,14 +9,14 @@ export default class Rectangle {
   /**
    * @returns {Number} The width of the rectangle.
    */
-  get width () {
+  get width() {
     return this.p2.x - this.p1.x
   }
 
   /**
    * @returns {Number} The height of the rectangle.
    */
-  get height () {
+  get height() {
     return this.p2.y - this.p1.y
   }
 
@@ -25,7 +25,7 @@ export default class Rectangle {
    *
    * @param {DOMRect} domRect
    */
-  setFromDOMRect (domRect) {
+  setFromDOMRect(domRect) {
     this.p1.x = domRect.left
     this.p1.y = domRect.top
     this.p2.x = domRect.left + domRect.width
@@ -37,7 +37,7 @@ export default class Rectangle {
    *
    * @param {HTMLElement} element
    */
-  setFromElement (element) {
+  setFromElement(element) {
     this.p1.x = Number(element.offsetLeft)
     this.p1.y = Number(element.offsetTop)
     this.p2.x = Number(element.offsetLeft + element.offsetWidth)
@@ -50,7 +50,12 @@ export default class Rectangle {
    * @param {Point} point An object containing x and y properties.
    * @returns {Boolean}
    */
-  containsPoint (point) {
-    return this.p1.x <= point.x && point.x <= this.p2.x && this.p1.y <= point.y && point.y <= this.p2.y
+  containsPoint(point) {
+    return (
+      this.p1.x <= point.x &&
+      point.x <= this.p2.x &&
+      this.p1.y <= point.y &&
+      point.y <= this.p2.y
+    )
   }
 }

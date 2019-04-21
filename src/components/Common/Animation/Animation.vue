@@ -1,11 +1,21 @@
 <template>
-  <transition name="appear" v-on:after-leave="onAfterLeave">
-    <div class="animation" :class="{ 'is-desktop': isDesktop, 'is-fallback': useFallback }">
-      <div class="three-animation" ref="container"></div>
+  <transition name="appear" @after-leave="onAfterLeave">
+    <div
+      class="animation"
+      :class="{ 'is-desktop': isDesktop, 'is-fallback': useFallback }"
+    >
+      <div ref="container" class="three-animation"></div>
       <slot></slot>
-      <div class="ratio" v-if="debug">{{ ratio }}</div>
-      <div class="debug-range" v-if="debug">
-        <input type="range" min="0" max="100" step="0.001" value="0" @input="handleRange">
+      <div v-if="debug" class="ratio">{{ ratio }}</div>
+      <div v-if="debug" class="debug-range">
+        <input
+          type="range"
+          min="0"
+          max="100"
+          step="0.001"
+          value="0"
+          @input="handleRange"
+        />
       </div>
     </div>
   </transition>
@@ -27,10 +37,6 @@ import debouncedResize from 'debounced-resize'
 export default {
   name: 'Animation',
 
-  components: {
-    Drawing
-  },
-
   props: {
     isDrawing: Boolean,
     isDesktop: Boolean,
@@ -40,7 +46,7 @@ export default {
     }
   },
 
-  data () {
+  data() {
     return {
       isRendered: false,
 
@@ -64,94 +70,22 @@ export default {
   computed: {
     ...mapState(['isConnected', 'isSkipped', 'introPlayed']),
 
-    ratio () {
+    ratio() {
       return this.windowWidth / this.windowHeight
     }
   },
 
   watch: {
-    x (x) {
+    x(x) {
       this.updateRotation(x, this.y)
     },
 
-    y (y) {
+    y(y) {
       this.updateRotation(this.x, y)
     }
   },
 
-  methods: {
-    loop () {
-      const orientation = this.$mote.gyroscope.getOrientation(100)
-
-      this.animation.setPhoneRotationFromGyro(orientation)
-      this.getIntersection()
-
-      window.requestAnimationFrame(this.loop)
-    },
-
-    onAfterLeave () {
-      if (this.instance) {
-        this.instance.$destroy()
-        this.instance.$el.remove()
-        this.instance = null
-      }
-
-      if (this.animation) {
-        this.animation.dispose()
-      }
-    },
-
-    handleRange (e) {
-      this.animation.seekAnimation(e.target.value)
-    },
-
-    updateRotation (x, y) {
-      this.animation.setPhoneRotationFromMouse(x, y)
-      this.getIntersection()
-    },
-
-    getIntersection () {
-      const coordinates = this.animation.getIntersection()
-      if (!coordinates) return
-      this.$vuetamin.store.mutate('updatePointer', { coordinates })
-    },
-
-    onMouseMove (e) {
-      if (!this.mouseEnabled) {
-        return
-      }
-      // e.preventDefault()
-      this.setOrientation(e.pageX, e.pageY)
-    },
-
-    onMouseDown (e) {
-      if (!this.mouseEnabled) {
-        return
-      }
-      // e.preventDefault()
-      this.$vuetamin.store.mutate('updateIsPressing', { isPressing: true })
-    },
-
-    onMouseUp (e) {
-      if (!this.mouseEnabled) {
-        return
-      }
-      // e.preventDefault()
-      this.$vuetamin.store.mutate('updateIsPressing', { isPressing: false })
-    },
-
-    setOrientation (x, y) {
-      this.x = x / this.windowWidth
-      this.y = y / this.windowHeight
-    },
-
-    updateSizes () {
-      this.windowWidth = window.innerWidth
-      this.windowHeight = window.innerHeight
-    }
-  },
-
-  mounted () {
+  mounted() {
     if (!webglIsSupported()) {
       this.useFallback = true
       this.isRendered = true
@@ -161,12 +95,17 @@ export default {
     const pairingEl = this.$slots.default[0].elm
     this.updateSizes()
 
-    debouncedResize((e) => {
+    debouncedResize(() => {
       this.updateSizes()
-      this.animation.setSize(this.windowWidth, this.windowHeight)
     })
 
-    this.animation = new ThreeAnimation(this.$refs.container, ANIMATION_SCREEN_VIEWPORT, this.desktopAnimation, this.debug, pairingEl)
+    this.animation = new ThreeAnimation(
+      this.$refs.container,
+      ANIMATION_SCREEN_VIEWPORT,
+      this.desktopAnimation,
+      this.debug,
+      pairingEl
+    )
 
     const screen = this.animation.getScreen()
     const DrawingCtor = this.$root.constructor.extend(Drawing)
@@ -178,7 +117,6 @@ export default {
       }
     }).$mount(screen)
 
-    this.animation.play()
     this.animation.setSize(this.windowWidth, this.windowHeight)
 
     window.addEventListener('mousemove', this.onMouseMove)
@@ -203,22 +141,114 @@ export default {
       this.$vuetamin.trigger(threads.SIZES)
     })
 
+    this.animation.on('slowPerformance', () => {
+      this.useFallback = true
+      this.isRendered = true
+      this.destroy()
+
+      const pairingEl = this.$slots.default[0].elm
+      pairingEl.removeAttribute('style')
+    })
+
     this.animation.refresh()
     this.animation.setSize(this.windowWidth, this.windowHeight)
 
     this.$store.commit('setIntroPlayed', true)
 
     this.isRendered = true
+
+    this.animation.play()
   },
 
-  destroyed () {
-    window.removeEventListener('mousemove', this.onMouseMove)
-    window.removeEventListener('mousedown', this.onMouseDown)
-    window.removeEventListener('mouseup', this.onMouseUp)
+  destroyed() {
+    this.destroy()
+  },
 
-    window.removeEventListener('touchstart', this.onMouseDown)
-    window.removeEventListener('touchend', this.onMouseUp)
-    window.removeEventListener('touchcancel', this.onMouseUp)
+  methods: {
+    destroy() {
+      if (this.instance) {
+        this.instance.$destroy()
+        this.instance.$el.remove()
+        this.instance = null
+      }
+
+      if (this.animation) {
+        this.animation.dispose()
+      }
+
+      window.removeEventListener('mousemove', this.onMouseMove)
+      window.removeEventListener('mousedown', this.onMouseDown)
+      window.removeEventListener('mouseup', this.onMouseUp)
+
+      window.removeEventListener('touchstart', this.onMouseDown)
+      window.removeEventListener('touchend', this.onMouseUp)
+      window.removeEventListener('touchcancel', this.onMouseUp)
+    },
+
+    loop() {
+      const orientation = this.$mote.gyroscope.getOrientation(100)
+
+      this.animation.setPhoneRotationFromGyro(orientation)
+      this.getIntersection()
+
+      window.requestAnimationFrame(this.loop)
+    },
+
+    onAfterLeave() {
+      this.destroy()
+    },
+
+    handleRange(e) {
+      this.animation.seekAnimation(e.target.value)
+    },
+
+    updateRotation(x, y) {
+      this.animation.setPhoneRotationFromMouse(x, y)
+      this.getIntersection()
+    },
+
+    getIntersection() {
+      const coordinates = this.animation.getIntersection()
+      if (!coordinates) return
+      this.$vuetamin.store.mutate('updatePointer', { coordinates })
+    },
+
+    onMouseMove(e) {
+      if (!this.mouseEnabled) {
+        return
+      }
+      // e.preventDefault()
+      this.setOrientation(e.pageX, e.pageY)
+    },
+
+    onMouseDown() {
+      if (!this.mouseEnabled) {
+        return
+      }
+      // e.preventDefault()
+      this.$vuetamin.store.mutate('updateIsPressing', { isPressing: true })
+    },
+
+    onMouseUp() {
+      if (!this.mouseEnabled) {
+        return
+      }
+      // e.preventDefault()
+      this.$vuetamin.store.mutate('updateIsPressing', { isPressing: false })
+    },
+
+    setOrientation(x, y) {
+      this.x = x / this.windowWidth
+      this.y = y / this.windowHeight
+    },
+
+    updateSizes() {
+      this.windowWidth = window.innerWidth
+      this.windowHeight = window.innerHeight
+      if (this.animation) {
+        this.animation.setSize(this.windowWidth, this.windowHeight)
+      }
+    }
   }
 }
 </script>
@@ -237,13 +267,15 @@ export default {
 
 .animation {
   user-select: none;
-  &.appear-enter-active, &.appear-leave-active {
-    transition: 1.0s;
+  &.appear-enter-active,
+  &.appear-leave-active {
+    transition: 1s;
   }
   &.appear-leave-active {
     transition-delay: 1s;
   }
-  &.appear-enter, &.appear-leave-to {
+  &.appear-enter,
+  &.appear-leave-to {
     opacity: 0;
   }
 }
@@ -262,8 +294,8 @@ export default {
     background-position: top center;
 
     @include media('lg') {
-    background-image: url('/fallback-desktop.jpg');
-    background-position: center;
+      background-image: url('/fallback-desktop.jpg');
+      background-position: center;
     }
   }
   .is-desktop & {
@@ -285,7 +317,8 @@ export default {
 }
 
 .renderer-css {
-  &, canvas {
+  &,
+  canvas {
     image-rendering: -moz-crisp-edges;
     image-rendering: -webkit-crisp-edges;
     image-rendering: pixelated;

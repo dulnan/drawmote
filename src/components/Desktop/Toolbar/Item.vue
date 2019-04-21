@@ -5,33 +5,44 @@ export default {
   name: 'ToolbarItem',
 
   props: {
-    tool: Object,
-    action: String,
-    hoveredKey: String,
-    isPressing: Boolean,
-    groupId: String
+    tool: {
+      type: Object,
+      required: true
+    },
+    action: {
+      type: String,
+      required: true
+    },
+    hoveredKey: {
+      type: String,
+      required: true
+    },
+    groupId: {
+      type: String,
+      required: true
+    }
   },
 
-  data () {
+  data() {
     return {
       hasIcon: false
     }
   },
 
   computed: {
-    itemKey () {
+    itemKey() {
       return `${this.action}${this.tool.id}`
     },
 
-    isHovered () {
+    isHovered() {
       return this.itemKey === this.hoveredKey
     },
 
-    classes () {
+    classes() {
       return [
         {
-          'hover': this.isHovered,
-          'active': this.isActive
+          hover: this.isHovered,
+          active: this.isActive
         },
         'toolbar-item',
         'toolbar-item--' + this.groupId,
@@ -39,17 +50,17 @@ export default {
       ]
     },
 
-    additionalClasses () {
+    additionalClasses() {
       return []
     },
 
-    style () {
+    style() {
       return {}
     }
   },
 
   methods: {
-    getRectangle () {
+    getRectangle() {
       const el = this.$el
 
       // Easiest quick solution for getting the left offset in the toolbar.

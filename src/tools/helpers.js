@@ -1,20 +1,26 @@
-export function getViewportSize () {
+export function getViewportSize() {
   return {
-    width: Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
-    height: Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
+    width: Math.max(
+      document.documentElement.clientWidth,
+      window.innerWidth || 0
+    ),
+    height: Math.max(
+      document.documentElement.clientHeight,
+      window.innerHeight || 0
+    ),
     // ratio: window.devicePixelRatio,
     ratio: 1
   }
 }
 
-export function midPointBetween (p1, p2) {
+export function midPointBetween(p1, p2) {
   return {
     x: p1.x + (p2.x - p1.x) / 2,
     y: p1.y + (p2.y - p1.y) / 2
   }
 }
 
-export function getRgbaString (rgb, alpha) {
+export function getRgbaString(rgb, alpha) {
   return `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${alpha})`
 }
 
@@ -24,16 +30,18 @@ export function getRgbaString (rgb, alpha) {
  * @param {String} hex The hex string to convert.
  * @returns {Array} The converted rgb values as an array.
  */
-export function hexToRgb (hex) {
+export function hexToRgb(hex) {
   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
-  return result ? [
-    parseInt(result[1], 16),
-    parseInt(result[2], 16),
-    parseInt(result[3], 16)
-  ] : null
+  return result
+    ? [
+        parseInt(result[1], 16),
+        parseInt(result[2], 16),
+        parseInt(result[3], 16)
+      ]
+    : null
 }
 
-export function shadeRgbColor (rgb, percent) {
+export function shadeRgbColor(rgb, percent) {
   let f = rgb
   let t = percent < 0 ? 0 : 255
   let p = percent < 0 ? percent * -1 : percent
@@ -42,25 +50,25 @@ export function shadeRgbColor (rgb, percent) {
   let B = parseInt(f[2])
 
   return [
-    (Math.round((t - R) * p) + R),
-    (Math.round((t - G) * p) + G),
-    (Math.round((t - B) * p) + B)
+    Math.round((t - R) * p) + R,
+    Math.round((t - G) * p) + G,
+    Math.round((t - B) * p) + B
   ]
 }
 
-export function eraseCookie (name) {
+export function eraseCookie(name) {
   document.cookie = name + '=; Max-Age=-99999999;'
 }
 
-export function isSamePoint (p1, p2) {
+export function isSamePoint(p1, p2) {
   return p1.x === p2.x && p1.y === p2.y
 }
 
-export function buildDevServerUrl (hostname, port) {
+export function buildDevServerUrl(hostname, port) {
   return `http://${hostname}:${port}`
 }
 
-export function getServerUrls () {
+export function getServerUrls() {
   if (process.env.VUE_APP_API_URL && process.env.VUE_APP_WSS_URL) {
     return {
       api: process.env.VUE_APP_API_URL,
@@ -74,11 +82,11 @@ export function getServerUrls () {
   }
 }
 
-export function encodeEventMessage (event, data) {
+export function encodeEventMessage(event, data) {
   return JSON.stringify({ event, data })
 }
 
-export function decodeEventMessage (message) {
+export function decodeEventMessage(message) {
   return JSON.parse(message)
 }
 
@@ -92,10 +100,10 @@ export function decodeEventMessage (message) {
  *
  * @returns {number}
  */
-export function scaleRange (input, inputRange, outputRange) {
+export function scaleRange(input, inputRange, outputRange) {
   const [inMin, inMax] = inputRange
   const [outMin, outMax] = outputRange
 
   // return (inMax - inMin) * (input - outMin) / (outMax - outMin) + inMin
-  return ((input - inMin) * (outMax - outMin)) / ((inMax - inMin) + outMin)
+  return ((input - inMin) * (outMax - outMin)) / (inMax - inMin + outMin)
 }

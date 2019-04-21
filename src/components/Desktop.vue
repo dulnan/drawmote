@@ -1,20 +1,20 @@
 <template>
   <div class="desktop relative">
     <div class="desktop-container relative overlay material">
-      <animation
+      <Animation
         v-if="!isDrawing"
         :is-desktop="true"
         :desktop-animation="desktopAnimation"
       >
-        <pairing
+        <Pairing
           :pairing="pairing"
           :is-blocked="isBlocked"
           :desktop-animation="desktopAnimation"
           @pairingTimeout="handleTimeout"
         />
-      </animation>
+      </Animation>
       <transition name="appear">
-        <drawing v-if="isDrawing" />
+        <Drawing v-if="isDrawing" />
       </transition>
     </div>
   </div>
@@ -39,7 +39,7 @@ export default {
     Animation
   },
 
-  data () {
+  data() {
     return {
       pairing: {},
       isBlocked: false,
@@ -50,21 +50,21 @@ export default {
   computed: {
     ...mapState(['isConnected', 'isSkipped']),
 
-    hasPairing () {
+    hasPairing() {
       return this.pairing && this.pairing.code && this.pairing.hash
     },
 
-    isDrawing () {
+    isDrawing() {
       return this.isConnected || this.isSkipped
     },
 
-    desktopAnimation () {
+    desktopAnimation() {
       return this.viewportWidth >= 1024
     }
   },
 
   watch: {
-    isConnected (isConnected) {
+    isConnected(isConnected) {
       this.updateViewport()
 
       if (!isConnected && !this.isSkipped) {
@@ -73,7 +73,7 @@ export default {
       }
     },
 
-    isSkipped (isSkipped) {
+    isSkipped(isSkipped) {
       this.updateViewport()
 
       if (isSkipped && this.$peersox.isConnected()) {
@@ -82,97 +82,14 @@ export default {
     }
   },
 
-  methods: {
-    animationEnter (el, done) {
-      if (this.$refs.dynamic.$options.name === 'Animation') {
-        this.$refs.dynamic.animate().finished.then(() => {
-          done()
-        })
-      }
-    },
-    animationLeave (el, done) {
-      console.log(el)
-      if (this.$refs.dynamic.$options.name === 'Animation') {
-        this.$refs.dynamic.animateFullscreen().finished.then(() => {
-          done()
-        })
-      } else {
-        done()
-      }
-    },
-    getPairingCode () {
-      if (this.hasPairing) {
-        return
-      }
-
-      if (this.$peersox.isConnected()) {
-        this.$peersox.close()
-      }
-
-      this.$peersox.createPairing().then(pairing => {
-        if (pairing) {
-          this.isBlocked = false
-          this.pairing = pairing
-          this.$peersox.connect(pairing).catch(error => {
-            console.log(error)
-          })
-        } else {
-          this.isBlocked = true
-          this.pairing = {}
-        }
-      }).catch(error => {
-        console.log('Too many requests', error)
-      })
-    },
-
-    updateViewport () {
-      let viewport = ANIMATION_SCREEN_VIEWPORT
-
-      if (this.isConnected || this.isSkipped) {
-        viewport = getViewportSize()
-      }
-
-      this.$vuetamin.store.mutate('updateViewport', viewport)
-      this.$peersox.send(encodeEventMessage('viewport', viewport))
-
-      if (!this.$peersox.isConnected()) {
-        this.isMobile = viewport.width < BREAKPOINT_REMOTE
-      }
-    },
-
-    handleTimeout () {
-      this.pairing = {}
-      this.getPairingCode()
-    },
-
-    handlePeerTimeout () {
-      this.pairing = {}
-    },
-
-    handleConnected ({ pairing }) {
-      this.$store.dispatch('connect')
-
-      this.updateViewport()
-      this.$peersox.storePairing(pairing)
-    },
-
-    handleDisconnected () {
-      this.$store.dispatch('disconnect')
-    },
-
-    handleBinary (intArray) {
-      this.$mote.handleRemoteData(intArray)
-    }
-  },
-
-  beforeMount () {
+  beforeMount() {
     this.viewportWidth = getViewportSize().width
   },
 
-  mounted () {
+  mounted() {
     this.updateViewport()
 
-    debouncedResize((e) => {
+    debouncedResize(() => {
       this.updateViewport()
     })
 
@@ -187,7 +104,7 @@ export default {
     this.$peersox.onBinary = this.$mote.handleRemoteData.bind(this.$mote)
   },
 
-  beforeDestroy () {
+  beforeDestroy() {
     this.$peersox.off('peerConnected', this.handleConnected)
     this.$peersox.off('peerTimeout', this.handlePeerTimeout)
     this.$peersox.off('connectionClosed', this.handleDisconnected)
@@ -195,6 +112,92 @@ export default {
     this.$peersox.onBinary = () => {}
 
     this.$peersox.close()
+  },
+
+  methods: {
+    animationEnter(el, done) {
+      if (this.$refs.dynamic.$options.name === 'Animation') {
+        this.$refs.dynamic.animate().finished.then(() => {
+          done()
+        })
+      }
+    },
+    animationLeave(el, done) {
+      console.log(el)
+      if (this.$refs.dynamic.$options.name === 'Animation') {
+        this.$refs.dynamic.animateFullscreen().finished.then(() => {
+          done()
+        })
+      } else {
+        done()
+      }
+    },
+    getPairingCode() {
+      if (this.hasPairing) {
+        return
+      }
+
+      if (this.$peersox.isConnected()) {
+        this.$peersox.close()
+      }
+
+      this.$peersox
+        .createPairing()
+        .then(pairing => {
+          if (pairing) {
+            this.isBlocked = false
+            this.pairing = pairing
+            this.$peersox.connect(pairing).catch(error => {
+              console.log(error)
+            })
+          } else {
+            this.isBlocked = true
+            this.pairing = {}
+          }
+        })
+        .catch(error => {
+          console.log('Too many requests', error)
+        })
+    },
+
+    updateViewport() {
+      let viewport = ANIMATION_SCREEN_VIEWPORT
+
+      if (this.isConnected || this.isSkipped) {
+        viewport = getViewportSize()
+      }
+
+      this.$vuetamin.store.mutate('updateViewport', viewport)
+      this.$peersox.send(encodeEventMessage('viewport', viewport))
+
+      if (!this.$peersox.isConnected()) {
+        this.isMobile = viewport.width < BREAKPOINT_REMOTE
+      }
+    },
+
+    handleTimeout() {
+      this.pairing = {}
+      this.getPairingCode()
+    },
+
+    handlePeerTimeout() {
+      this.pairing = {}
+    },
+
+    handleConnected({ pairing }) {
+      this.$store.dispatch('connect')
+
+      this.updateViewport()
+      this.$peersox.storePairing(pairing)
+    },
+
+    handleDisconnected() {
+      this.$store.dispatch('disconnect')
+    },
+
+    handleBinary(intArray) {
+      this.$mote.handleRemoteData(intArray)
+    }
   }
 }
 </script>

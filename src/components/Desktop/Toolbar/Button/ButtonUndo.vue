@@ -5,15 +5,14 @@ import Button from '@/components/Desktop/Toolbar/Button/Button.vue'
 import Icon from '@/assets/icons/icon-undo.svg'
 
 export default {
-  extends: Button,
-
   name: 'ButtonUndo',
 
   components: {
     Icon
   },
+  extends: Button,
 
-  data () {
+  data() {
     return {
       hasIcon: true,
       possible: false
@@ -21,30 +20,30 @@ export default {
   },
 
   computed: {
-    additionalClasses () {
+    additionalClasses() {
       return this.possible ? [] : ['disabled']
     }
   },
 
+  beforeDestroy() {
+    EventBus.$on('canvasState', this.updateCanvasState)
+  },
+
+  mounted() {
+    EventBus.$on('canvasState', this.updateCanvasState)
+  },
+
   methods: {
-    handleClick () {
+    handleClick() {
       if (this.possible) {
         EventBus.$emit('undoCanvas')
         this.$track('Toolbar', 'history', 'undo')
       }
     },
 
-    updateCanvasState ({ undoPossible }) {
+    updateCanvasState({ undoPossible }) {
       this.possible = undoPossible
     }
-  },
-
-  beforeDestroy () {
-    EventBus.$on('canvasState', this.updateCanvasState)
-  },
-
-  mounted () {
-    EventBus.$on('canvasState', this.updateCanvasState)
   }
 }
 </script>

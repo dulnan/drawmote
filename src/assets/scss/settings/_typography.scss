@@ -82,15 +82,13 @@ $font-h2: (
 );
 
 $font-h3: (
-  xs: $rhythm-size-xxs,
-  md: $rhythm-size-xs,
+  xs: $rhythm-size-xs,
   lg: $rhythm-size-s
 );
 
 $font-h4: (
-  xs: $rhythm-size-xs,
-  sm: $rhythm-size-xs,
-  md: $rhythm-size-xs,
+  xs: $rhythm-size-xxs,
+  sm: $rhythm-size-xs
 );
 
 $font-h5: (

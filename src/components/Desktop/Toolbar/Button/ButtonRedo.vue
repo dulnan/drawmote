@@ -5,15 +5,14 @@ import Button from '@/components/Desktop/Toolbar/Button/Button.vue'
 import Icon from '@/assets/icons/icon-redo.svg'
 
 export default {
-  extends: Button,
-
   name: 'ButtonRedo',
 
   components: {
     Icon
   },
+  extends: Button,
 
-  data () {
+  data() {
     return {
       hasIcon: true,
       possible: false
@@ -21,29 +20,29 @@ export default {
   },
 
   computed: {
-    additionalClasses () {
+    additionalClasses() {
       return this.possible ? [] : ['disabled']
     }
   },
 
+  beforeDestroy() {
+    EventBus.$on('canvasState', this.updateCanvasState)
+  },
+
+  mounted() {
+    EventBus.$on('canvasState', this.updateCanvasState)
+  },
+
   methods: {
-    handleClick () {
+    handleClick() {
       if (this.possible) {
         EventBus.$emit('redoCanvas')
         this.$track('Toolbar', 'history', 'redo')
       }
     },
-    updateCanvasState ({ redoPossible }) {
+    updateCanvasState({ redoPossible }) {
       this.possible = redoPossible
     }
-  },
-
-  beforeDestroy () {
-    EventBus.$on('canvasState', this.updateCanvasState)
-  },
-
-  mounted () {
-    EventBus.$on('canvasState', this.updateCanvasState)
   }
 }
 </script>

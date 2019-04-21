@@ -5,15 +5,14 @@ import threads from '@/store/vuetamin/threads'
 import Slider from '@/components/Desktop/Toolbar/Slider/Slider.vue'
 
 export default {
-  extends: Slider,
-
   name: 'SliderBrushOpacity',
+  extends: Slider,
 
   vuetamin: {
     handleOpacityChange: [threads.BRUSH_OPACITY, threads.BRUSH]
   },
 
-  data () {
+  data() {
     return {
       min: OPACITY_MIN,
       max: OPACITY_MAX
@@ -21,19 +20,19 @@ export default {
   },
 
   methods: {
-    handleOpacityChange (state) {
+    handleOpacityChange(state) {
       if (this.value !== state.brush.opacity) {
         this.value = state.brush.opacity
       }
     },
 
-    handleStateChange (state) {
+    handleStateChange(state) {
       if (this.value !== state.brush.opacity) {
         this.value = state.brush.opacity
       }
     },
 
-    handleValueChange (value) {
+    handleValueChange(value) {
       this.$vuetamin.store.mutate('updateBrushOpacity', value)
     }
   }

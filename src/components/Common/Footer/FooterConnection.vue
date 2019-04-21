@@ -1,16 +1,16 @@
 <template>
   <li class="footer-connection">
     <button
-      class="btn btn--bare text-bold check pdg lg-pdg h-100 hover footer-text"
       v-if="isConnected"
+      class="btn btn--bare text-bold check pdg lg-pdg h-100 hover footer-text"
       @click="$store.dispatch('disconnect')"
     >
       {{ $t('footer.disconnect') }}
     </button>
 
     <button
-      class="btn btn--bare text-bold check pdg lg-pdg h-100 hover footer-text"
       v-if="isSkipped"
+      class="btn btn--bare text-bold check pdg lg-pdg h-100 hover footer-text"
       @click="$store.dispatch('unskip')"
     >
       {{ $t('footer.toPairing') }}
@@ -30,5 +30,4 @@ export default {
 }
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>
