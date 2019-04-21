@@ -92,6 +92,11 @@ export default class ThreeAnimation extends EventEmitter {
 
     this.animationFinished = false
 
+    this.lastTick = null
+    this.tickCount = 0
+    this.tickDiffs = []
+    this.lagCount = 0
+
     this.load(sceneObject)
   }
 
@@ -534,6 +539,35 @@ export default class ThreeAnimation extends EventEmitter {
   }
 
   animate(t) {
+    if (!this.lastTick) {
+      this.lastTick = t
+    }
+
+    const diff = t - this.lastTick
+
+    this.tickDiffs.push(diff)
+    if (this.tickDiffs.length > 10) {
+      this.tickDiffs.shift()
+    }
+
+    const average = this.tickDiffs.reduce((p, a) => p + a) / 10
+
+    if (this.tickDiffs.length === 10) {
+      if (average > 50) {
+        this.lagCount++
+      } else {
+        this.lagCount = Math.max(this.lagCount - 1, 0)
+      }
+    }
+
+    if (this.lagCount > 10) {
+      anime.remove(this.animeAnimation)
+      this.webgl.renderer.setAnimationLoop(null)
+      this.emit('slowPerformance')
+    }
+
+    this.lastTick = t
+
     if (this.animeAnimation) {
       this.animeAnimation.tick(t)
     }
@@ -546,6 +580,7 @@ export default class ThreeAnimation extends EventEmitter {
   }
 
   play() {
+    this.tickCount = 0
     this.webgl.renderer.setAnimationLoop(this.animate.bind(this))
   }
 

@@ -142,6 +142,15 @@ export default {
       this.$vuetamin.trigger(threads.SIZES)
     })
 
+    this.animation.on('slowPerformance', () => {
+      this.useFallback = true
+      this.isRendered = true
+      this.destroy()
+
+      const pairingEl = this.$slots.default[0].elm
+      pairingEl.removeAttribute('style')
+    })
+
     this.animation.refresh()
     this.animation.setSize(this.windowWidth, this.windowHeight)
 
@@ -151,16 +160,30 @@ export default {
   },
 
   destroyed() {
-    window.removeEventListener('mousemove', this.onMouseMove)
-    window.removeEventListener('mousedown', this.onMouseDown)
-    window.removeEventListener('mouseup', this.onMouseUp)
-
-    window.removeEventListener('touchstart', this.onMouseDown)
-    window.removeEventListener('touchend', this.onMouseUp)
-    window.removeEventListener('touchcancel', this.onMouseUp)
+    this.destroy()
   },
 
   methods: {
+    destroy() {
+      if (this.instance) {
+        this.instance.$destroy()
+        this.instance.$el.remove()
+        this.instance = null
+      }
+
+      if (this.animation) {
+        this.animation.dispose()
+      }
+
+      window.removeEventListener('mousemove', this.onMouseMove)
+      window.removeEventListener('mousedown', this.onMouseDown)
+      window.removeEventListener('mouseup', this.onMouseUp)
+
+      window.removeEventListener('touchstart', this.onMouseDown)
+      window.removeEventListener('touchend', this.onMouseUp)
+      window.removeEventListener('touchcancel', this.onMouseUp)
+    },
+
     loop() {
       const orientation = this.$mote.gyroscope.getOrientation(100)
 
@@ -171,15 +194,7 @@ export default {
     },
 
     onAfterLeave() {
-      if (this.instance) {
-        this.instance.$destroy()
-        this.instance.$el.remove()
-        this.instance = null
-      }
-
-      if (this.animation) {
-        this.animation.dispose()
-      }
+      this.destroy()
     },
 
     handleRange(e) {
