@@ -97,6 +97,8 @@ export default class ThreeAnimation extends EventEmitter {
     this.tickDiffs = []
     this.lagCount = 0
 
+    this.needsRedraw = true
+
     this.load(sceneObject)
   }
 
@@ -438,6 +440,8 @@ export default class ThreeAnimation extends EventEmitter {
   setPhoneRotationFromGyro({ alpha, beta }) {
     this.phoneAnimation.rotationX = THREE.Math.degToRad(beta - 40)
     this.phoneAnimation.rotationY = THREE.Math.degToRad(alpha)
+
+    this.needsRedraw = true
   }
 
   setPhoneRotationFromMouse(x, y) {
@@ -456,6 +460,8 @@ export default class ThreeAnimation extends EventEmitter {
     this.updatePhone()
 
     this.objectPhone.updateMatrixWorld()
+
+    this.needsRedraw = true
   }
 
   getIntersection() {
@@ -539,6 +545,11 @@ export default class ThreeAnimation extends EventEmitter {
   }
 
   animate(t) {
+    if (!this.needsRedraw && this.animationFinished) {
+      this.lastTick = t
+      return
+    }
+
     if (!this.lastTick) {
       this.lastTick = t
     }
@@ -577,10 +588,13 @@ export default class ThreeAnimation extends EventEmitter {
 
     this.webgl.renderer.render(this.webgl.scene, this.camera)
     this.css.renderer.render(this.css.scene, this.camera)
+
+    this.needsRedraw = false
   }
 
   play() {
     this.tickCount = 0
+    this.needsRedraw = true
     this.webgl.renderer.setAnimationLoop(this.animate.bind(this))
   }
 
@@ -594,9 +608,17 @@ export default class ThreeAnimation extends EventEmitter {
       complete: () => {
         this.animationFinished = true
         this.emit('animationEnd')
+        anime.remove(this.animeAnimation)
+        console.log('complete')
+        this.animeAnimation = null
       },
       update: () => {
         this.updateGui()
+        this.needsRedraw = true
+      },
+      begin: () => {
+        console.log('begin')
+        this.needsRedraw = true
       }
     })
 
@@ -632,6 +654,8 @@ export default class ThreeAnimation extends EventEmitter {
         '-=1800'
       )
     }
+
+    this.needsRedraw = true
 
     this.animeAnimation = animeAnimation
   }

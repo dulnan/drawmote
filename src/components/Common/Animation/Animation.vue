@@ -117,7 +117,6 @@ export default {
       }
     }).$mount(screen)
 
-    this.animation.play()
     this.animation.setSize(this.windowWidth, this.windowHeight)
 
     window.addEventListener('mousemove', this.onMouseMove)
@@ -157,6 +156,8 @@ export default {
     this.$store.commit('setIntroPlayed', true)
 
     this.isRendered = true
+
+    this.animation.play()
   },
 
   destroyed() {
