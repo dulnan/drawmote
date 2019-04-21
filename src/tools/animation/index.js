@@ -5,12 +5,33 @@ import { ANIMATION_SCREEN_VIEWPORT } from '@/settings'
 import { PHONE, PHONE_MOBILE, CAMERA, CAMERA_MOBILE } from './keyframes'
 import { scaleRange } from '@/tools/helpers'
 
-import * as THREE from 'three'
+import {
+  WebGLRenderer,
+  Scene,
+  Raycaster,
+  ObjectLoader,
+  SpotLightHelper,
+  Vector3,
+  Quaternion,
+  PlaneBufferGeometry,
+  MeshBasicMaterial,
+  Mesh,
+  Matrix4,
+  Object3D,
+  RectAreaLight,
+  Math as ThreeMath
+} from 'three'
 
-window.THREE = THREE
+import * as THREE_CONSTANTS from 'three/src/constants.js'
+
+window.THREE = {
+  THREE_CONSTANTS,
+  Object3D,
+  Matrix4,
+  Vector3
+}
 
 require('three/examples/js/renderers/CSS3DRenderer')
-require('three/examples/js/lights/RectAreaLightUniformsLib')
 
 const sceneObject = require('./scene.json')
 
@@ -22,22 +43,22 @@ export default class ThreeAnimation extends EventEmitter {
 
     this.pairingEl = pairingEl
 
-    this.loader = new THREE.ObjectLoader()
     this.camera = null
 
     this.isDesktop = isDesktop
 
     this.webgl = {
       scene: null,
-      renderer: new THREE.WebGLRenderer({ antialias: true, alpha: true })
+      renderer: new WebGLRenderer({ antialias: true, alpha: true })
     }
 
     this.css = {
-      scene: new THREE.Scene(),
-      renderer: new THREE.CSS3DRenderer()
+      scene: new Scene(),
+      renderer: null
     }
 
-    this.displayScreen = null
+    this.css.renderer = new window.THREE.CSS3DRenderer()
+
     this.objectPhone = null
     this.objectLightTop = null
 
@@ -68,7 +89,7 @@ export default class ThreeAnimation extends EventEmitter {
 
     this.animeAnimation = null
 
-    this.raycaster = new THREE.Raycaster()
+    this.raycaster = new Raycaster()
 
     this.animationFinished = false
 
@@ -83,13 +104,15 @@ export default class ThreeAnimation extends EventEmitter {
   }
 
   load(json) {
+    const loader = new ObjectLoader()
+
     let project = json.project
     if (project.gammaInput) this.webgl.renderer.gammaInput = true
     if (project.gammaOutput) this.webgl.renderer.gammaOutput = true
     if (project.shadows) this.webgl.renderer.shadowMap.enabled = true
 
-    this.loader.parse(json.scene, scene => {
-      this.loader.parse(json.camera, camera => {
+    loader.parse(json.scene, scene => {
+      loader.parse(json.camera, camera => {
         this.camera = camera
         this.camera.aspect = 1
         this.camera.updateProjectionMatrix()
@@ -116,55 +139,55 @@ export default class ThreeAnimation extends EventEmitter {
 
     this.dom.appendChild(this.css.renderer.domElement)
 
-    this.displayScreen = this.webgl.scene.getObjectByName('DisplayPlane')
+    const displayScreen = this.webgl.scene.getObjectByName('DisplayPlane')
     this.objectPhone = this.webgl.scene.getObjectByName('Phone')
 
     this.objectLightTop = this.webgl.scene.getObjectByName('SpotLightTop')
     this.objectLightTop.target = this.objectPhone
     if (this._debug) {
-      this.spotLightHelper = new THREE.SpotLightHelper(this.objectLightTop)
+      this.spotLightHelper = new SpotLightHelper(this.objectLightTop)
       this.webgl.scene.add(this.spotLightHelper)
     }
 
-    this.container = this.addCssObject('screen', this.displayScreen)
+    this.container = this.addCssObject('screen', displayScreen)
 
-    let screenPosition = new THREE.Vector3()
-    let screenScale = new THREE.Vector3()
-    let screenQuaternion = new THREE.Quaternion()
+    let screenPosition = new Vector3()
+    let screenScale = new Vector3()
+    let screenQuaternion = new Quaternion()
 
-    this.displayScreen.updateMatrixWorld()
-    this.displayScreen.getWorldPosition(screenPosition)
-    this.displayScreen.getWorldScale(screenScale)
-    this.displayScreen.getWorldQuaternion(screenQuaternion)
+    displayScreen.updateMatrixWorld()
+    displayScreen.getWorldPosition(screenPosition)
+    displayScreen.getWorldScale(screenScale)
+    displayScreen.getWorldQuaternion(screenQuaternion)
 
-    const rectLight = new THREE.RectAreaLight(
+    const rectLight = new RectAreaLight(
       0x2d1342,
       4,
-      this.displayScreen.geometry.parameters.width * screenScale.x,
-      this.displayScreen.geometry.parameters.height * screenScale.y
+      displayScreen.geometry.parameters.width * screenScale.x,
+      displayScreen.geometry.parameters.height * screenScale.y
     )
 
     rectLight.position.copy(screenPosition)
     rectLight.position.z = rectLight.position.z + 1
-    rectLight.rotation.y = THREE.Math.degToRad(180)
-    this.displayScreen.add(rectLight)
+    rectLight.rotation.y = ThreeMath.degToRad(180)
+    displayScreen.add(rectLight)
 
-    let intersectionPlane = new THREE.PlaneBufferGeometry(
-      this.displayScreen.geometry.parameters.width * screenScale.x * 2,
-      this.displayScreen.geometry.parameters.height * screenScale.y * 2,
+    let intersectionPlane = new PlaneBufferGeometry(
+      displayScreen.geometry.parameters.width * screenScale.x * 2,
+      displayScreen.geometry.parameters.height * screenScale.y * 2,
       8,
       8
     )
 
-    var mat = new THREE.MeshBasicMaterial({
+    var mat = new MeshBasicMaterial({
       color: 0x000000,
-      side: THREE.DoubleSide
+      side: THREE_CONSTANTS.DoubleSide
     })
     mat.opacity = 0
     mat.transparent = true
-    this.intersectionPlane = new THREE.Mesh(intersectionPlane, mat)
+    this.intersectionPlane = new Mesh(intersectionPlane, mat)
 
-    let rotObjectMatrix = new THREE.Matrix4()
+    let rotObjectMatrix = new Matrix4()
     rotObjectMatrix.makeRotationFromQuaternion(screenQuaternion)
 
     this.intersectionPlane.position.copy(screenPosition)
@@ -175,7 +198,7 @@ export default class ThreeAnimation extends EventEmitter {
 
     const bg = this.webgl.scene.getObjectByName('ScreenBackground')
 
-    bg.material.blending = THREE.NoBlending
+    bg.material.blending = THREE_CONSTANTS.NoBlending
     bg.material.opacity = 0
   }
 
@@ -189,9 +212,9 @@ export default class ThreeAnimation extends EventEmitter {
 
     const screenWidth = source.geometry.parameters.width * 3
     const screenHeight = source.geometry.parameters.height * 3
-    const rotation = new THREE.Quaternion()
-    const position = new THREE.Vector3()
-    const scale = new THREE.Vector3()
+    const rotation = new Quaternion()
+    const position = new Vector3()
+    const scale = new Vector3()
     source.getWorldPosition(position)
     source.getWorldScale(scale)
     source.getWorldQuaternion(rotation)
@@ -210,11 +233,11 @@ export default class ThreeAnimation extends EventEmitter {
     container.appendChild(screenWrapper)
 
     // create the object3d for this element
-    const cssObject = new THREE.CSS3DObject(container)
+    const cssObject = new window.THREE.CSS3DObject(container)
     // we reference the same position and rotation
 
     cssObject.quaternion.copy(rotation)
-    cssObject.scale.copy(new THREE.Vector3(0.01, 0.01, 0.01))
+    cssObject.scale.copy(new Vector3(0.01, 0.01, 0.01))
     cssObject.position.copy(position)
 
     // add it to the css scene
@@ -242,12 +265,6 @@ export default class ThreeAnimation extends EventEmitter {
       this.cameraAnimation.targetZ
     )
 
-    if (this.sphere) {
-      this.sphere.position.x = this.cameraAnimation.positionX
-      this.sphere.position.y = this.cameraAnimation.positionY
-      this.sphere.position.z = this.cameraAnimation.positionZ
-    }
-
     if (this.isDesktop) {
       this.camera.zoom = Math.min(
         Math.max(this.width / this.height / 1.9, 0.7),
@@ -274,8 +291,8 @@ export default class ThreeAnimation extends EventEmitter {
   }
 
   setPhoneRotationFromGyro({ alpha, beta }) {
-    this.phoneAnimation.rotationX = THREE.Math.degToRad(beta - 40)
-    this.phoneAnimation.rotationY = THREE.Math.degToRad(alpha)
+    this.phoneAnimation.rotationX = ThreeMath.degToRad(beta - 40)
+    this.phoneAnimation.rotationY = ThreeMath.degToRad(alpha)
 
     this.needsRedraw = true
   }
@@ -305,8 +322,8 @@ export default class ThreeAnimation extends EventEmitter {
       return
     }
 
-    let direction = new THREE.Vector3()
-    let position = new THREE.Vector3()
+    let direction = new Vector3()
+    let position = new Vector3()
 
     this.objectPhone.getWorldDirection(direction)
     this.objectPhone.getWorldPosition(position)
@@ -425,7 +442,7 @@ export default class ThreeAnimation extends EventEmitter {
   }
 
   stop() {
-    this.webgl.renderer.stop()
+    this.webgl.renderer.setAnimationLoop(null)
   }
 
   animateEnter() {
@@ -489,7 +506,7 @@ export default class ThreeAnimation extends EventEmitter {
     })
   }
 
-  setCameraValues(values) {
+  setCameraValues({ values }) {
     this.setObjectValues(this.cameraAnimation, values)
   }
 
@@ -527,6 +544,10 @@ export default class ThreeAnimation extends EventEmitter {
   }
 
   dispose() {
+    this.stop()
+
+    anime.remove(this.animeAnimation)
+
     while (this.dom.children.length) {
       this.dom.removeChild(this.dom.firstChild)
     }
