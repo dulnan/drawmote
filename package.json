@@ -14,9 +14,9 @@
     "@sentry/integrations": "^5.0.8",
     "animejs": "^3.0.1",
     "catenary-curve": "^1.0.1",
+    "core-js": "^3.0.1",
     "dat.gui": "^0.7.6",
     "debounced-resize": "^1.1.1",
-    "es6-promise": "^4.2.6",
     "gymote": "^0.0.6",
     "html-webpack-inline-source-plugin": "0.0.10",
     "input-range-scss": "^1.5.1",
@@ -33,22 +33,18 @@
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-object-rest-spread": "^7.4.3",
     "@vue/cli-plugin-babel": "^3.6.0",
     "@vue/cli-plugin-eslint": "^3.6.0",
-    "@vue/cli-plugin-unit-mocha": "^3.6.0",
     "@vue/cli-service": "^3.6.0",
-    "@vue/eslint-config-standard": "^4.0.0",
-    "@vue/test-utils": "^1.0.0-beta.29",
+    "@vue/eslint-config-prettier": "^4.0.1",
     "babel-eslint": "^10.0.1",
-    "chai": "^4.2.0",
     "eslint": "^5.16.0",
-    "eslint-config-prettier": "^4.1.0",
-    "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-vue": "^5.2.2",
+    "@vue/test-utils": "^1.0.0-beta.29",
+    "@vue/cli-plugin-unit-mocha": "^3.6.0",
+    "chai": "^4.2.0",
     "kanbasu": "^2.5.0",
     "node-sass": "^4.11.0",
-    "prettier": "^1.17.0",
     "sass-loader": "^7.1.0",
     "style-resources-loader": "^1.2.1",
     "vue-cli-plugin-i18n": "^0.6.0",
@@ -56,17 +52,6 @@
     "vue-svg-loader": "^0.12.0",
     "vue-template-compiler": "^2.6.10"
   },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
-    }
-  },
-  "browserslist": [
-    "> 1%",
-    "last 3 versions",
-    "iOS 10",
-    "not ie <= 10"
-  ],
   "author": "Jan Hug <me@dulnan.net>",
   "description": "client application for drawmote"
 }

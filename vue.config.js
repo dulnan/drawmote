@@ -28,6 +28,7 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = {
   productionSourceMap: true,
   filenameHashing: true,
+  transpileDependencies: ['debounced-resize', 'gymote', 'peersox'],
   pluginOptions: {
     'style-resources-loader': {
       preProcessor: 'scss',
@@ -47,6 +48,8 @@ module.exports = {
     plugins: webpackPlugins
   },
   chainWebpack: config => {
+    config.optimization.delete('splitChunks')
+    config.optimization.splitChunks(false)
     config.plugin('define').tap(args => {
       let v = JSON.stringify(require('./package.json').version)
       args[0]['process.env']['PKG_VERSION'] = v
@@ -69,6 +72,11 @@ module.exports = {
 
     svgRule.uses.clear()
 
-    svgRule.use('vue-svg-loader').loader('vue-svg-loader')
+    svgRule
+      .use('babel-loader')
+      .loader('babel-loader')
+      .end()
+      .use('vue-svg-loader')
+      .loader('vue-svg-loader')
   }
 }
