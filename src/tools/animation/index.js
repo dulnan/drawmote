@@ -22,7 +22,7 @@ import {
   Math as ThreeMath
 } from 'three'
 
-import * as THREE_CONSTANTS from 'three/src/constants.js'
+import * as THREE_CONSTANTS from 'three/src/constants'
 
 window.THREE = {
   THREE_CONSTANTS,

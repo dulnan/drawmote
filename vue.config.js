@@ -2,6 +2,7 @@ const path = require('path')
 
 const PrerenderSpaPlugin = require('prerender-spa-plugin')
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 
 const webpackPlugins = []
 
@@ -42,6 +43,20 @@ module.exports = {
     }
   },
   configureWebpack: {
+    optimization: {
+      minimizer:
+        process.env.NODE_ENV === 'production'
+          ? [
+              new TerserPlugin({
+                sourceMap: true,
+                terserOptions: {
+                  module: true,
+                  toplevel: true
+                }
+              })
+            ]
+          : []
+    },
     resolve: {
       symlinks: false
     },
