@@ -94,25 +94,6 @@ export const PHONE_MOBILE = [
   }
 ]
 
-export const CAMERA_LEAVE = {
-  offset: 0,
-  options: {
-    duration: 3000,
-    delay: 0,
-    elasticity: 7,
-    endDelay: 0,
-    easing: 'easeInOutCubic'
-  },
-  values: {
-    positionX: 0,
-    positionY: -0.85,
-    positionZ: 1.5,
-    targetX: 0,
-    targetY: -2.18,
-    targetZ: -3.48
-  }
-}
-
 export const CAMERA = [
   {
     offset: 0,

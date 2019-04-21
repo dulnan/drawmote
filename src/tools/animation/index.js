@@ -2,29 +2,17 @@ import EventEmitter from 'eventemitter3'
 import anime from 'animejs'
 
 import { ANIMATION_SCREEN_VIEWPORT } from '@/settings'
-import {
-  PHONE,
-  PHONE_MOBILE,
-  CAMERA,
-  CAMERA_LEAVE,
-  CAMERA_MOBILE
-} from './keyframes'
+import { PHONE, PHONE_MOBILE, CAMERA, CAMERA_MOBILE } from './keyframes'
 import { scaleRange } from '@/tools/helpers'
 
 import * as THREE from 'three'
-import * as dat from 'dat.gui'
 
 window.THREE = THREE
 
-require('three/examples/js/controls/OrbitControls')
 require('three/examples/js/renderers/CSS3DRenderer')
 require('three/examples/js/lights/RectAreaLightUniformsLib')
 
 const sceneObject = require('./scene.json')
-
-const round = value => {
-  return Math.round(value * 1000000) / 1000000
-}
 
 export default class ThreeAnimation extends EventEmitter {
   constructor(container, viewport, isDesktop, debug, pairingEl) {
@@ -56,17 +44,9 @@ export default class ThreeAnimation extends EventEmitter {
     this.dom = container
 
     this.container = null
-    this.gui = null
 
     this.width = 500
     this.height = 500
-
-    this.orbit = null
-
-    this.features = {
-      orbit: false,
-      gui: true
-    }
 
     this.cameraAnimation = {
       positionX: 0,
@@ -110,8 +90,11 @@ export default class ThreeAnimation extends EventEmitter {
 
     this.loader.parse(json.scene, scene => {
       this.loader.parse(json.camera, camera => {
-        this.setScene(scene)
-        this.setCamera(camera)
+        this.camera = camera
+        this.camera.aspect = 1
+        this.camera.updateProjectionMatrix()
+
+        this.webgl.scene = scene
 
         this.init()
         this.emit('ready')
@@ -190,74 +173,10 @@ export default class ThreeAnimation extends EventEmitter {
 
     this.webgl.scene.add(this.intersectionPlane)
 
-    this.addTargetSphere()
-
     const bg = this.webgl.scene.getObjectByName('ScreenBackground')
 
     bg.material.blending = THREE.NoBlending
     bg.material.opacity = 0
-
-    this.addOrbitControls()
-
-    window.camera = this.camera
-
-    window.getCameraState = init => {
-      this.camera.updateMatrixWorld()
-      this.camera.updateProjectionMatrix()
-
-      let sourceValues = CAMERA[init]
-
-      let newValues = {
-        offset: sourceValues.offset,
-        options: sourceValues.options,
-        values: {}
-      }
-
-      newValues.values.positionX = round(this.cameraAnimation.positionX)
-      newValues.values.positionY = round(this.cameraAnimation.positionY)
-      newValues.values.positionZ = round(this.cameraAnimation.positionZ)
-
-      newValues.values.targetX = round(this.cameraAnimation.targetX)
-      newValues.values.targetY = round(this.cameraAnimation.targetY)
-      newValues.values.targetZ = round(this.cameraAnimation.targetZ)
-
-      return JSON.stringify(newValues)
-    }
-
-    window.getPhoneState = init => {
-      this.objectPhone.updateMatrixWorld()
-
-      let sourceValues = PHONE[init]
-
-      let newValues = {
-        offset: sourceValues.offset,
-        options: sourceValues.options,
-        values: {}
-      }
-
-      newValues.values.positionX = round(this.phoneAnimation.positionX)
-      newValues.values.positionY = round(this.phoneAnimation.positionY)
-      newValues.values.positionZ = round(this.phoneAnimation.positionZ)
-
-      newValues.values.rotationX = round(this.phoneAnimation.rotationX)
-      newValues.values.rotationY = round(this.phoneAnimation.rotationY)
-      newValues.values.rotationZ = round(this.phoneAnimation.rotationZ)
-
-      return JSON.stringify(newValues)
-    }
-
-    window.display = this.displayScreen
-
-    this.addGui(rectLight)
-  }
-
-  addTargetSphere() {
-    if (this._debug) {
-      var geometry = new THREE.SphereGeometry(0.1, 32, 32)
-      var material = new THREE.MeshBasicMaterial({ color: 0xffff00 })
-      this.sphere = new THREE.Mesh(geometry, material)
-      this.webgl.scene.add(this.sphere)
-    }
   }
 
   addCssObject(name, source) {
@@ -302,76 +221,6 @@ export default class ThreeAnimation extends EventEmitter {
     this.css.scene.add(cssObject)
 
     return container
-  }
-
-  addGui(rectLight) {
-    if (!this._debug) {
-      return
-    }
-
-    this.gui = new dat.GUI({ width: 300 })
-    this.gui.open()
-    var param = {
-      motion: true,
-      width: rectLight.width,
-      height: rectLight.height,
-      color: rectLight.color.getHex(),
-      intensity: rectLight.intensity
-    }
-    this.gui.add(param, 'motion')
-    var lightFolder = this.gui.addFolder('Light')
-
-    lightFolder.addColor(param, 'color').onChange(val => {
-      rectLight.color.setHex(val)
-    })
-
-    lightFolder
-      .add(param, 'intensity', 0.0, 10.0)
-      .step(0.01)
-      .onChange(val => {
-        rectLight.intensity = val
-      })
-
-    let cameraFolder = this.gui.addFolder('Camera')
-
-    Object.keys(this.cameraAnimation).forEach(key => {
-      cameraFolder
-        .add(this.cameraAnimation, key, -100, 100)
-        .step(0.01)
-        .onChange(this.updateCamera.bind(this))
-    })
-
-    cameraFolder
-      .add(this.camera, 'zoom', 0, 4)
-      .step(0.01)
-      .onChange(() => {
-        this.camera.updateProjectionMatrix()
-        this.updateCamera()
-      })
-
-    let phoneFolder = this.gui.addFolder('Phone')
-
-    Object.keys(this.phoneAnimation).forEach(key => {
-      phoneFolder
-        .add(this.phoneAnimation, key, -20, 20)
-        .step(0.001)
-        .onChange(this.updatePhone.bind(this))
-    })
-
-    let spotlightFolder = this.gui.addFolder('SpotLight')
-
-    let props = ['x', 'y', 'z']
-    props.forEach(key => {
-      spotlightFolder
-        .add(this.objectLightTop.position, key, -20, 20)
-        .step(0.001)
-    })
-
-    let actionFolder = this.gui.addFolder('Actions')
-
-    actionFolder.add(this, 'animateEnter')
-
-    actionFolder.open()
   }
 
   getScreen() {
@@ -422,19 +271,6 @@ export default class ThreeAnimation extends EventEmitter {
     this.objectPhone.position.z = this.phoneAnimation.positionZ
 
     this.objectPhone.updateMatrixWorld()
-  }
-
-  addOrbitControls() {
-    if (this.features.orbit) {
-      this.orbit = new THREE.OrbitControls(
-        this.camera,
-        this.webgl.renderer.domElement
-      )
-      this.orbit.minDistance = 1
-      this.orbit.maxDistance = 100
-      this.orbit.enableRotate = true
-      window.orbit = this.orbit
-    }
   }
 
   setPhoneRotationFromGyro({ alpha, beta }) {
@@ -495,16 +331,6 @@ export default class ThreeAnimation extends EventEmitter {
     }
 
     return intersection
-  }
-
-  setCamera(value) {
-    this.camera = value
-    this.camera.aspect = 1
-    this.camera.updateProjectionMatrix()
-  }
-
-  setScene(value) {
-    this.webgl.scene = value
   }
 
   setFinalCameraState() {
@@ -609,15 +435,12 @@ export default class ThreeAnimation extends EventEmitter {
         this.animationFinished = true
         this.emit('animationEnd')
         anime.remove(this.animeAnimation)
-        console.log('complete')
         this.animeAnimation = null
       },
       update: () => {
-        this.updateGui()
         this.needsRedraw = true
       },
       begin: () => {
-        console.log('begin')
         this.needsRedraw = true
       }
     })
@@ -660,60 +483,18 @@ export default class ThreeAnimation extends EventEmitter {
     this.animeAnimation = animeAnimation
   }
 
-  animateLeave(cb) {
-    let animeAnimation = anime.timeline({
-      autoplay: false,
-      complete: () => {
-        cb()
-      },
-      update: () => {
-        this.updateGui()
-      }
+  setObjectValues(object, values) {
+    Object.keys(values).forEach(key => {
+      object[key] = values[key]
     })
-
-    this.setPhoneValues(PHONE[1])
-    this.setCameraValues(CAMERA[1])
-    this.addToTimeline('camera', animeAnimation, [CAMERA[1], CAMERA_LEAVE])
-
-    this.animeAnimation = animeAnimation
   }
 
-  seekAnimation(step) {
-    if (this.animeAnimation) {
-      this.animeAnimation.seek(this.animeAnimation.duration * (step / 100))
-    }
-  }
-
-  updateGui() {
-    if (this._debug) {
-      window.clearTimeout(this.guiUpdateTimeline)
-
-      this.guiUpdateTimeline = window.setTimeout(() => {
-        Object.keys(this.gui.__folders).forEach(folderKey => {
-          this.gui.__folders[folderKey].updateDisplay()
-        })
-      }, 1000)
-    }
-  }
-
-  setCameraValues({ values }) {
-    this.cameraAnimation.positionX = values.positionX
-    this.cameraAnimation.positionY = values.positionY
-    this.cameraAnimation.positionZ = values.positionZ
-
-    this.cameraAnimation.targetX = values.targetX
-    this.cameraAnimation.targetY = values.targetY
-    this.cameraAnimation.targetZ = values.targetZ
+  setCameraValues(values) {
+    this.setObjectValues(this.cameraAnimation, values)
   }
 
   setPhoneValues({ values }) {
-    this.phoneAnimation.positionX = values.positionX
-    this.phoneAnimation.positionY = values.positionY
-    this.phoneAnimation.positionZ = values.positionZ
-
-    this.phoneAnimation.rotationX = values.rotationX
-    this.phoneAnimation.rotationY = values.rotationY
-    this.phoneAnimation.rotationZ = values.rotationZ
+    this.setObjectValues(this.phoneAnimation, values)
   }
 
   addToTimeline(target, timeline, frames) {
@@ -751,9 +532,5 @@ export default class ThreeAnimation extends EventEmitter {
     }
 
     this.webgl.renderer.dispose()
-
-    if (this.gui) {
-      this.gui.destroy()
-    }
   }
 }
