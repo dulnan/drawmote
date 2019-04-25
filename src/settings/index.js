@@ -102,7 +102,7 @@ export const BREAKPOINT_REMOTE = 700
 export const BREAKPOINT_ANIMATION = 1024
 
 export const ANIMATION_SCREEN_VIEWPORT = {
-  width: 958,
-  height: 542,
-  ratio: 1
+  width: 960,
+  height: 540,
+  ratio: 0.75
 }

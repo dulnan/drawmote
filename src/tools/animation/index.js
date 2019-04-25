@@ -14,12 +14,12 @@ import {
   Vector3,
   Quaternion,
   PlaneBufferGeometry,
-  MeshBasicMaterial,
+  TextureLoader,
   Mesh,
   Matrix4,
   Object3D,
-  RectAreaLight,
-  Math as ThreeMath
+  Math as ThreeMath,
+  MeshStandardMaterial
 } from 'three'
 
 import * as THREE_CONSTANTS from 'three/src/constants'
@@ -33,7 +33,7 @@ window.THREE = {
 
 require('three/examples/js/renderers/CSS3DRenderer')
 
-const sceneObject = require('./scene.json')
+const sceneObject = require('./app.json')
 
 export default class ThreeAnimation extends EventEmitter {
   constructor(container, viewport, isDesktop, debug, pairingEl) {
@@ -61,6 +61,8 @@ export default class ThreeAnimation extends EventEmitter {
 
     this.objectPhone = null
     this.objectLightTop = null
+
+    this.objectPhoneDisplay = null
 
     this.dom = container
 
@@ -125,8 +127,45 @@ export default class ThreeAnimation extends EventEmitter {
     })
   }
 
+  initPhone() {
+    return
+    const phone = this.webgl.scene.getObjectByName('PhoneDisplay')
+
+    // instantiate a loader
+    var loader = new TextureLoader()
+
+    // load a resource
+    loader.load(
+      // resource URL
+      '/launch-640x1136.png',
+
+      // onLoad callback
+      function(texture) {
+        // in this example we create the material when the texture is loaded
+        // var material = new MeshBasicMaterial({
+        //   map: texture
+        // })
+
+        // phone.material.map = texture
+
+        console.log(phone.material)
+      },
+
+      // onProgress callback currently not supported
+      undefined,
+
+      // onError callback
+      function(err) {
+        console.error('An error happened.')
+      }
+    )
+
+    this.objectPhoneDisplay = phone
+  }
+
   init() {
-    this.webgl.renderer.setPixelRatio(0.75)
+    const pixelRatio = this.isDesktop ? 0.75 : 1
+    this.webgl.renderer.setPixelRatio(pixelRatio)
     this.webgl.renderer.setClearColor(0x000000, 0)
 
     this.webgl.renderer.domElement.classList.add('renderer-webgl')
@@ -160,18 +199,6 @@ export default class ThreeAnimation extends EventEmitter {
     displayScreen.getWorldScale(screenScale)
     displayScreen.getWorldQuaternion(screenQuaternion)
 
-    const rectLight = new RectAreaLight(
-      0x2d1342,
-      4,
-      displayScreen.geometry.parameters.width * screenScale.x,
-      displayScreen.geometry.parameters.height * screenScale.y
-    )
-
-    rectLight.position.copy(screenPosition)
-    rectLight.position.z = rectLight.position.z + 1
-    rectLight.rotation.y = ThreeMath.degToRad(180)
-    displayScreen.add(rectLight)
-
     let intersectionPlane = new PlaneBufferGeometry(
       displayScreen.geometry.parameters.width * screenScale.x * 2,
       displayScreen.geometry.parameters.height * screenScale.y * 2,
@@ -179,9 +206,8 @@ export default class ThreeAnimation extends EventEmitter {
       8
     )
 
-    var mat = new MeshBasicMaterial({
-      color: 0x000000,
-      side: THREE_CONSTANTS.DoubleSide
+    var mat = new MeshStandardMaterial({
+      color: 0x000000
     })
     mat.opacity = 0
     mat.transparent = true
@@ -200,6 +226,8 @@ export default class ThreeAnimation extends EventEmitter {
 
     bg.material.blending = THREE_CONSTANTS.NoBlending
     bg.material.opacity = 0
+
+    this.initPhone()
   }
 
   addCssObject(name, source) {
@@ -210,8 +238,11 @@ export default class ThreeAnimation extends EventEmitter {
     this.css.scene.updateMatrixWorld()
     source.updateMatrixWorld()
 
-    const screenWidth = source.geometry.parameters.width * 3
-    const screenHeight = source.geometry.parameters.height * 3
+    const multiplier = 3
+
+    const screenWidth = ANIMATION_SCREEN_VIEWPORT.width
+    const screenHeight = ANIMATION_SCREEN_VIEWPORT.height
+    console.log(screenWidth, screenHeight)
     const rotation = new Quaternion()
     const position = new Vector3()
     const scale = new Vector3()
@@ -235,9 +266,11 @@ export default class ThreeAnimation extends EventEmitter {
     // create the object3d for this element
     const cssObject = new window.THREE.CSS3DObject(container)
     // we reference the same position and rotation
+    console.log(scale)
+    scale.divide(new Vector3(multiplier, multiplier, multiplier))
 
     cssObject.quaternion.copy(rotation)
-    cssObject.scale.copy(new Vector3(0.01, 0.01, 0.01))
+    cssObject.scale.copy(scale)
     cssObject.position.copy(position)
 
     // add it to the css scene
