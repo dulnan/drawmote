@@ -19,7 +19,9 @@ import {
   Matrix4,
   Object3D,
   Math as ThreeMath,
-  MeshStandardMaterial
+  MeshStandardMaterial,
+  MeshPhysicalMaterial,
+  MeshBasicMaterial
 } from 'three'
 
 import * as THREE_CONSTANTS from 'three/src/constants'
@@ -27,6 +29,8 @@ import * as THREE_CONSTANTS from 'three/src/constants'
 window.THREE = {
   THREE_CONSTANTS,
   Object3D,
+  MeshPhysicalMaterial,
+  MeshBasicMaterial,
   Matrix4,
   Vector3
 }
@@ -128,7 +132,6 @@ export default class ThreeAnimation extends EventEmitter {
   }
 
   initPhone() {
-    return
     const phone = this.webgl.scene.getObjectByName('PhoneDisplay')
 
     // instantiate a loader
@@ -137,16 +140,19 @@ export default class ThreeAnimation extends EventEmitter {
     // load a resource
     loader.load(
       // resource URL
-      '/launch-640x1136.png',
+      '/drawmote-logo-phone.png',
 
       // onLoad callback
-      function(texture) {
+      (texture) => {
         // in this example we create the material when the texture is loaded
-        // var material = new MeshBasicMaterial({
-        //   map: texture
-        // })
+        texture.anisotropy = this.webgl.renderer.capabilities.getMaxAnisotropy()
+        var material = new MeshBasicMaterial({
+          map: texture
+        })
 
-        // phone.material.map = texture
+        material.map.minFilter = THREE_CONSTANTS.LinearFilter
+
+        phone.material = material
 
         console.log(phone.material)
       },
@@ -164,7 +170,7 @@ export default class ThreeAnimation extends EventEmitter {
   }
 
   init() {
-    const pixelRatio = this.isDesktop ? 0.75 : 1
+    const pixelRatio = 1
     this.webgl.renderer.setPixelRatio(pixelRatio)
     this.webgl.renderer.setClearColor(0x000000, 0)
 
@@ -242,7 +248,6 @@ export default class ThreeAnimation extends EventEmitter {
 
     const screenWidth = ANIMATION_SCREEN_VIEWPORT.width
     const screenHeight = ANIMATION_SCREEN_VIEWPORT.height
-    console.log(screenWidth, screenHeight)
     const rotation = new Quaternion()
     const position = new Vector3()
     const scale = new Vector3()
@@ -266,7 +271,6 @@ export default class ThreeAnimation extends EventEmitter {
     // create the object3d for this element
     const cssObject = new window.THREE.CSS3DObject(container)
     // we reference the same position and rotation
-    console.log(scale)
     scale.divide(new Vector3(multiplier, multiplier, multiplier))
 
     cssObject.quaternion.copy(rotation)

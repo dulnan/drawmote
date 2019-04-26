@@ -448,7 +448,7 @@
 				"emissive": 0,
 				"clearCoat": 0.16,
 				"clearCoatRoughness": 0.24,
-				"opacity": 0.48,
+				"opacity": 0.5,
 				"transparent": true,
 				"depthFunc": 3,
 				"depthTest": true,
