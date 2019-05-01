@@ -25,6 +25,8 @@
     "peersox": "^0.1.1",
     "prerender-spa-plugin": "^3.4.0",
     "three": "^0.104.0",
+    "twgl.js": "^4.9.1",
+    "two.js": "^0.7.0-beta.3",
     "universal-cookie": "^3.1.0",
     "vue": "^2.6.10",
     "vue-i18n": "^8.10.0",

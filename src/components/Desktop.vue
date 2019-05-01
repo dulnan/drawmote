@@ -14,7 +14,7 @@
         />
       </Animation>
       <transition name="appear">
-        <Drawing v-if="isDrawing" />
+        <DrawingGL v-if="isDrawing" />
       </transition>
     </div>
   </div>
@@ -28,6 +28,7 @@ import { BREAKPOINT_REMOTE, ANIMATION_SCREEN_VIEWPORT } from '@/settings'
 import Pairing from '@/components/Desktop/Pairing.vue'
 import Animation from '@/components/Common/Animation/Animation.vue'
 import Drawing from '@/components/Desktop/Drawing.vue'
+import DrawingGL from '@/components/Desktop/DrawingGL.vue'
 import { getViewportSize, encodeEventMessage } from '@/tools/helpers'
 
 export default {
@@ -36,6 +37,7 @@ export default {
   components: {
     Pairing,
     Drawing,
+    DrawingGL,
     Animation
   },
 

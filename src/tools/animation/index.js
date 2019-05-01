@@ -5,6 +5,8 @@ import { ANIMATION_SCREEN_VIEWPORT } from '@/settings'
 import { PHONE, PHONE_MOBILE, CAMERA, CAMERA_MOBILE } from './keyframes'
 import { scaleRange } from '@/tools/helpers'
 
+import DrawingScene from './DrawingScene'
+
 import {
   WebGLRenderer,
   Scene,
@@ -18,6 +20,7 @@ import {
   Mesh,
   Matrix4,
   Object3D,
+  BoxGeometry,
   Math as ThreeMath,
   MeshStandardMaterial,
   MeshPhysicalMaterial,
@@ -39,11 +42,15 @@ require('three/examples/js/renderers/CSS3DRenderer')
 
 const sceneObject = require('./app.json')
 
+const IS_ANIMATED = false
+
 export default class ThreeAnimation extends EventEmitter {
   constructor(container, viewport, isDesktop, debug, pairingEl) {
     super()
 
     this._debug = debug
+
+    this.drawingScene = new DrawingScene()
 
     this.pairingEl = pairingEl
 
@@ -56,12 +63,12 @@ export default class ThreeAnimation extends EventEmitter {
       renderer: new WebGLRenderer({ antialias: true, alpha: true })
     }
 
-    this.css = {
-      scene: new Scene(),
-      renderer: null
-    }
+    // this.css = {
+    //   scene: new Scene(),
+    //   renderer: null
+    // }
 
-    this.css.renderer = new window.THREE.CSS3DRenderer()
+    // this.css.renderer = new window.THREE.CSS3DRenderer()
 
     this.objectPhone = null
     this.objectLightTop = null
@@ -143,7 +150,7 @@ export default class ThreeAnimation extends EventEmitter {
       '/drawmote-logo-phone.png',
 
       // onLoad callback
-      (texture) => {
+      texture => {
         // in this example we create the material when the texture is loaded
         texture.anisotropy = this.webgl.renderer.capabilities.getMaxAnisotropy()
         var material = new MeshBasicMaterial({
@@ -170,19 +177,12 @@ export default class ThreeAnimation extends EventEmitter {
   }
 
   init() {
-    const pixelRatio = 1
+    const pixelRatio = window.devicePixelRatio
     this.webgl.renderer.setPixelRatio(pixelRatio)
     this.webgl.renderer.setClearColor(0x000000, 0)
 
     this.webgl.renderer.domElement.classList.add('renderer-webgl')
     this.dom.appendChild(this.webgl.renderer.domElement)
-
-    this.css.renderer.setSize(window.innerWidth, window.innerHeight)
-    this.css.renderer.domElement.style.position = 'absolute'
-    this.css.renderer.domElement.style.top = 0
-    this.css.renderer.domElement.classList.add('renderer-css')
-
-    this.dom.appendChild(this.css.renderer.domElement)
 
     const displayScreen = this.webgl.scene.getObjectByName('DisplayPlane')
     this.objectPhone = this.webgl.scene.getObjectByName('Phone')
@@ -193,8 +193,6 @@ export default class ThreeAnimation extends EventEmitter {
       this.spotLightHelper = new SpotLightHelper(this.objectLightTop)
       this.webgl.scene.add(this.spotLightHelper)
     }
-
-    this.container = this.addCssObject('screen', displayScreen)
 
     let screenPosition = new Vector3()
     let screenScale = new Vector3()
@@ -230,10 +228,13 @@ export default class ThreeAnimation extends EventEmitter {
 
     const bg = this.webgl.scene.getObjectByName('ScreenBackground')
 
-    bg.material.blending = THREE_CONSTANTS.NoBlending
-    bg.material.opacity = 0
-
     this.initPhone()
+
+    var bufferMaterial = new MeshBasicMaterial({
+      map: this.drawingScene.texture.texture
+    })
+
+    bg.material = bufferMaterial
   }
 
   addCssObject(name, source) {
@@ -283,9 +284,9 @@ export default class ThreeAnimation extends EventEmitter {
     return container
   }
 
-  getScreen() {
-    return this.container.children[0].children[0]
-  }
+  // getScreen() {
+  //   return this.container.children[0].children[0]
+  // }
 
   updateCamera() {
     if (!this.camera) {
@@ -419,9 +420,9 @@ export default class ThreeAnimation extends EventEmitter {
       this.webgl.renderer.setSize(w, h)
     }
 
-    if (this.css.renderer) {
-      this.css.renderer.setSize(w, h)
-    }
+    // if (this.css.renderer) {
+    //   this.css.renderer.setSize(w, h)
+    // }
   }
 
   animate(t) {
@@ -466,8 +467,16 @@ export default class ThreeAnimation extends EventEmitter {
     this.updateCamera()
     this.updatePhone()
 
-    this.webgl.renderer.render(this.webgl.scene, this.camera)
-    this.css.renderer.render(this.css.scene, this.camera)
+    // this.webgl.renderer.setRenderTarget(null)
+    // this.webgl.renderer.clear()
+    // this.webgl.renderer.render(this.webgl.scene, this.camera)
+
+    this.webgl.renderer.setRenderTarget(null)
+    this.webgl.renderer.clear()
+    this.webgl.renderer.render(
+      this.drawingScene.scene,
+      this.drawingScene.camera
+    )
 
     this.needsRedraw = false
   }
@@ -482,14 +491,24 @@ export default class ThreeAnimation extends EventEmitter {
     this.webgl.renderer.setAnimationLoop(null)
   }
 
+  onAnimationEnd() {
+    this.animationFinished = true
+    this.emit('animationEnd')
+    anime.remove(this.animeAnimation)
+    this.animeAnimation = null
+  }
+
   animateEnter() {
+    if (!IS_ANIMATED) {
+      this.onAnimationEnd()
+      this.setFinalCameraState()
+      return
+    }
+
     let animeAnimation = anime.timeline({
       autoplay: false,
       complete: () => {
-        this.animationFinished = true
-        this.emit('animationEnd')
-        anime.remove(this.animeAnimation)
-        this.animeAnimation = null
+        this.onAnimationEnd()
       },
       update: () => {
         this.needsRedraw = true
@@ -574,10 +593,9 @@ export default class ThreeAnimation extends EventEmitter {
   }
 
   refresh() {
-    const screenContainer = this.container
-
-    screenContainer.style.display = 'none'
-    screenContainer.style.display = 'block'
+    // const screenContainer = this.container
+    // screenContainer.style.display = 'none'
+    // screenContainer.style.display = 'block'
   }
 
   dispose() {

@@ -1,21 +1,11 @@
 <template>
   <transition name="appear" @after-leave="onAfterLeave">
-    <div
-      class="animation"
-      :class="{ 'is-desktop': isDesktop, 'is-fallback': useFallback }"
-    >
+    <div class="animation" :class="{ 'is-desktop': isDesktop, 'is-fallback': useFallback }">
       <div ref="container" class="three-animation"></div>
       <slot></slot>
       <div v-if="debug" class="ratio">{{ ratio }}</div>
       <div v-if="debug" class="debug-range">
-        <input
-          type="range"
-          min="0"
-          max="100"
-          step="0.001"
-          value="0"
-          @input="handleRange"
-        />
+        <input type="range" min="0" max="100" step="0.001" value="0" @input="handleRange">
       </div>
     </div>
   </transition>
@@ -109,15 +99,15 @@ export default {
       pairingEl
     )
 
-    const screen = this.animation.getScreen()
-    const DrawingCtor = this.$root.constructor.extend(Drawing)
-    this.instance = new DrawingCtor({
-      parent: this,
-      propsData: {
-        showToolbar: true,
-        isDrawing: false
-      }
-    }).$mount(screen)
+    // const screen = this.animation.getScreen()
+    // const DrawingCtor = this.$root.constructor.extend(Drawing)
+    // this.instance = new DrawingCtor({
+    //   parent: this,
+    //   propsData: {
+    //     showToolbar: true,
+    //     isDrawing: false
+    //   }
+    // }).$mount(screen)
 
     this.animation.setSize(this.windowWidth, this.windowHeight)
 
