@@ -162,6 +162,7 @@ export default {
 .attribution-overlay {
   position: relative;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
   z-index: $index-footer + 1;
   padding-bottom: 5rem !important;
   height: 100%;
