@@ -1,7 +1,8 @@
 <template>
-  <transition name="appear">
+  <div class="attribution">
+    <div class="attribution-background"></div>
     <div class="attribution-overlay pdg md-pdg+ lg-pdg++">
-      <div class="md-pdg++">
+      <div class="md-pdg++ attribution-content">
         <h2 class="text-heavy h1 mrgb">Attribution</h2>
         <p class="h2 mrgb+">
           drawmote was only made possible thanks to the contributions of the
@@ -40,7 +41,7 @@
         </template>
       </div>
     </div>
-  </transition>
+  </div>
 </template>
 
 <script>
@@ -120,40 +121,59 @@ export default {
 </script>
 
 <style lang="scss">
-.attribution-overlay {
-  background: $color-translucent-dark;
+.attribution {
+  z-index: $index-footer - 2;
   position: fixed;
   top: 0;
   right: 0;
   left: 0;
   bottom: 0;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-  z-index: $index-footer - 1;
-  padding-bottom: 5rem !important;
-  > div {
-    max-width: 40rem;
-    margin: 0 auto;
-    @include media('sm') {
-      border: $list-separator-style;
-      background: $alt-color-darkest;
-    }
-  }
   &.appear-enter-active,
   &.appear-leave-active {
     transition: 0.7s ease-in-out;
-    > div {
+    .attribution-overlay {
       transition: 0.7s ease-in-out;
     }
   }
   &.appear-enter,
   &.appear-leave-to {
     opacity: 0;
-    > div {
+    .attribution-overlay {
       transform: translateY(30%);
       @include media('sm') {
-        transform: translateX(30%);
+        transform: translateY(10%);
       }
+    }
+  }
+}
+
+.attribution-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.attribution-background {
+  background: $color-translucent-dark;
+}
+
+.attribution-overlay {
+  position: relative;
+  overflow: auto;
+  z-index: $index-footer + 1;
+  padding-bottom: 5rem !important;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  > div {
+    max-width: 40rem;
+    margin: 0 auto;
+    @include media('sm') {
+      overflow: hidden;
+      border: $list-separator-style;
+      background: $alt-color-darkest;
     }
   }
 
@@ -171,5 +191,9 @@ export default {
 
   > div {
   }
+}
+
+.attribution-content {
+  overflow: auto;
 }
 </style>

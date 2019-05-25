@@ -143,7 +143,7 @@ export default class ThreeAnimation extends EventEmitter {
       '/drawmote-logo-phone.png',
 
       // onLoad callback
-      (texture) => {
+      texture => {
         // in this example we create the material when the texture is loaded
         texture.anisotropy = this.webgl.renderer.capabilities.getMaxAnisotropy()
         var material = new MeshBasicMaterial({
@@ -161,8 +161,8 @@ export default class ThreeAnimation extends EventEmitter {
       undefined,
 
       // onError callback
-      function(err) {
-        console.error('An error happened.')
+      function(error) {
+        console.error('Error loading texture:', error)
       }
     )
 
