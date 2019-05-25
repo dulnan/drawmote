@@ -3,8 +3,6 @@
 		"type": "App"
 	},
 	"project": {
-		"gammaInput": false,
-		"gammaOutput": false,
 		"shadows": true,
 		"vr": false
 	},
@@ -15,17 +13,17 @@
 			"generator": "Object3D.toJSON"
 		},
 		"object": {
-			"uuid": "FD658E7D-1F9E-4FD5-939B-36225A4040B9",
+			"uuid": "E51C1918-0B8A-42A7-AC88-5DA9A9103C5A",
 			"type": "PerspectiveCamera",
 			"name": "Camera",
 			"layers": 1,
-			"matrix": [0.770807,0,-0.637068,0,0.033246,0.998639,0.040225,0,0.6362,-0.052186,0.769757,0,4.351453,-4.092505,8.276468,1],
+			"matrix": [0.778004,0,-0.628258,0,-0.06467,0.99469,-0.080084,0,0.624922,0.102935,0.773872,0,9.725295,0.209866,13.958911,1],
 			"fov": 50,
 			"zoom": 1,
 			"near": 0.36,
 			"far": 1000,
 			"focus": 10,
-			"aspect": 1.397516,
+			"aspect": 1.469649,
 			"filmGauge": 35,
 			"filmOffset": 0
 		}
@@ -40,16 +38,16 @@
 			{
 				"uuid": "D7227094-70CB-489B-B20D-E5ACC790A53A",
 				"type": "PlaneBufferGeometry",
-				"width": 5000,
-				"height": 5000,
+				"width": 4096,
+				"height": 4096,
 				"widthSegments": 1,
 				"heightSegments": 1
 			},
 			{
 				"uuid": "FB0A18E0-4EC7-403E-B939-867DBFED1864",
 				"type": "PlaneBufferGeometry",
-				"width": 10000,
-				"height": 10000,
+				"width": 8192,
+				"height": 8192,
 				"widthSegments": 1,
 				"heightSegments": 1
 			},
@@ -252,18 +250,18 @@
 				}
 			},
 			{
-				"uuid": "F2081D56-B208-4301-9C91-33BB538597A6",
+				"uuid": "F46F8127-9D5C-4847-8294-0022B2766A43",
 				"type": "PlaneBufferGeometry",
-				"width": 317.66,
-				"height": 178.66,
+				"width": 320,
+				"height": 180,
 				"widthSegments": 1,
 				"heightSegments": 1
 			},
 			{
-				"uuid": "F0A313EF-4D5C-4DA2-8051-40136BC5771E",
+				"uuid": "1CA965BA-DB92-46C1-8D50-59DC106DD3A1",
 				"type": "PlaneBufferGeometry",
-				"width": 317.66,
-				"height": 178.66,
+				"width": 320,
+				"height": 180,
 				"widthSegments": 1,
 				"heightSegments": 1
 			},
@@ -417,12 +415,13 @@
 			},
 			{
 				"uuid": "6FB7F440-A263-4992-88B0-6A4F41A01C9F",
-				"type": "MeshPhongMaterial",
-				"color": 16761600,
+				"type": "MeshStandardMaterial",
+				"name": "LaserMaterial",
+				"color": 16726272,
+				"roughness": 0.5,
+				"metalness": 0.5,
 				"emissive": 16740096,
-				"specular": 16769692,
-				"shininess": 37.38,
-				"opacity": 0.28,
+				"opacity": 0.5,
 				"transparent": true,
 				"depthFunc": 3,
 				"depthTest": true,
@@ -449,7 +448,7 @@
 				"emissive": 0,
 				"clearCoat": 0.16,
 				"clearCoatRoughness": 0.24,
-				"opacity": 0.48,
+				"opacity": 0.5,
 				"transparent": true,
 				"depthFunc": 3,
 				"depthTest": true,
@@ -483,8 +482,11 @@
 			},
 			{
 				"uuid": "92C9B818-59C4-46E9-9CE7-618CA4F8E56E",
-				"type": "MeshBasicMaterial",
+				"type": "MeshStandardMaterial",
 				"color": 0,
+				"roughness": 0.5,
+				"metalness": 0.5,
+				"emissive": 0,
 				"blending": 0,
 				"depthFunc": 3,
 				"depthTest": true,
@@ -738,15 +740,15 @@
 																									"type": "Object3D",
 																									"name": "MonitorContainer",
 																									"layers": 1,
-																									"matrix": [1,0,0,0,0,0.993768,-0.111469,0,0,0.111469,0.993768,0,0,89.013,-6.125,1],
+																									"matrix": [1,0,0,0,0,0.987688,-0.156434,0,0,0.156434,0.987688,0,0,89.013,-6.125,1],
 																									"children": [
 																										{
 																											"uuid": "1C9FF041-52F9-4606-8308-1D69559F060C",
 																											"type": "Mesh",
 																											"name": "ScreenBackground",
 																											"layers": 1,
-																											"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,12.952973,1],
-																											"geometry": "F2081D56-B208-4301-9C91-33BB538597A6",
+																											"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,12.87,1],
+																											"geometry": "F46F8127-9D5C-4847-8294-0022B2766A43",
 																											"material": "92C9B818-59C4-46E9-9CE7-618CA4F8E56E"
 																										},
 																										{
@@ -754,8 +756,8 @@
 																											"type": "Mesh",
 																											"name": "DisplayPlane",
 																											"layers": 1,
-																											"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0.002,0,12.992009,1],
-																											"geometry": "F0A313EF-4D5C-4DA2-8051-40136BC5771E",
+																											"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0.002,0,12.892,1],
+																											"geometry": "1CA965BA-DB92-46C1-8D50-59DC106DD3A1",
 																											"material": "33528C76-5006-4A16-B8CA-D4447E0FF2E8"
 																										},
 																										{
@@ -934,6 +936,34 @@
 							"zoom": 1,
 							"near": 0.5,
 							"far": 0.02,
+							"focus": 10,
+							"aspect": 1,
+							"filmGauge": 35,
+							"filmOffset": 0
+						}
+					}
+				},
+				{
+					"uuid": "DA84844F-EFEF-47BB-A3F4-B2E4A3E5720F",
+					"type": "SpotLight",
+					"name": "SpotLight",
+					"layers": 1,
+					"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,-0.024428,-0.304986,1],
+					"color": 2886473,
+					"intensity": 1.56,
+					"distance": 0,
+					"angle": 1.234,
+					"decay": 1,
+					"penumbra": 0.6,
+					"shadow": {
+						"camera": {
+							"uuid": "ADF8A8AE-1058-48BF-BBAD-6C3743BC8118",
+							"type": "PerspectiveCamera",
+							"layers": 1,
+							"fov": 50,
+							"zoom": 1,
+							"near": 0.5,
+							"far": 500,
 							"focus": 10,
 							"aspect": 1,
 							"filmGauge": 35,

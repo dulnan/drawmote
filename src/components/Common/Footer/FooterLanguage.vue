@@ -1,5 +1,5 @@
 <template>
-  <li class="text-bold mrgla hover relative language">
+  <li class="text-bold hover relative language">
     <select
       v-model="$i18n.locale"
       class="language__select"

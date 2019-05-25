@@ -5,7 +5,9 @@
     <RestoreConnection />
     <TheFooter :is-mobile="isMobile" />
     <ConnectionTimeout :is-mobile="isMobile" />
-    <Attribution v-show="attributionVisible" />
+    <transition name="appear">
+      <Attribution v-if="attributionVisible" />
+    </transition>
   </div>
 </template>
 
@@ -75,7 +77,7 @@ export default {
     right: 0;
     bottom: 0;
     z-index: 100;
-    overflow: auto;
+    overflow: hidden;
   }
 }
 </style>

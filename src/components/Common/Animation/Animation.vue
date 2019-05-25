@@ -96,7 +96,9 @@ export default {
     this.updateSizes()
 
     debouncedResize(() => {
-      this.updateSizes()
+      if (this.isDesktop) {
+        this.updateSizes()
+      }
     })
 
     this.animation = new ThreeAnimation(
@@ -281,12 +283,11 @@ export default {
 }
 
 .three-animation {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
   overflow: hidden;
+  z-index: 0;
 
   .is-fallback & {
     background-image: url('/fallback-mobile.jpg');
@@ -304,8 +305,7 @@ export default {
   }
 }
 
-.renderer-webgl,
-.renderer-css {
+.renderer-webgl {
   position: relative;
   top: 0;
   left: 0;
