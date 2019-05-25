@@ -11,7 +11,9 @@
 
         <template v-for="section in sections">
           <div :key="section.name">
-            <h3 class="h2 text-bold text-uppercase mrgb- mrgt++">{{ section.name }}</h3>
+            <h3 class="h2 text-bold text-uppercase mrgb- mrgt++">
+              {{ section.name }}
+            </h3>
             <ul class="list">
               <li v-for="item in section.items" :key="item.name" class="mrgb">
                 <div v-if="section.name === 'Media'">

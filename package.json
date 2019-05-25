@@ -18,7 +18,7 @@
     "core-js": "^3.1.2",
     "dat.gui": "^0.7.6",
     "debounced-resize": "^1.1.1",
-    "gymote": "^0.0.6",
+    "gymote": "^0.1.0",
     "html-webpack-inline-source-plugin": "0.0.10",
     "input-range-scss": "^1.5.1",
     "lazy-brush": "^1.0.1",
