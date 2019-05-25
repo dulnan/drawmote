@@ -1,3 +1,4 @@
+![Logo](public/drawmote-teaser.jpg)
 # drawmote
 *Draw remotely with your phone*
 
