@@ -11,7 +11,7 @@
 
         <template v-for="section in sections">
           <div :key="section.name">
-            <h3 class="label">{{ section.name }}</h3>
+            <h3 class="h2 text-bold text-uppercase mrgb- mrgt++">{{ section.name }}</h3>
             <ul class="list">
               <li v-for="item in section.items" :key="item.name" class="mrgb">
                 <div v-if="section.name === 'Media'">
@@ -156,7 +156,7 @@ export default {
 }
 
 .attribution-background {
-  background: $color-translucent-dark;
+  background: rgba($alt-color-darkest, 0.99);
 }
 
 .attribution-overlay {
@@ -165,15 +165,14 @@ export default {
   z-index: $index-footer + 1;
   padding-bottom: 5rem !important;
   height: 100%;
-  display: flex;
-  align-items: center;
+  @include media('sm') {
+    display: flex;
+  }
   > div {
-    max-width: 40rem;
+    max-width: 80rem;
     margin: 0 auto;
     @include media('sm') {
       overflow: hidden;
-      border: $list-separator-style;
-      background: $alt-color-darkest;
     }
   }
 
@@ -195,5 +194,15 @@ export default {
 
 .attribution-content {
   overflow: auto;
+
+  @include media('sm') {
+    .list {
+      display: flex;
+      flex-wrap: wrap;
+      li {
+        flex: 0 0 50%;
+      }
+    }
+  }
 }
 </style>

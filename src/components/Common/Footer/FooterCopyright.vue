@@ -1,5 +1,5 @@
 <template>
-  <li class="flex-1 text-right hidden-xs-down footer-copyright">
+  <li class="text-right hidden-xs-down footer-copyright">
     <div class="pdg footer-text">
       Made by <a href="http://www.janhug.info" class="text-bold">Jan Hug</a> at
       <a href="https://www.liip.ch"><LiipLogo /></a>
