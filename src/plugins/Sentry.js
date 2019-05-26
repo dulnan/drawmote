@@ -24,7 +24,7 @@ export default {
 
       handler.setMode = function (mode) {
         Sentry.configureScope(scope => {
-          scope.setTag({ mode: mode })
+          scope.setTag('mode', mode)
         })
       }
     }
