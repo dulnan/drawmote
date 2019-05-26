@@ -57,6 +57,10 @@ export default {
 
       document.dispatchEvent(new Event('render-event'))
       this.$forceUpdate()
+
+      this.$peersox.init().catch(e => {
+        this.$store.commit('setServerStatus', e)
+      })
     })
   }
 }

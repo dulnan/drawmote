@@ -8,7 +8,6 @@
       >
         <Pairing
           :pairing="pairing"
-          :is-blocked="isBlocked"
           :desktop-animation="desktopAnimation"
           @pairingTimeout="handleTimeout"
         />
@@ -42,7 +41,6 @@ export default {
   data() {
     return {
       pairing: {},
-      isBlocked: false,
       viewportWidth: 700
     }
   },
@@ -94,7 +92,7 @@ export default {
     })
 
     if (!this.$settings.isPrerendering) {
-      this.getPairingCode()
+      this.$peersox.on('serverReady', this.getPairingCode)
     }
 
     this.$peersox.on('peerConnected', this.handleConnected)
@@ -105,6 +103,7 @@ export default {
   },
 
   beforeDestroy() {
+    this.$peersox.off('serverReady', this.getPairingCode)
     this.$peersox.off('peerConnected', this.handleConnected)
     this.$peersox.off('peerTimeout', this.handlePeerTimeout)
     this.$peersox.off('connectionClosed', this.handleDisconnected)
@@ -115,23 +114,6 @@ export default {
   },
 
   methods: {
-    animationEnter(el, done) {
-      if (this.$refs.dynamic.$options.name === 'Animation') {
-        this.$refs.dynamic.animate().finished.then(() => {
-          done()
-        })
-      }
-    },
-    animationLeave(el, done) {
-      console.log(el)
-      if (this.$refs.dynamic.$options.name === 'Animation') {
-        this.$refs.dynamic.animateFullscreen().finished.then(() => {
-          done()
-        })
-      } else {
-        done()
-      }
-    },
     getPairingCode() {
       if (this.hasPairing) {
         return
@@ -145,18 +127,17 @@ export default {
         .createPairing()
         .then(pairing => {
           if (pairing) {
-            this.isBlocked = false
             this.pairing = pairing
             this.$peersox.connect(pairing).catch(error => {
-              console.log(error)
+              this.$store.commit('setServerStatus', error)
             })
           } else {
-            this.isBlocked = true
             this.pairing = {}
           }
+          this.$store.commit('setServerStatus')
         })
         .catch(error => {
-          console.log('Too many requests', error)
+          this.$store.commit('setServerStatus', error)
         })
     },
 

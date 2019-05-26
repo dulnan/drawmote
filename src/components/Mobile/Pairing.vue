@@ -9,7 +9,8 @@
         {{ $t('mobile.lead') }}
       </p>
       <div class="code code--mobile relative">
-        <div class="code__circles flex">
+        <ServerStatus v-if="hasServerError" />
+        <div v-else class="code__circles flex">
           <div
             v-for="(char, index) in inputChars"
             :key="char + index"
@@ -27,7 +28,11 @@
           </div>
         </div>
 
-        <form class="code__form absolute" @submit.prevent="onSubmit">
+        <form
+          v-if="!hasServerError"
+          class="code__form absolute"
+          @submit.prevent="onSubmit"
+        >
           <input
             ref="pairing_id"
             v-model="inputValue"
@@ -58,8 +63,15 @@
 </template>
 
 <script>
+import ServerStatus from '@/components/Common/ServerStatus.vue'
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'Pairing',
+
+  components: {
+    ServerStatus
+  },
 
   data() {
     return {
@@ -69,6 +81,8 @@ export default {
   },
 
   computed: {
+    ...mapGetters(['hasServerError']),
+
     inputChars: function() {
       return String(this.inputValue + '      ')
         .slice(0, 6)
@@ -98,13 +112,15 @@ export default {
               this.codeInvalid = false
               this.$track('Pairing', 'valid', '1')
               this.$peersox.storePairing(pairing)
+              this.$store.commit('setServerStatus')
             })
             .catch(error => {
               console.log('Error connecting to the WebSocket server: ', error)
+              this.$store.commit('setServerStatus', error)
             })
         })
         .catch(error => {
-          console.log(error)
+          this.$store.commit('setServerStatus', error)
           this.codeInvalid = true
           this.$track('Pairing', 'valid', '0')
         })

@@ -22,7 +22,7 @@
     "html-webpack-inline-source-plugin": "0.0.10",
     "input-range-scss": "^1.5.1",
     "lazy-brush": "^1.0.1",
-    "peersox": "^0.1.1",
+    "peersox": "^0.2.0",
     "prerender-spa-plugin": "^3.4.0",
     "three": "^0.104.0",
     "universal-cookie": "^4.0.0",
@@ -34,10 +34,10 @@
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.7.0",
-    "@vue/cli-plugin-eslint": "^3.7.0",
-    "@vue/cli-plugin-unit-mocha": "^3.7.0",
-    "@vue/cli-service": "^3.7.0",
+    "@vue/cli-plugin-babel": "^3.8.0",
+    "@vue/cli-plugin-eslint": "^3.8.0",
+    "@vue/cli-plugin-unit-mocha": "^3.8.0",
+    "@vue/cli-service": "^3.8.0",
     "@vue/eslint-config-prettier": "^4.0.1",
     "@vue/test-utils": "^1.0.0-beta.29",
     "babel-eslint": "^10.0.1",

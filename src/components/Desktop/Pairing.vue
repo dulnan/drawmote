@@ -9,7 +9,8 @@
       <p class="h2 text-bold mrgb+ text-muted">{{ $t('subtitle') }}</p>
       <p class="text-muted mrgt0 h3 pairing-lead">{{ $t('desktop.lead') }}</p>
       <div class="code code--desktop sm-mrgt md-mrgt+">
-        <div class="code__content">
+        <ServerStatus v-if="hasServerError" />
+        <div v-else class="code__content">
           <div
             v-for="(number, index) in pairingCodeNumbers"
             :key="index"
@@ -52,12 +53,19 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import ServerStatus from '@/components/Common/ServerStatus.vue'
+
 const PAIRING_TIMEOUT = 120
 let interval = null
 let transitionTimeout = null
 
 export default {
   name: 'Pairing',
+
+  components: {
+    ServerStatus
+  },
 
   props: {
     pairing: {
@@ -85,6 +93,8 @@ export default {
   },
 
   computed: {
+    ...mapGetters(['hasServerError']),
+
     pairingCodeNumbers: function() {
       if (this.isBlocked) {
         return new Array(6).fill('•')

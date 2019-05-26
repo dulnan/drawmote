@@ -7,10 +7,21 @@ export default new Vuex.Store({
   state: {
     isSkipped: false,
     isConnected: false,
+    serverStatus: {
+      ok: true,
+      status: 0,
+      statusText: ''
+    },
     introPlayed: false,
     attributionVisible: false
   },
   mutations: {
+    setServerStatus(state, status = {}) {
+      state.serverStatus.ok = status.ok || true
+      state.serverStatus.status = status.status || 0
+      state.serverStatus.statusText = status.statusText || ''
+    },
+
     setSkipped(state, isSkipped) {
       state.isSkipped = isSkipped
     },
@@ -48,6 +59,12 @@ export default new Vuex.Store({
 
     toggleAttributionVisibility({ state, commit }) {
       commit('setAttributionVisible', !state.attributionVisible)
+    }
+  },
+
+  getters: {
+    hasServerError(state) {
+      return state.serverStatus.ok === false
     }
   }
 })
