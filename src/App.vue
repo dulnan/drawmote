@@ -61,6 +61,9 @@ export default {
       this.$peersox.init().catch(e => {
         this.$store.commit('setServerStatus', e)
       })
+
+      const mode = this.isMobile ? 'mobile' : 'desktop'
+      this.$sentry.setMode(mode)
     })
   }
 }

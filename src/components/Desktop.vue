@@ -170,6 +170,7 @@ export default {
 
       this.updateViewport()
       this.$peersox.storePairing(pairing)
+      this.$sentry.setUser(pairing.hash)
     },
 
     handleDisconnected() {
