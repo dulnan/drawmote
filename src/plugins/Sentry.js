@@ -5,7 +5,8 @@ export default {
   install(Vue) {
     const handler = {
       setUser() {},
-      setMode() {}
+      setMode() {},
+      setSupport() {}
     }
 
     if (!window.__PRERENDERING && process.env.VUE_APP_SERVER_ENV !== 'local') {
@@ -25,6 +26,12 @@ export default {
       handler.setMode = function (mode) {
         Sentry.configureScope(scope => {
           scope.setTag('mode', mode)
+        })
+      }
+
+      handler.setSupport = function (feature, supportState) {
+        Sentry.configureScope(scope => {
+          scope.setTag('supports_' + feature, supportState)
         })
       }
     }
