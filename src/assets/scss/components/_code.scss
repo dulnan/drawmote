@@ -22,7 +22,6 @@ $code-numbers: (
 
 .code-circle {
   color: white;
-  font-size: $code-size-xs;
   width: 1em;
   height: 1em;
   text-transform: uppercase;
@@ -78,14 +77,12 @@ $code-numbers: (
     display: inline-block;
     margin-top: -0.2em;
   }
+}
 
+.code {
+  font-size: $code-size-xs;
   @include media('sm') {
     font-size: $code-size-sm;
-    // border: 1px solid $alt-color-lighter;
-    // box-shadow: 0 5px 4px rgba($alt-color, 0.2),
-    //             0 0px 2px 1px rgba($alt-color, 0.3);
-    // box-shadow: 0 3px 10px rgba($alt-color, 0.2),
-    //             0 2px 4px 1px rgba($alt-color, 0.1);
   }
   @include media('md') {
     font-size: $code-size-md;
@@ -96,13 +93,12 @@ $code-numbers: (
 }
 
 .code__item {
-  margin-right: $code-margin;
+  margin-right: 0.2em;
+
   @include media('sm') {
-    margin-right: 1rem;
+    margin-right: $code-margin;
   }
-  @include media('lg') {
-    margin-right: 1rem;
-  }
+
   &:last-child {
     margin-right: 0;
   }

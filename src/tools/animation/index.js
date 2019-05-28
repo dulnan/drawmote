@@ -153,8 +153,6 @@ export default class ThreeAnimation extends EventEmitter {
         material.map.minFilter = THREE_CONSTANTS.LinearFilter
 
         phone.material = material
-
-        console.log(phone.material)
       },
 
       // onProgress callback currently not supported

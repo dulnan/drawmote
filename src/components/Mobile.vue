@@ -48,8 +48,9 @@ export default {
   },
 
   methods: {
-    handleConnected() {
+    handleConnected({ pairing }) {
       this.$store.dispatch('connect')
+      this.$sentry.setUser(pairing.hash)
     },
 
     handleConnectionClosed() {

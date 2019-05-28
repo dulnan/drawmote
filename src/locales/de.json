@@ -28,7 +28,7 @@
       "checking": "Prüfe Kompatibilität...",
       "supported": "Gerät wird unterstützt",
       "partial": "Reduzierte Funktionen",
-      "unsupported": "Gerät wird nicht unterstützt"
+      "unsupported": "Wird nicht unterstützt"
     },
     "webRTC": {
       "label": "WebRTC",

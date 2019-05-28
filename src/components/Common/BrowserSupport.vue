@@ -1,6 +1,6 @@
 <template>
   <transition name="appear">
-    <div class="browser-support" :class="{ done: done }">
+    <div class="browser-support" :class="{ done: allDone }">
       <div class="browser-support__content pdg relative">
         <button
           class="btn btn--bare browser-support__close"
@@ -14,15 +14,15 @@
         <ul class="list check-list">
           <li
             v-for="check in doneChecks"
-            :key="check.id"
+            :key="check.check"
             class="check check--small"
             :class="check.state"
           >
             <div class="check__title">
-              {{ $t(`browserSupport.${check.id}.label`) }}
+              {{ $t(`browserSupport.${check.check}.label`) }}
             </div>
             <div class="check__notice">
-              {{ $t(`browserSupport.${check.id}.${check.state}`) }}
+              {{ $t(`browserSupport.${check.check}.${check.state}`) }}
             </div>
           </li>
         </ul>
@@ -33,6 +33,31 @@
 
 <script>
 import IconClose from '@/assets/icons/icon-close.svg'
+
+const CHECKS = ['webRTC', 'webSocket', 'gyroscope', 'canvasFilter']
+let watchers = []
+
+const SUPPORT_STATE = {
+  SUPPORTED: 'supported',
+  UNSUPPORTED: 'unsupported',
+  PARTIAL: 'partial',
+  CHECKING: 'checking'
+}
+
+const CHECK_STATE = {
+  TRUE: 'supported',
+  FALSE: 'unsupported',
+  NOT_REQUIRED: 'not_required',
+  CHECKING: 'checking'
+}
+
+function getCheckStateFromBoolean(isSupported) {
+  return isSupported ? CHECK_STATE.TRUE : CHECK_STATE.FALSE
+}
+
+function filterRelevantCheck(check) {
+  return check !== CHECK_STATE.CHECKING && check !== CHECK_STATE.NOT_REQUIRED
+}
 
 export default {
   name: 'BrowserSupport',
@@ -49,13 +74,13 @@ export default {
   },
 
   data() {
-    return {
-      webRTC: null,
-      webSocket: null,
-      gyroscope: null,
-      canvasFilter: null,
-      done: false
-    }
+    let data = {}
+
+    CHECKS.forEach(check => {
+      data[check] = CHECK_STATE.CHECKING
+    })
+
+    return data
   },
 
   computed: {
@@ -63,26 +88,73 @@ export default {
      * @returns {Array} Return the checks with their support status.
      */
     doneChecks() {
-      const checks = ['webRTC', 'webSocket', 'gyroscope', 'canvasFilter']
-      return checks
-        .filter(c => this[c] !== null)
-        .map(c => {
-          return {
-            id: c,
-            state: this[c] === true ? 'supported' : 'unsupported'
-          }
-        })
+      return this.relevantChecks.map(check => {
+        return {
+          check: check,
+          state: this[check],
+        }
+      })
+    },
+
+    relevantChecks() {
+      return CHECKS.filter(check => filterRelevantCheck(this[check]))
+    },
+
+    allDone() {
+      return this.relevantChecks.length === this.doneChecks.length
+    },
+
+    supportState() {
+      if (!this.allDone) {
+        return SUPPORT_STATE.CHECKING
+      }
+
+      if (
+        (this.webRTC === CHECK_STATE.FALSE &&
+          this.webSocket === CHECK_STATE.FALSE) ||
+        (this.isMobile && this.gyroscope === CHECK_STATE.FALSE)
+      ) {
+        return SUPPORT_STATE.UNSUPPORTED
+      }
+
+      if (
+        this.relevantChecks.filter(check => this[check] === CHECK_STATE.FALSE)
+          .length > 0
+      ) {
+        return SUPPORT_STATE.PARTIAL
+      }
+
+      return SUPPORT_STATE.SUPPORTED
+    }
+  },
+
+  watch: {
+    supportState(state) {
+      this.$emit('supportState', state)
     }
   },
 
   mounted() {
     if (!this.$settings.isPrerendering) {
+      this.$emit('supportState', this.supportState)
+
+      watchers = CHECKS.map(check => {
+        return this.$watch(check, checkState => {
+          this.$track('BrowserSupport', check, checkState)
+          this.$sentry.setSupport(check, checkState)
+        })
+      })
+
       this.runCheck()
 
       this.$peersox.on('usingFallback', () => {
-        this.supportsWebRTC = false
+        this.webRTC = CHECK_STATE.FALSE
       })
     }
+  },
+
+  beforeDestroy() {
+    watchers.forEach(watcher => watcher())
   },
 
   methods: {
@@ -92,28 +164,30 @@ export default {
      */
     supportsCanvasFilter() {
       const ctx = document.createElement('canvas').getContext('2d')
-      return typeof ctx.filter !== 'undefined'
+      return getCheckStateFromBoolean(typeof ctx.filter !== 'undefined')
     },
 
     /**
      * Checks if WebSockets are supported.
      */
     supportsWebSocket() {
-      return this.$peersox.getDeviceSupport().WEBSOCKET
+      return getCheckStateFromBoolean(
+        this.$peersox.getDeviceSupport().WEBSOCKET
+      )
     },
 
     /**
      * Checks if WebRTC is supported.
      */
     supportsWebRTC() {
-      return this.$peersox.getDeviceSupport().WEBRTC
+      return getCheckStateFromBoolean(this.$peersox.getDeviceSupport().WEBRTC)
     },
 
     /**
      * Checks if the device has a gyroscope.
      */
     supportsGyroscope() {
-      return this.$mote.deviceHasGyroscope()
+      return this.$mote.deviceHasGyroscope().then(getCheckStateFromBoolean)
     },
 
     /**
@@ -122,46 +196,28 @@ export default {
      */
     runCheck() {
       this.webRTC = this.supportsWebRTC()
-      this.webSocket = this.webRTC ? null : this.supportsWebSocket()
+      this.webSocket = this.supportsWebSocket()
 
-      this.$track('BrowserSupport', 'webrtc', this.webRTC)
-      this.$track('BrowserSupport', 'websocket', this.webSocket)
-
+      // Checks gyroscope availability.
       if (this.isMobile) {
         this.supportsGyroscope().then(hasGyroscope => {
           this.gyroscope = hasGyroscope
-          this.$track('BrowserSupport', 'gyroscope', this.gyroscope)
         })
+      } else {
+        this.gyroscope = CHECK_STATE.NOT_REQUIRED
       }
+
+      // Checks if canvas filter is available. For mobile this is only relevant
+      // for the demo inside the 3D screen, that's why the user does not need to
+      // be informed about that. It is set however in the Vuetamin store, so
+      // that the canvas inside the demo doesn't attempt to use a canvas filter.
+      const canvasFilter = this.supportsCanvasFilter()
 
       if (!this.isMobile) {
-        this.canvasFilter = this.supportsCanvasFilter()
-        this.$track('BrowserSupport', 'canvasfilter', this.canvasFilter)
+        this.canvasFilter = canvasFilter
       }
 
-      let supportState = 'supported'
-
-      if (
-        (this.webRTC === false && this.webSocket === true) ||
-        this.canvasFilter === false
-      ) {
-        supportState = 'partial'
-      }
-
-      if (this.webSocket === false || this.gyroscope === false) {
-        supportState = 'unsupported'
-      }
-
-      this.$emit('supportState', supportState)
-
-      this.$track('BrowserSupport', 'supportstate', supportState)
-
-      this.done = true
-
-      this.$vuetamin.store.mutate(
-        'updateCanvasFilterSupport',
-        this.canvasFilter
-      )
+      this.$vuetamin.store.mutate('updateCanvasFilterSupport', canvasFilter)
     }
   }
 }
@@ -176,7 +232,8 @@ export default {
   position: absolute;
   bottom: 100%;
   left: 0;
-  width: calc(100% + 1px);
+  width: 100vw;
+  max-width: 24rem;
   z-index: -1;
   background: $color-translucent-dark;
 
@@ -190,7 +247,7 @@ export default {
   }
   &.appear-enter,
   &.appear-leave-to {
-    transform: translateY(100%);
+    transform: translateY(130%);
     .browser-support__content {
       opacity: 0;
     }
