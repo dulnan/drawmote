@@ -1,24 +1,26 @@
 <template>
-  <transition name="appear" @after-leave="onAfterLeave">
-    <div
-      class="animation"
-      :class="{ 'is-desktop': isDesktop, 'is-fallback': useFallback }"
-    >
-      <div ref="container" class="three-animation"></div>
-      <slot></slot>
-      <div v-if="debug" class="ratio">{{ ratio }}</div>
-      <div v-if="debug" class="debug-range">
-        <input
-          type="range"
-          min="0"
-          max="100"
-          step="0.001"
-          value="0"
-          @input="handleRange"
-        />
-      </div>
+  <div
+    class="animation"
+    :class="{
+      'is-desktop': isDesktop,
+      'is-mobile': !isDesktop,
+      'is-fallback': useFallback
+    }"
+  >
+    <div ref="container" class="three-animation"></div>
+    <slot></slot>
+    <div v-if="debug" class="ratio">{{ ratio }}</div>
+    <div v-if="debug" class="debug-range">
+      <input
+        type="range"
+        min="0"
+        max="100"
+        step="0.001"
+        value="0"
+        @input="handleRange"
+      />
     </div>
-  </transition>
+  </div>
 </template>
 
 <script>
@@ -83,6 +85,10 @@ export default {
     y(y) {
       this.updateRotation(this.x, y)
     }
+  },
+
+  destroyed() {
+    this.destroy()
   },
 
   mounted() {
@@ -162,20 +168,12 @@ export default {
     this.animation.play()
   },
 
-  destroyed() {
-    this.destroy()
-  },
-
   methods: {
     destroy() {
       if (this.instance) {
         this.instance.$destroy()
         this.instance.$el.remove()
         this.instance = null
-      }
-
-      if (this.animation) {
-        this.animation.dispose()
       }
 
       window.removeEventListener('mousemove', this.onMouseMove)
@@ -194,10 +192,6 @@ export default {
       this.getIntersection()
 
       window.requestAnimationFrame(this.loop)
-    },
-
-    onAfterLeave() {
-      this.destroy()
     },
 
     handleRange(e) {
@@ -268,17 +262,33 @@ export default {
 }
 
 .animation {
-  user-select: none;
-  &.appear-enter-active,
-  &.appear-leave-active {
-    transition: 1s;
+  &.is-mobile {
+    &.component-fade-enter-active,
+    &.component-fade-leave-active {
+      transition: 1.5s;
+    }
+    &.component-fade-enter,
+    &.component-fade-leave-to {
+      opacity: 0;
+      transform: translateY(-4rem);
+    }
   }
-  &.appear-leave-active {
-    transition-delay: 1s;
-  }
-  &.appear-enter,
-  &.appear-leave-to {
-    opacity: 0;
+  &.is-desktop {
+    user-select: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    &.component-fade-enter-active,
+    &.component-fade-leave-active {
+      transition: 1.5s;
+    }
+    &.component-fade-enter,
+    &.component-fade-leave-to {
+      transform: scale(1.1);
+    }
   }
 }
 

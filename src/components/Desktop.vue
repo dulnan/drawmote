@@ -1,19 +1,19 @@
 <template>
   <div class="desktop relative">
     <div class="desktop-container relative overlay material">
-      <Animation
-        v-if="!isDrawing"
-        :is-desktop="true"
-        :desktop-animation="desktopAnimation"
-      >
-        <Pairing
-          :pairing="pairing"
+      <transition name="component-fade">
+        <component
+          :is="visibleComponent"
+          :is-desktop="true"
           :desktop-animation="desktopAnimation"
-          @pairingTimeout="handleTimeout"
-        />
-      </Animation>
-      <transition name="appear">
-        <Drawing v-if="isDrawing" />
+        >
+          <Pairing
+            :pairing="pairing"
+            v-if="!isDrawing"
+            :desktop-animation="desktopAnimation"
+            @pairingTimeout="handleTimeout"
+          />
+        </component>
       </transition>
     </div>
   </div>
@@ -47,6 +47,10 @@ export default {
 
   computed: {
     ...mapState(['isConnected', 'isSkipped']),
+
+    visibleComponent() {
+      return this.isDrawing ? 'Drawing' : 'Animation'
+    },
 
     hasPairing() {
       return this.pairing && this.pairing.code && this.pairing.hash

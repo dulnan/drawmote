@@ -1,5 +1,5 @@
 <template>
-  <transition name="appear">
+  <transition name="fade">
     <div class="controlling">
       <TouchHandler />
     </div>
@@ -50,14 +50,15 @@ export default {
   bottom: 0;
   right: 0;
   background: $alt-color-darker;
-  &.appear-enter-active,
-  &.appear-leave-active {
-    transition: 2s;
+  z-index: $index-footer - 1;
+  &.component-fade-enter-active,
+  &.component-fade-leave-active {
+    transition: 1.5s;
   }
-  &.appear-enter,
-  &.appear-leave-to {
-    transform: translateY(10%);
+  &.component-fade-enter,
+  &.component-fade-leave-to {
     opacity: 0;
+    transform: translateY(6rem);
   }
 }
 </style>

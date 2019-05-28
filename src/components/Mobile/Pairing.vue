@@ -149,18 +149,6 @@ export default {
   z-index: $index-mobile-pairing;
   margin-bottom: auto;
   padding-bottom: 2rem;
-  &.appear-enter-active,
-  &.appear-leave-active {
-    transition: 2s;
-  }
-  &.appear-enter-active {
-    transition-delay: 4.3s;
-  }
-  &.appear-enter,
-  &.appear-leave-to {
-    transform: translateY(-30vw);
-    opacity: 0;
-  }
 }
 
 .code--mobile {
