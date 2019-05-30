@@ -1,8 +1,11 @@
 const path = require('path')
+const webpack = require('webpack')
 
 const PrerenderSpaPlugin = require('prerender-spa-plugin')
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
+
+const packageDependencies = require('./package-lock.json').dependencies
 
 const webpackPlugins = []
 
@@ -25,6 +28,18 @@ if (process.env.NODE_ENV === 'production') {
     })
   )
 }
+
+const dependencies = {}
+
+new Array('gymote', 'peersox', 'vuetamin', 'lazy-brush').forEach(name => {
+  dependencies[name] = packageDependencies[name].version
+})
+
+webpackPlugins.push(
+  new webpack.DefinePlugin({
+    DEPENDENCIES: JSON.stringify(dependencies)
+  })
+)
 
 module.exports = {
   productionSourceMap: true,

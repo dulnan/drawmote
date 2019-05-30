@@ -13,6 +13,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import PeerSox from 'peersox'
 
 import { BREAKPOINT_REMOTE } from '@/settings'
 import Desktop from '@/components/Desktop.vue'
@@ -21,6 +22,8 @@ import TheFooter from '@/components/Common/Footer/Footer.vue'
 import RestoreConnection from '@/components/Common/RestoreConnection.vue'
 import ConnectionTimeout from '@/components/Common/ConnectionTimeout.vue'
 import Attribution from '@/components/Common/Attribution.vue'
+
+let peersoxHandlers = []
 
 export default {
   name: 'App',
@@ -52,6 +55,25 @@ export default {
   mounted() {
     this.$nextTick(() => {
       if (!window.__PRERENDERING) {
+        peersoxHandlers = new Array(
+          PeerSox.EVENT_SERVER_READY,
+          PeerSox.EVENT_CONNECTION_ESTABLISHED,
+          PeerSox.EVENT_CONNECTION_CLOSED,
+          PeerSox.EVENT_PEER_CONNECTED,
+          PeerSox.EVENT_PEER_TIMEOUT,
+          PeerSox.EVENT_PEER_WEBRTC_CLOSED
+        ).map(event => {
+          const fn = () => {
+            this.$sentry.logInfo('peersox', event)
+          }
+
+          this.$peersox.on(event, fn)
+
+          return {
+            event,
+            fn
+          }
+        })
         this.isReady = true
       }
 
@@ -64,6 +86,12 @@ export default {
 
       const mode = this.isMobile ? 'mobile' : 'desktop'
       this.$sentry.setMode(mode)
+    })
+  },
+
+  beforeDestroy() {
+    peersoxHandlers.forEach(handler => {
+      this.$peersox.off(handler.event, handler.fn)
     })
   }
 }

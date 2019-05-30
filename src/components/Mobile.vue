@@ -1,10 +1,10 @@
 <template>
   <div class="mobile h-100">
-    <Animation v-if="!isConnected">
-      <Pairing />
-    </Animation>
-
-    <Controlling v-if="isConnected" />
+    <transition name="component-fade">
+      <component :is="visibleComponent">
+        <Pairing v-if="!isConnected" />
+      </component>
+    </transition>
   </div>
 </template>
 
@@ -26,7 +26,11 @@ export default {
   },
 
   computed: {
-    ...mapState(['isConnected'])
+    ...mapState(['isConnected']),
+
+    visibleComponent() {
+      return this.isConnected ? 'Controlling' : 'Animation'
+    }
   },
 
   mounted() {

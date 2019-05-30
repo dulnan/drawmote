@@ -131,15 +131,13 @@ export default {
   width: 100%;
   height: 100%;
   background: $alt-color-darker;
-  &.appear-enter-active,
-  &.appear-leave-active {
-    transition: 0.5s;
+  &.component-fade-enter-active,
+  &.component-fade-leave-active {
+    transition: 1.5s;
   }
-  &.appear-enter-active {
-    transition-delay: 0s;
-  }
-  &.appear-enter,
-  &.appear-leave-to {
+  &.component-fade-enter,
+  &.component-fade-leave-to {
+    transform: scale(1.2);
     opacity: 0;
   }
 }

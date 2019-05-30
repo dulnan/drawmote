@@ -4,8 +4,8 @@
       <ul class="list-inline list-inline--tight text-small footer__list">
         <FooterBrowserSupport :is-mobile="isMobile" />
         <FooterLanguage />
-        <FooterGithub />
         <FooterConnection v-if="!isMobile" />
+        <FooterGithub />
         <FooterCopyright />
         <FooterAttribution />
       </ul>
