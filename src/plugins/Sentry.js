@@ -1,6 +1,8 @@
 import * as Sentry from '@sentry/browser'
 import * as Integrations from '@sentry/integrations'
 
+import dependencies from '@/tools/dependencies'
+
 export default {
   install(Vue) {
     const handler = {
@@ -15,6 +17,12 @@ export default {
         release: `drawmote@${process.env.PKG_VERSION}`,
         environment: process.env.VUE_APP_SERVER_ENV,
         integrations: [new Integrations.Vue({ Vue, attachProps: true })]
+      })
+
+      Sentry.configureScope(scope => {
+        Object.keys(dependencies).forEach(key => {
+          scope.setTag('library_' + key, dependencies[key])
+        })
       })
 
       handler.setUser = function (id) {
