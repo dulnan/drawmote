@@ -134,14 +134,17 @@ export default {
             this.pairing = pairing
             this.$peersox.connect(pairing).catch(error => {
               this.$store.commit('setServerStatus', error)
+              this.$sentry.logInfo('pairing', 'connect:failed')
             })
           } else {
             this.pairing = {}
+            this.$sentry.logInfo('pairing', 'create:failed')
           }
           this.$store.commit('setServerStatus')
         })
         .catch(error => {
           this.$store.commit('setServerStatus', error)
+          this.$sentry.logInfo('pairing', 'create:failed')
         })
     },
 
@@ -158,6 +161,8 @@ export default {
       if (!this.$peersox.isConnected()) {
         this.isMobile = viewport.width < BREAKPOINT_REMOTE
       }
+
+      this.$sentry.logInfo('viewport', JSON.stringify(viewport))
     },
 
     handleTimeout() {

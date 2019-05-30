@@ -150,6 +150,7 @@ export default {
     })
 
     this.animation.on('slowPerformance', () => {
+      this.$sentry.logInfo('animation', 'slow performance')
       this.useFallback = true
       this.isRendered = true
       this.destroy()

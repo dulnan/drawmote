@@ -121,6 +121,7 @@ export default {
         })
         .catch(error => {
           this.$store.commit('setServerStatus', error)
+          this.$sentry.logInfo('pairing', 'invalid')
           this.codeInvalid = true
           this.$track('Pairing', 'valid', '0')
         })
