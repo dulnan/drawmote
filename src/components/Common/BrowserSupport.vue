@@ -91,7 +91,7 @@ export default {
       return this.relevantChecks.map(check => {
         return {
           check: check,
-          state: this[check],
+          state: this[check]
         }
       })
     },
@@ -140,7 +140,6 @@ export default {
 
       watchers = CHECKS.map(check => {
         return this.$watch(check, checkState => {
-          this.$track('BrowserSupport', check, checkState)
           this.$sentry.setSupport(check, checkState)
         })
       })

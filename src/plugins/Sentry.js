@@ -2,10 +2,13 @@ import * as Sentry from '@sentry/browser'
 import * as Integrations from '@sentry/integrations'
 
 import dependencies from '@/tools/dependencies'
+import { trackUser, trackDimension } from '@/plugins/Track'
 
 const isLocal = process.env.VUE_APP_SERVER_ENV === 'local'
+const VERSION = `drawmote@${process.env.PKG_VERSION}`
 
 function log(category, data) {
+  // eslint-disable-next-line
   console.log(`[${category}]`, data)
 }
 
@@ -32,10 +35,12 @@ export default {
     if (!window.__PRERENDERING && !isLocal) {
       Sentry.init({
         dsn: 'https://b0df1bd1d041480f9e8e4dd2c3b56ed5@sentry.io/1342499',
-        release: `drawmote@${process.env.PKG_VERSION}`,
+        release: VERSION,
         environment: process.env.VUE_APP_SERVER_ENV,
         integrations: [new Integrations.Vue({ Vue, attachProps: true })]
       })
+
+      trackDimension('version', VERSION)
 
       Sentry.configureScope(scope => {
         Object.keys(dependencies).forEach(key => {
@@ -43,25 +48,35 @@ export default {
         })
       })
 
-      handler.setUser = function (id) {
+      handler.setUser = function(id) {
         Sentry.configureScope(scope => {
           scope.setUser({ id: id })
         })
+        trackUser(id)
       }
 
-      handler.setMode = function (mode) {
+      handler.setMode = function(mode) {
         Sentry.configureScope(scope => {
           scope.setTag('mode', mode)
         })
+        trackDimension('mode', mode)
       }
 
-      handler.setSupport = function (feature, supportState) {
+      handler.setSupport = function(feature, supportState) {
         Sentry.configureScope(scope => {
           scope.setTag('supports_' + feature, supportState)
         })
+
+        if (feature === 'webRTC') {
+          trackDimension('supportsWebRTC', supportState)
+        }
+
+        if (feature === 'webSocket') {
+          trackDimension('supportsWebSocket', supportState)
+        }
       }
 
-      handler.logError = function (category, message) {
+      handler.logError = function(category, message) {
         Sentry.addBreadcrumb({
           category: category,
           message: message,
@@ -69,7 +84,7 @@ export default {
         })
       }
 
-      handler.logInfo = function (category, message) {
+      handler.logInfo = function(category, message) {
         Sentry.addBreadcrumb({
           category: category,
           message: message,

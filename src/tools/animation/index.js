@@ -160,6 +160,7 @@ export default class ThreeAnimation extends EventEmitter {
 
       // onError callback
       function(error) {
+        // eslint-disable-next-line
         console.error('Error loading texture:', error)
       }
     )
