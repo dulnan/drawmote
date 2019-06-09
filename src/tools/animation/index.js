@@ -450,7 +450,7 @@ export default class ThreeAnimation extends EventEmitter {
       }
     }
 
-    if (this.lagCount > 10) {
+    if (this.lagCount > 20) {
       anime.remove(this.animeAnimation)
       this.webgl.renderer.setAnimationLoop(null)
       this.emit('slowPerformance')
