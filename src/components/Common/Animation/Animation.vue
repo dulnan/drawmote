@@ -147,9 +147,11 @@ export default {
 
     this.animation.on('animationEnd', () => {
       this.$vuetamin.trigger(threads.SIZES)
+      this.$store.commit('setIntroPlayed', true)
     })
 
     this.animation.on('slowPerformance', () => {
+      this.$store.commit('setIntroPlayed', true)
       this.$sentry.logInfo('animation', 'slow performance')
       this.$track('Animation', 'performance', 'slow')
       this.useFallback = true
@@ -162,8 +164,6 @@ export default {
 
     this.animation.refresh()
     this.animation.setSize(this.windowWidth, this.windowHeight)
-
-    this.$store.commit('setIntroPlayed', true)
 
     this.isRendered = true
 
