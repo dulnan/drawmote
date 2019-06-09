@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import BrowserSupport from '@/components/Common/BrowserSupport.vue'
 
 export default {
@@ -41,6 +42,18 @@ export default {
     return {
       supportState: 'checking',
       browserSupportVisible: false
+    }
+  },
+
+  computed: {
+    ...mapGetters(['isDrawing'])
+  },
+
+  watch: {
+    isDrawing(isDrawing) {
+      if (isDrawing) {
+        this.browserSupportVisible = false
+      }
     }
   },
 
