@@ -1,6 +1,6 @@
 {
   "name": "drawmote",
-  "version": "1.1.5",
+  "version": "1.2.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
