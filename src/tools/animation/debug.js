@@ -1,5 +1,8 @@
 import * as dat from 'dat.gui'
 // require('three/examples/js/controls/OrbitControls')
+import { CAMERA, PHONE } from './keyframes'
+
+const THREE = window.THREE
 
 const round = value => {
   return Math.round(value * 1000000) / 1000000

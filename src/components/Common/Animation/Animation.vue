@@ -95,6 +95,7 @@ export default {
     if (!webglIsSupported()) {
       this.useFallback = true
       this.isRendered = true
+      this.$store.commit('setIntroPlayed', true)
       return
     }
 
