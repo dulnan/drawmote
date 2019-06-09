@@ -40,7 +40,7 @@
 
 <script>
 import IconRestore from '@/assets/icons/icon-restore.svg'
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 
 /**
  * Provides a way to restore a previously made connection.
@@ -64,10 +64,10 @@ export default {
   },
 
   computed: {
-    ...mapState(['isConnected', 'isSkipped']),
+    ...mapGetters(['isDrawing']),
 
     isVisible() {
-      return this.connectionRestorable && (!this.isConnected && !this.isSkipped)
+      return this.connectionRestorable && !this.isDrawing
     }
   },
 
@@ -82,10 +82,11 @@ export default {
           this.isRestoring = false
           this.isRestored = false
           this.connectionRestorable = true
+          this.$sentry.logInfo('pairing', 'restoring:found')
         }
       })
-      .catch(err => {
-        console.log(err)
+      .catch(() => {
+        this.$sentry.logInfo('pairing', 'restoring:failed')
       })
   },
 
@@ -102,13 +103,15 @@ export default {
         return
       }
 
+      this.$sentry.logInfo('pairing', 'restoring:start')
+
       this.isRestoring = true
 
       this.$peersox
         .close()
         .then(this.$peersox.connect(this.pairing))
-        .catch(err => {
-          console.log(err)
+        .catch(() => {
+          this.$sentry.logInfo('pairing', 'restoring:failed')
         })
 
       window.clearTimeout(this.windowTimeout)

@@ -65,6 +65,10 @@ export default new Vuex.Store({
   getters: {
     hasServerError(state) {
       return state.serverStatus.ok === false
+    },
+
+    isDrawing(state) {
+      return state.isConnected || state.isSkipped
     }
   }
 })

@@ -67,7 +67,7 @@ export default {
       if (!timeout) {
         timeout = window.setTimeout(() => {
           this.$track('Toolbar', this.tool.id, this.value)
-        }, 8000)
+        }, 3000)
       }
     },
 

@@ -91,7 +91,7 @@ export default {
       return this.relevantChecks.map(check => {
         return {
           check: check,
-          state: this[check],
+          state: this[check]
         }
       })
     },
@@ -140,7 +140,6 @@ export default {
 
       watchers = CHECKS.map(check => {
         return this.$watch(check, checkState => {
-          this.$track('BrowserSupport', check, checkState)
           this.$sentry.setSupport(check, checkState)
         })
       })
@@ -248,6 +247,9 @@ export default {
   &.appear-enter,
   &.appear-leave-to {
     transform: translateY(130%);
+    @include media('md') {
+      transform: translateX(-100%);
+    }
     .browser-support__content {
       opacity: 0;
     }

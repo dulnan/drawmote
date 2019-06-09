@@ -111,17 +111,18 @@ export default {
             .then(() => {
               this.codeInvalid = false
               this.$track('Pairing', 'valid', '1')
+              this.$sentry.logInfo('pairing', 'code:valid')
               this.$peersox.storePairing(pairing)
               this.$store.commit('setServerStatus')
             })
             .catch(error => {
-              console.log('Error connecting to the WebSocket server: ', error)
               this.$store.commit('setServerStatus', error)
+              this.$sentry.logInfo('pairing', 'connect:failed')
             })
         })
         .catch(error => {
           this.$store.commit('setServerStatus', error)
-          this.$sentry.logInfo('pairing', 'invalid')
+          this.$sentry.logInfo('pairing', 'code:invalid')
           this.codeInvalid = true
           this.$track('Pairing', 'valid', '0')
         })

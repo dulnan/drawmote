@@ -32,7 +32,7 @@ export default {
 
   methods: {
     handleClick() {
-      console.log('No click handler implemented!')
+      // Components extending this component implement this method.
     }
   }
 }

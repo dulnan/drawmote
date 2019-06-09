@@ -160,6 +160,7 @@ export default class ThreeAnimation extends EventEmitter {
 
       // onError callback
       function(error) {
+        // eslint-disable-next-line
         console.error('Error loading texture:', error)
       }
     )
@@ -449,7 +450,7 @@ export default class ThreeAnimation extends EventEmitter {
       }
     }
 
-    if (this.lagCount > 10) {
+    if (this.lagCount > 20) {
       anime.remove(this.animeAnimation)
       this.webgl.renderer.setAnimationLoop(null)
       this.emit('slowPerformance')
