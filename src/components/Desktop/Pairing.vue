@@ -15,7 +15,7 @@
             v-for="(number, index) in pairingCodeNumbers"
             :key="index"
             class="code__item"
-            :class="{ visible: hasCode }"
+            :class="{ visible: hasCode && introPlayed }"
           >
             <div class="code-circle contains" :class="'code-circle--' + number">
               <span>{{ number }}</span>
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import ServerStatus from '@/components/Common/ServerStatus.vue'
 
 const PAIRING_TIMEOUT = 120
@@ -93,6 +93,7 @@ export default {
   },
 
   computed: {
+    ...mapState(['introPlayed']),
     ...mapGetters(['hasServerError']),
 
     pairingCodeNumbers: function() {
