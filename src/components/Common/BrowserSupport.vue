@@ -247,6 +247,9 @@ export default {
   &.appear-enter,
   &.appear-leave-to {
     transform: translateY(130%);
+    @include media('md') {
+      transform: translateX(-100%);
+    }
     .browser-support__content {
       opacity: 0;
     }
