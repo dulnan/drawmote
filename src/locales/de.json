@@ -49,6 +49,10 @@
       "label": "Canvas Filter",
       "supported": "Alle Pinsel können verwendet werden.",
       "unsupported": "Dir stehen nicht alle Pinseloptionen zur Verfügung."
+    },
+    "requestPermission": {
+      "cta": "Zugriff auf Gyroskop erlauben...",
+      "text": "drawmote benötigt Zugriff auf das Gyroskop deines Smartphones. Bitte klicke auf den folgenden Button und erlaube den Zugriff."
     }
   },
   "connection": {

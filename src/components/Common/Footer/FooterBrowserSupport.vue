@@ -68,6 +68,8 @@ export default {
 
       if (state !== 'supported') {
         this.browserSupportVisible = true
+      } else {
+        this.browserSupportVisible = false
       }
     },
 

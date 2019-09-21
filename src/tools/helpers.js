@@ -76,8 +76,8 @@ export function getServerUrls() {
     }
   } else {
     return {
-      api: `http://${window.location.hostname}:3000`,
-      wss: `ws://${window.location.hostname}:3000/ws`
+      api: `https://${window.location.hostname}:3000`,
+      wss: `wss://${window.location.hostname}:3000/ws`
     }
   }
 }
