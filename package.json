@@ -1,6 +1,6 @@
 {
   "name": "drawmote",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -18,7 +18,7 @@
     "core-js": "^3.1.3",
     "dat.gui": "^0.7.6",
     "debounced-resize": "^1.1.1",
-    "gymote": "^0.1.0",
+    "gymote": "^1.0.0",
     "html-webpack-inline-source-plugin": "0.0.10",
     "input-range-scss": "^1.5.1",
     "lazy-brush": "^1.0.1",

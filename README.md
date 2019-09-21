@@ -75,6 +75,13 @@ Install dependencies for the client:
 npm install
 ```
 
+### Certificates
+Since iOS 12.2 it is required to request permission to access the
+DeviceMotionEvent. For this to work the connection can not be insecure and
+thus https is required. To get the certificates needed, follow this tutorial
+and put the files in ./cert.
+https://engineering.circle.com/https-authorized-certs-with-node-js-315e548354a2
+
 Start drawmote-server and set the IP address of the server in `.env.development`.
 Then you can start running development mode for the client:
 ```

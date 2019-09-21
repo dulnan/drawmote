@@ -1,4 +1,5 @@
 const path = require('path')
+const fs = require('fs')
 const webpack = require('webpack')
 
 const PrerenderSpaPlugin = require('prerender-spa-plugin')
@@ -8,6 +9,8 @@ const TerserPlugin = require('terser-webpack-plugin')
 const packageDependencies = require('./package-lock.json').dependencies
 
 const webpackPlugins = []
+
+let certs = {}
 
 if (process.env.NODE_ENV === 'production') {
   webpackPlugins.push(new HtmlWebpackInlineSourcePlugin())
@@ -27,6 +30,12 @@ if (process.env.NODE_ENV === 'production') {
       }
     })
   )
+} else {
+  certs = {
+    key: fs.readFileSync('./cert/server-key.pem'),
+    cert: fs.readFileSync('./cert/server-crt.pem'),
+    ca: fs.readFileSync('./cert/ca-crt.pem')
+  }
 }
 
 const dependencies = {}
@@ -44,7 +53,7 @@ webpackPlugins.push(
 module.exports = {
   productionSourceMap: true,
   filenameHashing: true,
-  transpileDependencies: ['debounced-resize', 'gymote', 'peersox'],
+  transpileDependencies: ['debounced-resize', 'peersox'],
   pluginOptions: {
     'style-resources-loader': {
       preProcessor: 'scss',
@@ -55,6 +64,11 @@ module.exports = {
       fallbackLocale: 'en',
       localeDir: 'locales',
       enableInSFC: false
+    }
+  },
+  devServer: {
+    https: {
+      ...certs
     }
   },
   configureWebpack: {
