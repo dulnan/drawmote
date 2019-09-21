@@ -49,7 +49,8 @@
       "label": "Canvas Filter",
       "supported": "All brush features can be used.",
       "unsupported": "You won't be able to use all brush features."
-    }
+    },
+    "requestPermission": "Allow access to gyroscope..."
   },
   "connection": {
     "title": "Restore your last connection",

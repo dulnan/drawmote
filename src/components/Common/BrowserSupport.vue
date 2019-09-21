@@ -1,31 +1,45 @@
-<template>
+<template lang="html">
   <transition name="appear">
     <div class="browser-support" :class="{ done: allDone }">
       <div class="browser-support__content pdg relative">
-        <button
-          class="btn btn--bare browser-support__close"
-          @click="$emit('close')"
-        >
-          <div class="pdg">
-            <IconClose class="icon block" />
-          </div>
-        </button>
-        <h3 class="label">{{ $t('browserSupport.title') }}</h3>
-        <ul class="list check-list">
-          <li
-            v-for="check in doneChecks"
-            :key="check.check"
-            class="check check--small"
-            :class="check.state"
+        <template v-if="!needsPermission">
+          <button
+            class="btn btn--bare browser-support__close"
+            @click="$emit('close')"
           >
-            <div class="check__title">
-              {{ $t(`browserSupport.${check.check}.label`) }}
+            <div class="pdg">
+              <IconClose class="icon block" />
             </div>
-            <div class="check__notice">
-              {{ $t(`browserSupport.${check.check}.${check.state}`) }}
-            </div>
-          </li>
-        </ul>
+          </button>
+          <h3 class="label">{{ $t('browserSupport.title') }}</h3>
+          <ul class="list check-list">
+            <li
+              v-for="check in doneChecks"
+              :key="check.check"
+              class="check check--small"
+              :class="check.state"
+            >
+              <div class="check__title">
+                {{ $t(`browserSupport.${check.check}.label`) }}
+              </div>
+              <div class="check__notice">
+                {{ $t(`browserSupport.${check.check}.${check.state}`) }}
+              </div>
+            </li>
+          </ul>
+        </template>
+
+        <div v-if="needsPermission">
+          <p class="h3">
+            {{ $t('browserSupport.requestPermission.text') }}
+          </p>
+          <button
+            class="btn btn--default btn--block mrgt"
+            @click="requestPermission"
+          >
+            {{ $t('browserSupport.requestPermission.cta') }}
+          </button>
+        </div>
       </div>
     </div>
   </transition>
@@ -48,6 +62,7 @@ const CHECK_STATE = {
   TRUE: 'supported',
   FALSE: 'unsupported',
   NOT_REQUIRED: 'not_required',
+  WAITING: 'waiting',
   CHECKING: 'checking'
 }
 
@@ -74,7 +89,9 @@ export default {
   },
 
   data() {
-    let data = {}
+    let data = {
+      needsPermission: false
+    }
 
     CHECKS.forEach(check => {
       data[check] = CHECK_STATE.CHECKING
@@ -121,6 +138,10 @@ export default {
         this.relevantChecks.filter(check => this[check] === CHECK_STATE.FALSE)
           .length > 0
       ) {
+        return SUPPORT_STATE.PARTIAL
+      }
+
+      if (this.needsPermission) {
         return SUPPORT_STATE.PARTIAL
       }
 
@@ -199,9 +220,13 @@ export default {
 
       // Checks gyroscope availability.
       if (this.isMobile) {
-        this.supportsGyroscope().then(hasGyroscope => {
-          this.gyroscope = hasGyroscope
-        })
+        if (this.$mote.gyroscope.needsPermission()) {
+          this.needsPermission = true
+        } else {
+          this.supportsGyroscope().then(hasGyroscope => {
+            this.gyroscope = hasGyroscope
+          })
+        }
       } else {
         this.gyroscope = CHECK_STATE.NOT_REQUIRED
       }
@@ -217,6 +242,13 @@ export default {
       }
 
       this.$vuetamin.store.mutate('updateCanvasFilterSupport', canvasFilter)
+    },
+
+    requestPermission() {
+      this.$mote.gyroscope.requestPermission().then(isGranted => {
+        this.needsPermission = false
+        this.gyroscope = CHECK_STATE.TRUE
+      })
     }
   }
 }
