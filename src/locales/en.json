@@ -50,7 +50,10 @@
       "supported": "All brush features can be used.",
       "unsupported": "You won't be able to use all brush features."
     },
-    "requestPermission": "Allow access to gyroscope..."
+    "requestPermission": {
+      "cta": "Allow access to gyroscope...",
+      "text": "drawmote needs to access your device's gyroscope in order to word. Please click the button below and grant access."
+    }
   },
   "connection": {
     "title": "Restore your last connection",
