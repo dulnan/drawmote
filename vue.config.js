@@ -79,6 +79,7 @@ module.exports = {
               new TerserPlugin({
                 sourceMap: true,
                 terserOptions: {
+                  ecma: 5,
                   module: true,
                   toplevel: true
                 }
