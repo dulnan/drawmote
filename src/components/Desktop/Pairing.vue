@@ -96,7 +96,7 @@ export default {
     ...mapState(['introPlayed']),
     ...mapGetters(['hasServerError']),
 
-    pairingCodeNumbers: function() {
+    pairingCodeNumbers: function () {
       if (this.isBlocked) {
         return new Array(6).fill('•')
       }
@@ -108,7 +108,7 @@ export default {
       return new Array(6).fill(' ')
     },
 
-    hasCode: function() {
+    hasCode: function () {
       return (
         this.pairing &&
         this.pairing.code &&

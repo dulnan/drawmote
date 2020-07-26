@@ -83,7 +83,7 @@ export default {
   computed: {
     ...mapGetters(['hasServerError']),
 
-    inputChars: function() {
+    inputChars: function () {
       return String(this.inputValue + '      ')
         .slice(0, 6)
         .split('')
@@ -91,7 +91,7 @@ export default {
   },
 
   watch: {
-    inputValue: function() {
+    inputValue: function () {
       this.codeInvalid = false
     }
   },
@@ -105,7 +105,7 @@ export default {
     validateCode(code) {
       this.$peersox
         .joinPairing(code)
-        .then(pairing => {
+        .then((pairing) => {
           this.$peersox
             .connect(pairing)
             .then(() => {
@@ -115,12 +115,12 @@ export default {
               this.$peersox.storePairing(pairing)
               this.$store.commit('setServerStatus')
             })
-            .catch(error => {
+            .catch((error) => {
               this.$store.commit('setServerStatus', error)
               this.$sentry.logInfo('pairing', 'connect:failed')
             })
         })
-        .catch(error => {
+        .catch((error) => {
           this.$store.commit('setServerStatus', error)
           this.$sentry.logInfo('pairing', 'code:invalid')
           this.codeInvalid = true

@@ -3,7 +3,7 @@
  * @author mr.doob / http://mrdoob.com/
  */
 
-export default function() {
+export default function () {
   try {
     var canvas = document.createElement('canvas')
     return !!(

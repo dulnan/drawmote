@@ -104,7 +104,7 @@ export default {
           id: 'colors',
           type: 'button',
           action: 'color',
-          items: COLORS.map(color => {
+          items: COLORS.map((color) => {
             return {
               id: color.name,
               component: 'ButtonColor',
@@ -116,7 +116,7 @@ export default {
           id: 'sliders',
           type: 'slider',
           action: 'brush',
-          items: TOOLBAR_SLIDERS.filter(tool => {
+          items: TOOLBAR_SLIDERS.filter((tool) => {
             if (tool.id === 'brushHardness' && !this.canvasFilterSupported) {
               return false
             }
@@ -190,7 +190,7 @@ export default {
       this.canvasFilterSupported = this.$vuetamin.store.data.canvasFilterSupported
 
       let items = []
-      this.$refs.items.forEach(item => {
+      this.$refs.items.forEach((item) => {
         items.push(item.getRectangle())
       })
 

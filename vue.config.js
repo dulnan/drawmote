@@ -40,7 +40,7 @@ if (process.env.NODE_ENV === 'production') {
 
 const dependencies = {}
 
-new Array('gymote', 'peersox', 'vuetamin', 'lazy-brush').forEach(name => {
+new Array('gymote', 'peersox', 'vuetamin', 'lazy-brush').forEach((name) => {
   dependencies[name] = packageDependencies[name].version
 })
 
@@ -91,20 +91,20 @@ module.exports = {
     },
     plugins: webpackPlugins
   },
-  chainWebpack: config => {
+  chainWebpack: (config) => {
     config.optimization.delete('splitChunks')
     config.optimization.splitChunks(false)
-    config.plugin('define').tap(args => {
+    config.plugin('define').tap((args) => {
       let v = JSON.stringify(require('./package.json').version)
       args[0]['process.env']['PKG_VERSION'] = v
       return args
     })
     if (process.env.NODE_ENV === 'production') {
-      config.plugin('preload').tap(args => {
+      config.plugin('preload').tap((args) => {
         args[0].fileBlacklist.push(/\.css$/)
         return args
       })
-      config.plugin('html').tap(args => {
+      config.plugin('html').tap((args) => {
         args[0].inlineSource = '.(css)$'
         return args
       })

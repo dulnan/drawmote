@@ -62,7 +62,7 @@ export default {
           PeerSox.EVENT_PEER_CONNECTED,
           PeerSox.EVENT_PEER_TIMEOUT,
           PeerSox.EVENT_PEER_WEBRTC_CLOSED
-        ).map(event => {
+        ).map((event) => {
           const fn = () => {
             this.$sentry.logInfo('peersox', event)
           }
@@ -80,7 +80,7 @@ export default {
       document.dispatchEvent(new Event('render-event'))
       this.$forceUpdate()
 
-      this.$peersox.init().catch(e => {
+      this.$peersox.init().catch((e) => {
         this.$store.commit('setServerStatus', e)
       })
 
@@ -90,7 +90,7 @@ export default {
   },
 
   beforeDestroy() {
-    peersoxHandlers.forEach(handler => {
+    peersoxHandlers.forEach((handler) => {
       this.$peersox.off(handler.event, handler.fn)
     })
   }

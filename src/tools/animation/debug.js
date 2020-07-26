@@ -4,7 +4,7 @@ import { CAMERA, PHONE } from './keyframes'
 
 const THREE = window.THREE
 
-const round = value => {
+const round = (value) => {
   return Math.round(value * 1000000) / 1000000
 }
 
@@ -16,7 +16,7 @@ export default class AnimationDebug {
     this.cameraAnimation = cameraAnimation
     this.phoneAnimation = phoneAnimation
 
-    window.getCameraState = init => {
+    window.getCameraState = (init) => {
       this.camera.updateMatrixWorld()
       this.camera.updateProjectionMatrix()
 
@@ -39,7 +39,7 @@ export default class AnimationDebug {
       return JSON.stringify(newValues)
     }
 
-    window.getPhoneState = init => {
+    window.getPhoneState = (init) => {
       this.objectPhone.updateMatrixWorld()
 
       let sourceValues = PHONE[init]
@@ -95,7 +95,7 @@ export default class AnimationDebug {
       window.clearTimeout(this.guiUpdateTimeline)
 
       this.guiUpdateTimeline = window.setTimeout(() => {
-        Object.keys(this.gui.__folders).forEach(folderKey => {
+        Object.keys(this.gui.__folders).forEach((folderKey) => {
           this.gui.__folders[folderKey].updateDisplay()
         })
       }, 1000)
@@ -115,20 +115,20 @@ export default class AnimationDebug {
     this.gui.add(param, 'motion')
     var lightFolder = this.gui.addFolder('Light')
 
-    lightFolder.addColor(param, 'color').onChange(val => {
+    lightFolder.addColor(param, 'color').onChange((val) => {
       this.rectLight.color.setHex(val)
     })
 
     lightFolder
       .add(param, 'intensity', 0.0, 10.0)
       .step(0.01)
-      .onChange(val => {
+      .onChange((val) => {
         this.rectLight.intensity = val
       })
 
     let cameraFolder = this.gui.addFolder('Camera')
 
-    Object.keys(this.cameraAnimation).forEach(key => {
+    Object.keys(this.cameraAnimation).forEach((key) => {
       cameraFolder
         .add(this.cameraAnimation, key, -100, 100)
         .step(0.01)
@@ -145,7 +145,7 @@ export default class AnimationDebug {
 
     let phoneFolder = this.gui.addFolder('Phone')
 
-    Object.keys(this.phoneAnimation).forEach(key => {
+    Object.keys(this.phoneAnimation).forEach((key) => {
       phoneFolder
         .add(this.phoneAnimation, key, -20, 20)
         .step(0.001)
@@ -155,7 +155,7 @@ export default class AnimationDebug {
     let spotlightFolder = this.gui.addFolder('SpotLight')
 
     let props = ['x', 'y', 'z']
-    props.forEach(key => {
+    props.forEach((key) => {
       spotlightFolder
         .add(this.objectLightTop.position, key, -20, 20)
         .step(0.001)
