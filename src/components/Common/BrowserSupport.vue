@@ -226,6 +226,7 @@ export default {
           this.supportsGyroscope().then((hasGyroscope) => {
             this.gyroscope = hasGyroscope
           })
+          this.$mote.gyroscope.initGyroNorm()
         }
       } else {
         this.gyroscope = CHECK_STATE.NOT_REQUIRED
