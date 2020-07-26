@@ -6,7 +6,7 @@ $thumb-height: 12px;
 $thumb-width: 12px;
 $thumb-shadow-size: 0px;
 $thumb-shadow-blur: 0px;
-$thumb-shadow-color: rgba(0, 0, 0, .2);
+$thumb-shadow-color: rgba(0, 0, 0, 0.2);
 $thumb-border-width: 0px;
 $thumb-border-color: transparent;
 
@@ -14,7 +14,7 @@ $track-width: 100%;
 $track-height: 4px;
 $track-shadow-size: 0px;
 $track-shadow-blur: 0px;
-$track-shadow-color: rgba(0, 0, 0, .2);
+$track-shadow-color: rgba(0, 0, 0, 0.2);
 $track-border-width: 0px;
 $track-border-color: $alt-color-light;
 
@@ -23,4 +23,4 @@ $contrast: 0%;
 
 $ie-bottom-track-color: darken($track-color, $contrast);
 
-@import '../../../node_modules/input-range-scss/inputrange';
+@import 'input-range-scss/_inputrange';

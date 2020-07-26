@@ -129,10 +129,10 @@ export default {
 
       this.$peersox
         .createPairing()
-        .then(pairing => {
+        .then((pairing) => {
           if (pairing) {
             this.pairing = pairing
-            this.$peersox.connect(pairing).catch(error => {
+            this.$peersox.connect(pairing).catch((error) => {
               this.$store.commit('setServerStatus', error)
               this.$sentry.logInfo('pairing', 'connect:failed')
             })
@@ -142,7 +142,7 @@ export default {
           }
           this.$store.commit('setServerStatus')
         })
-        .catch(error => {
+        .catch((error) => {
           this.$store.commit('setServerStatus', error)
           this.$sentry.logInfo('pairing', 'create:failed')
         })

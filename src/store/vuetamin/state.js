@@ -4,7 +4,7 @@
  * @param {Object} data Vuetamin data.
  * @returns {Object} The state.
  */
-export default function(data) {
+export default function (data) {
   return {
     brush: data.brush,
     isPressing: data.isPressing,

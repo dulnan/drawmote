@@ -117,8 +117,8 @@ export default class ThreeAnimation extends EventEmitter {
     if (project.gammaOutput) this.webgl.renderer.gammaOutput = true
     if (project.shadows) this.webgl.renderer.shadowMap.enabled = true
 
-    loader.parse(json.scene, scene => {
-      loader.parse(json.camera, camera => {
+    loader.parse(json.scene, (scene) => {
+      loader.parse(json.camera, (camera) => {
         this.camera = camera
         this.camera.aspect = 1
         this.camera.updateProjectionMatrix()
@@ -143,7 +143,7 @@ export default class ThreeAnimation extends EventEmitter {
       '/drawmote-logo-phone.png',
 
       // onLoad callback
-      texture => {
+      (texture) => {
         // in this example we create the material when the texture is loaded
         texture.anisotropy = this.webgl.renderer.capabilities.getMaxAnisotropy()
         var material = new MeshBasicMaterial({
@@ -159,7 +159,7 @@ export default class ThreeAnimation extends EventEmitter {
       undefined,
 
       // onError callback
-      function(error) {
+      function (error) {
         // eslint-disable-next-line
         console.error('Error loading texture:', error)
       }
@@ -537,7 +537,7 @@ export default class ThreeAnimation extends EventEmitter {
   }
 
   setObjectValues(object, values) {
-    Object.keys(values).forEach(key => {
+    Object.keys(values).forEach((key) => {
       object[key] = values[key]
     })
   }
@@ -564,7 +564,7 @@ export default class ThreeAnimation extends EventEmitter {
 
       let properties = JSON.parse(JSON.stringify(frame.values))
 
-      Object.keys(properties).forEach(key => {
+      Object.keys(properties).forEach((key) => {
         animation[key] = [frames[index - 1].values[key], properties[key]]
       })
 

@@ -42,28 +42,28 @@ export default {
 
       trackDimension('version', VERSION)
 
-      Sentry.configureScope(scope => {
-        Object.keys(dependencies).forEach(key => {
+      Sentry.configureScope((scope) => {
+        Object.keys(dependencies).forEach((key) => {
           scope.setTag('library_' + key, dependencies[key])
         })
       })
 
-      handler.setUser = function(id) {
-        Sentry.configureScope(scope => {
+      handler.setUser = function (id) {
+        Sentry.configureScope((scope) => {
           scope.setUser({ id: id })
         })
         trackUser(id)
       }
 
-      handler.setMode = function(mode) {
-        Sentry.configureScope(scope => {
+      handler.setMode = function (mode) {
+        Sentry.configureScope((scope) => {
           scope.setTag('mode', mode)
         })
         trackDimension('mode', mode)
       }
 
-      handler.setSupport = function(feature, supportState) {
-        Sentry.configureScope(scope => {
+      handler.setSupport = function (feature, supportState) {
+        Sentry.configureScope((scope) => {
           scope.setTag('supports_' + feature, supportState)
         })
 
@@ -76,7 +76,7 @@ export default {
         }
       }
 
-      handler.logError = function(category, message) {
+      handler.logError = function (category, message) {
         Sentry.addBreadcrumb({
           category: category,
           message: message,
@@ -84,7 +84,7 @@ export default {
         })
       }
 
-      handler.logInfo = function(category, message) {
+      handler.logInfo = function (category, message) {
         Sentry.addBreadcrumb({
           category: category,
           message: message,

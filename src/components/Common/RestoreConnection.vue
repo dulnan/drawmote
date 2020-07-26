@@ -76,7 +76,7 @@ export default {
 
     this.$peersox
       .restorePairing()
-      .then(pairing => {
+      .then((pairing) => {
         if (pairing) {
           this.pairing = pairing
           this.isRestoring = false

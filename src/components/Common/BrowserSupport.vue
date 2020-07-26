@@ -93,7 +93,7 @@ export default {
       needsPermission: false
     }
 
-    CHECKS.forEach(check => {
+    CHECKS.forEach((check) => {
       data[check] = CHECK_STATE.CHECKING
     })
 
@@ -105,7 +105,7 @@ export default {
      * @returns {Array} Return the checks with their support status.
      */
     doneChecks() {
-      return this.relevantChecks.map(check => {
+      return this.relevantChecks.map((check) => {
         return {
           check: check,
           state: this[check]
@@ -114,7 +114,7 @@ export default {
     },
 
     relevantChecks() {
-      return CHECKS.filter(check => filterRelevantCheck(this[check]))
+      return CHECKS.filter((check) => filterRelevantCheck(this[check]))
     },
 
     allDone() {
@@ -135,7 +135,7 @@ export default {
       }
 
       if (
-        this.relevantChecks.filter(check => this[check] === CHECK_STATE.FALSE)
+        this.relevantChecks.filter((check) => this[check] === CHECK_STATE.FALSE)
           .length > 0
       ) {
         return SUPPORT_STATE.PARTIAL
@@ -159,8 +159,8 @@ export default {
     if (!this.$settings.isPrerendering) {
       this.$emit('supportState', this.supportState)
 
-      watchers = CHECKS.map(check => {
-        return this.$watch(check, checkState => {
+      watchers = CHECKS.map((check) => {
+        return this.$watch(check, (checkState) => {
           this.$sentry.setSupport(check, checkState)
         })
       })
@@ -174,7 +174,7 @@ export default {
   },
 
   beforeDestroy() {
-    watchers.forEach(watcher => watcher())
+    watchers.forEach((watcher) => watcher())
   },
 
   methods: {
@@ -223,7 +223,7 @@ export default {
         if (this.$mote.gyroscope.needsPermission()) {
           this.needsPermission = true
         } else {
-          this.supportsGyroscope().then(hasGyroscope => {
+          this.supportsGyroscope().then((hasGyroscope) => {
             this.gyroscope = hasGyroscope
           })
         }
@@ -245,7 +245,7 @@ export default {
     },
 
     requestPermission() {
-      this.$mote.gyroscope.requestPermission().then(isGranted => {
+      this.$mote.gyroscope.requestPermission().then((isGranted) => {
         this.needsPermission = false
         this.gyroscope = CHECK_STATE.TRUE
       })

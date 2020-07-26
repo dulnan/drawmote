@@ -15,7 +15,7 @@ export function setupCanvases({ width, height }, canvases) {
     dpi = Math.min(window.devicePixelRatio, 1.25)
   }
 
-  canvases.forEach(canvas => {
+  canvases.forEach((canvas) => {
     let context = canvas.getContext('2d')
 
     canvas.width = width * dpi

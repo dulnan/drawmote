@@ -19,7 +19,7 @@ export default class DrawAction extends Action {
   setCanvasProperties(canvas) {
     const context = canvas.getContext('2d')
 
-    Object.keys(this.canvasProperties).forEach(p => {
+    Object.keys(this.canvasProperties).forEach((p) => {
       context[p] = this.canvasProperties[p]
     })
   }

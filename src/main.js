@@ -42,6 +42,6 @@ getGymote().then(({ default: Gymote }) => {
   new Vue({
     store: vuexStore,
     i18n,
-    render: h => h(App)
+    render: (h) => h(App)
   }).$mount('#drawmote')
 })
